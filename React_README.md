@@ -11,52 +11,208 @@ React native is a framework developed by Facebook and it's like react, but it us
     
 Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS . Irrespective of the application platform that you are on, Mesibo can be easily integrated into any application as Mesibo provides platatform specific/Native SDK .
 
-In this section, we will learn how to integrate React-Native with Mesibo . In the sample app provided, the user interface is developed using React-Native which interacts with Mesibo to send messages and make audio/video calls via method channels.
+In this section, we will learn how to integrate React-Native with Mesibo . In the sample app provided, the user interface is developed using React-Native which interacts with Mesibo to send messages and make audio/video calls .
+
+### Prerequisites
+
+- Read the [Preparation Guide](/documentation/tutorials/first-app/)
+
+- Read the [Anatomy of a Mesibo Application](/documentation/tutorials/first-app/anatomy/) 
+
+- Basic knowledge of creating Android applications in React-Native
 
 
-# How does it work?
+## Integrating Mesibo with React-Native
 
-Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS platforms. In this sample app, the user interface is developed using ReactNative which interacts with Mesibo to send messages and make audio/video calls.
+Here’s what you need to do to integrate React Native components with Mesibo:
 
-Integrating React Native into an existing application is a great way to increase the speed of development, make more complex apps, and implement the same feature for both iOS and Android simultaneously.
+### Set up React Native dependencies and the directory structure.
 
-Here’s what you need to do to integrate React Native components into your Android app:
+You will need Node, the React Native command line interface, a JDK, and Android Studio.
+Refer to [React-Native documentation](https://facebook.github.io/react-native/docs/getting-started) for installing the required dependencies and setting up the directory structure.
 
-- Set up React Native dependencies and the directory structure.
-- Develop your React Native components in JavaScript.
-- Add a ReactRootView to your Android app.
-- Start the React Native server and run your native app.
-- Verify that the React Native aspect of the app works as expected.
+### Develop your React Native components
 
-### Connect Mesibo with React-Native
+1. Create a new react-native project and initialise it. 
+```
+react-native init ProjectMesibo
+```
+This will provide you `App.js` where you need to develop your UI component in Javascript and the `Android` folder where you develop your Android Application.
 
-- The ReactNative portion of the app sends commands to  its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a bridge.For example ,to send a message you just need to enter the access token for your application and the destination user address.
+2.Create a native module that acts as a bridge between Mesibo and React-Native. For example , `MesiboModule.js`
 
-- Mesibo listens and recieves the information about the action to be performed. In the case of sending a message, it will recieve a "Send Message" command from the React-Native component ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client.
+```javascript
+import {NativeModules} from 'react-native';
+module.exports = NativeModules.MesiboModule;
+
+```
+
+3. Add Mesibo SDK in the Android part
+
+From Android Studio load ProjectMesibo by clicking on android folder.
+
+   - Add Mesibo SDK to your Android host project by adding gradle dependency and performing gradle sync as explained in our [First Android App tutorial] (https://mesibo.com/documentation/tutorials/first-app/android/)
+   - Import mesibo API and add mesibo initialization code in your onCreate method
+
+```java
+import com.mesibo.api.mesibo;
+```
+ Let's get into coding.
+ 
+3a. Create a class `MesiboModule` which extends `ReactContextBaseJavaModule`.
+```java
+public class MesiboModule extends ReactContextBaseJavaModule {
+    
+    
+    public MesiboModule(@Nonnull ReactApplicationContext reactContext) {
+        super(reactContext);
+    }
+
+    @Nonnull
+    @Override
+    public String getName() {
+        return null;
+    }
+}
+```
+You can add methods to the above class which includes the API functions of Mesibo.
+For example,
+```java
+ @ReactMethod
+    public void init(final String token) {
+    // To initialise and start mesibo
+
+        getCurrentActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Mesibo api = Mesibo.getInstance();
+
+                api.init(getReactApplicationContext());
+
+                MesiboCall mCall = MesiboCall.getInstance();
+                mCall.init(getReactApplicationContext());
+
+                if (0 != api.setAccessToken(token)) {
+                    Log.d(TAG, "bad token: ");
+                    return;
+                }
+
+                api.setDatabase("messaging.db", 0);
+                api.start();
+            }
+        });
+    }
 
 
+@ReactMethod
+    public void sendMessage(String to, String message) {
+    // To send Messages
+	  Mesibo.MessageParams p = new Mesibo.MessageParams();
+	  p.peer = to;
+	  Mesibo.sendMessage(p, Mesibo.random(), message);
 
-There are 4 important threads in each React Native application:
+    }
 
-1) UI Thread- Known as main Thread. It handles displaying the elements of native Android and iOS UI rendering.
+    
+    @ReactMethod
+    public void makeAudioCall(String to) {
+        // To make audio call
+        Mesibo.MessageParams messageParams = new Mesibo.MessageParams(to, 0, Mesibo.FLAG_DEFAULT, 0);
+        MesiboCall.getInstance().call(getReactApplicationContext(), Mesibo.random(), messageParams.profile, false);
+    }
 
-2) JS Thread- JavaScript thread deals with the business logic of the application. e.g.- where JavaScript code is executed, API calls are made, touch event processed and many other logics.
+```
+3b. Create a class `MesiboPackage` that implements `ReactPackage`
+```java
+public class MainApplication extends Application implements ReactApplication {
 
-To maintain good performance, JS Thread sends batched updates to UI thread before next frame rendering deadline.
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
 
-3) Native Modules Thread- sometimes some app needs access to platform API, and then use native modules thread to solve this problem.
+    @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
+    }
 
-4) Render Thread - This is Only in Android L (5.0), React Native render thread is used to generate OpenGL commands used to draw your UI.
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
 
-### How do threads interact?
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
 
-Between UI thread and JS threads, we use the bridge to interact. Bridge work as Asynchronous, Batched, Serializable.
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+  }
+}
+```
 
-Asynchronous - It enables asynchronous communication between the threads.
-
-Batched - It transfers messages from one thread to the other in an optimized way. They transfer message as a block form.
-
-Serializable-The two threads are different from each other and work is also so different and never share or operate with the same data. Instead, they exchange serialized messages.
+4. Start the React Native server and run your native app.
+5. Verify that the React Native aspect of the app works as expected.
 
 
+```java
+public class MainApplication extends Application implements ReactApplication {
+
+  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+    @Override
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
+    }
+
+    @Override
+    protected String getJSMainModuleName() {
+      return "index";
+    }
+  };
+
+  @Override
+  public ReactNativeHost getReactNativeHost() {
+    return mReactNativeHost;
+  }
+
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    SoLoader.init(this, /* native exopackage */ false);
+  }
+}
+```
+Override method `getPackages` in `MainApplication` class, to return `MesiboPackages` to include Mesibo packages along with the react packages.
+```java
+   @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+              new MainReactPackage(),
+              new MesiboPackage()
+      );
+    }
+
+```
+The Android Part setup is now complete.
+
+
+### 
 

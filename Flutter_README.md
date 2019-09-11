@@ -19,11 +19,14 @@ In this section, we will learn how to integrate flutter with Mesibo . In the sam
 
 - Basic knowledge of creating Android applications in Flutter 
 
+
 ### How to use method Channels to integrate Mesibo with Flutter? 
 
 - The Flutter portion of the app sends commands to  its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a platform channel.For example ,to send a message you just need to enter the access token for your application and the destination user address.
 
 - Mesibo listens on the platform channel, and recieves the information about the action to be performed. In the case of sending a message, it will recieve a "Send Message" command from flutter ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client, the Flutter portion of the app.
+
+For more information refer to [Flutter Method Channels](https://flutter.dev/docs/development/platform-integration/platform-channels)
 
 Follow the steps below to integrate Flutter with Mesibo:
 

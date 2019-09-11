@@ -1,5 +1,4 @@
-# Mesibo React Native Sample App
-This repo contains the source code for a Mesibo sample App using React Native
+# Integrating Mesibo with React-Native
 
 [mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
   - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
@@ -7,15 +6,12 @@ This repo contains the source code for a Mesibo sample App using React Native
   - Adding real-time video calling in your apps
 
 [React Native](https://facebook.github.io/react-native/) uses React to build native apps.
+React native is a framework developed by Facebook and it's like react, but it uses native components instead of web components as building blocks. React native is a way to develop mobile apps using React and JavaScript.
 
-React native is a framework developed by Facebook and it's like react, but it uses native components instead of web components as a building blocks form. React native is a way to develop mobile apps using React and JavaScript. It means React native is cross-platform, in which you can create one mobile app and run on multiple platforms like Android, iOS, windows, blackberry.
+    
+Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS . Irrespective of the application platform that you are on, Mesibo can be easily integrated into any application as Mesibo provides platatform specific/Native SDK .
 
-React Native supports these operating system versions:
-
-    Android 4.1 (API 16) and higher
-    iOS 8.0 and higher
-
-React Native relies fully on JavaScript and uses Bridge to connect with the native platform. Making a React Native component and the native platform connect via Bridge is probably the trickiest part of the integration process. 
+In this section, we will learn how to integrate React-Native with Mesibo . In the sample app provided, the user interface is developed using React-Native which interacts with Mesibo to send messages and make audio/video calls via method channels.
 
 
 # How does it work?

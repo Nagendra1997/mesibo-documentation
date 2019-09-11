@@ -11,6 +11,14 @@ Mesibo provides real time APIs for messaging,voice and video call which can be e
 
 In this section, we will learn how to integrate flutter with Mesibo . In the sample app provided, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls via method channels.
 
+### Prerequisites
+
+- Read the [Preparation Guide](/documentation/tutorials/first-app/)
+
+- Read the [Anatomy of a Mesibo Application](/documentation/tutorials/first-app/anatomy/) 
+
+- Basic knowledge of creating Android applications in Flutter 
+
 ### How to use method Channels to integrate Mesibo with Flutter? 
 
 - The Flutter portion of the app sends commands to  its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a platform channel.For example ,to send a message you just need to enter the access token for your application and the destination user address.
@@ -25,35 +33,9 @@ Android Studio offers a complete, integrated IDE experience for Flutter.
 
    - Android Studio, version 3.0 or later
 
-Alternatively, you can also use IntelliJ:
-
-   - IntelliJ IDEA Community, version 2017.1 or later
-   - IntelliJ IDEA Ultimate, version 2017.1 or later
-
-### 2. Install Flutter and Dart plugins
-
-To install flutter on your platform(Windows/macOS/Linux) refer to the [Flutter Installation Guide](https://flutter.dev/docs/get-started/install).
-
-Once the installation is complete ,
-
-   - Start Android Studio.
-   - Open plugin preferences (Preferences > Plugins on macOS, File > Settings > Plugins on Windows & Linux).
-   - Select Browse repositories, select the Flutter plugin and click Install.
-   - Click Yes when prompted to install the Dart plugin.
-   - Click Restart when prompted
-
-### 3. Create the app
-
-   - Open the IDE and select Start a new Flutter project.
-   - Select Flutter Application as the project type. Then click Next.
-   - Verify the Flutter SDK path specifies the SDK’s location (select Install SDK… if the text field is blank).
-   - Enter a project name (for example, MesiboFlutterSample). Then click Next.
-   - Click Finish.
-   - Wait for Android Studio to install the SDK and create the project.
    
-   
- ### 4. Add Mesibo Sdk
- Inside this project open the Android host portion of your Flutter app :
+ ### 2. Add Mesibo Sdk
+ From Android Studio Inside this project open the Android host portion of your Flutter app :
 
    - Add Mesibo SDK to your Android host project by adding gradle dependency and performing gradle sync as explained in our [First Android App tutorial] (https://mesibo.com/documentation/tutorials/first-app/android/)
    - Import mesibo API and add mesibo initialization code in your onCreate method
@@ -63,7 +45,7 @@ import com.mesibo.api.mesibo;
 ```
  Let's get into coding.
  
- ### 5a. Create the Flutter platform client
+ ### 3a. Create the Flutter platform client
  
 Create Method channels to connect flutter UI and Mesibo inside `main.dart`
  
@@ -151,7 +133,7 @@ Finally, replace the build method from the template to contain a small user inte
   }
 
 ```
- ### 5b. Add an Android platform-specific implementation 
+ ### 3b. Add an Android platform-specific implementation 
  Start by opening the Android host portion of your Flutter app in Android Studio:
 
 - Start Android Studio

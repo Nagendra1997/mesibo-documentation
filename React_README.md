@@ -160,46 +160,6 @@ public class MainApplication extends Application implements ReactApplication {
 }
 ```
 
-4. Start the React Native server and run your native app.
-5. Verify that the React Native aspect of the app works as expected.
-
-
-```java
-public class MainApplication extends Application implements ReactApplication {
-
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
-    @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
-    }
-
-    @Override
-    protected List<ReactPackage> getPackages() {
-      @SuppressWarnings("UnnecessaryLocalVariable")
-      List<ReactPackage> packages = new PackageList(this).getPackages();
-      // Packages that cannot be autolinked yet can be added manually here, for example:
-      // packages.add(new MyReactNativePackage());
-      return packages;
-    }
-
-    @Override
-    protected String getJSMainModuleName() {
-      return "index";
-    }
-  };
-
-  @Override
-  public ReactNativeHost getReactNativeHost() {
-    return mReactNativeHost;
-  }
-
-  @Override
-  public void onCreate() {
-    super.onCreate();
-    SoLoader.init(this, /* native exopackage */ false);
-  }
-}
-```
 Override method `getPackages` in `MainApplication` class, to return `MesiboPackages` to include Mesibo packages along with the react packages.
 ```java
    @Override
@@ -213,6 +173,42 @@ Override method `getPackages` in `MainApplication` class, to return `MesiboPacka
 ```
 The Android Part setup is now complete.
 
+4. Now,edit `App.js` to add UI components and call Mesibo Methods by importing `MesiboModule.js`
+```javascript
+import MesiboModule from './MesiboModule';
 
-### 
+```
+Initialise Mesibo like below
+```javascript
+
+// Refer to https://mesibo.com/documentation/ to generate token
+const mesiboToken = "4ef59c6683d45c2f0c7f43fa894dd0f77dacf61cd6d98eff6651a";
+const mesiboDestination = "TestUser";
+
+
+MesiboModule.init(mesiboToken);
+```
+Create UI componenets and then bind UI events with Mesibo Methods . For example , you can create a button to send a Message . 
+```javascript
+<View style={styles.buttonContainer}>
+	<Button
+  		onPress={() => {
+		MesiboModule.sendMessage(mesiboDestination);
+	        }}
+  	   	title="Launch UI" 
+	/>
+</View>
+```
+Similarly you can create and link other UI components to interact with Mesibo.
+
+4. Start the React Native server and run your native app.
+Go to the project folder, open terminal and run the react-native server which will load files from your project directory.
+```
+sudo react-native start
+```
+To run your Android Application,
+```
+sudo react-native run android
+```
+That's it! You have sucessfully integrated Mesibo with React-Native.
 

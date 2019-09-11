@@ -201,7 +201,7 @@ Create UI componenets and then bind UI events with Mesibo Methods . For example 
 ```
 Similarly you can create and link other UI components to interact with Mesibo.
 
-4. Start the React Native server and run your native app.
+5. Start the React Native server and run your native app.
 Go to the project folder, open terminal and run the react-native server which will load files from your project directory.
 ```
 sudo react-native start

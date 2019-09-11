@@ -144,7 +144,7 @@ Finally, replace the build method from the template to contain a small user inte
 - Navigate to the directory holding your Flutter app, and select the android folder inside it. Click OK.
 - Open the MainActivity.java file located in the java folder in the Project view.
 
-Extend your MainActivity Class to implement `Mesibo.ConnectionListener,` and `Mesibo.MessageListener``
+Extend your MainActivity Class to implement `Mesibo.ConnectionListener`, and `Mesibo.MessageListener``
 
 Next, create a MethodChannel and set a MethodCallHandler inside the onCreate() method. Make sure to use the same channel name as was used on the Flutter client side. Call your API methods in this Method Channel.
 

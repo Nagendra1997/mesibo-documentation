@@ -51,7 +51,7 @@ module.exports = NativeModules.MesiboModule;
 
 From Android Studio load ProjectMesibo by clicking on android folder.
 
-   - Add Mesibo SDK to your Android host project by adding gradle dependency and performing gradle sync as explained in our [First Android App tutorial] (https://mesibo.com/documentation/tutorials/first-app/android/)
+   - Add Mesibo SDK to your Android host project by adding gradle dependency and performing gradle sync as explained in our [First Android App tutorial](https://mesibo.com/documentation/tutorials/first-app/android/)
    - Import mesibo API and add mesibo initialization code in your onCreate method
 
 ```java

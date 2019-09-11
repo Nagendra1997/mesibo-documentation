@@ -1,4 +1,4 @@
-# Mesibo Flutter Integration Tutorial
+# Integrating Flutter with Mesibo 
 
 [Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
   - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
@@ -78,6 +78,17 @@ Create Method channels to connect flutter UI and Mesibo inside `main.dart`
  ```
 Next, invoke the Mesibo API method that you need on the method channel. For example, in the sample App we will be using the following API methods ,which will be called from the Method channel.
 ```java
+
+ void _setCredentials() async {
+    print("Set Credentials clicked");
+    //get AccessToken and Destination From TextField and add it in a list then send it to native mesibo activity where these can be used to start mesibo
+    final List list = new List();
+    list.add(userAccessTokenController.text);
+    list.add(destinationController.text);
+
+    await platform.invokeMethod("setAccessToken", {"Credentials": list});
+  }
+  
   Future<void> _sendMessage() async {
     print("Send Message clicked");
     await platform.invokeMethod('sendMessage');
@@ -150,10 +161,10 @@ Finally, replace the build method from the template to contain a small user inte
 
 Extend your MainActivity Class to implement `Mesibo.ConnectionListener,` and `Mesibo.MessageListener``
 
-Next, create a MethodChannel and set a MethodCallHandler inside the onCreate() method. Make sure to use the same channel name as was used on the Flutter client side.
+Next, create a MethodChannel and set a MethodCallHandler inside the onCreate() method. Make sure to use the same channel name as was used on the Flutter client side. Call your API methods in this Method Channel.
 
 
- ```
+ ```java
 public class MainActivity extends FlutterActivity implements  Mesibo.ConnectionListener, Mesibo.MessageListener, Mesibo.MessageFilter {
     private static final String MESIBO_MESSAGING_CHANNEL = "mesibo.flutter.io/messaging";
     private static final String MESIBO_ACTIVITY_CHANNEL = "mesibo.flutter.io/mesiboEvents";
@@ -261,9 +272,17 @@ public class MainActivity extends FlutterActivity implements  Mesibo.ConnectionL
     }
 }
  ```
+ ### Run the application
+From Android Studio, run your application by connecting a mobile device/Emulator. 
+Now, In the Sample Android application 
+1. Enter your `AUTH_TOKEN` (which can be obtained from Mesibo Console) in the `Access Token` field.
+2. Enter destination (user address) to communicate with.
+3. Click on  the button `Set Credentials`
+4. Mesibo will now be running and you will be able to send/recieve messages,make audio call/video call.
+
+Thats it! You have sucessfully integrated Flutter with Mesibo.
 
 
 
-For general issues and help, check the FAQs section
 
 

@@ -7,7 +7,7 @@ keywords: mesibo, android, ios, cpp, python
 
 In this part, we will create a simple real-time app using Python.
 
-### Platforms Supported
+### Supported Platforms
 - CentOS / RedHat 7.x or above
 - Debian / Ubuntu
 - Mac OS

@@ -8,10 +8,52 @@ This repo contains the source code for a sample App using Flutter integrated wit
   
 [Flutter](https://flutter.io/) by Google is a new framework that allows us to build beautiful native Apps on iOS and Android from a single codebase. It provides Fast Development, Expressive and Flexible UI, and Native Performance.
 
+
 Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS platforms. In this sample app, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls. To achieve this we have used flutter method channels.
 
 
-![flutter-mesibo-demo](mesibo-flutter.png)
+# First Android App with Flutter
+
+### Install Android Studio
+
+Android Studio offers a complete, integrated IDE experience for Flutter.
+
+   - Android Studio, version 3.0 or later
+
+Alternatively, you can also use IntelliJ:
+
+   - IntelliJ IDEA Community, version 2017.1 or later
+   - IntelliJ IDEA Ultimate, version 2017.1 or later
+
+### Install the Flutter and Dart plugins
+
+To install these:
+
+   - Start Android Studio.
+   - Open plugin preferences (Preferences > Plugins on macOS, File > Settings > Plugins on Windows & Linux).
+   - Select Browse repositories, select the Flutter plugin and click Install.
+   - Click Yes when prompted to install the Dart plugin.
+   - Click Restart when prompted
+
+### Create the app
+
+   - Open the IDE and select Start a new Flutter project.
+   - Select Flutter Application as the project type. Then click Next.
+   - Verify the Flutter SDK path specifies the SDK’s location (select Install SDK… if the text field is blank).
+   - Enter a project name (for example, myapp). Then click Next.
+   - Click Finish.
+   - Wait for Android Studio to install the SDK and create the project.
+   
+   
+ # Add Mesibo Sdk
+ 
+   - Add mesibo SDK to your project by adding gradle dependency and performing gradle sync as explained in installation instructions.
+   - Import mesibo API and add mesibo initialization code in your onCreate method
+
+'import com.mesibo.api.mesibo;'
+
+  
+
 
 - The Flutter portion of the app sends commands to  its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a platform channel.For example ,to send a message you just need to enter the access token for your application and the destination user address.
 

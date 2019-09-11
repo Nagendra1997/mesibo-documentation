@@ -1,6 +1,6 @@
 # Integrating Mesibo with React-Native
 
-[mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
+[Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
   - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
   - Add high quality voice chat between users
   - Adding real-time video calling in your apps

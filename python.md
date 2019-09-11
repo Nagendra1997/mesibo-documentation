@@ -39,20 +39,18 @@ from mesiboNotify.mesiboNotify import mesiboNotify
 Now, initialize mesibo like shown below
 
 ```python
-#Create Mesibo Instance
+AUTH_TOKEN = "3e7694e19d192588a4ffcb4eab26b6afb3d5aada54bbd41edd71401"
+APP_ID = "myfirstapp"
+
+#Create a Mesibo Instance
 pymesibo = Mesibo()
 
-pynotify = test_mesiboNotify() 
-pynotify.set_api(pymesibo)
+pymesibo.set_notify(test_mesiboNotify) # Add Listener your custom listener class
+pymesibo.set_accesstoken(AUTH_TOKEN) #Set your AUTH_TOKEN obtained from the Mesibo Console
+pymesibo.set_device(1, "MyUser", APP_ID, "1.0.0") #Set  APP_ID which you used to create AUTH_TOKEN
+pymesibo.set_database("mesibo.db") #Set the name of the database
 
-#set user authentication token obtained by creating user from console
-pymesibo.set_accesstoken("aea59d3713701704bed9fd5952d9419ba8c4209a335e664ef2g")
-pymesibo.set_database("mesibo.db")
-pymesibo.set_notify(test_mesiboNotify) #your custom listener class
-pymesibo.set_device(1, "MyUser", "mypythonapp", "1.0.0")
-
-# Initialisation complete. Start Mesibo ..
-pymesibo.start()
+pymesibo.start() #Start mesibo
 pymesibo.wait()
 
 ```
@@ -68,36 +66,35 @@ class test_mesiboNotify(mesiboNotify):
     def __init__(self):
         pass
     
-    def set_api(self,mesibo_ref):
-        pymesibo = mesibo_ref
-    
     def on_status(self, status, sub_status, channel, p_from):
-        #You will receive the connection status here
+        #You will receive the connection status here      
         
         print("===>on_status: " + str(status) + " substatus: " +
               str(sub_status) + " channel:" + str(channel) + "from: " + str(p_from))
         
-        return 0
+        return 1 
 
     def on_message(self, message_params_dict, p_from, data, p_len):
-        #Invoked on receiving a new message or reading database messages
-        #You will receive messages here.
-       
-        print("You have recieved a message!")
+        #invoked on receiving a new message or reading database messages
+        
+        print("===>on_message: from " + str(p_from) + " of len " + str(p_len))
         print(data[:p_len])  # data buffer/Python bytes object
-
-        return 0
+        print("with message parmeters:")
+        print(message_params_dict)
+        return 1 
 
     def on_messagestatus(self,  message_params_dict, p_from, last):
+    
         #Invoked when the status of outgoing or sent message is changed
         #You will receive status of sent messages here
-        
         print("===>on_messagestatus: from " +
               str(p_from) + " " + str(last))
         print("with message_parameters")
         print(message_params_dict)
 
-        return 0
+	return 1;
+
+
 ```
 
 That’s it - you are now ready to receive your first real-time message.

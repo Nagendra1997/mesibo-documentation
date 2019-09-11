@@ -8,7 +8,7 @@
 [Flutter](https://flutter.io/) by Google is a new framework that allows us to build beautiful native Apps on iOS and Android from a single codebase. It provides Fast Development, Expressive and Flexible UI, and Native Performance.
 
 
-Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS platforms. Irrespective of the application platform that you are on,Mesibo can be easily integrated into any application as Mesibo provides platatform specific/Native SDK .
+Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS . Irrespective of the application platform that you are on, Mesibo can be easily integrated into any application as Mesibo provides platatform specific/Native SDK .
 
 In this section, we will learn how to integrate flutter with Mesibo . In the sample app provides, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls via method channels.
 
@@ -25,9 +25,11 @@ Alternatively, you can also use IntelliJ:
    - IntelliJ IDEA Community, version 2017.1 or later
    - IntelliJ IDEA Ultimate, version 2017.1 or later
 
-### Install the Flutter and Dart plugins
+### Install Flutter and Dart plugins
 
-To install these:
+To install flutter on your platform(Windows/macOS/Linux) refer to the [Flutter Installation Guide]().
+
+Once the installation is complete ,
 
    - Start Android Studio.
    - Open plugin preferences (Preferences > Plugins on macOS, File > Settings > Plugins on Windows & Linux).

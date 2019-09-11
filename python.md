@@ -127,7 +127,7 @@ Invoke the following function anywhere from your code to send a text message.
 def send_text_message(pymesibo,to,message):
         #pymesibo is the Mesibo Python API instance. 
         #Make sure the instance is initialised before you call API functions 
-        msg_params = {"id":pymesibo.random()}
+        msg_params = {"id":pymesibo.random(), "expiry":3600} #Message Expiry for outgoing message (time to live), in seconds
         data = str(message)
         datalen = len(data)
         pymesibo.send_message(msg_params,to,data,datalen)

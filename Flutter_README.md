@@ -1,7 +1,6 @@
-# Mesibo Flutter Sample App
-This repo contains the source code for a sample App using Flutter integrated with Mesibo.
+# Mesibo Flutter Integration Tutorial
 
-[mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
+[Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
   - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
   - Add high quality voice chat between users
   - Adding real-time video calling in your apps
@@ -9,7 +8,9 @@ This repo contains the source code for a sample App using Flutter integrated wit
 [Flutter](https://flutter.io/) by Google is a new framework that allows us to build beautiful native Apps on iOS and Android from a single codebase. It provides Fast Development, Expressive and Flexible UI, and Native Performance.
 
 
-Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS platforms. In this sample app, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls. To achieve this we have used flutter method channels.
+Mesibo provides real time APIs for messaging,voice and video call which can be easily integrated into any application on Android or iOS platforms. Irrespective of the application platform that you are on,Mesibo can be easily integrated into any application as Mesibo provides platatform specific/Native SDK .
+
+In this section, we will learn how to integrate flutter with Mesibo . In the sample app provides, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls via method channels.
 
 
 # First Android App with Flutter
@@ -47,11 +48,12 @@ To install these:
    
  # Add Mesibo Sdk
  
-   - Add mesibo SDK to your project by adding gradle dependency and performing gradle sync as explained in installation instructions.
+   - Add mesibo SDK to your project by adding gradle dependency and performing gradle sync as explained in our [First Android App tutorial] (https://mesibo.com/documentation/tutorials/first-app/android/)
    - Import mesibo API and add mesibo initialization code in your onCreate method
 
-'import com.mesibo.api.mesibo;'
-
+```java
+import com.mesibo.api.mesibo;
+```
   
 
 

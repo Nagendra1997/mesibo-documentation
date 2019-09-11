@@ -21,6 +21,7 @@ yum install libffi-devel python3-devel python-devel
 
 ```
 **2. Sqlite **
+
 Install `sqlite` development packages
 ```
 apt-get install sqlite3 libsqlite3-dev

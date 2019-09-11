@@ -12,8 +12,7 @@ Mesibo provides real time APIs for messaging,voice and video call which can be e
 
 In this section, we will learn how to integrate flutter with Mesibo . In the sample app provides, the user interface is developed using flutter which interacts with Mesibo to send messages and make audio/video calls via method channels.
 
-
-# First Android App with Flutter
+Follow the steps below to integrate Flutter with Mesibo
 
 ### Install Android Studio
 

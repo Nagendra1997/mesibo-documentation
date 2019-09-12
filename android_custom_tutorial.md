@@ -51,7 +51,7 @@ Sync Gradle and you are all set
 
 ## Creating UI elements
 
-In order to have your own custom chat layout, you need to create your own Activity class and UIFragment class. In this tutorial, we will be calling them `MessagingActivity` and `MessagingUiFragment`.
+In order to have your own custom chat layout, you need to create your own MessagingActivity class and UIFragment class. In this tutorial, we will be calling them `MessagingActivity` and `MessagingUiFragment`.
 
 `MessagingActivity.java` loads `MessagingUIFragment` which has MesiboRecyclerView and Adapter. 
 

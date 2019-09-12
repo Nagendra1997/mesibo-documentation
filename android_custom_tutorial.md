@@ -1,20 +1,3 @@
-1 of 19,852
-custom ui document
-Inbox
-	x
-Yusuf Motiwala
-	
-Attachments2:01 PM (1 hour ago)
-	
-to me, Nagendra
-   
-Translate message
-Turn off for: English
-
-Attachments area
-	
-	
-	
 
 ## Customizing MesiboUI
 You can customize every element of Mesibo chat. Everything in your application can be built on Mesibo to suit your requirements and branding. This tutorial focuses on customizing the UI in a Mesibo Android Application. You can follow a similar procedure to customize your UI in iOS, React, etc
@@ -31,16 +14,25 @@ There are primarily two type of UI fragement
 
 You can use these fragments in your code as suitable as describe below.
 
-### User and Message List Fragment:x
-
+### User and Message List Fragment:
+MesiboUserListFragment displays list of users and groups. One can click on the user/group to open Mesibo chat view. MesibouserListFragment is itself designed in such a way that user has access to all the functions like creating group, viewing all the user list and many more. Even if one wants to create and modify this, Mesibo provides option to modify this.
 
 ## Messaging Fragnment
-MesiboMessagingFragment renders all the messages for a particular user or a group.  which you can load it in your application as suitable. T
-The two basic elements that form a chat application are
-- Incoming chat view
-- Outgoing chat view
+MesiboMessagingFragment renders all the messages for a particular user or a group.  which you can load it in your application as suitable. 
 
-Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received.
+The two basic elements that form a chat application are
+
+- Incoming chat view
+	Incoming chat view is a view that you see when you recieve a message. This view has everthing by default from displaying received messages to displaying even the files and file types received. Agian, if you want to customize as per your theme and requirement you are open to do so, we will be learning how to customize incoming view in this section further.
+	
+- Outgoing chat view
+	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has all the options to display.In addition, in this view you have one other option, based on your message status diplaying "ticks" - single tick, double tick, blue tick is also possible. You can customize ticks also as per yur requirment.
+	
+	
+Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messges are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be aceived easily let us see how it is done.
+
+
+
 
 Follow the steps below to customize your Mesibo Application UI.
 

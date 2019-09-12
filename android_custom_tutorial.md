@@ -1,14 +1,41 @@
+1 of 19,852
+custom ui document
+Inbox
+	x
+Yusuf Motiwala
+	
+Attachments2:01 PM (1 hour ago)
+	
+to me, Nagendra
+   
+Translate message
+Turn off for: English
+
+Attachments area
+	
+	
+	
+
 ## Customizing MesiboUI
 You can customize every element of Mesibo chat. Everything in your application can be built on Mesibo to suit your requirements and branding. This tutorial focuses on customizing the UI in a Mesibo Android Application. You can follow a similar procedure to customize your UI in iOS, React, etc
 
 ## PreRequisites
-Before we dive into customisation, please checkout the following:
-- The [Getting Started](https://mesibo.com/documentation/get-started/) guide
-- Tutorial on Writing your First mesibo Enabled Application(https://mesibo.com/documentation/tutorials/first-app/)
-- [Mesibo API documentation for Android](https://mesibo.com/documentation/install/android/)
 - Check out our fully featured WhatsApp clone using Mesibo [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/)
 
-## The UI elements
+
+## Mesibo UI Fragments
+
+There are primarily two type of UI fragement
+ - User and Message List Fragment, which displays all the users and messages 
+ - Message Fragment, which renders all the messages for a particular user or a group
+
+You can use these fragments in your code as suitable as describe below.
+
+### User and Message List Fragment:x
+
+
+## Messaging Fragnment
+MesiboMessagingFragment renders all the messages for a particular user or a group.  which you can load it in your application as suitable. T
 The two basic elements that form a chat application are
 - Incoming chat view
 - Outgoing chat view

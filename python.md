@@ -29,11 +29,11 @@ You MUST go through the following prerequisites before you read further.
 
 Now let’s quickly start coding:
 
-From `mesibo` python package import the function class `Mesibo` and the callback class `mesiboNotify` 
+From `mesibo` python package import the function class `Mesibo` and the callback class `MesiboNotify` 
 
 ```python
-from mesibo import Mesibo 
-from mesiboNotify.mesiboNotify import mesiboNotify
+from mesibo import Mesibo
+from mesibo import MesiboNotify
 ```
 
 Now, initialize mesibo like shown below
@@ -61,41 +61,33 @@ Derive from the `mesiboNotify` class to implement listeners as shown below.
 
 ```python
 
-class test_mesiboNotify(mesiboNotify): 
+class test_mesiboNotify(MesiboNotify):
 
     def __init__(self):
         pass
-    
-    def on_status(self, status, sub_status, channel, p_from):
-        #You will receive the connection status here      
-        
-        print("===>on_status: " + str(status) + " substatus: " +
-              str(sub_status) + " channel:" + str(channel) + "from: " + str(p_from))
-        
-        return 1 
+
+    def on_connectionstatus(self, status):
+        print("===>on_connectionstatus: " + str(status))
+        return 1
+
 
     def on_message(self, message_params_dict, p_from, data, p_len):
         #invoked on receiving a new message or reading database messages
-        
         print("===>on_message: from " + str(p_from) + " of len " + str(p_len))
         print(data[:p_len])  # data buffer/Python bytes object
+
         print("with message parmeters:")
         print(message_params_dict)
-        return 1 
 
-    def on_messagestatus(self,  message_params_dict, p_from, last):
-    
+        return 1
+
+    def on_messagestatus(self,  message_params_dict, p_from):
         #Invoked when the status of outgoing or sent message is changed
-        #You will receive status of sent messages here
         print("===>on_messagestatus: from " +
-              str(p_from) + " " + str(last))
+              str(p_from))
         print("with message_parameters")
         print(message_params_dict)
-
-	return 1;
-
-
-```
+        return 1
 
 That’s it - you are now ready to receive your first real-time message.
 

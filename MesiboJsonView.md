@@ -53,3 +53,10 @@ MesiboJsonView is designed to faciliate you with designing your own UI by just w
 
 ## And self-constructs into the following view, in realtime:
 
+
+
+
+## How it works
+
+
+

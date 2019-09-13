@@ -19,16 +19,83 @@ You can use these fragments in your code as  described below.
 
 ## Loading MesiboUI in your activity:
 
-Follow these simple steps:
-
-1. Create an activity that implements `MesiboMessageListFragment.FragmentListener`
+Create an activity that implements `MesiboMessageListFragment.FragmentListener`
 
 ```java
-public class MesiboActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
-
+public class YourActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
+    public static final String TAG="MesiboMainActivity";
+    TextView contactsTitle = null;
+    TextView contactsSubTitle = null;
+    int mMode = 0;
+    long mForwardId = 0;
+    long[] mForwardIds;
+    Bundle mEditGroupBundle = null;
+    boolean mHideHomeBtn = false;
+    boolean mKeepRunning = false;
  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+	
+	mMode = getIntent().getIntExtra(MesiboUI.MESSAGE_LIST_MODE, MesiboUI.USERLIST_MESSAGELIST_MODE);
+        mForwardId = getIntent().getLongExtra(MesiboUI.MESSAGE_ID, 0);
+        mForwardIds = getIntent().getLongArrayExtra(MesiboUI.MESSAGE_IDS);
+        String forwardMessage = getIntent().getStringExtra(MesiboUI.MESSAGE_CONTENT);
+        boolean forwardAndClose = getIntent().getBooleanExtra(MesiboUI.FORWARD_AND_CLOSE, false);
+        mKeepRunning = getIntent().getBooleanExtra(MesiboUI.KEEP_RUNNING, false);
+        if(getIntent().getBooleanExtra(MesiboUI.START_IN_BACKGROUND, false)) {
+            moveTaskToBack(true);
+        }
+
+        if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
+            mEditGroupBundle = getIntent().getBundleExtra(MesiboUI.BUNDLE);
+
+        setContentView(R.layout.activity_messages);
+        mMesiboUIOptions = MesiboUI.getConfig();
+
+        Toolbar toolbar = findViewById(R.id.message_toolbar);
+        contactsSubTitle = findViewById(R.id.contacts_subtitle);
+        contactsTitle =  findViewById(R.id.contacts_title);
+        Utils.setTextViewColor(contactsTitle, TOOLBAR_TEXT_COLOR);
+        Utils.setTextViewColor(contactsSubTitle, TOOLBAR_TEXT_COLOR);
+        Utils.setActivityStyle(this, toolbar);
+
+        setSupportActionBar(toolbar);
+        Utils.setActivityStyle(this, toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        //ab.setTitle("Contacts");
+        contactsTitle.setText(mMesiboUIOptions.userListTitle);
+
+        if(mMode == MesiboUI.USERLIST_MESSAGELIST_MODE) {
+            contactsSubTitle.setText(mMesiboUIOptions.offlineIndicationTitle);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(mMesiboUIOptions.enableBackButton);
+        }
+
+        if(savedInstanceState == null) {
+
+            UserListFragment userListFragment = new UserListFragment();
+            userListFragment.setListener(this);
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
+            bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
+
+            if(!TextUtils.isEmpty(forwardMessage))
+                bl.putString(MesiboUI.MESSAGE_CONTENT, forwardMessage);
+
+            bl.putLongArray(MesiboUI.MESSAGE_IDS, mForwardIds);
+            if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
+                bl.putBundle(MesiboUI.BUNDLE, mEditGroupBundle);
+
+            bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
+
+            userListFragment.setArguments(bl);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.userlist_fragment, userListFragment,"null");
+            ft.addToBackStack("userListFragment");
+            ft.commit();
+
+        }
 	
 	}
 	
@@ -45,6 +112,44 @@ public class MesiboActivity extends AppCompatActivity implements MesiboMessageLi
 
 ```	
 
+Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` you have passed through intent. Let us see the modes that we have here.
+
+
+```java 
+  public static void launchYourActivity(Context context, long forwardid, int selectionMode, int flag, boolean startInBackground, boolean keepRunning, Bundle bundle, String forwardMessage) {
+        Intent intent = new Intent(context, YourActivity.class);
+        intent.putExtra(MesiboUI.MESSAGE_LIST_MODE, selectionMode)
+            .putExtra(MesiboUI.MESSAGE_ID, forwardid)
+            .putExtra(MesiboUI.START_IN_BACKGROUND, startInBackground)
+            .putExtra(MesiboUI.KEEP_RUNNING, keepRunning);
+
+        if(!TextUtils.isEmpty(forwardMessage)) {
+            intent.putExtra(MesiboUI.MESSAGE_CONTENT, forwardMessage);
+        }
+
+        if(flag > 0)
+            intent.setFlags(flag);
+
+        if(null != bundle)
+            intent.putExtra(MesiboUI.BUNDLE,bundle);
+        context.startActivity(intent);
+    }
+    
+  ```
+
+- selectionMode
+
+ 1. USERLIST_GROUPSELECTION_MODE = 3;
+ 2. USERLIST_EDIT_GROUP_MODE = 4;
+ 3. USERLIST_FORWARD_MODE = 2;
+ 4. USERLIST_NEWCONTACTS_MODE = 1;
+ 5. USERLIST_MESSAGELIST_MODE = 0;
+ 
+ You can pass any of the above modes in intent to load MesiboUi as per your requirement.  `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating group. `USERLIST_EDIT_GROUP_MODE` launches editing group UI. `USERLIST_FORWARD_MODE` populates  forward UI basically list of users whome you can forward your message or file. `USERLIST_NEWCONTACTS_MODE` launches UI to select nes contact from user list to start chat. `USERLIST_MESSAGELIST_MODE` launches history of all your chats 
+
+
+
+Mesibo has all modes required by user to minimize the effort of cutomizing and development. Even after this if you like to customize your and have your own UI you are welcome to do so. Customiztion we will see in next section of this tutorial.
 
 
 
@@ -60,9 +165,7 @@ The two basic elements that form a chat application are
 Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messges are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be aceived easily let us see how it is done.
 
 
-
-Follow the steps below to customize your Mesibo Application UI.
-
+# Customization of MesiboUi
 
 ## PreRequisites
 - Check out our fully featured WhatsApp clone using Mesibo [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/)
@@ -78,7 +181,8 @@ implementation 'com.mesibo.api:mesibo:1.0.87'
 
 }
 ```
-Sync Gradle and you are all set 
+
+###Follow the steps below to customize your Mesibo Application UI.
 
 ## Creating UI elements
 

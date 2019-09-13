@@ -385,7 +385,7 @@ Intent i = new Intent(this,MessagingActivity.class);
          startActivity(i);
 ```        
 
-This is just one sample of the customization, Mesibo provides you opption to customize almost everything based on your requirement. If you face any issue or if you have any query please write to us.
+This is just one sample of the customization, Mesibo provides you option to customize almost everything based on your requirement. If you face any issue or if you have any query please write to us.
 
 
 

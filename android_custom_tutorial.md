@@ -153,16 +153,7 @@ Mesibo has all modes required by user to minimize the effort of cutomizing and d
 
 
 
-The two basic elements that form a chat application are
 
-- Incoming chat view
-	Incoming chat view is a view that you see when you recieve a message. By default, this view has everthing from displaying received messages to displaying files and file types. Agian, if you want to customize as per your theme and requirement you are open to do so.
-	
-- Outgoing chat view
-	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content .For example, based on your message status this view can be used to display  status "ticks" - single tick, double tick, blue tick . You can customize outgoing view as per you requirment.
-	
-	
-Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messges are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be aceived easily let us see how it is done.
 
 
 # Customization of MesiboUi
@@ -181,6 +172,19 @@ implementation 'com.mesibo.api:mesibo:1.0.87'
 
 }
 ```
+
+
+The two basic elements that form a chat application are
+
+- Incoming chat view
+	Incoming chat view is a view that you see when you recieve a message. By default, this view has everthing from displaying received messages to displaying files and file types. Agian, if you want to customize as per your theme and requirement you are open to do so.
+	
+- Outgoing chat view
+	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content .For example, based on your message status this view can be used to display  status "ticks" - single tick, double tick, blue tick . You can customize outgoing view as per you requirment.
+	
+	
+Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messges are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be aceived easily let us see how it is done.
+
 
 ###Follow the steps below to customize your Mesibo Application UI.
 

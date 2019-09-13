@@ -41,7 +41,10 @@ MesiboJsonView is designed to faciliate you with designing your own UI by just w
 					"width": "m",
 					"height": "w"
 				}
-			}]
+			.
+			.
+			.
+			.
 		}]
 	}
 }

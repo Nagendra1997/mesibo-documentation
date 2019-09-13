@@ -1,5 +1,5 @@
 
-## Customizing MesiboUI
+## Using MesiboUI
 You can customize every element of Mesibo chat. Everything in your application can be built on Mesibo to suit your requirements and branding. This tutorial focuses on customizing the UI in a Mesibo Android Application. You can follow a similar procedure to customize your UI in iOS, React, etc
 
 ## PreRequisites

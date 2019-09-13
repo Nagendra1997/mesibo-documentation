@@ -53,7 +53,7 @@ Sync Gradle and you are all set
 
 In order to have your own custom chat layout, you need to create your own MessagingActivity class and UIFragment class. In this tutorial, we will be calling them `MessagingActivity` and `MessagingUiFragment`.
 
-`MessagingActivity.java` loads `MessagingUIFragment` which has MesiboRecyclerView and Adapter. 
+`MessagingActivity.java` loads `MessagingUIFragment` which has MesiboRecyclerView and Adapter and you start `MessagingActvit
 
 Lets implement them one by one:
 
@@ -273,7 +273,7 @@ IncomingView.mIncomingMessageTV.setText(Html.fromHtml(mesiboMessage.message));
 
 
 ## 2. Creating your Activity 
-This activity loads the custom `MessagingUIFragment` that is created in the previous step.
+This activity loads the custom `MessagingUIFragment` that is created in the previous step. You need to start this activity when you want to load your chat.
 
 For this, we will be creating an XML file called `activity_messaging.xml`
 
@@ -381,9 +381,11 @@ Now if you need to see your custom UI you need to run the `MessagingActivity` fo
 
 ```java
 Intent i = new Intent(this,MessagingActivity.class);
-        i.putExtra("peer",Constants.PHONE);
+        i.putExtra("peer","Your Destination");
          startActivity(i);
 ```        
+
+This is just one sample of the customization, Mesibo provides you opption to customize almost everything based on your requirement. If you face any issue or if you have any query please write to us.
 
 
 

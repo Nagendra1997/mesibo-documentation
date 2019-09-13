@@ -1,10 +1,6 @@
 
 ## Using MesiboUI
-You can customize every element of Mesibo chat. Everything in your application can be built on Mesibo to suit your requirements and branding. This tutorial focuses on customizing the UI in a Mesibo Android Application. You can follow a similar procedure to customize your UI in iOS, React, etc
-
-## PreRequisites
-- Check out our fully featured WhatsApp clone using Mesibo [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/)
-
+Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your own activity and you will be able to see Mesibo chatUI and UserListUI in no time.
 
 ## Mesibo UI Fragments
 
@@ -17,8 +13,40 @@ You can use these fragments in your code as  described below.
 ### User and Message List Fragment:
 `MesiboUserListFragment` displays list of users and groups. One can click on the user/group to open Mesibo chat view. 	`MesibouserListFragment` is  designed in such a way that user has access to all the functions like creating group, viewing all the user list and much more. Even if one wants to create and modify this, Mesibo provides the option to do so.
 
-## Messaging Fragnment
+### Messaging Fragnment
 `MesiboMessagingFragment` renders all the messages for a particular user or a group which you can load in your application as it suits you. 
+
+
+## Loading MesiboUI in your activity:
+
+Follow these simple steps:
+
+1. Create an activity that implements `MesiboMessageListFragment.FragmentListener`
+
+```java
+public class MesiboActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
+
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+	
+	}
+	
+ @Override
+    public boolean Mesibo_onClickUser(String address, long groupid, long forwardid) {
+        return false;
+    }
+
+ @Override
+    public boolean Mesibo_onUserListFilter(Mesibo.MessageParams params) {
+        return false;
+    }
+}
+
+```	
+
+
+
 
 The two basic elements that form a chat application are
 
@@ -35,6 +63,9 @@ Mesibo chat view is a recycler view that contains the incoming chat view and out
 
 Follow the steps below to customize your Mesibo Application UI.
 
+
+## PreRequisites
+- Check out our fully featured WhatsApp clone using Mesibo [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/)
 ## Add dependencies
 
 Open the file build.gradle of your application and add the dependencies needed.

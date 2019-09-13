@@ -16,7 +16,7 @@ curl -fsSL https://raw.githubusercontent.com/mesibo/libmesibo/master/install.sh 
 
 ```
 ### 2. Sqlite 
-Install sqlite and development packages for your platform.  
+Install sqlite and sqlite development packages for your platform. An sqlite database is used by Mesibo,to store data on your device.
 
 #### Debian/Ubuntu
 ```

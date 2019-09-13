@@ -22,7 +22,7 @@ You MUST go through the following prerequisites before you read further.
 
 - Read the [Anatomy of a Mesibo Application](https://mesibo.com) about using the Mesibo API and listener class
 
-- Basic knowledge of writing and runnning Python code
+- Basic knowledge of writing and running Python code
 
 
 ### First Python App

@@ -19,7 +19,7 @@ You can use these fragments in your code as  described below.
 
 ## Loading MesiboUI in your activity:
 
-Create an activity that implements `MesiboMessageListFragment.FragmentListener`
+Create an activity say `YourActivity` that implements `MesiboMessageListFragment.FragmentListener`
 
 ```java
 public class YourActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
@@ -149,12 +149,18 @@ Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` y
 
 
 
-Mesibo has all modes required by user to minimize the effort of cutomizing and development. Even after this if you like to customize your and have your own UI you are welcome to do so. Customiztion we will see in next section of this tutorial.
+Mesibo has all modes required by user to minimize the effort of cutomizing and development. Even after this if you like to customize your and have your own UI you are welcome to do so. Customiztion we will see further in this section.
 
 
+Now, you have a general idea how we load Mesibo fragments from your own created activity. Let's see the how to load  `MessageFragment`.
 
+## Using Mesibo MessagingFragment
 
+MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with these messages. 
 
+As you have seen above how simple is it to load MessageUserList, similarly loading MessagingFragment is also extreamly easy, just load it `YourActivity`.
+
+Inside `Mesibo_onClickUser()` method of your Activity
 
 # Customization of MesiboUi
 

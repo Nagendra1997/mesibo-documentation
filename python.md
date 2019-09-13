@@ -88,6 +88,7 @@ class test_mesiboNotify(MesiboNotify):
         print("with message_parameters")
         print(message_params_dict)
         return 1
+```
 
 That’s it - you are now ready to receive your first real-time message.
 

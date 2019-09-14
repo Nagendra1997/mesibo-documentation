@@ -15,7 +15,7 @@ You can use these fragments in your code as described below.
  
 ### Using MesiboUserListFragment:
  
-Mesibo provides modes that can be passed as argument to the activity ,based on which the required fragment can be loaded. 
+Mesibo provides modes that can be passed as argument to the activity, based on which the required fragment can be loaded. 
 
 The different modes for `MesiboUserListFragment` are -
 

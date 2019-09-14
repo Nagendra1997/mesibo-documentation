@@ -46,7 +46,7 @@ The different modes for `MesiboUserListFragment` are -
 For example,
 
 Load `MesiboUserListFragment` from a activity.
-
+```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
     public static final String TAG="MesiboMainActivity";
     int mMode = 0;
@@ -97,7 +97,7 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
 
 
 }
-
+```
 ### Loading Message List
 
 Message list loads from all the last message received from other users. 

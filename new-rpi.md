@@ -13,6 +13,7 @@ Mesibo on Raspberry Pi is available as a shared library(.so) which allows you to
 
 Mesibo provides a convenience script for installing Mesibo on all the supported platforms.
 ```
+>Warning :
 Always examine scripts downloaded from the internet before running them locally.
 ```
 
@@ -34,7 +35,7 @@ Please note the following points:
 
 ### Install Sqlite 
 
-Install sqlite and sqlite development package for your platform. An sqlite database is used by Mesibo, to store data on your Raspberry Pi device.
+Install sqlite and sqlite development package for your platform or OS installed on your Pi. An sqlite database is used by Mesibo, to store data on your Raspberry Pi device.
 
 #### Debian/Ubuntu
 ```

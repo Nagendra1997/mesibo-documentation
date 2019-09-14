@@ -13,8 +13,7 @@ Mesibo on Raspberry Pi is available as a shared library(.so) which allows you to
 
 Mesibo provides a convenience script for installing Mesibo on all the supported platforms.
 ```
-> Warning :
-Always examine scripts downloaded from the internet before running them locally.
+> **Warning** : Always examine scripts downloaded from the internet before running them locally.
 ```
 
 ```

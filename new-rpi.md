@@ -28,7 +28,7 @@ Please note the following points:
 
 - The scripts attempt to detect your Linux distribution and version and configure your package management system for you.
 
--Convenience script overwrites existing mesibo version with the latest version without any confirmation.
+- Convenience script overwrites existing mesibo version with the latest version without any confirmation.
 
 
 

@@ -15,9 +15,9 @@ You can use these fragments in your code as described below.
  
 ### Using MesiboUserListFragment:
  
-Mesibo provides modes that can be passed as argument of the fragment and based on that the required fragment can be loaded. 
+Mesibo provides modes that can be passed as argument to the activity ,based on which the required fragment can be loaded. 
 
-The different modes are -
+The different modes for `MesiboUserListFragment` are -
 
  - `MesiboUI.USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
  

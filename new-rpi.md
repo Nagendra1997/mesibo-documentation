@@ -6,9 +6,7 @@ Instantly add real-time communication on your embedded devices by using Mesibo o
 Mesibo on Raspberry Pi is available as a shared library(.so) which allows you to use it from any application OR languages of your choice like C, C++, Python, PHP, Matlab etc.
 
 ### OS requirements
-- CentOS / RedHat 7.x or above
-- Debian
-- Ubuntu
+- Raspbian 
 
 ### Install Mesibo using the convenience script
 
@@ -35,7 +33,7 @@ Please note the following points:
 
 ### Install Sqlite 
 
-Install sqlite and sqlite development package . An sqlite database is used by Mesibo, to store data on your device.
+Install sqlite and sqlite development package  . An sqlite database is used by Mesibo, to store data on your device.
 
 ```
 sudo apt-get install sqlite3 libsqlite3-dev

@@ -36,11 +36,9 @@ Please note the following points:
 
 Install sqlite and sqlite development package . An sqlite database is used by Mesibo, to store data on your device.
 
-#### Debian/Ubuntu
 ```
 sudo apt-get install sqlite3 libsqlite3-dev
 ```
-
 
 That’s All!
 You can now begin tinkering with Mesibo on RaspberryPi !

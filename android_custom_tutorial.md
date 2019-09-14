@@ -1,157 +1,74 @@
 
 ## Using MesiboUI
-Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your activity and you will be able to see Mesibo chatUI and UserListUI in no time. MesibiUI is a fragment that can be loaded anywhere. You can load it from anywhere in your app just by loading a fragment in your activity.
+Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consists of fragments that can be loaded in your activity and you will be able to see Mesibo chatUI and UserListUI in no time. 
 
 ## Mesibo UI Fragments
 
 There are primarily two types of UI fragment
- - User and Message List Fragment, which displays all the users and messages 
- - Message Fragment, which renders all the messages for a particular user or a group
+ - `MesiboUserListFragment`, which displays all the users and messages 
+ - `MesiboMessagingFragment`, which renders all the messages for a particular user or a group
 
 You can use these fragments in your code as described below.
 
-### User and Message List Fragment:
-`MesiboUserListFragment` displays a list of users and groups. One can click on the user/group to open Mesibo chat view. 	`MesibouserListFragment` is designed in such a way that the user has access to all the functions like creating group, viewing all the user list and much more. Even if one wants to create and modify this, Mesibo provides the option to do so.
-
-### Messaging Fragment
-`MesiboMessagingFragment` renders all the messages for a particular user or a group which you can load in your application as it suits you. 
-
-
-## Loading MesiboUI in your activity:
-
-Mesibo provides 5 'Modes' that can be passed as argument of the fragment and the desired fragment can be loaded. The modes are -
-
-
- 1. MesiboUI.USERLIST_GROUPSELECTION_MODE;
- 2. MesiboUI.USERLIST_EDIT_GROUP_MODE;
- 3. MesiboUI.USERLIST_FORWARD_MODE;
- 4. MesiboUI.USERLIST_NEWCONTACTS_MODE;
- 5. MesiboUI.USERLIST_MESSAGELIST_MODE;
+## MesiboUserListFragment:
+`MesiboUserListFragment` displays the list of users and the last message of each user sorted by timestamp. For example, when a typical messaging appliaction(say WhatsApp) starts, a user list is displayed along with the last message for each user.
  
- - `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
- - `USERLIST_EDIT_GROUP_MODE` launches editing group UI.
- - `USERLIST_FORWARD_MODE` populates forward UI list of users to whom you can forward your message or file.
- - `USERLIST_NEWCONTACTS_MODE` launches UI to select new contact from user list to start chat. 
- - `USERLIST_MESSAGELIST_MODE` launches a history of all your chats.
+## Using MesiboUserListFragment:
+
+Mesibo provides  `Modes` that can be passed as argument of the fragment and based on that the desired fragment can be loaded. 
+
+The different Modes are -
+
+ - `MesiboUI.USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
  
- Some extra arguments are also there for other actions-
+ - `MesiboUI.USERLIST_EDIT_GROUP_MODE` launches UI for editing diiferent attributes of a group such as - 
+    Group Member List, Group Profile Picture, Group Title or Group Name. 
  
- - `MesiboUI.MESSAGE_ID` - MessageId is the id of the message. You will need this when you load MesiboUI with   					  `USERLIST_FORWARD_MODE`, this loads message forward fragment where a selected message can be forwarded to other contacts in the list. MessageId is the message that has to be forwarded. 
+ - `MesiboUI.USERLIST_FORWARD_MODE` populates a list of users to whom you can forward your message or file. 		
  
- - `MesiboUI.MESSAGE_IDS`- Multiple messages can also be forwarded at a time. `MesiboUI.MESSAGE_IDS` is an array of message Ids that has to forwarded to other users.
+ - `MesiboUI.USERLIST_NEWCONTACTS_MODE` displays Mesibo Contact List - a list of Mesibo Users in that application.
  
- - `MesiboUI.MESSAGE_CONTENT`- Pass the message with these arguments. This contains the message to forward.
+ - `MesiboUI.USERLIST_MESSAGELIST_MODE` displays list of previous messages or chat history.
  
- - `MesiboUI.FORWARD_AND_CLOSE` - Use this argument to forward your message to other users and then close the 							  MesiboForwardFragment after forwarding message is done.
+ Based on these Modes,there are additional arguments that you need to provide such as -
+ 
+ - `MesiboUI.MESSAGE_ID` - To load `MesiboUI.USERLIST_FORWARD_MODE` you need to pass `MesiboUI.MESSAGE_ID`
+    where MESSAGE_ID is the unique ID for each message ,that you need to forward.
+ 
+ - `MesiboUI.MESSAGE_IDS`- Multiple messages can  be forwarded at a single time. To load `MesiboUI.USERLIST_FORWARD_MODE` 
+    you can provide an array `MesiboUI.MESSAGE_IDS`, which contains all the MESSAGE_IDs of the messages to be forwarded.
+ 
+ - `MesiboUI.MESSAGE_CONTENT`- The contents of the message  
+ 
+ - `MesiboUI.FORWARD_AND_CLOSE` - Use this argument to forward your message to other users and then close the 		      	 `MesiboForwardFragment` after forwarding message is done.
 
 
-Let's see above things with an example- 
+For example,
 
-Create an activity say `YourActivity` that implements `MesiboMessageListFragment.FragmentListener`
+Create an activity say `ExampleActivity` that implements `MesiboMessageListFragment.FragmentListener`.
+The required type of fragment is loaded based on the mode which is obtained from intent.
 
-```java
-public class YourActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
-    public static final String TAG="MesiboMainActivity";
-    TextView contactsTitle = null;
-    TextView contactsSubTitle = null;
-    int mMode = 0;
-    long mForwardId = 0;
-    long[] mForwardIds;
-    Bundle mEditGroupBundle = null;
-    boolean mHideHomeBtn = false;
-    boolean mKeepRunning = false;
- @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-	
-	mMode = getIntent().getIntExtra(MesiboUI.MESSAGE_LIST_MODE, MesiboUI.USERLIST_MESSAGELIST_MODE);
-        mForwardId = getIntent().getLongExtra(MesiboUI.MESSAGE_ID, 0);
-        mForwardIds = getIntent().getLongArrayExtra(MesiboUI.MESSAGE_IDS);
-        String forwardMessage = getIntent().getStringExtra(MesiboUI.MESSAGE_CONTENT);
-        boolean forwardAndClose = getIntent().getBooleanExtra(MesiboUI.FORWARD_AND_CLOSE, false);
-      
-        if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
-            mEditGroupBundle = getIntent().getBundleExtra(MesiboUI.BUNDLE);
+For example, if the `Mode` is `MesiboUI.USERLIST_NEWCONTACTS_MODE` and you pass this as an argument to the fragment,
+it will load the list of all available contacts. 
 
-        setContentView(R.layout.activity_messages);
-        mMesiboUIOptions = MesiboUI.getConfig();
+When you start the activity,pass the required type of mode in the `intent`
 
-        if(mMode == MesiboUI.USERLIST_MESSAGELIST_MODE) {
-            contactsSubTitle.setText(mMesiboUIOptions.offlineIndicationTitle);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(mMesiboUIOptions.enableBackButton);
-        }
-
-        if(savedInstanceState == null) {
-
-            UserListFragment userListFragment = new UserListFragment();
-            userListFragment.setListener(this);
-            Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
-            bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
-
-            if(!TextUtils.isEmpty(forwardMessage))
-                bl.putString(MesiboUI.MESSAGE_CONTENT, forwardMessage);
-
-            bl.putLongArray(MesiboUI.MESSAGE_IDS, mForwardIds);
-            if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
-                bl.putBundle(MesiboUI.BUNDLE, mEditGroupBundle);
-
-            bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
-
-            userListFragment.setArguments(bl);
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.userlist_fragment, userListFragment,"null");
-            ft.addToBackStack("userListFragment");
-            ft.commit();
-
-        }
-	
-	}
-	
- @Override
-    public boolean Mesibo_onClickUser(String address, long groupid, long forwardid) {
-        return false;
-    }
-
- @Override
-    public boolean Mesibo_onUserListFilter(Mesibo.MessageParams params) {
-        return false;
-    }
-}
-
-```	
-
-Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` you have passed as arguments to this fragment. As mentioned earlier MesiboUI can be loaded from anywhere in your app, you just need to start `YourActivity` and load the fragment.
-You can start activity as -
+You can start the activity like below -
 
 ```java 
-  public static void launchYourActivity(Context context, long forwardid, int selectionMode, int flag, boolean startInBackground, boolean keepRunning, Bundle bundle, String forwardMessage) {
+
         Intent intent = new Intent(context, YourActivity.class);
         intent.putExtra(MesiboUI.MESSAGE_LIST_MODE, selectionMode)
             .putExtra(MesiboUI.MESSAGE_ID, forwardid)
-        
-        if(!TextUtils.isEmpty(forwardMessage)) {
-            intent.putExtra(MesiboUI.MESSAGE_CONTENT, forwardMessage);
-        }
-
-        if(flag > 0)
-            intent.setFlags(flag);
-
-        if(null != bundle)
-            intent.putExtra(MesiboUI.BUNDLE,bundle);
-        context.startActivity(intent);
-    }
-    
-  ```
+  	
+	startActivity(intent);
+```
 
 
-Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you like to customize your and have your UI you are welcome to do so. Customization we will see further in this section.
+## MesiboMessagingFragment :
+`MesiboMessagingFragment` renders all the messages for a particular user or a group which you can load in your application as it suits you. 
 
-
-Now, you have a general idea of how we load Mesibo fragments from your own created activity. Let's see how to load  `MessageFragment`.
-
-## Using Mesibo MessagingFragment
+### Using Mesibo MessagingFragment
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages. 
 
@@ -183,7 +100,10 @@ Inside `Mesibo_onClickUser()` method of your Activity
   
   Now, you have seen how easy it is to load MesiboUI from anywhere in your app. Mesibo has all required fragments by default but if you need to modify you can see our 'Customization of MesiboUI' tutorial next. 
   
-  
+
+//Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you //like to customize your and have your UI you are welcome to do so. Customization we will see further in this section.
+
+
 
 # Customization of MesiboUi
 

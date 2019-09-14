@@ -154,37 +154,27 @@ This loads fragment to select a group.
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages.
 
-Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle. 
+Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle.
  `MesiboUI.PEER` - User Address(Destination)
  `MesiboUI.GROUP_ID` - Group Address
- 
- Put value of these two parameter in a Bundle and invoke startMesiboMessagingFragment().  
+ Put value of these two parameter in a Bundle.  
 
 ```java
 
- private void startMesiboMessagingFragment(Bundle savedInstanceState) {
-        // However, if we're being restored from a previous state,
-        // then we don't need to do anything and should return or else
-        // we could end up with overlapping fragments.
-        if (findViewById(R.id.fragment_container) == null || savedInstanceState != null) {
-            return;
-        }
+        Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.PEER, "UserAdddress");
+            bl.putLong(MesiboUI.GROUP_ID, "GroupID");
 
         // Create a new Fragment to be placed in the activity layout
-       MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
-
-        // In case this activity was started with special instructions from an
-        // Intent, pass the Intent's extras to the fragment as arguments
-        mFragment.setArguments(getIntent().getExtras());
+        MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
+        mFragment.setArguments(bl);
 
         // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mFragment).commit();
-    }
+   
 
 ```
-
-
 
 
 

@@ -162,8 +162,8 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
 ```java
 
         Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.PEER, "UserAdddress");
-            bl.putLong(MesiboUI.GROUP_ID, "GroupID");
+            bl.putString(MesiboUI.PEER, "UserAdddress");
+            bl.putString(MesiboUI.GROUP_ID, "1234");
 
         // Create a new Fragment to be placed in the activity layout
         MesiboMessagingFragment mFragment = new MesiboMessagingFragment();

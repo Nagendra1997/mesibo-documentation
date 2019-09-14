@@ -34,7 +34,7 @@ Please note the following points:
 
 ### Install Sqlite 
 
-Install sqlite and sqlite development package for your platform. An sqlite database is used by Mesibo, to store data on your device.
+Install sqlite and sqlite development package for your platform. An sqlite database is used by Mesibo, to store data on your Raspberry Pi device.
 
 #### Debian/Ubuntu
 ```

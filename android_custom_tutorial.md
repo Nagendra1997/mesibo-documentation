@@ -48,7 +48,7 @@ For example,
 Load `MesiboUserListFragment` from a activity.
 ```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
-    public static final String TAG="MesiboMainActivity";
+
     int mMode = 0;
     long mForwardId = 0;
     long[] mForwardIds;
@@ -64,8 +64,6 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
     
       // Load MesiboUserListFragment 
         if(savedInstanceState == null) {
-
-	
 	// Pass the mMode and desired fragment can be loaded.
             UserListFragment userListFragment = new UserListFragment();
             userListFragment.setListener(this);
@@ -81,21 +79,6 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
 
         }
     }
-
-    
-    @Override
-    public boolean Mesibo_onClickUser(String address, long groupid, long forwardid) {
-        return false;
-    }
-
-    @Override
-    public boolean Mesibo_onUserListFilter(Mesibo.MessageParams params) {
-        return false;
-    }
-
-    
-
-
 }
 ```
 ### Loading Message List

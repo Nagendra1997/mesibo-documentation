@@ -45,24 +45,38 @@ The different modes for `MesiboUserListFragment` are -
 
 For example,
 
-Create an activity say `ExampleActivity` that implements `MesiboMessageListFragment.FragmentListener`.
+Load `MesiboUserListFragment` from activity.
 The required type of fragment is loaded based on the mode which is obtained from intent.
+
+
+
+```java
+
+            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
+            userListFragment.setListener(this);
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
+            bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
+
+            if(!TextUtils.isEmpty(forwardMessage))
+                bl.putString(MesiboUI.MESSAGE_CONTENT, forwardMessage);
+
+            bl.putLongArray(MesiboUI.MESSAGE_IDS, mForwardIds);
+            if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
+                bl.putBundle(MesiboUI.BUNDLE, mEditGroupBundle);
+
+            bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
+
+            userListFragment.setArguments(bl);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.userlist_fragment, userListFragment,"null");
+            ft.addToBackStack("userListFragment");
+            ft.commit();
+```
 
 For example, if the `Mode` is `MesiboUI.USERLIST_NEWCONTACTS_MODE` and you pass this as an argument to the fragment,
 it will load the list of all available contacts. 
-
-When you start the activity,pass the required type of mode in the `intent`
-
-You can start the activity like below -
-
-```java 
-
-        Intent intent = new Intent(context, YourActivity.class);
-        intent.putExtra(MesiboUI.MESSAGE_LIST_MODE, selectionMode)
-            .putExtra(MesiboUI.MESSAGE_ID, forwardid)
-  	
-	startActivity(intent);
-```
 
 
 ## MesiboMessagingFragment :

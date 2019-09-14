@@ -1,6 +1,6 @@
 
 ## Using MesiboUI
-Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your own activity and you will be able to see Mesibo chatUI and UserListUI in no time.
+Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your own activity and you will be able to see Mesibo chatUI and UserListUI in no time. MesibiUI is basically a fragment that can be loaded anywhere. You can load it from anywhere in your app just by loading  fragment in your activity.
 
 ## Mesibo UI Fragments
 
@@ -18,6 +18,34 @@ You can use these fragments in your code as  described below.
 
 
 ## Loading MesiboUI in your activity:
+
+Mesibo provides 5 'Modes' that can be passes as argument of the fragment and desired fragment can be loaded. The modes are -
+
+
+ 1. MesiboUI.USERLIST_GROUPSELECTION_MODE;
+ 2. MesiboUI.USERLIST_EDIT_GROUP_MODE;
+ 3. MesiboUI.USERLIST_FORWARD_MODE;
+ 4. MesiboUI.USERLIST_NEWCONTACTS_MODE;
+ 5. MesiboUI.USERLIST_MESSAGELIST_MODE;
+ 
+ - `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating group. 
+ - `USERLIST_EDIT_GROUP_MODE` launches editing group UI.
+ - `USERLIST_FORWARD_MODE` populates  forward UI basically list of users whome you can forward your message or file.
+ - `USERLIST_NEWCONTACTS_MODE` launches UI to select nes contact from user list to start chat. 
+ - `USERLIST_MESSAGELIST_MODE` launches history of all your chats.
+ 
+ Some extra arguments are also there for other actions-
+ 
+ - `MesiboUI.MESSAGE_ID` - MessageId is the id of the message. You will need this when you load MesiboUI with   					  `USERLIST_FORWARD_MODE`, this loads message forward fragment where a selected message can be forwarded 			    to other contacts in the list. MessageId is the is of the message that has to be forwarded. 
+ 
+ - `MesiboUI.MESSAGE_IDS`- Multiple messages can also be forwarded at a time. `MesiboUI.MESSAGE_IDS` is an array of message Ids 			   that has to forwarded to other users.
+ 
+ - `MesiboUI.MESSAGE_CONTENT`- Pass the message with this arguments. This contains the message to forward.
+ 
+ - `MesiboUI.FORWARD_AND_CLOSE` - Use this argument to forward your message to other users and then close the 							  MesiboForwardFragment after forwarding message is done.
+
+
+Let's see above things with an example- 
 
 Create an activity say `YourActivity` that implements `MesiboMessageListFragment.FragmentListener`
 
@@ -41,30 +69,12 @@ public class YourActivity extends AppCompatActivity implements MesiboMessageList
         mForwardIds = getIntent().getLongArrayExtra(MesiboUI.MESSAGE_IDS);
         String forwardMessage = getIntent().getStringExtra(MesiboUI.MESSAGE_CONTENT);
         boolean forwardAndClose = getIntent().getBooleanExtra(MesiboUI.FORWARD_AND_CLOSE, false);
-        mKeepRunning = getIntent().getBooleanExtra(MesiboUI.KEEP_RUNNING, false);
-        if(getIntent().getBooleanExtra(MesiboUI.START_IN_BACKGROUND, false)) {
-            moveTaskToBack(true);
-        }
-
+      
         if(mMode == MesiboUI.USERLIST_EDIT_GROUP_MODE)
             mEditGroupBundle = getIntent().getBundleExtra(MesiboUI.BUNDLE);
 
         setContentView(R.layout.activity_messages);
         mMesiboUIOptions = MesiboUI.getConfig();
-
-        Toolbar toolbar = findViewById(R.id.message_toolbar);
-        contactsSubTitle = findViewById(R.id.contacts_subtitle);
-        contactsTitle =  findViewById(R.id.contacts_title);
-        Utils.setTextViewColor(contactsTitle, TOOLBAR_TEXT_COLOR);
-        Utils.setTextViewColor(contactsSubTitle, TOOLBAR_TEXT_COLOR);
-        Utils.setActivityStyle(this, toolbar);
-
-        setSupportActionBar(toolbar);
-        Utils.setActivityStyle(this, toolbar);
-        final ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        //ab.setTitle("Contacts");
-        contactsTitle.setText(mMesiboUIOptions.userListTitle);
 
         if(mMode == MesiboUI.USERLIST_MESSAGELIST_MODE) {
             contactsSubTitle.setText(mMesiboUIOptions.offlineIndicationTitle);
@@ -112,8 +122,8 @@ public class YourActivity extends AppCompatActivity implements MesiboMessageList
 
 ```	
 
-Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` you have passed through intent. Let us see the modes that we have here.
-
+Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` you have passed as arguments to this fragment. As mentioned earlier MesiboUI can be loaded from anywhere in your app, you just need to start `YourActivity` and load the fragment.
+You can start activity as -
 
 ```java 
   public static void launchYourActivity(Context context, long forwardid, int selectionMode, int flag, boolean startInBackground, boolean keepRunning, Bundle bundle, String forwardMessage) {
@@ -136,17 +146,6 @@ Now, starting `YourActicivity` will load MesiboUI fragments as per the `Modes` y
     }
     
   ```
-
-- selectionMode
-
- 1. USERLIST_GROUPSELECTION_MODE = 3;
- 2. USERLIST_EDIT_GROUP_MODE = 4;
- 3. USERLIST_FORWARD_MODE = 2;
- 4. USERLIST_NEWCONTACTS_MODE = 1;
- 5. USERLIST_MESSAGELIST_MODE = 0;
- 
- You can pass any of the above modes in intent to load MesiboUi as per your requirement.  `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating group. `USERLIST_EDIT_GROUP_MODE` launches editing group UI. `USERLIST_FORWARD_MODE` populates  forward UI basically list of users whome you can forward your message or file. `USERLIST_NEWCONTACTS_MODE` launches UI to select nes contact from user list to start chat. `USERLIST_MESSAGELIST_MODE` launches history of all your chats 
-
 
 
 Mesibo has all modes required by user to minimize the effort of cutomizing and development. Even after this if you like to customize your and have your own UI you are welcome to do so. Customiztion we will see further in this section.

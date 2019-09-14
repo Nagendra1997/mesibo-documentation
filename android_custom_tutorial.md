@@ -130,9 +130,7 @@ You can start activity as -
         Intent intent = new Intent(context, YourActivity.class);
         intent.putExtra(MesiboUI.MESSAGE_LIST_MODE, selectionMode)
             .putExtra(MesiboUI.MESSAGE_ID, forwardid)
-            .putExtra(MesiboUI.START_IN_BACKGROUND, startInBackground)
-            .putExtra(MesiboUI.KEEP_RUNNING, keepRunning);
-
+        
         if(!TextUtils.isEmpty(forwardMessage)) {
             intent.putExtra(MesiboUI.MESSAGE_CONTENT, forwardMessage);
         }
@@ -155,11 +153,37 @@ Now, you have a general idea how we load Mesibo fragments from your own created 
 
 ## Using Mesibo MessagingFragment
 
-MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with these messages. 
+MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages. 
 
-As you have seen above how simple is it to load MessageUserList, similarly loading MessagingFragment is also extreamly easy, just load it `YourActivity`.
+As you have seen above how simple is it to load MessageUserList, similarly loading MessagingFragment is also extreamly easy, `YourActivity` implements `MesiboMessageListFragment.FragmentListener` that gives you 2 methods - 
+
+- `Mesibo_onClickUser()` - This method handles users click on the userlist. When you click on any of the User from user list, this method is invoked and it returns false that means it returns dafault chat view to you. 
+Now, Using MesiboMessaging Frgamnet, You need to start mesibo `MessagingActivity` and pass your argument. You need to return true in this case to load Mesibo Messaging fragment.
+
 
 Inside `Mesibo_onClickUser()` method of your Activity
+
+```java
+ @Override
+    public boolean Mesibo_onClickUser(String address, long groupid, long forwardid) {
+    
+     Intent intent = new Intent(context, MessagingActivity.class);
+        intent.putExtra(MesiboUI.PEER, userAddress)
+            .putExtra(MesiboUI.GROUP_ID, groupId)
+           startActivity(intent);
+    
+        return true;
+    }
+    
+  ```
+  
+  Here MesagingActivity is default activity of Mesibo to Load chat view, you need to pass UserAddress(Destination) as value of `MesiboUI.PEER` and if its group you need to pass group id as value of `MesiboUI.GROUP_ID`.
+  
+  MessagingActivity gets the peer and group value from intent and passes it as argument to load MesiboMessaging fragment. When you start MessagingActivity you will see complete chat view for the user you have passed in MesiboUI.PEER. You can make audi and video call , send files, send locatiion, emojis and many more exciting things.
+  
+  Now, you have seen how easy it is to load MesiboUI from anywhere in your app. Mesibo has all required fragments by default but if you need to modify you can see our 'Customization of MesiboUI' tutorial next. 
+  
+  
 
 # Customization of MesiboUi
 

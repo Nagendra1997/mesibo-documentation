@@ -179,7 +179,7 @@ Inside `Mesibo_onClickUser()` method of your Activity
   
   Here MesagingActivity is default activity of Mesibo to Load chat view, you need to pass UserAddress(Destination) as value of `MesiboUI.PEER` and if its group you need to pass group id as value of `MesiboUI.GROUP_ID`.
   
-  MessagingActivity gets the peer and group value from intent and passes it as argument to load MesiboMessaging fragment. When you start MessagingActivity you will see complete chat view for the user you have passed in MesiboUI.PEER. You can make audi and video call , send files, send locatiion, emojis and many more exciting things.
+  MessagingActivity gets the peer and group value from intent and passes it as argument to load MesiboMessaging fragment. When you start MessagingActivity you will see complete chat view for the user you have passed in MesiboUI.PEER. You can make audio and video call , send files, send locatiion, emojis and many more exciting things.
   
   Now, you have seen how easy it is to load MesiboUI from anywhere in your app. Mesibo has all required fragments by default but if you need to modify you can see our 'Customization of MesiboUI' tutorial next. 
   

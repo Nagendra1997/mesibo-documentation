@@ -1,6 +1,6 @@
 
 ## Using MesiboUI
-Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consists of fragments that can be loaded in your activity and you will be able to see Mesibo chatUI and UserListUI in no time. 
+Mesibo offers ready to use UI modules which be used to build your application . Mesibo UI modules are completely customizable. 
 
 ## Mesibo UI Fragments
 
@@ -13,11 +13,11 @@ You can use these fragments in your code as described below.
 ## MesiboUserListFragment:
 `MesiboUserListFragment` displays the list of users and the last message of each user sorted by timestamp. For example, when a typical messaging appliaction(say WhatsApp) starts, a user list is displayed along with the last message for each user.
  
-## Using MesiboUserListFragment:
+### Using MesiboUserListFragment:
+ 
+Mesibo provides modes that can be passed as argument of the fragment and based on that the required fragment can be loaded. 
 
-Mesibo provides  `Modes` that can be passed as argument of the fragment and based on that the desired fragment can be loaded. 
-
-The different Modes are -
+The different modes are -
 
  - `MesiboUI.USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
  

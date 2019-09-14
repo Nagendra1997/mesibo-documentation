@@ -65,7 +65,7 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
       // Load MesiboUserListFragment 
         if(savedInstanceState == null) {
 	// Pass the mMode and desired fragment can be loaded.
-            UserListFragment userListFragment = new UserListFragment();
+            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
             userListFragment.setListener(this);
             Bundle bl = new Bundle();
             bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);

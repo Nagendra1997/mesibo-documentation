@@ -187,20 +187,7 @@ Inside `Mesibo_onClickUser()` method of your Activity
 
 # Customization of MesiboUi
 
-## PreRequisites
-- Check out our fully featured WhatsApp clone using Mesibo [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/)
-## Add dependencies
-
-Open the file build.gradle of your application and add the dependencies needed.
-
-```java
-dependencies {
-...
-implementation 'com.android.support:recyclerview-v7:25.1.0'
-implementation 'com.mesibo.api:mesibo:1.0.87'
-
-}
-```
+Mesibo allow you to customize your chat views as per your app theme and requirement. Since, MesiboMessaging is a fragment it can be loaded anywhere and its even easy to modify.  
 
 
 The two basic elements that form a chat application are

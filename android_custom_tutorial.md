@@ -47,15 +47,14 @@ For example,
 
 Load `MesiboUserListFragment` from activity.
 
-
+### Loading MesiboUI.MESSAGE_LIST_MODE
 ```java
-
             MesiboUserListFragment userListFragment = new MesiboUserListFragment();
             userListFragment.setListener(this);
             Bundle bl = new Bundle();
             bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
             bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
-
+	    
             if(!TextUtils.isEmpty(forwardMessage))
                 bl.putString(MesiboUI.MESSAGE_CONTENT, forwardMessage);
 
@@ -72,6 +71,45 @@ Load `MesiboUserListFragment` from activity.
             ft.addToBackStack("userListFragment");
             ft.commit();
 ```
+
+### Loading MesiboUI.USERLIST_NEWCONTACTS_MODE
+```java
+            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
+            userListFragment.setListener(this);
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.USERLIST_NEWCONTACTS_MODE, mMode);
+            userListFragment.setArguments(bl);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.userlist_fragment, userListFragment,"null");
+            ft.addToBackStack("userListFragment");
+            ft.commit();
+```
+### Loading MesiboUI.USERLIST_FORWARD_MODE
+```java
+            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
+            userListFragment.setListener(this);
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.USERLIST_FORWARD_MODE, mMode);
+            bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
+	    
+            if(!TextUtils.isEmpty(forwardMessage))
+                bl.putString(MesiboUI.MESSAGE_CONTENT, forwardMessage);
+
+            bl.putLongArray(MesiboUI.MESSAGE_IDS, mForwardIds);
+ 
+            bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
+
+            userListFragment.setArguments(bl);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.userlist_fragment, userListFragment,"null");
+            ft.addToBackStack("userListFragment");
+            ft.commit();
+```
+### Loading MesiboUI.USERLIST_EDIT_GROUP_MODE
+
+### Loading MesiboUI.USERLIST_GROUPSELECTION_MODE
 
 For example, if the `Mode` is `MesiboUI.USERLIST_NEWCONTACTS_MODE` and you pass this as an argument to the fragment,
 it will load the list of all available contacts. 

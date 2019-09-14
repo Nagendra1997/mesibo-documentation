@@ -45,12 +45,67 @@ The different modes for `MesiboUserListFragment` are -
 
 For example,
 
-Load `MesiboUserListFragment` from activity.
+Load `MesiboUserListFragment` from a activity.
 
-### Loading MesiboUI.MESSAGE_LIST_MODE
-```java
-            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
+public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
+    public static final String TAG="MesiboMainActivity";
+    int mMode = 0;
+    long mForwardId = 0;
+    long[] mForwardIds;
+    Bundle mEditGroupBundle = null;
+ 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+	setContentView(R.layout.activity_messages);
+	
+	//Get the values of mMode,mForwardID from getIntent()
+        
+    
+      // Load MesiboUserListFragment 
+        if(savedInstanceState == null) {
+
+	
+	// Pass the mMode and desired fragment can be loaded.
+            UserListFragment userListFragment = new UserListFragment();
             userListFragment.setListener(this);
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
+            bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
+            userListFragment.setArguments(bl);
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.userlist_fragment, userListFragment,"null");
+            ft.addToBackStack("userListFragment");
+            ft.commit();
+
+        }
+    }
+
+    
+    @Override
+    public boolean Mesibo_onClickUser(String address, long groupid, long forwardid) {
+        return false;
+    }
+
+    @Override
+    public boolean Mesibo_onUserListFilter(Mesibo.MessageParams params) {
+        return false;
+    }
+
+    
+
+
+}
+
+### Loading Message List
+
+Message list loads from all the last message received from other users. 
+
+```java
+        
+	// pass MesiboUI.MESSAGE_LIST_MODE as mode 
+	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
             bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
@@ -65,30 +120,27 @@ Load `MesiboUserListFragment` from activity.
             bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
 
             userListFragment.setArguments(bl);
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.userlist_fragment, userListFragment,"null");
-            ft.addToBackStack("userListFragment");
-            ft.commit();
+            
 ```
 
-### Loading MesiboUI.USERLIST_NEWCONTACTS_MODE
+### Loading Contacts list
+
+This loads the list of all contacts. You can start new chat by selecting user in the list.
+
 ```java
-            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
-            userListFragment.setListener(this);
+	// pass MesiboUI.USERLIST_NEWCONTACTS_MODE as mode 	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUI.USERLIST_NEWCONTACTS_MODE, mMode);
             userListFragment.setArguments(bl);
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.userlist_fragment, userListFragment,"null");
-            ft.addToBackStack("userListFragment");
-            ft.commit();
+           
 ```
-### Loading MesiboUI.USERLIST_FORWARD_MODE
+### Loading Forward List
+
+Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 
+Multiple message can also be forwarded at a time by  putting all the message Ids in an array and pass it as extra argument `MesiboUI.MESSAGE_IDS`. There is one more extra argument `MesiboUI.FORWARD_AND_CLOSE`, you can pass this to close the MesiboUserListFragment soon after the message forwarding is done
+
 ```java
-            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
-            userListFragment.setListener(this);
+           // pass MesiboUI.USERLIST_FORWARD_MODE as mode 	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUI.USERLIST_FORWARD_MODE, mMode);
             bl.putLong(MesiboUI.MESSAGE_ID, mForwardId);
@@ -101,18 +153,34 @@ Load `MesiboUserListFragment` from activity.
             bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, forwardAndClose);
 
             userListFragment.setArguments(bl);
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.userlist_fragment, userListFragment,"null");
-            ft.addToBackStack("userListFragment");
-            ft.commit();
+            
 ```
-### Loading MesiboUI.USERLIST_EDIT_GROUP_MODE
+### Loading Editing Group 
+This loads fragment to edit the group. Members, group name etc can be edited from here
+
+```java
+           // pass MesiboUI.USERLIST_EDIT_GROUP_MODE as mode 	
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.USERLIST_EDIT_GROUP_MODE, mMode);
+
+            userListFragment.setArguments(bl);
+            
+```
 
 ### Loading MesiboUI.USERLIST_GROUPSELECTION_MODE
 
-For example, if the `Mode` is `MesiboUI.USERLIST_NEWCONTACTS_MODE` and you pass this as an argument to the fragment,
-it will load the list of all available contacts. 
+This loads fragment to select a group.
+
+```java
+           // pass MesiboUI.USERLIST_GROUPSELECTION_MODE as mode 	
+            Bundle bl = new Bundle();
+            bl.putInt(MesiboUI.USERLIST_GROUPSELECTION_MODE, mMode);
+
+            userListFragment.setArguments(bl);
+            
+```
+
+
 
 
 ## MesiboMessagingFragment :

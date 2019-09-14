@@ -184,11 +184,13 @@ Load Messaging Fragment from your activity by passing `MesiboUI.PEER` or `Mesibo
 
 ```
 
-//Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you //like to customize your and have your UI you are welcome to do so. Customization we will see further in this section.
 
 
 
-# Customization of MesiboMessagingFragment - own chat view
+
+Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you like to customize your and have your UI you are welcome to do so. Customization we will see next in this section.
+
+## Customization of MesiboMessagingFragment - own chat view
 
 Mesibo allows you to customize your chat views as per your app theme and requirement. Since MesiboMessaging is a fragment it can be loaded anywhere and it is even easy to modify.  
 

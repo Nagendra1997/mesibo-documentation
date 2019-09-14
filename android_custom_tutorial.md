@@ -46,8 +46,6 @@ The different modes for `MesiboUserListFragment` are -
 For example,
 
 Load `MesiboUserListFragment` from activity.
-The required type of fragment is loaded based on the mode which is obtained from intent.
-
 
 
 ```java

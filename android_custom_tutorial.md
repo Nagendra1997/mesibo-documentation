@@ -154,7 +154,7 @@ This loads fragment to select a group.
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages.
 
-Load Messaging Fragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle. 
+Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle. 
  `MesiboUI.PEER` - User Address(Destination)
  `MesiboUI.GROUP_ID` - Group Address
  

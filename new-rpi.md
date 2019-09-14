@@ -1,6 +1,7 @@
 
 ## Instructions for installing Mesibo on Raspberry Pi
 
+Instantly add real-time communication on your embedded devices by using Mesibo on Raspberry Pi device.
 
 Mesibo on Raspberry Pi is available as a shared library(.so) which allows you to use it from any application OR languages of your choice like C, C++, Python, PHP, Matlab etc.
 

@@ -1,25 +1,25 @@
 
 ## Using MesiboUI
-Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your own activity and you will be able to see Mesibo chatUI and UserListUI in no time. MesibiUI is basically a fragment that can be loaded anywhere. You can load it from anywhere in your app just by loading  fragment in your activity.
+Mesibo offers you ready to use UI modules which you can use it in your app. Mesibo UI modules are completely customizable. MesiboUI consist fragment that can be loaded in your activity and you will be able to see Mesibo chatUI and UserListUI in no time. MesibiUI is a fragment that can be loaded anywhere. You can load it from anywhere in your app just by loading a fragment in your activity.
 
 ## Mesibo UI Fragments
 
-There are primarily two types of UI fragement
+There are primarily two types of UI fragment
  - User and Message List Fragment, which displays all the users and messages 
  - Message Fragment, which renders all the messages for a particular user or a group
 
-You can use these fragments in your code as  described below.
+You can use these fragments in your code as described below.
 
 ### User and Message List Fragment:
-`MesiboUserListFragment` displays list of users and groups. One can click on the user/group to open Mesibo chat view. 	`MesibouserListFragment` is  designed in such a way that user has access to all the functions like creating group, viewing all the user list and much more. Even if one wants to create and modify this, Mesibo provides the option to do so.
+`MesiboUserListFragment` displays a list of users and groups. One can click on the user/group to open Mesibo chat view. 	`MesibouserListFragment` is designed in such a way that the user has access to all the functions like creating group, viewing all the user list and much more. Even if one wants to create and modify this, Mesibo provides the option to do so.
 
-### Messaging Fragnment
+### Messaging Fragment
 `MesiboMessagingFragment` renders all the messages for a particular user or a group which you can load in your application as it suits you. 
 
 
 ## Loading MesiboUI in your activity:
 
-Mesibo provides 5 'Modes' that can be passes as argument of the fragment and desired fragment can be loaded. The modes are -
+Mesibo provides 5 'Modes' that can be passed as argument of the fragment and the desired fragment can be loaded. The modes are -
 
 
  1. MesiboUI.USERLIST_GROUPSELECTION_MODE;
@@ -28,19 +28,19 @@ Mesibo provides 5 'Modes' that can be passes as argument of the fragment and des
  4. MesiboUI.USERLIST_NEWCONTACTS_MODE;
  5. MesiboUI.USERLIST_MESSAGELIST_MODE;
  
- - `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating group. 
+ - `USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
  - `USERLIST_EDIT_GROUP_MODE` launches editing group UI.
- - `USERLIST_FORWARD_MODE` populates  forward UI basically list of users whome you can forward your message or file.
- - `USERLIST_NEWCONTACTS_MODE` launches UI to select nes contact from user list to start chat. 
- - `USERLIST_MESSAGELIST_MODE` launches history of all your chats.
+ - `USERLIST_FORWARD_MODE` populates forward UI list of users to whom you can forward your message or file.
+ - `USERLIST_NEWCONTACTS_MODE` launches UI to select new contact from user list to start chat. 
+ - `USERLIST_MESSAGELIST_MODE` launches a history of all your chats.
  
  Some extra arguments are also there for other actions-
  
- - `MesiboUI.MESSAGE_ID` - MessageId is the id of the message. You will need this when you load MesiboUI with   					  `USERLIST_FORWARD_MODE`, this loads message forward fragment where a selected message can be forwarded 			    to other contacts in the list. MessageId is the is of the message that has to be forwarded. 
+ - `MesiboUI.MESSAGE_ID` - MessageId is the id of the message. You will need this when you load MesiboUI with   					  `USERLIST_FORWARD_MODE`, this loads message forward fragment where a selected message can be forwarded to other contacts in the list. MessageId is the message that has to be forwarded. 
  
- - `MesiboUI.MESSAGE_IDS`- Multiple messages can also be forwarded at a time. `MesiboUI.MESSAGE_IDS` is an array of message Ids 			   that has to forwarded to other users.
+ - `MesiboUI.MESSAGE_IDS`- Multiple messages can also be forwarded at a time. `MesiboUI.MESSAGE_IDS` is an array of message Ids that has to forwarded to other users.
  
- - `MesiboUI.MESSAGE_CONTENT`- Pass the message with this arguments. This contains the message to forward.
+ - `MesiboUI.MESSAGE_CONTENT`- Pass the message with these arguments. This contains the message to forward.
  
  - `MesiboUI.FORWARD_AND_CLOSE` - Use this argument to forward your message to other users and then close the 							  MesiboForwardFragment after forwarding message is done.
 
@@ -146,18 +146,18 @@ You can start activity as -
   ```
 
 
-Mesibo has all modes required by user to minimize the effort of cutomizing and development. Even after this if you like to customize your and have your own UI you are welcome to do so. Customiztion we will see further in this section.
+Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you like to customize your and have your UI you are welcome to do so. Customization we will see further in this section.
 
 
-Now, you have a general idea how we load Mesibo fragments from your own created activity. Let's see the how to load  `MessageFragment`.
+Now, you have a general idea of how we load Mesibo fragments from your own created activity. Let's see how to load  `MessageFragment`.
 
 ## Using Mesibo MessagingFragment
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages. 
 
-As you have seen above how simple is it to load MessageUserList, similarly loading MessagingFragment is also extreamly easy, `YourActivity` implements `MesiboMessageListFragment.FragmentListener` that gives you 2 methods - 
+As you have seen above how simple is it to load MessageUserList, similarly loading MessagingFragment is also extremely easy, `YourActivity` implements `MesiboMessageListFragment.FragmentListener` that gives you 2 methods - 
 
-- `Mesibo_onClickUser()` - This method handles users click on the userlist. When you click on any of the User from user list, this method is invoked and it returns false that means it returns dafault chat view to you. 
+- `Mesibo_onClickUser()` - This method handles users click on the user list. When you click on any of the User from user list, this method is invoked and it returns false which means it returns default chat view to you. 
 Now, Using MesiboMessaging Frgamnet, You need to start mesibo `MessagingActivity` and pass your argument. You need to return true in this case to load Mesibo Messaging fragment.
 
 
@@ -177,9 +177,9 @@ Inside `Mesibo_onClickUser()` method of your Activity
     
   ```
   
-  Here MesagingActivity is default activity of Mesibo to Load chat view, you need to pass UserAddress(Destination) as value of `MesiboUI.PEER` and if its group you need to pass group id as value of `MesiboUI.GROUP_ID`.
+  Here MesagingActivity is the default activity of Mesibo to Load chat view, you need to pass UserAddress(Destination) as value of `MesiboUI.PEER` and if its group you need to pass group id as value of `MesiboUI.GROUP_ID`.
   
-  MessagingActivity gets the peer and group value from intent and passes it as argument to load MesiboMessaging fragment. When you start MessagingActivity you will see complete chat view for the user you have passed in MesiboUI.PEER. You can make audio and video call , send files, send locatiion, emojis and many more exciting things.
+  MessagingActivity gets the peer and group value from intent and passes it as an argument to load MesiboMessaging fragment. When you start MessagingActivity you will see complete chat view for the user you have passed in MesiboUI.PEER. You can make audio and video calls, send files, send location, emojis and many more exciting things.
   
   Now, you have seen how easy it is to load MesiboUI from anywhere in your app. Mesibo has all required fragments by default but if you need to modify you can see our 'Customization of MesiboUI' tutorial next. 
   
@@ -187,30 +187,30 @@ Inside `Mesibo_onClickUser()` method of your Activity
 
 # Customization of MesiboUi
 
-Mesibo allow you to customize your chat views as per your app theme and requirement. Since, MesiboMessaging is a fragment it can be loaded anywhere and its even easy to modify.  
+Mesibo allows you to customize your chat views as per your app theme and requirement. Since MesiboMessaging is a fragment it can be loaded anywhere and it is even easy to modify.  
 
 
 The two basic elements that form a chat application are
 
 - Incoming chat view
-	Incoming chat view is a view that you see when you recieve a message. By default, this view has everthing from displaying received messages to displaying files and file types. Agian, if you want to customize as per your theme and requirement you are open to do so.
+	Incoming chat view is a view that you see when you receive a message. By default, this view has everything from displaying received messages to displaying files and file types. Again, if you want to customize as per your theme and requirement you are open to do so.
 	
 - Outgoing chat view
-	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content .For example, based on your message status this view can be used to display  status "ticks" - single tick, double tick, blue tick . You can customize outgoing view as per you requirment.
+	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content. For example, based on your message status this view can be used to display status "ticks" - single tick, double tick, blue tick. You can customize an outgoing view as per your requirement.
 	
 	
-Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messges are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be aceived easily let us see how it is done.
+Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messages are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on the history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be achieved easily let us see how it is done.
 
 
 ###Follow the steps below to customize your Mesibo Application UI.
 
 ## Creating UI elements
 
-In order to have your own custom chat layout, you need to create your own MessagingActivity class and UIFragment class. In this tutorial, we will be calling them `MessagingActivity` and `MessagingUiFragment`.
+To have your custom chat layout, you need to create your own MessagingActivity class and UIFragment class. In this tutorial, we will be calling them `MessagingActivity` and `MessagingUiFragment`.
 
 `MessagingActivity.java` loads `MessagingUIFragment` which has MesiboRecyclerView and Adapter and you start `MessagingActvit
 
-Lets implement them one by one:
+Let us implement them one by one:
 
 ## 1. Create MessagingUIFragment.java
 
@@ -461,7 +461,7 @@ For this, we will be creating an XML file called `activity_messaging.xml`
 ```
 
 
-Create  `MessagingActivity` and get the peer(destination) through intent. Mesibo MesiboMessagingFragment requires the peer value to load the chat UI for that user .This activity is called from the segment where you need to launch your own customized message UI. 
+Create  `MessagingActivity` and get the peer(destination) through intent. Mesibo MesiboMessagingFragment requires the peer value to load the chat UI for that user. This activity is called from the segment where you need to launch your own customized message UI. 
 
 ```java
 
@@ -541,7 +541,6 @@ Intent i = new Intent(this,MessagingActivity.class);
 ```        
 
 This is just one sample of the customization, Mesibo provides you option to customize almost everything based on your requirement. If you face any issue or if you have any query please write to us.
-
 
 
 

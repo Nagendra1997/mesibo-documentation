@@ -12,9 +12,9 @@ Mesibo on Raspberry Pi is available as a shared library(.so) which allows you to
 ### Install Mesibo using the convenience script
 
 Mesibo provides a convenience script for installing Mesibo on all the supported platforms.
-```
+
 > **Warning** : Always examine scripts downloaded from the internet before running them locally.
-```
+
 
 ```
 $ curl -fsSL https://raw.githubusercontent.com/mesibo/libmesibo/master/install.sh | sudo bash -

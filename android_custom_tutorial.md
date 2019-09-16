@@ -134,8 +134,14 @@ MessagingFragment loads chat view when you click on any of the existing chat or 
 Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle.
  `MesiboUI.PEER` - User Address(Destination)
  `MesiboUI.GROUP_ID` - Group Address
- Put value of these two parameter in a Bundle.  
-
+ Put value of these two parameter in a Bundle. 
+ 
+ There are few extra arguments -
+ - `MesiboMessagingFragment.READONLY` - This is a boolean argument to hide and show the reply view. Pass `true` if you want to read only not reply.
+ 
+ - `MesiboMessagingFragment.SHOWMISSEDCALLS` - Pass `true` if you want to display alert of missed calls. 
+ 
+ 
 ```java
 
         MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
@@ -144,6 +150,8 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
         bl.putString(MesiboUI.PEER, "John Player");
         bl.putLong(MesiboUI.GROUP_ID,0);
         bl.putLong(MesiboUI.MESSAGE_ID,0);
+	bl.putBoolean(MesiboMessagingFragment.READONLY,false);
+        bl.putBoolean(MesiboMessagingFragment.SHOWMISSEDCALLS,false);
 
         mFragment.setArguments(bl);
 	

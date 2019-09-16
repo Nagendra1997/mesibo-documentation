@@ -1,8 +1,6 @@
 
-## Using MesiboUI
+## Using MesiboUI components
 Mesibo offers ready to use UI modules which be used to build your application . Mesibo UI modules are completely customizable. 
-
-## Mesibo UI Fragments
 
 There are primarily two types of UI fragment
  - `MesiboUserListFragment`, which displays all the users and messages 
@@ -30,22 +28,17 @@ The different modes for `MesiboUserListFragment` are -
  
  - `MesiboUserListFragment.MODE_MESSAGELIST` displays list of previous messages or chat history.
  
- Based on these Modes,there are additional arguments that you need to provide such as -
- 
- - `MesiboUI.MESSAGE_ID` - To load `esiboUserListFragment.MODE_SELECTCONTACT_FORWARD` you need to pass `MesiboUI.MESSAGE_ID`
-    where MESSAGE_ID is the unique ID for each message ,that you need to forward.
- 
- - `MesiboUI.MESSAGE_IDS`- Multiple messages can  be forwarded at a single time. To load `esiboUserListFragment.MODE_SELECTCONTACT_FORWARD` 
-    you can provide an array `MesiboUI.MESSAGE_IDS`, which contains all the MESSAGE_IDs of the messages to be forwarded.
- 
- - `MesiboUI.MESSAGE_CONTENT`- The contents of the message  
- 
- - `MesiboUI.FORWARD_AND_CLOSE` - Use this argument to forward your message to other users and then close the 		      	 `MesiboForwardFragment` after forwarding message is done.
+
 
 
 For example,
 
-Load `MesiboUserListFragment` from a activity.
+Load list of user list and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
+
+### Loading Message List
+
+Message list loads from all the last message received from other users. 
+
 ```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
 
@@ -53,12 +46,6 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_messages);
-	
-	//Get the values of mMode,mForwardID from getIntent()
-        
-    
-      // Load MesiboUserListFragment 
-        if(savedInstanceState == null) {
 	
 	// Pass the mMode and desired fragment can be loaded.
                 MesiboUserListFragment userListFragment = new MesiboUserListFragment();
@@ -73,20 +60,9 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
                 ft.replace(R.id.userlist_fragment, userListFragment, "null");
                 ft.commit();
 
-        }
+        
     }
 }
-```
-### Loading Message List
-
-Message list loads from all the last message received from other users. 
-
-```java
-        
-            Bundle bl = new Bundle();
-            bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_MESSAGELIST);
-            userListFragment.setArguments(bl);
-            
 ```
 
 
@@ -94,7 +70,7 @@ Message list loads from all the last message received from other users.
 
 ### Loading New Contacts list
 
-This loads the list of all contacts. You can start new chat by selecting user in the list.
+Similar to above example, load the list of all contacts just by changing the type of mode. You can start new chat by selecting user in the list.
 
 ```java	
             Bundle bl = new Bundle();
@@ -108,7 +84,15 @@ This loads the list of all contacts. You can start new chat by selecting user in
 ### Loading Forward List
 
 Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 
-Multiple message can also be forwarded at a time by  putting all the message Ids in an array and pass it as extra argument `MesiboUI.MESSAGE_IDS`. There is one more extra argument `MesiboUI.FORWARD_AND_CLOSE`, you can pass `true` to close the MesiboUserListFragment soon after the message forwarding is done
+Change the type of mode to `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD`.
+
+There are some ectra arguments to load forward list
+
+- `MesiboUI.MESSAGE_ID`- MESSAGE_ID is the unique ID for each message ,that you need to forward.
+- `MesiboUI.MESSAGE_IDS` - Multiple message can also be forwarded at a time by  putting all the message Ids in an array.
+- `MesiboUI.FORWARD_AND_CLOSE` - FORWARD_AND_CLOSE is boolean argument. You can close the forward list sson after your message is forwarded. Pass `true' to forward and close forward list.
+- `MesiboUI.MESSAGE_CONTENT`- The conatins the content of a message.  
+
 
 ```java	
             Bundle bl = new Bundle();

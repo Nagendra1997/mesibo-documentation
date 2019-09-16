@@ -339,7 +339,7 @@ public class IncomingMessgaeViewHolder extends MesiboRecycleViewHolder {
 
 You can find the complete code for your `MessagingUIFragment` below.
 
-### Full MessagingUIFragment() code
+### Full MessagingUIFragment code
 ```java
 public class MessagingUiFragment extends MesiboMessagingFragment implements MesiboRecycleViewHolder.Listener {
 
@@ -470,7 +470,7 @@ private Mesibo.UserProfile mUser=null;
        }
 
        //Getting peer value from intent
-       String peer = args.getString("peer");
+       String peer = args.getString(MesiboUI.PEER);
     
        mUser = Mesibo.getUserProfile(peer);
 
@@ -516,7 +516,7 @@ Now if you need to see your custom UI you need to run the `MessagingActivity` fo
 
 ```java
 Intent i = new Intent(this,MessagingActivity.class);
-        i.putExtra("peer","Your Destination");
+        i.putExtra(MesiboUI.PEER,"Your Destination");
          startActivity(i);
 ```        
 
@@ -527,7 +527,17 @@ This is just one sample of the customization, Mesibo provides you option to cust
 
 ## Mesibo Config
 
-MesiboUI.Config
+`MesiboUI.Config` gives you option to get config variable and change according to your need. Mesibo.Config can also be written in your desired language. 
+
+For example, If you want to change the title of MesiboMessageList, get instance if Mesibo.Config and set your value in its parameter. 
+
+```java
+MesiboUI.Config config = MesiboUI.getConfig();
+        config.messageListTitle = "New Messages";
+	
+```
+
+
 
 
 

@@ -63,7 +63,7 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
 ```
 
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/message_list.png" width="320" height="550">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/message_liist.png" width="320" height="550">
 
 ### Loading New Contacts list
 

@@ -44,7 +44,6 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
         super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_messages);
 	
-	// Pass the mMode and desired fragment can be loaded.
                 MesiboUserListFragment userListFragment = new MesiboUserListFragment();
                 userListFragment.setListener(MessageListActivity.this);
 		

@@ -61,19 +61,17 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
         if(savedInstanceState == null) {
 	
 	// Pass the mMode and desired fragment can be loaded.
-            MesiboUserListFragment userListFragment = new MesiboUserListFragment();
-            userListFragment.setListener(this);
-	    
-            Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
-            bl.putLong(MesiboUI.MESSAGE_ID, 123456);
-            userListFragment.setArguments(bl);
-	    
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.userlist_fragment, userListFragment,"null");
-            ft.addToBackStack("userListFragment");
-            ft.commit();
+                MesiboUserListFragment userListFragment = new MesiboUserListFragment();
+                userListFragment.setListener(MessageListActivity.this);
+		
+                Bundle bl = new Bundle();
+                bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_MESSAGELIST);
+                userListFragment.setArguments(bl);
+		
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.userlist_fragment, userListFragment, "null");
+                ft.commit();
 
         }
     }
@@ -88,8 +86,7 @@ Message list loads from all the last message received from other users.
 	// pass MesiboUI.MESSAGE_LIST_MODE as mode 
 	
             Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.MESSAGE_LIST_MODE, mMode);
-            bl.putLong(MesiboUI.MESSAGE_ID, 123456);
+            bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_MESSAGELIST);
             userListFragment.setArguments(bl);
             
 ```

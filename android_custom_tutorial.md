@@ -34,7 +34,7 @@ The different modes for `MesiboUserListFragment` are -
 For example,
 
 ### Loading Message List
-Load list of user list and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
+Load list of users and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
 
 ```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
@@ -79,10 +79,9 @@ Similar to above example, load the list of all contacts just by changing the typ
 
 ### Loading Forward List
 
-Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 
-Change the type of mode to `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD`.
+Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. It also show recent contacted users. Change the type of mode to `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD`.
 
-There are some ectra arguments to load forward list
+There are some extra arguments to load forward list
 
 - `MesiboUI.MESSAGE_ID`- MESSAGE_ID is the unique ID for each message ,that you need to forward.
 - `MesiboUI.MESSAGE_IDS` - Multiple message can also be forwarded at a time by  putting all the message Ids in an array.

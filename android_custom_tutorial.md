@@ -92,7 +92,7 @@ Message list loads from all the last message received from other users.
 ```
 
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/message_list_mode.png" width="320" height="400">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/message_list.png" width="320" height="720">
 
 ### Loading Contacts list
 

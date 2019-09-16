@@ -94,14 +94,14 @@ Message list loads from all the last message received from other users.
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/message_list.png" width="320" height="550">
 
-### Loading Contacts list
+### Loading New Contacts list
 
 This loads the list of all contacts. You can start new chat by selecting user in the list.
 
 ```java
 	// pass MesiboUI.USERLIST_NEWCONTACTS_MODE as mode 	
             Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.USERLIST_NEWCONTACTS_MODE, mMode);
+            bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT);
             userListFragment.setArguments(bl);
            
 ```
@@ -116,11 +116,9 @@ Multiple message can also be forwarded at a time by  putting all the message Ids
 ```java
            // pass MesiboUI.USERLIST_FORWARD_MODE as mode 	
             Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.USERLIST_FORWARD_MODE, Mode);
-            bl.putLong(MesiboUI.MESSAGE_ID, 123456);
-	    bl.putString(MesiboUI.MESSAGE_CONTENT, "Forwaded Message");
-	    bl.putLongArray(MesiboUI.MESSAGE_IDS, ForwardIds[]);
-	    bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE, true);
+            bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD);
+            bl.putString(MesiboUI.MESSAGE_CONTENT,"This is forward message Test");
+            bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE,false);
 	    userListFragment.setArguments(bl);
             
 ```
@@ -133,7 +131,7 @@ This loads fragment to edit the group. Members, group name etc can be edited fro
 ```java
            // pass MesiboUI.USERLIST_EDIT_GROUP_MODE as mode 	
             Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.USERLIST_EDIT_GROUP_MODE, mMode);
+            bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_EDITGROUP);
 
             userListFragment.setArguments(bl);
             
@@ -146,7 +144,7 @@ This loads fragment to select a group.
 ```java
            // pass MesiboUI.USERLIST_GROUPSELECTION_MODE as mode 	
             Bundle bl = new Bundle();
-            bl.putInt(MesiboUI.USERLIST_GROUPSELECTION_MODE, mMode);
+             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTGROUP);
 
             userListFragment.setArguments(bl);
             
@@ -156,7 +154,7 @@ This loads fragment to select a group.
 ## MesiboMessagingFragment :
 `MesiboMessagingFragment` renders all the messages for a particular user or a group which you can load in your application as it suits you. 
 
-### Using Mesibo MessagingFragment
+### Using MesiboMessagingFragment
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages.
 
@@ -167,18 +165,17 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
 
 ```java
 
-        Bundle bl = new Bundle();
-            bl.putString(MesiboUI.PEER, "UserAdddress");
-            bl.putString(MesiboUI.GROUP_ID, "1234");
-
-        // Create a new Fragment to be placed in the activity layout
         MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
-        mFragment.setArguments(bl);
+        Bundle bl = new Bundle();
+        bl.putString(MesiboUI.PEER, "User");
+        bl.putLong(MesiboUI.GROUP_ID,0);
+        bl.putLong(MesiboUI.MESSAGE_ID,0);
 
-        // Add the fragment to the 'fragment_container' FrameLayout
+        mFragment.setArguments(bl);
+	
+	// Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mFragment).commit();
-   
 
 ```
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/messaging_fragment.png" width="320" height="550">

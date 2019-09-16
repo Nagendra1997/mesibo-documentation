@@ -105,6 +105,8 @@ This loads the list of all contacts. You can start new chat by selecting user in
             userListFragment.setArguments(bl);
            
 ```
+
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/new_contact_mode.png" width="320" height="550">
 ### Loading Forward List
 
 Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 
@@ -121,6 +123,9 @@ Multiple message can also be forwarded at a time by  putting all the message Ids
 	    userListFragment.setArguments(bl);
             
 ```
+
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/forward_mode.png" width="320" height="550">
+
 ### Loading Editing Group 
 This loads fragment to edit the group. Members, group name etc can be edited from here
 
@@ -175,7 +180,7 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
    
 
 ```
-
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/messaging_fragment.png" width="320" height="550">
 
 
 Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you like to customize your and have your UI you are welcome to do so. Customization we will see next in this section.

@@ -1,6 +1,6 @@
 
 ## Using MesiboUI components
-Mesibo offers ready to use UI modules which be used to build your application . Mesibo UI modules are completely customizable. 
+Mesibo offers ready to use UI fragments which be used to build your application . Mesibo UI fragments are completely customizable as per your need.  
 
 There are primarily two types of UI fragment
  - `MesiboUserListFragment`, which displays all the users and messages 
@@ -33,11 +33,8 @@ The different modes for `MesiboUserListFragment` are -
 
 For example,
 
-Load list of user list and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
-
 ### Loading Message List
-
-Message list loads from all the last message received from other users. 
+Load list of user list and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
 
 ```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
@@ -79,7 +76,7 @@ Similar to above example, load the list of all contacts just by changing the typ
            
 ```
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/new_contact_mode.png" width="320" height="550">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/new_contact.png" width="320" height="550">
 
 ### Loading Forward List
 

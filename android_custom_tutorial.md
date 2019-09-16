@@ -529,6 +529,49 @@ This is just one sample of the customization, Mesibo provides you option to cust
 
 `MesiboUI.Config` gives you option to get config variable and change according to your need. Mesibo.Config can also be written in your desired language. 
 
+
+```java
+public static class Config {
+        public Bitmap contactPlaceHolder = null;
+        public Bitmap messagingBackground = null;
+        public boolean useLetterTitleImage = true;
+        public boolean enableVoiceCall = false;
+        public boolean enableVideoCall = false;
+        public boolean enableForward = true;
+        public boolean enableSearch = true;
+        public boolean enableBackButton = false;
+        public String messageListTitle = "Messages";
+        public String userListTitle = "Contacts";
+        public String createGroupTitle = "Create a New Group";
+        public String modifyGroupTitle = "Modify Group details";
+        public String selectContactTitle = "Select a contact";
+        public String selectGroupContactsTitle = "Select group members";
+        public String forwardTitle = "Forward To";
+        public String userOnlineIndicationTitle = "online";
+        public String onlineIndicationTitle = null;
+        public String offlineIndicationTitle = "Not connected";
+        public String connectingIndicationTitle = "Connecting...";
+        public String noNetworkIndicationTitle = "No Network";
+        public String emptyUserListMessage = "No Messages";
+        public boolean showRecentInForward = true;
+        public boolean mConvertSmilyToEmoji = true;
+        public int[] mLetterTitleColors = null;
+        public int mToolbarColor = 0;
+        public int mStatusbarColor = 0;
+        public int mToolbarTextColor = 0;
+        public int mUserListTypingIndicationColor = -11953852;
+        public int mUserListStatusColor = -7960954;
+        public long mTypingIndicationTimeMS = 10000L;
+        public long mMaxImageFileSize = 307200L;
+        public long mMaxVideoFileSize = 20971520L;
+        public boolean mEnableNotificationBadge = true;
+
+        public Config() {
+        }
+    }
+ ```
+ 
+
 For example, If you want to change the title of MesiboMessageList, get instance if Mesibo.Config and set your value in its parameter. 
 
 ```java

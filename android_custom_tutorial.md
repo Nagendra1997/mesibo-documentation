@@ -154,7 +154,7 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
                 .add(R.id.fragment_container, mFragment).commit();
 
 ```
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/messaging_fragment.png" width="320" height="550">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/messaging_fragmentt.png" width="320" height="550">
 
 
 Mesibo has all modes required by the user to minimize the effort of customizing and development. Even after this if you like to customize your and have your UI you are welcome to do so. Customization we will see next in this section.

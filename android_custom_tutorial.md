@@ -525,7 +525,7 @@ This is just one sample of the customization, Mesibo provides you option to cust
 
 
 
-## Mesibo Config
+# Mesibo Config
 
 `MesiboUI.Config` gives you option to get config variable and change according to your need. Mesibo.Config can also be written in your desired language. 
 
@@ -577,7 +577,7 @@ MesiboUI.Config config = MesiboUI.getConfig();
         config.messageListTitle = "New Messages";
 	
 ```
-Now if you dont want to show recent contacted users at top you can set `showRecentInForward` to `false'
+Now if you dont want to show recent contacted users at top you can set `showRecentInForward` to `false`
 
 ```java
 MesiboUI.Config config = MesiboUI.getConfig();

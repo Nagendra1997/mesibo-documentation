@@ -91,6 +91,8 @@ Message list loads from all the last message received from other users.
             
 ```
 
+![Message List]("message_list_mode.png")
+
 ### Loading Contacts list
 
 This loads the list of all contacts. You can start new chat by selecting user in the list.

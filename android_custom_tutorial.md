@@ -15,27 +15,27 @@ You can use these fragments in your code as described below.
  
 ### Using MesiboUserListFragment:
  
-Mesibo provides modes that can be passed as argument to the activity, based on which the required fragment can be loaded. 
+MesiboUserListFragment provides modes that can be passed as argument to the activity, based on which the required fragment can be loaded. 
 
 The different modes for `MesiboUserListFragment` are -
 
- - `MesiboUI.USERLIST_GROUPSELECTION_MODE` launches UI for selecting and creating a group. 
+ - `MesiboUserListFragment.MODE_SELECTGROUP` launches UI for selecting and creating a group. 
  
- - `MesiboUI.USERLIST_EDIT_GROUP_MODE` launches UI for editing diiferent attributes of a group such as - 
+ - `MesiboUserListFragment.MODE_EDITGROUP` launches UI for editing diiferent attributes of a group such as - 
     Group Member List, Group Profile Picture, Group Title or Group Name. 
  
- - `MesiboUI.USERLIST_FORWARD_MODE` populates a list of users to whom you can forward your message or file. 		
+ - `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD` populates a list of users to whom you can forward your message or file. 		
  
- - `MesiboUI.USERLIST_NEWCONTACTS_MODE` displays Mesibo Contact List - a list of Mesibo Users in that application.
+ - `MesiboUserListFragment.MODE_SELECTCONTACT` displays Mesibo Contact List - a list of Mesibo Users in that application.
  
- - `MesiboUI.USERLIST_MESSAGELIST_MODE` displays list of previous messages or chat history.
+ - `MesiboUserListFragment.MODE_MESSAGELIST` displays list of previous messages or chat history.
  
  Based on these Modes,there are additional arguments that you need to provide such as -
  
- - `MesiboUI.MESSAGE_ID` - To load `MesiboUI.USERLIST_FORWARD_MODE` you need to pass `MesiboUI.MESSAGE_ID`
+ - `MesiboUI.MESSAGE_ID` - To load `esiboUserListFragment.MODE_SELECTCONTACT_FORWARD` you need to pass `MesiboUI.MESSAGE_ID`
     where MESSAGE_ID is the unique ID for each message ,that you need to forward.
  
- - `MesiboUI.MESSAGE_IDS`- Multiple messages can  be forwarded at a single time. To load `MesiboUI.USERLIST_FORWARD_MODE` 
+ - `MesiboUI.MESSAGE_IDS`- Multiple messages can  be forwarded at a single time. To load `esiboUserListFragment.MODE_SELECTCONTACT_FORWARD` 
     you can provide an array `MesiboUI.MESSAGE_IDS`, which contains all the MESSAGE_IDs of the messages to be forwarded.
  
  - `MesiboUI.MESSAGE_CONTENT`- The contents of the message  
@@ -83,8 +83,6 @@ Message list loads from all the last message received from other users.
 
 ```java
         
-	// pass MesiboUI.MESSAGE_LIST_MODE as mode 
-	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_MESSAGELIST);
             userListFragment.setArguments(bl);
@@ -98,8 +96,7 @@ Message list loads from all the last message received from other users.
 
 This loads the list of all contacts. You can start new chat by selecting user in the list.
 
-```java
-	// pass MesiboUI.USERLIST_NEWCONTACTS_MODE as mode 	
+```java	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT);
             userListFragment.setArguments(bl);
@@ -113,8 +110,7 @@ This loads the list of all contacts. You can start new chat by selecting user in
 Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 
 Multiple message can also be forwarded at a time by  putting all the message Ids in an array and pass it as extra argument `MesiboUI.MESSAGE_IDS`. There is one more extra argument `MesiboUI.FORWARD_AND_CLOSE`, you can pass `true` to close the MesiboUserListFragment soon after the message forwarding is done
 
-```java
-           // pass MesiboUI.USERLIST_FORWARD_MODE as mode 	
+```java	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD);
             bl.putString(MesiboUI.MESSAGE_CONTENT,"This is forward message Test");
@@ -128,8 +124,7 @@ Multiple message can also be forwarded at a time by  putting all the message Ids
 ### Loading Editing Group 
 This loads fragment to edit the group. Members, group name etc can be edited from here
 
-```java
-           // pass MesiboUI.USERLIST_EDIT_GROUP_MODE as mode 	
+```java	
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_EDITGROUP);
 
@@ -142,11 +137,10 @@ This loads fragment to edit the group. Members, group name etc can be edited fro
 This loads fragment to select a group.
 
 ```java
-           // pass MesiboUI.USERLIST_GROUPSELECTION_MODE as mode 	
-            Bundle bl = new Bundle();
+             Bundle bl = new Bundle();
              bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTGROUP);
 
-            userListFragment.setArguments(bl);
+             userListFragment.setArguments(bl);
             
 ```
 
@@ -166,6 +160,7 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
 ```java
 
         MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
+	
         Bundle bl = new Bundle();
         bl.putString(MesiboUI.PEER, "John Player");
         bl.putLong(MesiboUI.GROUP_ID,0);
@@ -544,6 +539,8 @@ This is just one sample of the customization, Mesibo provides you option to cust
 
 
 ## Mesibo Config
+
+MesiboUI.Config
 
 
 

@@ -107,6 +107,7 @@ This loads the list of all contacts. You can start new chat by selecting user in
 ```
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/new_contact_mode.png" width="320" height="550">
+
 ### Loading Forward List
 
 Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. 

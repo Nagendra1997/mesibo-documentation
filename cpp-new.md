@@ -90,7 +90,7 @@ Following is the Mesibo Initialization code.
 
 ```cpp
 #define AUTH_TOKEN 3e7694e19d192588a4ffcb4eab26b6afb3d5aada54bbd41ed140a
-#define APP_ID mycppapp
+#define APP_ID "mycppapp"
 
 IMesibo* mesibo_init(){
 	

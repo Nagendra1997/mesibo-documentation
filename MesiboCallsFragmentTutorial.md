@@ -45,12 +45,13 @@ You will be wondering receiving calls is done now how do i make a call to other 
 
 Make a audio call by adding below code inside click listerner of your call button, suppose you have a AudioCall Button, put this code in its click listener. Basically we are invoking call funtion on Mesibo calls api. Here, you will see parameters to pass to make Audio call.
 
-         call(Context context, long MessageId, UserProfile callId, boolean IsVideoCall)
-	 
-	- First parameter you need to pass is Context,
-	- Second parameter you need to pass a unique random call id for making calls. This can be generated from `Mesibo.random()`.
-	- Third parameter is a Mesibo.UserProfile, you can put address of the user where you want to make call in `MesiboUserProfile.address` and then pass this userProfile in third parameter of the call function.
-	- Fourth parameter is a boolean to know if you are making audio or video call, pass `false' for Audio Calls.
+call(Context context, long MessageId, UserProfile callId, boolean IsVideoCall)
+
+- First parameter you need to pass is Context,
+- Second parameter you need to pass a unique random call id for making calls. This can be generated from `Mesibo.random()`.
+- Third parameter is a Mesibo.UserProfile, you can put address of the user where you want to make call 
+  in `MesiboUserProfile.address` and then pass this userProfile in third parameter of the call function.
+- Fourth parameter is a boolean to know if you are making audio or video call, pass `false' for Audio Calls.
 	
 	 
 

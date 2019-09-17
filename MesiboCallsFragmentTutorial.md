@@ -128,6 +128,8 @@ In your activity you need to add MesiboCall listener so that your activity is ab
         
 ```
 
+##Types of Mesibo call Fragments
+
 There are two premitive types of call fragment-
 
 - `MesiboIncomingAudioCallFragment` - This fragment returns a fragemnt when you receive a audio call in Mesiobo. You will see two buttons - Accept and Decline, User name and picture who is calling you.
@@ -150,19 +152,18 @@ This xml file will be reponsible for the UI of your custom fragment.
 ```java
 
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/incoming_fragment_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="2">
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/incoming_fragment_background"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".9"
+        android:layout_height="@dimen/_300sdp"
         android:background="@color/mesibo"
         android:gravity="center"
         android:orientation="vertical">
@@ -208,26 +209,6 @@ This xml file will be reponsible for the UI of your custom fragment.
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp" />
 
-            <TextView
-                android:id="@+id/incoming_phone_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="+91 111111111"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/incoming_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="India"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp"
-                android:visibility="gone" />
-
         </LinearLayout>
 
         <TextView
@@ -243,304 +224,100 @@ This xml file will be reponsible for the UI of your custom fragment.
 
     </LinearLayout>
 
-
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/phone_unlocked"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.1"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="bottom"
+        android:paddingBottom="@dimen/_20sdp"
+        android:visibility="visible">
 
 
-      <!--  <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.6"
-            android:background="@color/mesibo" />-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/decline_view_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1.1"
-            android:orientation="horizontal"
-            android:visibility="invisible">
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/incomming_video_call_icon"
+                android:layout_height="@dimen/incomming_video_call_icon"
+                android:layout_centerInParent="true"
+                android:src="@drawable/round_background_mesibo_color" />
 
 
-            <LinearLayout
-                android:id="@+id/remind_me_layout"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <ImageButton
-                    android:id="@+id/remind_me"
-                    android:layout_width="@dimen/incomming_call_icon"
-                    android:layout_height="@dimen/incomming_call_icon"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:padding="@dimen/incomming_call_icon_inner_padding"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_alarm_white_36dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Remind"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/outgoing_video_call_icon_text_size" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/message"
-                        android:layout_width="@dimen/incomming_call_icon"
-                        android:layout_height="@dimen/incomming_call_icon"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:padding="@dimen/incomming_call_icon_inner_padding"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_message_white_36dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Message"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/outgoing_video_call_icon_text_size" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_centerInParent="true"
+                android:tint="@color/red"
+                app:srcCompat="@drawable/ic_call_end_white_36dp" />
 
 
+        </RelativeLayout>
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/phone_locked"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_weight="0.9"
-            android:background="@drawable/lefttorightslidebutton"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/swipe_to_button"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="@android:color/transparent"
-                android:gravity="center"
-                android:text="  >>>Slide to Answer"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <com.mesibo.calls.ImageTouchSlider
-                android:id="@+id/slider"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_70sdp"
-                android:gravity="left" />
-
-            <include
-                layout="@layout/image_touch_slider"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/phone_unlocked"
-            android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/accept_view_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:layout_weight="0.8"
-            android:gravity="bottom"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:visibility="visible">
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/round_background_mesibo_color" />
 
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_centerInParent="true"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/ic_action_audiocall" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/custom_message_view_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="@dimen/incomming_video_call_icon"
+                android:layout_height="@dimen/incomming_video_call_icon"
+                android:layout_centerInParent="true"
+                android:src="@drawable/round_background_mesibo_color" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="bottom"
-                android:orientation="vertical">
+                android:layout_centerInParent="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/ic_message_white_36dp" />
 
 
-                <RelativeLayout
-                    android:id="@+id/decline_view_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center">
-
-                    <ImageView
-                        android:layout_width="@dimen/incomming_video_call_icon"
-                        android:layout_height="@dimen/incomming_video_call_icon"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/round_background_mesibo_color" />
+        </RelativeLayout>
 
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:tint="@color/red"
-                        app:srcCompat="@drawable/ic_call_end_white_36dp" />
+    </LinearLayout>
 
 
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/decline_swipe_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:text="Decline"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp"
-                    android:visibility="visible" />
-            </LinearLayout>
+</RelativeLayout>
 
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="vertical">
-
-
-                    <RelativeLayout
-                        android:id="@+id/accept_view_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <ImageView
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_60sdp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/round_background_mesibo_color" />
-
-
-                        <ImageView
-                            android:layout_width="@dimen/_35sdp"
-                            android:layout_height="@dimen/_35sdp"
-                            android:layout_centerInParent="true"
-                            android:tint="@color/white"
-                            app:srcCompat="@drawable/ic_action_audiocall" />
-
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/accept_swipe_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:gravity="center"
-                        android:text="Accept"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10sdp" />
-
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/incoming_audio_accept_container"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="vertical">
-
-
-                    <RelativeLayout
-                        android:id="@+id/custom_message_view_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <ImageView
-                            android:layout_width="@dimen/incomming_video_call_icon"
-                            android:layout_height="@dimen/incomming_video_call_icon"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/round_background_mesibo_color" />
-
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:scaleX="0.8"
-                            android:scaleY="0.8"
-                            android:tint="@color/white"
-                            app:srcCompat="@drawable/ic_message_white_36dp" />
-
-
-                    </RelativeLayout>
-
-
-                    <TextView
-                        android:id="@+id/message_swipe_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:gravity="center"
-                        android:text="Reject and Message"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10sdp"
-                        android:visibility="visible" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-</LinearLayout>
 
 
 ```
@@ -551,34 +328,20 @@ This xml file will be reponsible for the UI of your custom fragment.
 Create a AudioIncomingFragment.java that extends `MesiboIncomingAudioCallFragment`
 
 ```java 
+public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment implements Mesibo.CallListener {
 
-public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment implements
-        View.OnClickListener, Mesibo.CallListener, View.OnKeyListener {
-
-    ImageView photoImage;
-    boolean firstTouch = false;
-    Mesibo.UserProfile mProfile;
-    TextView mName, mLocation;
-    Context mContext;
-    ImageTouchSlider slider;
-    GestureDetector myGestDetector;
-    LinearLayout mLocked, mUnLocked;
-    public static final String TAG = "AudioIncomingFragment";
+    private ImageView photoImage;
+    private Mesibo.UserProfile mProfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mContext = getActivity();
         View view = inflater.inflate(R.layout.fragment_audio_custom, container, false);
         initializeView(view);
         return view;
     }
 
     private void initializeView(View view) {
-        mName = view.findViewById(com.mesibo.calls.R.id.incoming_name);
-        mLocation = view.findViewById(com.mesibo.calls.R.id.incoming_location);
-        slider = view.findViewById(com.mesibo.calls.R.id.slider);
-        mUnLocked = view.findViewById(com.mesibo.calls.R.id.phone_unlocked);
-        mLocked = view.findViewById(com.mesibo.calls.R.id.phone_locked);
+        TextView mName = view.findViewById(com.mesibo.calls.R.id.incoming_name);
         photoImage = view.findViewById(com.mesibo.calls.R.id.photo_image);
 
         RelativeLayout declineViewButton = view.findViewById(R.id.decline_view_layout);
@@ -609,51 +372,8 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
             }
         });
 
-
         mName.setText(mProfile.name);
         setUserPicture();
-        setValues();
-
-    }
-
-    private void setValues() {
-        myGestDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-            boolean swipePerformed = true;
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (!swipePerformed) {
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onDown(MotionEvent e1) {
-                swipePerformed = false;
-                return true;
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                return false;
-            }
-        });
-        KeyguardManager myKeyManager = (KeyguardManager) getActivity().getSystemService(Context.KEYGUARD_SERVICE);
-
-        //Yusuf, TBD fix lock screen
-        if (false && myKeyManager.inKeyguardRestrictedInputMode()) {
-
-            //screen is locked
-            mLocked.setVisibility(View.VISIBLE);
-            mUnLocked.setVisibility(View.GONE);
-
-        } else {
-            mLocked.setVisibility(View.GONE);
-            mUnLocked.setVisibility(View.VISIBLE);
-            //screen is not locked
-
-        }
 
     }
 
@@ -690,15 +410,6 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
 
     }
 
-    @Override
-    public boolean onKey(View v, int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP)) {
-            //Do something
-            // Toast.makeText(mContext, "vol", Toast.LENGTH_SHORT).show();
-        }
-        return true;
-    }
-
 
     public void callHangup() {
         hangup();
@@ -709,7 +420,6 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
     public void callAnswer() {
 
         answer();
-
 
     }
 
@@ -761,10 +471,6 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
 
 
     @Override
-    public void onClick(View v) {
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         Mesibo.addListener(this);
@@ -801,7 +507,7 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
 
 ```
 
-#### Return AudioIncomingFragment in `MesiboCall_getIncomingAudioCallFragment()`
+#### Return `AudioIncomingFragment` in `MesiboCall_getIncomingAudioCallFragment()`
 
 To your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your own custom fragment.
 
@@ -819,6 +525,7 @@ To your activity where you have implemented `MesiboCall.MesiboCallListener` add 
 ```
 
 This example looks like this -
+
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/audio_call.png" width="320" height="550">
 
 Great, that's it. Run your app and make receive an audio call, you will see your custom frgament instead you deafault fragment.

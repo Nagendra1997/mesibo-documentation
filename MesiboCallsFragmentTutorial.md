@@ -41,7 +41,7 @@ public class ExampleActivity extends AppCompatActivity implements MesiboCall.Mes
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	      setContentView(R.layout.activity_messages);
+	      setContentView(R.layout.activity_main);
 	        
     }
     
@@ -75,6 +75,8 @@ To your activity you need to add MesiboCall listener so that your activity is ab
 
 
 # Customization of Mesibo calls fragment
+
+Mesibo calls returns fragment while incoming and outgoing calls, these fragments display you calls UI and handles action of the user. Since it returns fragment it becomes extreamly easy for someone to create own fragment and return custom fragment instead of deafualt fragment. 
 
 
 

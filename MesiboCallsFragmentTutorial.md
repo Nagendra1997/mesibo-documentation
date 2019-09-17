@@ -535,8 +535,704 @@ Great, that's it. Run your app and make receive an audio call, you will see your
  
 ### Incoming/Outgoing Video call
 
+Similar to Audio call Fragment, Video call fragment can also be customized.
+As you have implelnted the methods of `MesiboCall.MesiboCallListener` you will find method `MesiboCall_getVideoCallFragment()`.
 
+This method return a null Fragment by deafault that means Mesibo default Video Incoming?Outgoing fragment will be loaded. Now, to this if you return you own class that overides `MesiboVideoCallFragment` you will be able to show your own custom fragment for video calls.
+
+Let's see how this is done - 
+
+#### Create a fragment_videocall_custom.xml 
+
+This xml file will be reponsible for the UI of your custom fragment.
+
+```java
+
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/call_provider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:gravity="center"
+        android:text="Mesibo Video Call"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_13sdp" />
+
+    <LinearLayout
+        android:id="@+id/photo_layout"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_below="@+id/call_provider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/photo_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"
+            android:src="@drawable/profile" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/call_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/photo_layout"
+        android:gravity="center"
+        android:text="Shahrukh Sharma"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_20sdp" />
+
+    <TextView
+        android:id="@+id/call_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/call_name"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:gravity="center"
+        android:text="+919919191991 | India"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        android:visibility="gone" />
+
+    <Chronometer
+        android:id="@+id/call_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/call_address"
+        android:gravity="center"
+        android:text="Incoming Video Call"
+        android:textColor="@color/white" />
+
+
+    <LinearLayout
+        android:id="@+id/outgoing_call_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_above="@+id/capture_format_slider_call"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/outgoing_video_call_icon_margin"
+                android:layout_weight="1"
+                android:background="@drawable/drawable_background_circle"
+                android:gravity="center"
+                android:padding="@dimen/outgoing_video_call_icon_padding">
+
+                <ImageButton
+                    android:id="@+id/button_call_toggle_speaker"
+                    android:layout_width="@dimen/outgoing_video_call_icon_size"
+                    android:layout_height="@dimen/outgoing_video_call_icon_size"
+                    android:layout_gravity="left"
+                    android:background="@drawable/ic_volume_up_white_48dp"
+                    android:contentDescription="@string/toggle_speaker" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/outgoing_video_call_icon_margin"
+                android:layout_weight="1"
+                android:background="@drawable/drawable_background_circle"
+                android:gravity="center"
+                android:padding="@dimen/outgoing_video_call_icon_padding">
+
+                <ImageButton
+                    android:id="@+id/button_call_switch_camera"
+                    android:layout_width="@dimen/outgoing_video_call_icon_size"
+                    android:layout_height="@dimen/outgoing_video_call_icon_size"
+                    android:layout_gravity="left"
+                    android:background="@drawable/ic_switch_camera_white_48dp"
+                    android:contentDescription="@string/switch_camera" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/outgoing_video_call_icon_margin"
+                android:layout_weight="1"
+                android:background="@drawable/drawable_background_circle"
+                android:gravity="center"
+                android:padding="@dimen/outgoing_video_call_icon_padding">
+
+                <ImageButton
+                    android:id="@+id/button_call_toggle_camera"
+                    android:layout_width="@dimen/outgoing_video_call_icon_size"
+                    android:layout_height="@dimen/outgoing_video_call_icon_size"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/ic_videocam_off_white_48dp"
+                    android:contentDescription="@string/toggle_camera" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/outgoing_video_call_icon_margin"
+                android:layout_weight="1"
+                android:background="@drawable/drawable_background_circle"
+                android:gravity="center"
+                android:padding="@dimen/outgoing_video_call_icon_padding">
+
+                <ImageButton
+                    android:id="@+id/button_call_toggle_mic"
+                    android:layout_width="@dimen/outgoing_video_call_icon_size"
+                    android:layout_height="@dimen/outgoing_video_call_icon_size"
+                    android:layout_gravity="right"
+                    android:background="@drawable/ic_mic_off_white_48dp"
+                    android:contentDescription="@string/toggle_mic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/button_call_scaling_mode"
+                    android:layout_width="@dimen/outgoing_video_call_icon_size"
+                    android:layout_height="@dimen/outgoing_video_call_icon_size"
+                    android:background="@drawable/ic_fullscreen_exit_white_48dp"
+                    android:contentDescription="@string/disconnect_call"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/button_call_disconnect"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:background="@drawable/disconnect"
+                android:contentDescription="@string/disconnect_call" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/incoming_call_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_above="@+id/capture_format_slider_call"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/remind_me_layout"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <ImageButton
+                        android:id="@+id/remind_me"
+                        android:layout_width="@dimen/outgoing_video_call_remind_icon_size"
+                        android:layout_height="@dimen/outgoing_video_call_remind_icon_size"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_alarm_white_36dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Remind"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/outgoing_video_call_icon_text_size" />
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="invisible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/message"
+                            android:layout_width="@dimen/outgoing_video_call_remind_icon_size"
+                            android:layout_height="@dimen/outgoing_video_call_remind_icon_size"
+                            android:background="@android:color/transparent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_message_white_36dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Message"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/outgoing_video_call_icon_text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/phone_unlocked"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="0.8"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="bottom|center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/declineButton"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/round_background_mesibo_color"
+                        android:tint="@color/red"
+                        app:srcCompat="@drawable/ic_call_end_white_36dp" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/accept_button"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_60sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/round_background_mesibo_color"
+                        android:tint="@color/white"
+                        app:srcCompat="@drawable/ic_videocam_white_24dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/incoming_audio_accept_container"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom|center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/custom_message_button"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:background="@drawable/round_background_mesibo_color"
+                            android:tint="@color/white"
+                            app:srcCompat="@drawable/ic_message_white_36dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/capture_format_slider_call"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:progress="50"
+        android:visibility="gone" />
+</RelativeLayout>
+
+
+
+
+
+```
+
+
+#### Create a VideoCallFragment.java 
+
+Create a VideoCallFragment.java that extends `MesiboVideoCallFragment`
+
+```java 
+public class VideoCallFragment extends MesiboVideoCallFragment implements Mesibo.CallListener, View.OnTouchListener {
+
+    private ImageButton cameraSwitchButton;
+    private ImageButton videoScalingButton;
+    private ImageButton toggleCameraButton;
+    private ImageButton toggleMuteButton;
+    private ImageButton toggleSpeakerButton;
+    ImageView imageView, mDeclineViewButton, mAcceptViewButton, mDefaultMessageButton;
+    private OnCallEvents callEvents;
+    private ScalingType scalingType;
+    Mesibo.UserProfile mProfile;
+    private View mIncomingView, mInProgressView;
+
+
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View controlView = inflater.inflate(R.layout.fragment_videocall_custom, container, false);
+
+        TextView contactView = controlView.findViewById(R.id.call_name);
+        imageView = controlView.findViewById(R.id.photo_image);
+        ImageButton disconnectButton = controlView.findViewById(R.id.button_call_disconnect);
+        cameraSwitchButton = controlView.findViewById(R.id.button_call_switch_camera);
+        videoScalingButton = controlView.findViewById(R.id.button_call_scaling_mode);
+        toggleSpeakerButton = controlView.findViewById(R.id.button_call_toggle_speaker);
+        toggleCameraButton = controlView.findViewById(R.id.button_call_toggle_camera);
+        toggleMuteButton = controlView.findViewById(R.id.button_call_toggle_mic);
+        mIncomingView = controlView.findViewById(R.id.incoming_call_container);
+        mInProgressView = controlView.findViewById(R.id.outgoing_call_container);
+        mDeclineViewButton = controlView.findViewById(R.id.declineButton);
+        mAcceptViewButton = controlView.findViewById(R.id.accept_button);
+        mDefaultMessageButton = controlView.findViewById(R.id.custom_message_button);
+
+        // Add buttons click events.
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hangup();
+
+
+            }
+        });
+
+        cameraSwitchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchCamera();
+            }
+        });
+
+        videoScalingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (scalingType == ScalingType.SCALE_ASPECT_FILL) {
+                    videoScalingButton.setBackgroundResource(R.drawable.ic_fullscreen_white_48dp);
+                    scalingType = ScalingType.SCALE_ASPECT_FIT;
+                } else {
+                    videoScalingButton.setBackgroundResource(R.drawable.ic_fullscreen_exit_white_48dp);
+                    scalingType = ScalingType.SCALE_ASPECT_FILL;
+                }
+                ///callEvents.onVideoScalingSwitch(scalingType);
+                scaleVideo(true);
+            }
+        });
+        scalingType = ScalingType.SCALE_ASPECT_FILL;
+
+        toggleSpeakerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleSpeaker();
+                boolean enabled = callEvents.onToggleSpeaker();
+                toggleSpeakerButton.setAlpha(enabled ? 1.0f : 0.3f);
+                callEvents.onToggleSpeaker();
+
+
+            }
+        });
+
+        toggleMuteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleMic();
+                boolean enabled = callEvents.onToggleMic();
+                toggleMuteButton.setAlpha(enabled ? 1.0f : 0.3f);
+                callEvents.onToggleMic();
+
+            }
+        });
+
+        toggleCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toggleCamera();
+                boolean enabled = callEvents.onToggleCamera();
+                //setButton(toggleCameraButton, enabled);
+                toggleCameraButton.setAlpha(enabled ? 1.0f : 0.3f);
+                callEvents.onToggleCamera();
+
+
+            }
+        });
+
+        mDeclineViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hangup();
+            }
+        });
+
+        mAcceptViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                answer(true);
+                setDisplayMode();
+            }
+        });
+
+        mDefaultMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // setup the alert builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                String[] DefaultTextMessages = {
+                        "Can't talk now. What's up?",
+                        "I'll call you right back.",
+                        "I'll call you later.",
+                        "Can't talk now. Call me later.",
+                        "Custom message..."};
+                builder.setItems(DefaultTextMessages, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String peer = mProfile.address;
+
+                        switch (which) {
+                            case 0: //
+                                sendCustomeMessage(peer, "Can't talk now. What's up?");
+                                break;
+                            case 1: //
+                                sendCustomeMessage(peer, "I'll call you right back.");
+                                break;
+                            case 2: //
+                                sendCustomeMessage(peer, "I'll call you later.");
+                                break;
+                            case 3: //
+                                sendCustomeMessage(peer, "Can't talk now. Call me later.");
+                                break;
+                            case 4: //Custom message
+                                Intent i = new Intent(getActivity(), MessagingActivity.class);
+                                i.putExtra("peer", peer);
+                                startActivity(i);
+                                hangup();
+                                break;
+                        }
+                    }
+                });
+
+                AlertDialog dialog_cust = builder.create();
+                dialog_cust.show();
+            }
+        });
+
+
+//        contactView.setText(mProfile.name);
+        contactView.setText("Mr. John");
+        setUserPicture();
+        Chronometer statusView = (Chronometer) controlView.findViewById(R.id.call_status);
+        setStatusView(statusView);
+        setDisplayMode();
+
+        return controlView;
+    }
+
+
+    private void setDisplayMode() {
+
+        boolean incoming = (isIncoming() && !isAnswered());
+        mIncomingView.setVisibility(incoming ? View.VISIBLE : View.GONE);
+        mInProgressView.setVisibility(incoming ? View.GONE : View.VISIBLE);
+
+    }
+
+
+    public void setProfile(Mesibo.UserProfile profile) {
+
+        mProfile = profile;
+
+    }
+
+    void setUserPicture() {
+        String filePath = Mesibo.getUserProfilePicturePath(mProfile, Mesibo.FileInfo.TYPE_AUTO);
+
+        Bitmap b;
+        if (Mesibo.fileExists(filePath)) {
+            b = BitmapFactory.decodeFile(filePath);
+            if (null != b) {
+                imageView.setImageDrawable(MesiboUtils.getRoundImageDrawable(b));
+            }
+        } else {
+            //TBD, getActivity.getresource crashes sometime if activity is closing
+            imageView.setImageDrawable(MesiboUtils.getRoundImageDrawable(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.profile)));
+        }
+    }
+
+
+    private void sendCustomeMessage(String peer, String message) {
+
+        Mesibo.MessageParams messageParams = new Mesibo.MessageParams();
+        messageParams.setPeer(peer);
+        Mesibo.sendMessage(messageParams, Mesibo.random(), message);
+        hangup();
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        boolean captureSliderEnabled = false;
+        Bundle args = getArguments();
+        if (args != null) {
+        }
+        boolean videoCallEnabled = true;
+        if (!videoCallEnabled) {
+            cameraSwitchButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Mesibo.addListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Mesibo.removeListener(this);
+    }
+
+    // TODO(sakal): Replace with onAttach(Context) once we only support API level 23+.
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callEvents = (OnCallEvents) activity;
+    }
+
+    @Override
+    public boolean Mesibo_onCall(long peerid, long callid, Mesibo.UserProfile userProfile, int i) {
+        return false;
+    }
+
+    @Override
+    public boolean Mesibo_onCallStatus(long peerid, long callid, int status, int flags, String desc) {
+
+        return false;
+    }
+
+    @Override
+    public void Mesibo_onCallServer(int type, String url, String username, String credential) {
+
+    }
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        return false;
+    }
+}
+
+```
+
+#### Return `VideoCallFragment` in `MesiboCall_getVideoCallFragment()`
+
+To your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your own custom fragment.
+
+```java
+
+    @Override
+    public MesiboVideoCallFragment MesiboCall_getVideoCallFragment(Mesibo.UserProfile userProfile) {
+
+        VideoCallFragment videoCallFragment = new VideoCallFragment();
+        videoCallFragment.setProfile(userProfile);
+
+        return videoCallFragment;
+	//return null;
+    }
+
+```
+
+This example looks like this -
 
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/video_call.png" width="320" height="550">
+
+
+
+# Conclusion
 

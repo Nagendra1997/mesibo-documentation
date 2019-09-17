@@ -1234,5 +1234,8 @@ This example looks like this -
 
 
 
+That's it. Run you app and make Video calls. You will see your custom created frgamnet for video calls.
+
 # Conclusion
 
+You’ve seen how to use Mesibo call Fragments and created fully custom call fragments for video and audio calls.

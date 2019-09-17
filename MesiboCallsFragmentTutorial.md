@@ -34,9 +34,6 @@ This permission is required to access microphone and reord your voice.
 This permission is required to make video call as it access camera while makeing video call.
 
 
-
-That's it! Now with this you will be able to use Mesibo Calls. When you recieve calls you will see Mesibo calls fragment.
-
 ### How to make calls
 
 You will be wondering receiving calls is done now how do i make a call to other users? Well, making call in Mesibo is also very simple just by adding a line.
@@ -80,11 +77,17 @@ Similar to audio calls you can make video calls as well , just pass fourth paara
 
 ```
 
+That's it! Now with this you will be able to use Mesibo Calls. Now, when you make or receive call you will see mesibo call fragment visible.
 
 
 
 
-There are two types of call fragment-
+# Customization of Mesibo calls fragment
+
+Mesibo calls returns fragment while incoming and outgoing calls, these fragments display you calls UI and handles action of the user. Since it returns fragment it becomes extreamly easy for someone to create own fragment and return custom fragment instead of deafualt fragment. 
+
+
+There are two premitive types of call fragment-
 
 - `MesiboIncomingAudioCallFragment` - This fragment returns a fragemnt when you receive a audio call in Mesiobo. You will see two buttons - Accept and Decline, User name and picture who is calling you.
 
@@ -92,10 +95,6 @@ There are two types of call fragment-
 
 
 To use Mesibo call fragments - 
-
-
-
-
 
 ### Extend your activity to implement `MesiboCall.MesiboCallListener`
 In your activity implement  `MesiboCall.MesiboCallListener` and add the methods.
@@ -139,9 +138,6 @@ To your activity you need to add MesiboCall listener so that your activity is ab
 
 
 
-# Customization of Mesibo calls fragment
-
-Mesibo calls returns fragment while incoming and outgoing calls, these fragments display you calls UI and handles action of the user. Since it returns fragment it becomes extreamly easy for someone to create own fragment and return custom fragment instead of deafualt fragment. 
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/audio_call.png" width="320" height="550">
 

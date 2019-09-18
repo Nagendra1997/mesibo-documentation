@@ -1,6 +1,6 @@
 
 ## Using MesiboUI components
-Mesibo offers ready to use UI fragments which be used to build your application. Mesibo UI fragments are completely customizable as per your need.  
+Mesibo offers ready to use UI fragments which can be used to build your application. Mesibo UI fragments are completely customizable as per your needs.  
 
 There are primarily two types of UI fragment
  - `MesiboUserListFragment`, which displays all the users and messages 

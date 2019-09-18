@@ -53,7 +53,7 @@ MesiboJsonView is designed to faciliate you with designing your own UI by just w
 
 ## And self-constructs into the following view, in realtime:
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/json_normal_view.png" width="320" height="550">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/json_normal_view.png" width="320" height="450">
 
 
 

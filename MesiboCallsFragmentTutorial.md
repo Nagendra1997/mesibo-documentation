@@ -13,7 +13,7 @@ implementation 'com.mesibo.api:calls:1.0.72'
 ```
 
 ### Initialize Mesibo calls
-Initialize Mesibo calls by adding below code in your activity. This will bring whole Mesibo calls infrastructure and you will be able to make calls. 
+Initialize Mesibo Calls by adding the below code in your activity. This provides the complete Mesibo calls infrastructure and you will be able to make calls. 
 
 ```java
 
@@ -24,31 +24,33 @@ Initialize Mesibo calls by adding below code in your activity. This will bring w
 
 ### Runtime Permissions
 
-When you receive or make any calls with Mesibo it asks you to grant few permissions those are required to place call. These are- 
-You need to give access to this permission as the app may not work without these.
+When you receive or make any calls with Mesibo it asks you to grant a few permissions which are required to place the call. 
+> You need to give access to these permissions as the call functionality may not work without these.
 
 #### - Record Audio - 
 This permission is required to access the microphone and record your voice.
 
 #### - Record Video -
-This permission is required to make video calls as it access camera while making video call.
+This permission is required to make video calls as it provides access camera while making video call.
 
 
 ### How to make calls
 
-You will be wondering receiving calls is done now how do I make a call to other users? Well, making calls in Mesibo is also very simple just by adding a line.
+You might be wondering receiving calls is fine,but how do I make a call to other users? Well, making calls in Mesibo is also as simple as adding a  few lines of code.
 
 #### To make Audio call-
 
-Make an audio call by adding below code inside click listener of your call button, suppose you have an AudioCall Button, put this code in its click listener. We are invoking call function on Mesibo calls API. Here, you will see parameters to pass to make Audio call.
+Make an audio call by adding below code inside the click listener of your call button. Suppose you have an AudioCall Button, put this code in its click listener. We are invoking the call function on Mesibo Calls API. You need to pass the following parameters to make an audio call.
 
-call(Context context, long MessageId, UserProfile callId, boolean IsVideoCall)
+```java
+call(Context context, long callId, Mesibo.UserProfile userProfile, boolean IsVideoCall)
+```
 
-- First parameter you need to pass is Context,
-- Second parameter you need to pass a unique random call id for making calls. This can be generated from `Mesibo.random()`.
-- Third parameter is a Mesibo.UserProfile, you can put the address of the user where you want to make call 
-  in `MesiboUserProfile.address` and then pass this userProfile in the third parameter of the call function.
-- The fourth parameter is a boolean to know if you are making audio or video call, pass `false' for Audio Calls.
+- `Context` of the application,
+- `callId` unique random number which can be generated from `Mesibo.random()`.
+- `userProfile` where you need to put the address of the user to whom you want to make the call in a 
+  `Mesibo.UserProfile` object 
+- `IsVideoCall` is a boolean to know if you are making audio or video call, pass `false` for Audio Calls.
 	
 	 
 
@@ -77,14 +79,13 @@ Similar to audio calls you can make video calls as well, just pass the fourth pa
 
 ```
 
-That's it! Now with this, you will be able to use Mesibo Calls. Now, when you make or receive call you will see mesibo call fragment visible that performs functions like accept call, decline call and many more.
-
+That's it! Now with this, you will be able to use Mesibo Calls. Now, when you make or receive a call see mesibo call fragment will be visible that performs functions like accept call, decline call ,etc.
 
 
 
 # Customization of Mesibo calls fragment
 
-Mesibo calls return fragment while incoming and outgoing calls, these fragments display you call UI and handles the action of the user. Since it returns fragment it becomes extremely easy for someone to create own fragment and return custom fragment instead of default fragment. 
+Mesibo Calls display a fragment while incoming and outgoing calls.These fragments display the call UI and handle the action of the user. Since it returns a fragment ,you can create own your own fragment and return a custom fragment instead of the default fragment. 
 
 To use Mesibo call fragments - 
 
@@ -119,7 +120,7 @@ public class ExampleActivity extends AppCompatActivity implements MesiboCall.Mes
 
 ```
 
-In your activity, you need to add MesiboCall listener so that your activity can handle incoming or outgoing calls.
+In your activity, you need to add `MesiboCall` listener so that your activity can handle incoming or outgoing calls.
 
 ```java
         MesiboCall mesiboCall = MesiboCall.getInstance();
@@ -128,26 +129,26 @@ In your activity, you need to add MesiboCall listener so that your activity can 
         
 ```
 
-##Types of Mesibo call Fragments
+## Types of Mesibo call Fragments
 
-There are two primitive types of call fragment-
+There are two basic types of call fragment-
 
-- `MesiboIncomingAudioCallFragment` - This fragment returns a fragment when you receive an audio call in Mesiobo. You will see two buttons - Accept and Decline, User name and picture who is calling you.
+- `MesiboIncomingAudioCallFragment` - This fragment returns a fragment when you receive an audio call in Mesibo. You will see two buttons - Accept and Decline and the User name and profile picture of the user who is calling you.
 
-- `MesiboVideoCallFragment` - This fragment is visible when you make or receive a video call. You will see user picture, name and buttons to accept and decline.
+- `MesiboVideoCallFragment` - This fragment is visible when you make or receive a video call. You will see the profile picture, User Name and the buttons to accept and decline the call.
 
 
 ### Incoming Audio call
 
-As you have implelnted the methods of `MesiboCall.MesiboCallListener` you will find method `MesiboCall_getIncomingAudioCallFragment()`.
+In the implementation of `MesiboCall.MesiboCallListener` you will find the method `MesiboCall_getIncomingAudioCallFragment()`.
 
-This method returns a null Fragment by default that means Mesibo default Audio Incoming fragment will be loaded. Now, to this, if you return your class that overrides `MesiboAudioCallFragment` you will be able to show your custom fragment when you receive an Audio call.
+This method returns a null Fragment by default which loads the Mesibo default Audio Incoming fragment. Now, to this, if you return your class that overrides `MesiboAudioCallFragment` you will be able to show your custom fragment when you receive an Audio call.
 
 Let's see how this is done - 
 
 #### Create a fragment_audio_cutom.xml 
 
-This XML file will be responsible for the UI of your custom fragment.
+This XML file is for the UI of your custom fragment.
 
 ```java
 
@@ -316,7 +317,6 @@ This XML file will be responsible for the UI of your custom fragment.
 
 
 </RelativeLayout>
-
 
 
 
@@ -509,7 +509,7 @@ public class AudioIncomingFragment extends MesiboIncomingAudioCallFragment imple
 
 #### Return `AudioIncomingFragment` in `MesiboCall_getIncomingAudioCallFragment()`
 
-To your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your custom fragment.
+In your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your custom fragment.
 
 ```java
 
@@ -524,27 +524,26 @@ To your activity where you have implemented `MesiboCall.MesiboCallListener` add 
     }
 ```
 
-This example looks like this -
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/audio_call.png" width="320" height="550">
 
-Great, that's it. Run your app and make receive an audio call, you will see your custom fragment instead of your default fragment.
+Great, that's it. Run your app and receive an audio call. You will see your custom fragment instead of the default fragment.
 
 
 
  
 ### Incoming/Outgoing Video call
 
-Similar to Audio call Fragment, Video call fragment can also be customized.
-As you have implelnted the methods of `MesiboCall.MesiboCallListener` you will find method `MesiboCall_getVideoCallFragment()`.
+Similar to Audio Call Fragment, Video Call fragment can also be customized.
+In the implementation of `MesiboCall.MesiboCallListener` you will find the method `MesiboCall_getVideoCallFragment()`.
 
-This method returns a null Fragment by default that means Mesibo default Video Incoming? Outgoing fragment will be loaded. Now, to this, if you return your class that overrides `MesiboVideoCallFragment` you will be able to show your custom fragment for video calls.
+This method returns a null Fragment by default, that loads the default Mesibo Video Incoming/Outgoing fragment. Now, to this, if you return your custom class that overrides `MesiboVideoCallFragment` you will be able to show your custom fragment for video calls.
 
 Let's see how this is done - 
 
 #### Create a fragment_videocall_custom.xml 
 
-This XML file will be responsible for the UI of your custom fragment.
+This XML file is for the UI of your custom fragment.
 
 ```java
 
@@ -925,8 +924,6 @@ This XML file will be responsible for the UI of your custom fragment.
 
 
 
-
-
 ```
 
 
@@ -1211,7 +1208,7 @@ public class VideoCallFragment extends MesiboVideoCallFragment implements Mesibo
 
 #### Return `VideoCallFragment` in `MesiboCall_getVideoCallFragment()`
 
-To your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your custom fragment.
+In your activity where you have implemented `MesiboCall.MesiboCallListener` add below code to return your custom fragment.
 
 ```java
 
@@ -1227,7 +1224,6 @@ To your activity where you have implemented `MesiboCall.MesiboCallListener` add 
 
 ```
 
-This example looks like this -
 
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/video_call.png" width="320" height="550">
@@ -1236,6 +1232,4 @@ This example looks like this -
 
 That's it. Run your app and make Video calls. You will see your custom created fragment for video calls.
 
-# Conclusion
 
-You’ve seen how to use Mesibo call Fragments and created fully custom call fragments for video and audio calls.

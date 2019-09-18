@@ -1,6 +1,6 @@
 
 ## Using MesiboUI components
-Mesibo offers ready to use UI fragments which be used to build your application . Mesibo UI fragments are completely customizable as per your need.  
+Mesibo offers ready to use UI fragments which be used to build your application. Mesibo UI fragments are completely customizable as per your need.  
 
 There are primarily two types of UI fragment
  - `MesiboUserListFragment`, which displays all the users and messages 
@@ -9,24 +9,24 @@ There are primarily two types of UI fragment
 You can use these fragments in your code as described below.
 
 ## MesiboUserListFragment:
-`MesiboUserListFragment` displays the list of users and the last message of each user sorted by timestamp. For example, when a typical messaging appliaction(say WhatsApp) starts, a user list is displayed along with the last message for each user.
+`MesiboUserListFragment` displays the list of users and the last message of each user sorted by timestamp. For example, when a typical messaging application(say WhatsApp) starts, a user list is displayed along with the last message for each user.
  
 ### Using MesiboUserListFragment:
  
-MesiboUserListFragment provides modes that can be passed as argument to the activity, based on which the required fragment can be loaded. 
+MesiboUserListFragment provides modes that can be passed as an argument to the activity, based on which the required fragment can be loaded. 
 
 The different modes for `MesiboUserListFragment` are -
 
  - `MesiboUserListFragment.MODE_SELECTGROUP` launches UI for selecting and creating a group. 
  
- - `MesiboUserListFragment.MODE_EDITGROUP` launches UI for editing diiferent attributes of a group such as - 
+ - `MesiboUserListFragment.MODE_EDITGROUP` launches UI for editing different attributes of a group such as - 
     Group Member List, Group Profile Picture, Group Title or Group Name. 
  
- - `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD` populates a list of users to whom you can forward your message or file. 		
+ - `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD` populates a list of users to whom you can forward your message or file.         
  
  - `MesiboUserListFragment.MODE_SELECTCONTACT` displays Mesibo Contact List - a list of Mesibo Users in that application.
  
- - `MesiboUserListFragment.MODE_MESSAGELIST` displays list of previous messages or chat history.
+ - `MesiboUserListFragment.MODE_MESSAGELIST` displays a list of previous messages or chat history.
  
 
 
@@ -34,7 +34,7 @@ The different modes for `MesiboUserListFragment` are -
 For example,
 
 ### Loading Message List
-Load list of users and last messages in `MesiboUserListFragment` from a activity. You can start this activity from anywhere to load user list.
+Load list of users and last messages in `MesiboUserListFragment` from an activity. You can start this activity from anywhere to load user list.
 
 ```java
 public class ExampleActivity extends AppCompatActivity implements MesiboMessageListFragment.FragmentListener {
@@ -42,15 +42,15 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_messages);
-	
+    setContentView(R.layout.activity_messages);
+    
                 MesiboUserListFragment userListFragment = new MesiboUserListFragment();
                 userListFragment.setListener(MessageListActivity.this);
-		
+        
                 Bundle bl = new Bundle();
                 bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_MESSAGELIST);
                 userListFragment.setArguments(bl);
-		
+        
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 ft.replace(R.id.userlist_fragment, userListFragment, "null");
@@ -66,9 +66,9 @@ public class ExampleActivity extends AppCompatActivity implements MesiboMessageL
 
 ### Loading New Contacts list
 
-Similar to above example, load the list of all contacts just by changing the type of mode. You can start new chat by selecting user in the list.
+Similar to the above example, load the list of all contacts just by changing the type of mode. You can start a new chat by selecting a user in the list.
 
-```java	
+```java    
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT);
             userListFragment.setArguments(bl);
@@ -79,31 +79,31 @@ Similar to above example, load the list of all contacts just by changing the typ
 
 ### Loading Forward List
 
-Forward list loads the list of user whom any message or file can be forwarded. Select user to forward message. It also show recent contacted users. Change the type of mode to `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD`.
+Forward list loads the list of user whom any message or file can be forwarded. Select user to forward messages. It also shows recent contacted users. Change the type of mode to `MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD`.
 
 There are some extra arguments to load forward list
 
-- `MesiboUI.MESSAGE_ID`- MESSAGE_ID is the unique ID for each message ,that you need to forward.
-- `MesiboUI.MESSAGE_IDS` - Multiple message can also be forwarded at a time by  putting all the message Ids in an array.
-- `MesiboUI.FORWARD_AND_CLOSE` - FORWARD_AND_CLOSE is boolean argument. You can close the forward list sson after your message is forwarded. Pass `true' to forward and close forward list.
-- `MesiboUI.MESSAGE_CONTENT`- The conatins the content of a message.  
+- `MesiboUI.MESSAGE_ID`- MESSAGE_ID is the unique ID for each message, that you need to forward.
+- `MesiboUI.MESSAGE_IDS` - Multiple messages can also be forwarded at a time by putting all the message Ids in an array.
+- `MesiboUI.FORWARD_AND_CLOSE` - FORWARD_AND_CLOSE is the boolean argument. You can close the forward list soon after your message is forwarded. Pass `true' to forward and close the forward list.
+- `MesiboUI.MESSAGE_CONTENT`- The contains the content of a message.  
 
 
-```java	
+```java    
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_SELECTCONTACT_FORWARD);
             bl.putString(MesiboUI.MESSAGE_CONTENT,"This is forward message Test");
             bl.putBoolean(MesiboUI.FORWARD_AND_CLOSE,false);
-	    userListFragment.setArguments(bl);
+        userListFragment.setArguments(bl);
             
 ```
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/forward_mode.png" width="320" height="550">
 
 ### Loading Editing Group 
-This loads fragment to edit the group. Members, group name etc can be edited from here
+This loads fragment to edit the group. Members, group name, etc can be edited from here
 
-```java	
+```java    
             Bundle bl = new Bundle();
             bl.putInt(MesiboUserListFragment.MESSAGE_LIST_MODE, MesiboUserListFragment.MODE_EDITGROUP);
 
@@ -131,7 +131,7 @@ This loads fragment to select a group.
 
 MessagingFragment loads chat view when you click on any of the existing chat or start a new chat. Mesibo MessagingFragment renders all messages and populate a recycler view with messages.
 
-Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle. Put value of these two parameter in a Bundle. 
+Load MesiboMessagingFragment from your activity bypassing `MesiboUI.PEER` or `MesiboUI.GROUP_ID` in bundle. Put the value of these two parameter in a Bundle. 
 
 - `MesiboUI.PEER` - User Address(Destination).
 - `MesiboUI.GROUP_ID` - Group id.
@@ -145,17 +145,17 @@ Load MesiboMessagingFragment from your activity by passing `MesiboUI.PEER` or `M
 ```java
 
         MesiboMessagingFragment mFragment = new MesiboMessagingFragment();
-	
+    
         Bundle bl = new Bundle();
         bl.putString(MesiboUI.PEER, "John Player");
         bl.putLong(MesiboUI.GROUP_ID,0);
         bl.putLong(MesiboUI.MESSAGE_ID,0);
-	bl.putBoolean(MesiboMessagingFragment.READONLY,false);
+    bl.putBoolean(MesiboMessagingFragment.READONLY,false);
         bl.putBoolean(MesiboMessagingFragment.SHOWMISSEDCALLS,false);
 
         mFragment.setArguments(bl);
-	
-	// Add the fragment to the 'fragment_container' FrameLayout
+    
+    // Add the fragment to the 'fragment_container' FrameLayout
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mFragment).commit();
 
@@ -173,12 +173,12 @@ Mesibo allows you to customize your chat views as per your app theme and require
 The two basic elements that form a chat application are
 
 - Incoming chat view
-	Incoming chat view is a view that you see when you receive a message. By default, this view has everything from displaying received messages to displaying files and file types. Again, if you want to customize as per your theme and requirement you are open to do so.
-	
+    Incoming chat view is a view that you see when you receive a message. By default, this view has everything from displaying received messages to displaying files and file types. Again, if you want to customize as per your theme and requirement you are open to do so.
+    
 - Outgoing chat view
-	Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content. For example, based on your message status this view can be used to display status "ticks" - single tick, double tick, blue tick. You can customize an outgoing view as per your requirement.
-	
-	
+    Outgoing chat view is a view that you see when you send a message. Similar to incoming chat view this view also has different options to display outgoing content. For example, based on your message status this view can be used to display status "ticks" - single tick, double tick, blue tick. You can customize an outgoing view as per your requirement.
+    
+    
 Mesibo chat view is a recycler view that contains the incoming chat view and outgoing chat view, which adds Items(here messages) when a message is sent or received. All the messages are rendered one after another to load in recycler view with items one by one. As you scroll recycler view, more items are added based on the history of your chat. Using Mesibo recycler view here for displaying message gives advantage of not rendering and loading all the messages at a time, it gets loaded based on your scroll position. Customizing these views can be achieved easily let us see how it is done.
 
 
@@ -527,7 +527,7 @@ This is just one sample of the customization, Mesibo provides you option to cust
 
 # Mesibo Config
 
-`MesiboUI.Config` gives you option to get config variable and change according to your need. Mesibo.Config can also be written in your desired language. 
+`MesiboUI.Config` gives you the option to get the config variable and change according to your need. Mesibo.Config can also be written in your desired language. 
 
 ```java
 public static class Config {
@@ -575,14 +575,14 @@ For example, If you want to change the title of MesiboMessageList, get instance 
 ```java
 MesiboUI.Config config = MesiboUI.getConfig();
         config.messageListTitle = "New Messages";
-	
+    
 ```
-Now if you dont want to show recent contacted users at top you can set `showRecentInForward` to `false`
+Now if you don't want to show recent contacted users at top you can set `show recentInForward` to `false`
 
 ```java
 MesiboUI.Config config = MesiboUI.getConfig();
         config.showRecentInForward = false;
-	
+    
 ```
 
 Similarly, you can change the value of parameters as per your theme and need.

@@ -112,9 +112,18 @@ The layouts contains a set of views that gets displayed directly. This is a Json
 	  .
 	  .
 	  .
-	 
-```	 
-	  
+
+```	
+
+**── type ──**
+Type of the layouts, generally put layout to have a Linear layout.
+
+**── orientation ──**
+Orientation of the layout, `vertical` - for vertical orientation and `horizontal` for horizontal orientation.
+
+**── gravity ──**
+
+
 
 	  
 

@@ -127,7 +127,7 @@ Orientation of the layout, `vertical` - for vertical orientation and `horizontal
 
 Gravity is the layout gravity that you give in your Linear layout. Put `gravity` value as `s` - for gravity at `start`, `c` for `center` and `e` for gravity at `end`.
 
-**── views ──**
+## **── views ──**
 
 `views` is an array of elements that needs to be displayed. It has following attributes
 
@@ -443,7 +443,7 @@ Spinner is used to display a dropdown menu of items from which user can select a
 
 ```
 
-**── styles ──**
+## **── styles ──**
 
 In every view you can pass an style object that changes the style of your view. In Json it looks like this:- 
 ```java
@@ -497,7 +497,7 @@ Height of the view to be displayed.
 
 
 
-**── actions ──**
+## **── actions ──**
 
 However what makes Mesibo JsonView truly powerful is the ability to express functions that actually do something, entirely in JSON. We call it `action`. 
 
@@ -531,7 +531,7 @@ Actions can take the following attributes
     type: Specify action type. (note: THIS CANNOT BE A TEMPLATE EXPRESSION that needs to be evaluated. Use a static string.)
     text: text you want to show when action is performed, it is applicable in few types of `action` only.
 
-##### Type of `action`
+### Type of `action`
 
 **1. toast**
 
@@ -598,5 +598,13 @@ This action collects the values from all the views and sends it to the server. T
 ```
 
 
+### Example
+Lets see few example how these all works together, We are going the see all the views in this example.
 
+
+```java 
+
+
+
+```
 

@@ -287,5 +287,180 @@ Checkbox is used in that applications where we have to select one option from mu
 
 ```
 
+**7. radioGroup & radioButton**
+
+Radio button is like checkbox, but there is slight difference between them. Radio button is a  two-states button that can be either checked or unchecked. Since Radio buttons can be kept alone or in group, For group you need to keep radio buttons in radiogroup. RadioGroup has `orientation`- vertical/horizontal, this defines the orientation of the radio buttons.
+
+
+```java 
+
+{
+            "type": "radioGroup",
+            "name": "countdown",
+            "orientation": "vertical",
+            "rb": [
+              {
+                "type": "radioButton",
+                "name": "countdown",
+                "text": "Male",         
+                "textColor": "#000000",
+                "textSize": "20",
+                "style": {
+                  "padding": "10",
+                  "margin": "10",
+                  "border": "0",
+                  "borderColor": "#42a5f5",
+                  "backgroundColor": "0",
+                  "textStyle": "normal",
+                  "width": "m",
+                  "height": "w"
+                }
+              },
+              {
+                "type": "radioButton",
+                "name": "countdown",
+                "text": "Female",
+                "textColor": "#000000",
+                "textSize": "20",
+                "style": {
+                  "padding": "10",
+                  "margin": "10",
+                  "border": "0",
+                  "borderColor": "#42a5f5",
+                  "backgroundColor": "0",
+                  "textStyle": "normal",
+                  "width": "m",
+                  "height": "w"
+                }
+              }
+            ],
+            "style": {
+              "padding": "10",
+              "margin": "10",
+              "border": "0",
+              "borderColor": "#42a5f5",
+              "backgroundColor": "0",
+              "textStyle": "normal",
+              "width": "m",
+              "height": "w"
+            }
+          }
+
+```
+**8. line**
+
+line is used to display a line, you can give width, height, color, etc. to this line. 
+```java 
+
+{
+              
+           {
+            "type": "line",
+            "style": {
+              "margin": "15",
+              "backgroundColor": "#dcdcdc",
+              "width": "m",
+              "height": "5"
+            }
+          },
+}	    
+
+```
+
+**9. slider**
+
+Slider is a horizontal view with its children scrollable in the view. You can keep any type of view as its children, it can be ImageView, TextView etc.
+```java 
+
+{
+            "type": "slider",
+            "name": "ImageSlider",
+            "views": [
+              {
+                "type": "image",
+                "name": "Image View",
+                "imageUrl": "http://i.imgur.com/DvpvklR.png",
+                "style": {
+                  "padding": "0",
+                  "margin": "15",
+                  "border": "2",
+                  "borderColor": "#bdbdbd",
+                  "backgroundColor": "#ffffff",
+                  "width": "w",
+                  "height": "w"
+                }
+              },
+              {
+                "type": "image",
+                "name": "Image View1",
+                "imageUrl": "https://i.pinimg.com/originals/57/d6/18/57d618ca8019e488843795405db5b577.png",
+                "style": {
+                  "padding": "0",
+                  "margin": "15",
+                  "border": "2",
+                  "borderColor": "#bdbdbd",
+                  "backgroundColor": "#ffffff",
+                  "width": "w",
+                  "height": "w"
+                }
+              },
+              {
+                "type": "image",
+                "name": "Image View2",
+                "imageUrl": "http://i.imgur.com/DvpvklR.png",
+                "style": {
+                  "padding": "0",
+                  "margin": "15",
+                  "border": "2",
+                  "borderColor": "#bdbdbd",
+                  "backgroundColor": "#ffffff",
+                  "width": "w",
+                  "height": "w"
+                }
+              }
+            ],
+            "style": {
+              "padding": "10",
+              "margin": "10",
+              "border": "5",
+              "borderColor": "#42a5f5",
+              "backgroundColor": "#ffffff",
+              "textStyle": "normal",
+              "width": "m",
+              "height": "w"
+            }
+          }    
+
+```
+
+**10. spinner**
+
+Spinner is used to display a dropdown menu of items from which user can select anyone, you need to pass items of the menu 'items' as array.
+```java 
+
+{
+              
+           {
+            "type": "spinner",
+            "name": "countdown",
+            "text": "",
+            "textColor": "#000000",
+            "textSize": "20",
+            "items": ["1","2","3","4","5"],
+            "style": {
+              "padding": "10",
+              "margin": "10",
+              "border": "2",
+              "borderColor": "#000000",
+              "backgroundColor": "0",
+              "textStyle": "italic",
+              "width": "m",
+              "height": "w"
+            }
+          }
+}	    
+
+```
+
 
 

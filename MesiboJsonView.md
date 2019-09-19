@@ -137,14 +137,22 @@ Gravity is the layout gravity that you give in your Linear layout. Put `gravity`
 
 TextView as it is clear from name, this type is used to display text in your custom view. 
 
+Here,
+
+`name` : Its kind of id of the view to find it while performing action.
+`text` : Text that you want to display in Textview
+`textColor` : Colour of the text. Pass hex color code.
+`textSize` : Size of the text, Text size are set in dp.
+`textAlignment` : Alignment of the text, `s` for alignment at start, `c` for center and  `e` for alignmment at end.
+
 ```java
 {
             "type": "textView",
             "name": "NameET",
             "text": "Enter your name",
-            "value": "",
             "textColor": "#000000",
             "textSize": "20",
+	    "textAlignment": "c",
             "style": {
               "padding": "10",
               "margin": "10",
@@ -163,6 +171,14 @@ TextView as it is clear from name, this type is used to display text in your cus
 **2. editText**
 
 This type makes text to be editable. It helps in building the data interface taken from any user, also contains certain features through which we can hide the data which are confidential.
+
+`hint` : Hint of the editText. 
+`hintTextColor` : Color of the hint text.
+`value' : This is default value. If you need to pass a default value if the edit text is left empty.
+`valueType` : Type of the value allowed to enter in the edit text field. These are - "string", "number" and "email".
+`maxLength` : Number of maximum characters allowed to enter in the field.
+`minLength` : Number of minimum characters allowed to enter in the field.
+`valueError` : Error message if the entered characters are not in lie in between given max and min length.
 
 ```java
 	
@@ -193,11 +209,6 @@ This is used to create a button. Buttons are very helpful in getting into a cont
             "type": "button",
             "name": "name",
             "text": "Proceed",
-            "value": "",
-            "valueType": "string",
-            "maxLength": "0",
-            "minLenth": "0",
-            "valueError": "Max length 5",
             "textColor": "#42a5f5",
             "textSize": "15",
 	    "style": {
@@ -213,38 +224,9 @@ This is used to create a button. Buttons are very helpful in getting into a cont
 ```
 
 
-**4. button**
+**4. image**
 
-This is used to create a button. Buttons are very helpful in getting into a content. Android button represents a clickable push-button widget.
-
-```java 
-
-{
-            "type": "button",
-            "name": "name",
-            "text": "Proceed",
-            "value": "",
-            "valueType": "string",
-            "maxLength": "0",
-            "minLenth": "0",
-            "valueError": "Max length 5",
-            "textColor": "#42a5f5",
-            "textSize": "15",
-	    "style": {
-              "padding": "10",
-              "margin": "10",
-	     
-	     .
-	     .
-	     .
-	    }
-}	    
-
-```
-
-**5. image**
-
-Image view helps to display images. Any image can be selected, we just have to pass image url in `url` attribute and Mesibo View will render and loads image in a image view.
+Image view helps to display images. Any image can be selected, we just have to pass image url in `imageUrl` attribute and Mesibo View will render and loads image in a image view.
 ```java 
 
 {
@@ -263,7 +245,7 @@ Image view helps to display images. Any image can be selected, we just have to p
 
 ```
 
-**6. checkBox**
+**5. checkBox**
 
 Checkbox is used in that applications where we have to select one option from multiple provided. Checkbox is mainly used when 2 or more options are present.
 ```java 
@@ -287,7 +269,7 @@ Checkbox is used in that applications where we have to select one option from mu
 
 ```
 
-**7. radioGroup & radioButton**
+**6. radioGroup & radioButton**
 
 Radio button is like checkbox, but there is slight difference between them. Radio button is a  two-states button that can be either checked or unchecked. Since Radio buttons can be kept alone or in group, For group you need to keep radio buttons in radiogroup. RadioGroup has `orientation`- vertical/horizontal, this defines the orientation of the radio buttons.
 
@@ -347,7 +329,7 @@ Radio button is like checkbox, but there is slight difference between them. Radi
           }
 
 ```
-**8. line**
+**7. line**
 
 line is used to display a line, you can give width, height, color, etc. to this line. 
 ```java 
@@ -367,7 +349,7 @@ line is used to display a line, you can give width, height, color, etc. to this 
 
 ```
 
-**9. slider**
+**8. slider**
 
 Slider is a horizontal view with its children scrollable in the view. You can keep any type of view as its children, it can be ImageView, TextView etc.
 ```java 
@@ -433,7 +415,7 @@ Slider is a horizontal view with its children scrollable in the view. You can ke
 
 ```
 
-**10. spinner**
+**9. spinner**
 
 Spinner is used to display a dropdown menu of items from which user can select anyone, you need to pass items of the menu 'items' as array.
 ```java 
@@ -443,7 +425,6 @@ Spinner is used to display a dropdown menu of items from which user can select a
            {
             "type": "spinner",
             "name": "countdown",
-            "text": "",
             "textColor": "#000000",
             "textSize": "20",
             "items": ["1","2","3","4","5"],
@@ -461,6 +442,161 @@ Spinner is used to display a dropdown menu of items from which user can select a
 }	    
 
 ```
+
+**── styles ──**
+
+In every view you can pass an style object that changes the style of your view. In Json it looks like this:- 
+```java
+
+ "style": {
+                  "padding": "20",
+                  "margin": "10",
+                  "border": "15",
+                  "borderColor": "#42a5f5",
+                  "backgroundColor": "0",
+                  "textStyle": "normal",
+                  "width": "m",
+                  "height": "w"
+                }
+
+```
+`style` object has following attributes - 
+
+
+**1. padding**
+
+`padding` : Give padding to all sides equally. Value of the padding are taken in dp.
+
+**2. margin**
+
+`margin` : Give margin to all sides equally. Value of the padding are taken in dp.
+
+**3. border**
+
+`border` : Outline border is given using 'border'. The value of the border is the amount of round corners you want at all the four sides. Pass "border": "0" - To have rectanguar outline or "border": "10" - 10 being the round corner value.
+
+**4. borderColor**
+Color of the outline border.
+
+
+**5. backgroundColor**
+
+Background color of the View, passing hex color value will set background of the view as given color.
+
+**6. textStyle**
+
+This style is given specially to TextView and EditText. `bold`, `italic` and `normal` are three values you can pass to cahnge the text style accordingly.
+
+
+**7. width**
+
+Width of the view , you can pass `m` for full lenth as of the screen , `w` for wrapping around the view, as the size of the view, You can even pass width value in dp as "width": "5".
+
+**8. height**
+Height of the view to be displayed.
+
+
+
+**── actions ──**
+
+However what makes Mesibo JsonView truly powerful is the ability to express functions that actually do something, entirely in JSON. We call it `action`. 
+
+`action` is an array of actions, you can give action in array and Mesibo jsonview will perform all the action in the array one by one.
+
+This could be anything from accessing the device features such as camera or addressbook, to making network requests. And you can compose them to carry out any sophisticated tasks.
+
+Here, in json it looks like:
+
+```java
+
+  "actions": [{
+                "type": "toast",
+                "text": "Pop Music"
+              },
+              {
+                "type": "alert",
+                "text": "Proceed to next",
+                "positiveText": "Yes",
+                "negativeText": "Cancel"
+              }
+	    ]
+```
+
+
+
+##### Syntax
+
+Actions can take the following attributes
+
+    type: Specify action type. (note: THIS CANNOT BE A TEMPLATE EXPRESSION that needs to be evaluated. Use a static string.)
+    text: text you want to show when action is performed, it is applicable in few types of `action` only.
+
+##### Type of `action`
+
+**1. toast**
+
+`toast` can be used to display information for the short period of time. A `toast` contains message to be displayed quickly and disappears after sometime. 
+
+Attributes: 
+
+`text` is the message to display.
+
+
+```java
+
+  {
+                "type": "toast",
+                "text": "This is Toast Text"
+              }
+
+```
+
+
+**2. alert**
+
+`alert` can be used to display the dialog message with positive and negative buttons. It can be used to interrupt and ask the user about his/her choice to continue or discontinue.
+
+Attributes-
+
+`text` is the message to display.
+`positiveText`- A button to perform positive action.
+`negativeText` -  Button to generally dismis the alert box.
+
+```java
+
+ {
+                "type": "alert",
+                "text": "Proceed to next",
+                "positiveText": "Yes",
+                "negativeText": "Cancel"
+              }
+
+```
+
+**3. validate**
+
+This action is performed to validate the views with their own validation parameters. Suppose if a textview is validated it will validate if the TextView is empty or not, Max. and Min characters of the TextView. Similarly, user can give their own validation criteria and Mesibo Json view will let you validate the given view.
+
+Attributes-
+`text` is the name of the view. `name` is provided to all the views, giving perticular `name` in validation will validate that perticular view which matched with the given `name`.
+
+```java
+ {
+                "type": "validate",
+                "name": "NameTextView"
+              }
+```
+
+**3. send**
+
+This action collects the values from all the views and sends it to the server. This is sent via mesibo message.
+
+```java
+{
+                "type": "send"
+              }
+```
+
 
 
 

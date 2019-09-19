@@ -1,52 +1,52 @@
 # Mesibo JsonView
 
-Create your own view without writing single code in your native platform. Mesibo provides an easy to load view just by modifying a MesiboJsonView structure, all you need to do is modify our MesiboJson strucutre as per your UI requirement and load it, in no time you will see the same UI you have designed in json. Get you own custom view in less than a minute no kidding. 
+Create your view without writing a single code in your native platform. Mesibo provides an easy to load view just by modifying a MesiboJsonView structure, all you need to do is modify our MesiboJson structure as per your UI requirement and load it, in no time you will see the same UI you have designed in JSON. Get your custom view in less than a minute no kidding. 
 
-MesiboJsonView is designed to faciliate you with designing your own UI by just writing json. Pass json from server Mesibo will render it show your custom view.
+MesiboJsonView is designed to facilitate you with designing your UI by just writing JSON. Pass JSON from server Mesibo will render it show your custom view.
 
 ## MesiboJsonView fetches this JSON markup from a server:
 ```javascript
 
 {
-	"mesibo_json": {
-		"layouts": [{
-			"type": "layout",
-			"name": "topLayout",
-			"orientation": "vertical",
-			"gravity": "c",
-			"style": {
-				"padding": "10",
-				"margin": "10",
-				"border": "5",
-				"borderColor": "#bdbdbd",
-				"backgroundColor": "#ffffff",
-				"width": "m",
-				"height": "w"
+    "mesibo_json": {
+        "layouts": [{
+            "type": "layout",
+            "name": "topLayout",
+            "orientation": "vertical",
+            "gravity": "c",
+            "style": {
+                "padding": "10",
+                "margin": "10",
+                "border": "5",
+                "borderColor": "#bdbdbd",
+                "backgroundColor": "#ffffff",
+                "width": "m",
+                "height": "w"
 
-			},
-			"views": [{
-				"type": "textView",
-				"name": "nameTextView",
-				"text": "Enter your name",
-				"valueType": "string",
-				"textColor": "#000000",
-				"textSize": "20",
-				"style": {
-					"padding": "10",
-					"margin": "10",
-					"border": "0",
-					"borderColor": "#42a5f5",
-					"backgroundColor": "0",
-					"textStyle": "bold",
-					"width": "m",
-					"height": "w"
-				}
-			.
-			.
-			.
-			.
-		}]
-	}
+            },
+            "views": [{
+                "type": "textView",
+                "name": "nameTextView",
+                "text": "Enter your name",
+                "valueType": "string",
+                "textColor": "#000000",
+                "textSize": "20",
+                "style": {
+                    "padding": "10",
+                    "margin": "10",
+                    "border": "0",
+                    "borderColor": "#42a5f5",
+                    "backgroundColor": "0",
+                    "textStyle": "bold",
+                    "width": "m",
+                    "height": "w"
+                }
+            .
+            .
+            .
+            .
+        }]
+    }
 }
 
 ```
@@ -60,19 +60,19 @@ MesiboJsonView is designed to faciliate you with designing your own UI by just w
 ## How it works
 
 - Fetches Json markup from server
-Json structure is sent form server so you are completely independent from coding, write your json and send it the app. 
+JSON structure is sent form server so you are completely independent from coding, write your JSON and send it to the app. 
 
 - Itself construct into custom view
-When json a received from server Mesibo Json view renders and construct all the given view by itself.
+When JSON a received from server Mesibo Json view renders and construct all the given view by itself.
 
-- Update the json
-Simply update the json and see it in real time, No waiting.
+- Update the JSON
+Simply update the JSON and see it in real-time, No waiting.
 
 ## Cool things about MesiboJsonView
 
  - **100% Native**: MesiboJson view maps JSON into native components and native function calls. 
- - **Fast execution**: Just update json and its done.
- - **No Coding**: No need to code, basic knowledge of json structure will do the work.
+ - **Fast execution**: Just update JSON and its done.
+ - **No Coding**: No need to code, basic knowledge of JSON structure will do the work.
  
  
  # Structure and Uses
@@ -83,7 +83,7 @@ A MesiboJson view document always starts with `mesibo_json` as its root node, an
 
 **── layouts ──**
 
-The layouts contains a set of views that gets displayed directly. This is a JsonArray of views.
+The layouts contain a set of views that gets displayed directly. This is a JsonArray of views.
 
 `layouts` can contain the following attributes:
 
@@ -105,15 +105,15 @@ The layouts contains a set of views that gets displayed directly. This is a Json
         "gravity": "c",
         "style": {
          .
-	 .
-	 .
+     .
+     .
         },
         "views": [
-	  .
-	  .
-	  .
+      .
+      .
+      .
 
-```	
+```    
 
 **── type ──**
 
@@ -135,15 +135,15 @@ Gravity is the layout gravity that you give in your Linear layout. Put `gravity`
 
 **1. textView**
 
-TextView as it is clear from name, this type is used to display text in your custom view. 
+TextView as it is clear from the name, this type is used to display text in your custom view. 
 
 Here,
 
 `name` : Its kind of id of the view to find it while performing action.
 `text` : Text that you want to display in Textview
 `textColor` : Colour of the text. Pass hex color code.
-`textSize` : Size of the text, Text size are set in dp.
-`textAlignment` : Alignment of the text, `s` for alignment at start, `c` for center and  `e` for alignmment at end.
+`textSize` : Size of the text, Text size is set in dp.
+`textAlignment` : Alignment of the text, `s` for alignment at the start, `c` for center and  `e` for alignment at end.
 
 ```java
 {
@@ -152,7 +152,7 @@ Here,
             "text": "Enter your name",
             "textColor": "#000000",
             "textSize": "20",
-	    "textAlignment": "c",
+        "textAlignment": "c",
             "style": {
               "padding": "10",
               "margin": "10",
@@ -174,15 +174,15 @@ This type makes text to be editable. It helps in building the data interface tak
 
 `hint` : Hint of the editText. 
 `hintTextColor` : Color of the hint text.
-`value' : This is default value. If you need to pass a default value if the edit text is left empty.
+`value' : This is the default value. If you need to pass a default value if the edit text is left empty.
 `valueType` : Type of the value allowed to enter in the edit text field. These are - "string", "number" and "email".
 `maxLength` : Number of maximum characters allowed to enter in the field.
 `minLength` : Number of minimum characters allowed to enter in the field.
 `valueError` : Error message if the entered characters are not in lie in between given max and min length.
 
 ```java
-	
-	{
+    
+    {
             "type": "editText",
             "name": "name",
             "text": "",
@@ -198,10 +198,10 @@ This type makes text to be editable. It helps in building the data interface tak
           }
 
 ```
-	  
+      
 **3. button**
 
-This is used to create a button. Buttons are very helpful in getting into a content. Android button represents a clickable push-button widget.
+This is used to create a button. Buttons are very helpful in getting into content. Android button represents a clickable push-button widget.
 
 ```java 
 
@@ -211,43 +211,43 @@ This is used to create a button. Buttons are very helpful in getting into a cont
             "text": "Proceed",
             "textColor": "#42a5f5",
             "textSize": "15",
-	    "style": {
+        "style": {
               "padding": "10",
               "margin": "10",
-	     
-	     .
-	     .
-	     .
-	    }
-}	    
+         
+         .
+         .
+         .
+        }
+}        
 
 ```
 
 
 **4. image**
 
-Image view helps to display images. Any image can be selected, we just have to pass image url in `imageUrl` attribute and Mesibo View will render and loads image in a image view.
+Image view helps to display images. Any image can be selected, we just have to pass an image URL in `imageUrl` attribute and Mesibo View will render and loads an image in an image view.
 ```java 
 
 {
             "type": "image",
             "name": "Image View",
             "imageUrl": "https://i.pinimg.com/originals/57/d6/18/57d618ca8019e488843795405db5b577.png",
-	    "style": {
+        "style": {
               "padding": "10",
               "margin": "10",
-	     
-	     .
-	     .
-	     .
-	    }
-}	    
+         
+         .
+         .
+         .
+        }
+}        
 
 ```
 
 **5. checkBox**
 
-Checkbox is used in that applications where we have to select one option from multiple provided. Checkbox is mainly used when 2 or more options are present.
+Checkbox is used in those applications where we have to select one option from multiple provided. Checkbox is mainly used when 2 or more options are present.
 ```java 
 
 {
@@ -257,21 +257,21 @@ Checkbox is used in that applications where we have to select one option from mu
             "text": "Apple",
             "textColor": "#000000",
             "textSize": "20",
-	    "style": {
+        "style": {
               "padding": "10",
               "margin": "10",
-	     
-	     .
-	     .
-	     .
-	    }
-}	    
+         
+         .
+         .
+         .
+        }
+}        
 
 ```
 
 **6. radioGroup & radioButton**
 
-Radio button is like checkbox, but there is slight difference between them. Radio button is a  two-states button that can be either checked or unchecked. Since Radio buttons can be kept alone or in group, For group you need to keep radio buttons in radiogroup. RadioGroup has `orientation`- vertical/horizontal, this defines the orientation of the radio buttons.
+Radio button is like a checkbox, but there is a slight difference between them. Radio button is a  two-states button that can be either checked or unchecked. Since Radio buttons can be kept alone or in a group, For group you need to keep radio buttons in radiogroup. RadioGroup has `orientation`- vertical/horizontal, this defines the orientation of the radio buttons.
 
 
 ```java 
@@ -345,7 +345,7 @@ line is used to display a line, you can give width, height, color, etc. to this 
               "height": "5"
             }
           },
-}	    
+}        
 
 ```
 
@@ -439,13 +439,13 @@ Spinner is used to display a dropdown menu of items from which user can select a
               "height": "w"
             }
           }
-}	    
+}        
 
 ```
 
 ## **── styles ──**
 
-In every view you can pass an style object that changes the style of your view. In Json it looks like this:- 
+In every view you can pass a style object that changes the style of your view. In JSON it looks like this:- 
 ```java
 
  "style": {
@@ -465,15 +465,15 @@ In every view you can pass an style object that changes the style of your view. 
 
 **1. padding**
 
-`padding` : Give padding to all sides equally. Value of the padding are taken in dp.
+`padding` : Give padding to all sides equally. The value of the padding is taken in dp.
 
 **2. margin**
 
-`margin` : Give margin to all sides equally. Value of the padding are taken in dp.
+`margin` : Give margin to all sides equally. The value of the padding are taken in dp.
 
 **3. border**
 
-`border` : Outline border is given using 'border'. The value of the border is the amount of round corners you want at all the four sides. Pass "border": "0" - To have rectanguar outline or "border": "10" - 10 being the round corner value.
+`border` : Outline border is given using 'border'. The value of the border is the amount of round corners you want at all the four sides. Pass "border": "0" - To have rectangular outline or "border": "10" - 10 being the round corner value.
 
 **4. borderColor**
 Color of the outline border.
@@ -485,12 +485,12 @@ Background color of the View, passing hex color value will set background of the
 
 **6. textStyle**
 
-This style is given specially to TextView and EditText. `bold`, `italic` and `normal` are three values you can pass to cahnge the text style accordingly.
+This style is given especially to TextView and EditText. `bold`, `italic` and `normal` are three values you can pass to change the text style accordingly.
 
 
 **7. width**
 
-Width of the view , you can pass `m` for full lenth as of the screen , `w` for wrapping around the view, as the size of the view, You can even pass width value in dp as "width": "5".
+Width of the view, you can pass `m` for full length as of the screen, `w` for wrapping around the view, as the size of the view, you can even pass width value in dp as "width": "5".
 
 **8. height**
 Height of the view to be displayed.
@@ -503,9 +503,9 @@ However what makes Mesibo JsonView truly powerful is the ability to express func
 
 `action` is an array of actions, you can give action in array and Mesibo jsonview will perform all the action in the array one by one.
 
-This could be anything from accessing the device features such as camera or addressbook, to making network requests. And you can compose them to carry out any sophisticated tasks.
+This could be anything from accessing the device features such as camera or address book, to making network requests. And you can compose them to carry out any sophisticated tasks.
 
-Here, in json it looks like:
+Here, in JSON it looks like:
 
 ```java
 
@@ -519,7 +519,7 @@ Here, in json it looks like:
                 "positiveText": "Yes",
                 "negativeText": "Cancel"
               }
-	    ]
+        ]
 ```
 
 
@@ -535,7 +535,7 @@ Actions can take the following attributes
 
 **1. toast**
 
-`toast` can be used to display information for the short period of time. A `toast` contains message to be displayed quickly and disappears after sometime. 
+`toast` can be used to display information for a short period. A `toast` contains message to be displayed quickly and disappears after some time. 
 
 Attributes: 
 
@@ -560,7 +560,7 @@ Attributes-
 
 `text` is the message to display.
 `positiveText`- A button to perform positive action.
-`negativeText` -  Button to generally dismis the alert box.
+`negativeText` -  Button to generally dismiss the alert box.
 
 ```java
 
@@ -575,10 +575,10 @@ Attributes-
 
 **3. validate**
 
-This action is performed to validate the views with their own validation parameters. Suppose if a textview is validated it will validate if the TextView is empty or not, Max. and Min characters of the TextView. Similarly, user can give their own validation criteria and Mesibo Json view will let you validate the given view.
+This action is performed to validate the views with their validation parameters. Suppose if a textview is validated it will validate if the TextView is empty or not, Max. and Min characters of the TextView. Similarly, users can give their own validation criteria and Mesibo Json view will let you validate the given view.
 
 Attributes-
-`text` is the name of the view. `name` is provided to all the views, giving perticular `name` in validation will validate that perticular view which matched with the given `name`.
+`text` is the name of the view. `name` is provided to all the views, giving particular `name` in validation will validate that particular view which matched with the given `name`.
 
 ```java
  {
@@ -599,7 +599,7 @@ This action collects the values from all the views and sends it to the server. T
 
 
 ### Example
-Lets see few example how these all works together, We are going the see all the views in this example.
+Lets see a few example how these all works together, We are going the see all the views in this example.
 
 
 ```java 

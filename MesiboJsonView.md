@@ -125,7 +125,7 @@ Orientation of the layout, `vertical` - for vertical orientation and `horizontal
 
 **── gravity ──**
 
-Gravity is the layout gravity that you give in your Linear layout. Put `gravity' value as `s` - for gravity at `start`, `c` for `center` and `e` for gravity at `end`.
+Gravity is the layout gravity that you give in your Linear layout. Put `gravity` value as `s` - for gravity at `start`, `c` for `center` and `e` for gravity at `end`.
 
 **── views ──**
 
@@ -133,7 +133,7 @@ Gravity is the layout gravity that you give in your Linear layout. Put `gravity'
 
 ## Types of views
 
-**1. textView **
+**1. textView**
 
 TextView as it is clear from name, this type is used to display text in your custom view. 
 
@@ -160,7 +160,7 @@ TextView as it is clear from name, this type is used to display text in your cus
 ```
 
 
-**2. editText **
+**2. editText**
 
 This type makes text to be editable. It helps in building the data interface taken from any user, also contains certain features through which we can hide the data which are confidential.
 
@@ -183,7 +183,7 @@ This type makes text to be editable. It helps in building the data interface tak
 
 ```
 	  
-**3. button **
+**3. button**
 
 This is used to create a button. Buttons are very helpful in getting into a content. Android button represents a clickable push-button widget.
 
@@ -213,7 +213,7 @@ This is used to create a button. Buttons are very helpful in getting into a cont
 ```
 
 
-**4. button **
+**4. button**
 
 This is used to create a button. Buttons are very helpful in getting into a content. Android button represents a clickable push-button widget.
 
@@ -242,7 +242,7 @@ This is used to create a button. Buttons are very helpful in getting into a cont
 
 ```
 
-**5. image **
+**5. image**
 
 Image view helps to display images. Any image can be selected, we just have to pass image url in `url` attribute and Mesibo View will render and loads image in a image view.
 ```java 
@@ -263,7 +263,7 @@ Image view helps to display images. Any image can be selected, we just have to p
 
 ```
 
-**6. checkBox **
+**6. checkBox**
 
 Checkbox is used in that applications where we have to select one option from multiple provided. Checkbox is mainly used when 2 or more options are present.
 ```java 

@@ -89,7 +89,7 @@ class CNotify : public CMesiboNotify {
 Following is the Mesibo Initialization code.
 
 ```cpp
-#define AUTH_TOKEN 3e7694e19d192588a4ffcb4eab26b6afb3d5aada54bbd41ed140a
+#define AUTH_TOKEN "3e7694e19d192588a4ffab4eab26b6afb3d5aada54bbd41ed140a"
 #define APP_ID "mycppapp"
 
 IMesibo* mesibo_init(){
@@ -103,7 +103,7 @@ IMesibo* mesibo_init(){
 
   
 	// Set your AUTH_TOKEN obtained from the Mesibo Console
-	m_api->set_credentials("3e7694e19d192588a4ffcb4eab26b6afb3d5aada54bbd41edd7140a");
+	m_api->set_credentials(AUTH_TOKEN);
   
   	// Set  APP_ID which you used to create AUTH_TOKEN 
 	m_api->set_device(1, "cpp", APP_ID, "1.0.0");

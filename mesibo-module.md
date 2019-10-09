@@ -50,7 +50,7 @@ Client sends message → Mesibo chooses the appropriate function/process to laun
 
 ## Anatomy of Mesibo Module
 
-### a. Module Configuration Struct
+## Module Configuration Struct
 A Mesibo Module is described by a structure defined below. This is one of the most important data structures used in Mesibo module. 
 The mesibo module configuration contains:
 
@@ -77,11 +77,13 @@ For a detailed explanation of callback functions and their prototypes refer [Cal
 
 `cleanup` When module completes its work and is unloaded
 
-There are functions which are initialised by Mesibo which you can use. For a detailed explanation  refer [Core API functions]
+
+
+There are functions which are initialised by Mesibo which you can use. For a detailed explanation refer [Core API functions]()
 
 `send_message` To send message from one user to another
 
-`http` To send http POST request
+`http` To send http ie; REST type request
 
 `log` To print logs to mesibo server logs
 
@@ -109,7 +111,7 @@ typedef struct mesibo_module_s {
 } mesibo_module_t;
 
 ```
-### b. Module initialisation
+### Module initialisation
 The above module structure initialisation is performed by a callback function `mesibo_module_init_fn` the prototype for which can  be found in the file [module.h]().This function is automatically called by mesibo when module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
 
 The function takes two parameters:
@@ -144,7 +146,7 @@ int mesibo_module_test_init(mesibo_module_t *m, mesibo_uint_t len) {
 ```
 test_cleanup, test_on_message, test_on_message_status are functions that have been defined by you and serve as the corresponding callback functions cleanup,on_message & on_message_status .
 
-### c. Callback Functions
+### Callback Functions
 There are different callback functions that you can define in your module and instruct mesibo to call these functions under different events such as : 
 - When you get a message
 - When you send a message and get status of the sent message (Sent,Recieved or delievered)
@@ -212,11 +214,54 @@ int (*on_call)(mesibo_module_t *mod)
 ```C
 int (*on_call_status)(mesibo_module_t *mod)
 ```
+##  Core API functions
+These functions are initialised by Mesibo and you can utilise these functions to send a message, send a http request ,print logs,etc. Please note, that unlike the callback functions you need not pass any function references to initialise these functions as they are internally defined and initialised by Mesibo.
 
+Let's look at the syntax of these functions.
 
+### send_message
+This function can be used to send a message from on end-point or user to another.
+```C
+int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len);
+```
+Parameters:
+1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
+2. `params` of type `mesibo_message_params_t*` Pointer to message params struct.It contains message parameters such as 
+`id`- Unique message identifier(For example it can be a psuedo-random number), `from`-  sender of the message, `to`-  message recipient,etc For more details refer [Data Structures]().
+3. `message` of type character buffer `const char*` which contains the message data bytes
+4. `len` of type `mesibo_uint_t` containing the length of the message ie; number of bytes in the data buffer
 
+Returns:
+Integer : 0 on Success , -1 on failure
 
+### http
+This function can be used to send a http request (REST API type)
+```C
+int (*http)(mesibo_module_t *mod, const char *url, const char *post, mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt)
+```
+Parameters:
+1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
+2. `url` is a string which contains the path of the request, e.g. "api.mesibo.com/api.php"
+3. `post` is a string which contains the POST data .For example the part of the request after the question mark (e.g. "op=getcontacts"
+4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. 
+5. `cbdata` is a pointer to data of arbitrary user defined type. This callback data is passed on to your callback functionthat you have passed in the previous argument.
+6. `opt` is the `module_http_option_t` structure which contains `options` or additional parameters that you need to pass in your http request such as extra_header,content_type,etc. For more details about the `module_http_option_t` structure, refer [Data Structures]()
 
+Returns:
+Integer : 0 on Success , -1 on failure
+
+### log
+This function can be used to print to mesibo container logs.
+```C
+int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...)
+```
+Parameters:
+1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
+2. `level` of type `mesibo_uint_t` which defines log level
+3. `format` format string for printing data which is similar to that of `printf` followed by the data to print.
+
+Returns:
+Integer : 0 on Success , -1 on failure
 
 
 

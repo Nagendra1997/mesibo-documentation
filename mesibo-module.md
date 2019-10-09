@@ -50,10 +50,32 @@ Client sends message → Mesibo chooses the appropriate function/process to laun
 
 ## Anatomy of Mesibo Module
 
-## Module Configuration Struct
-A Mesibo Module is described by a structure defined below. This is one of the most important data structures used in Mesibo module. 
-The mesibo module configuration contains:
+## Mesibo Module Configuration Struct
+A Mesibo Module is described by a structure as defined below. This is one of the most important data structures used in Mesibo module. 
+```C
+typedef struct mesibo_module_s {
+        mesibo_uint_t   version;
+        mesibo_uint_t   flags;
+        const char      *name;
+        
+        int             (*cleanup)(mesibo_module_t *mod);
+        int             (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message,         
+                         mesibo_uint_t len);
+        int             (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status);
+        int             (*on_call)(mesibo_module_t *mod);
+        int             (*on_call_status)(mesibo_module_t *mod);
+        mesibo_uint_t   signature;
 
+        //These functions will be initialized by Mesibo
+        int             (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, 
+                         mesibo_uint_t len);
+        int             (*http)(mesibo_module_t *mod, const char *url, const char *post, 
+                         mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt);
+        int             (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...);
+
+} mesibo_module_t;
+
+```
 `version`: Model Version which is of type `mesibo_uint_t`
 
 `flags`: 
@@ -87,30 +109,7 @@ There are functions which are initialised by Mesibo which you can use. For a det
 
 `log` To print logs to mesibo server logs
 
-```C
-typedef struct mesibo_module_s {
-        mesibo_uint_t   version;
-        mesibo_uint_t   flags;
-        const char      *name;
-        
-        int             (*cleanup)(mesibo_module_t *mod);
-        int             (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message,         
-                         mesibo_uint_t len);
-        int             (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status);
-        int             (*on_call)(mesibo_module_t *mod);
-        int             (*on_call_status)(mesibo_module_t *mod);
-        mesibo_uint_t   signature;
 
-        //These functions will be initialized by Mesibo
-        int             (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, 
-                         mesibo_uint_t len);
-        int             (*http)(mesibo_module_t *mod, const char *url, const char *post, 
-                         mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt);
-        int             (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...);
-
-} mesibo_module_t;
-
-```
 ### Module initialisation
 The above module structure initialisation is performed by a callback function `mesibo_module_init_fn` the prototype for which can  be found in the file [module.h]().This function is automatically called by mesibo when module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
 

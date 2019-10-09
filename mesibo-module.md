@@ -13,9 +13,13 @@ This makes Mesibo, the most compelling real-time communication platform existing
 2. Module process overview
 3. Anatomy of Mesibo Module
    a. Module Configuration Struct
+   
    b. Module initialisation
+   
    c. Callback Functions
+   
    d. Core API functions (Better name)
+   
    e. Data types and structures
 4. Writing and Compiling Mesibo Modules 
 5. Loading modules
@@ -51,26 +55,37 @@ A Mesibo Module is described by a structure defined below. This is one of the mo
 The mesibo module configuration contains:
 
 `version` Model Version
+
 `flags`
+
 `name` Name of your module
+
 `signature`
+
 These attributes need to be initialised in the init function which we shall study later.
 
 There are a set of callback functions corresponding to different events which needs to be initialised by the caller of the module. Callback functions that you provide should have the exact same signature as defined in the `mesibo_module_t` struct.
 For a detailed explanation of callback functions and their prototypes refer [Callback functions]
 
 `on_message` When a message is sent from on endpoint to another in your application 
+
 `on_messagestatus` When a message is sent and you will recieve a status update
+
 `on_call`
+
 `on_call_status`
+
 `cleanup` When module completes its work and is unloaded
 
 There are functions which are initialised by Mesibo which you can use. For a detailed explanation  refer [Core API functions]
+
 `send_message` To send message from one user to another
+
 `http` To send http POST request
+
 `log` To print logs to mesibo server logs
 
-```
+```C
 typedef struct mesibo_module_s {
         mesibo_uint_t   version;
         mesibo_uint_t   flags;
@@ -98,7 +113,7 @@ typedef struct mesibo_module_s {
 The above module structure initialisation is performed by a callback function `mesibo_module_init_fn` the prototype for which can  be found in the file [module.h]().This function is automatically called by mesibo when module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
 
 For example,for a module named `test` (** which is defined in a file named `test.c`) the initialisation function looks like below.
-```
+```C
 int mesibo_module_test_init(mesibo_module_t *m, mesibo_uint_t len) {
   if (sizeof(mesibo_module_t) != len) {
     m->log(m, 0, "module size mismatch\n");
@@ -135,26 +150,32 @@ There are two important observations for all call back functions:
 - Mesibo Module Structure pointer: All callback functions include `the mesibo_module_t` structure pointer as the first argument
 - Pass or Consume mechanism according to return value: Each function returns an integer value which is defined in the file [module.h] 
 `MESIBO_RESULT_PASS` pass the data as it is and the recipient is notified
+
 `MESIBO_RESULT_CONSUMED` where the data is consumed and the recipient is not notified of this data
 
 
 
 Let's look in detail at the different callback functions and their prototypes:
 
-`int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len)`
+```C
+int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len)
+```
 This function is called when the module recieves a message.
 
 Prameters:
-`mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
-`params` of type `mesibo_message_params_t*` Pointer to message params struct.It contains message parameters such as `id`-Unique message identifier(For example it can be a psuedo-random number), `from`- sender of the message, `to`- message recipient,etc For more details refer [Data Structures]().
-`message` of type character buffer `const char*` which contains the message data bytes
-`len` of type `mesibo_uint_t` containing the length of the message ie; number of bytes in the data buffer
+1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
+2. `params` of type `mesibo_message_params_t*` Pointer to message params struct.It contains message parameters such as `id`-Unique message identifier(For example it can be a psuedo-random number), `from`- sender of the message, `to`- message recipient,etc For more details refer [Data Structures]().
+3. `message` of type character buffer `const char*` which contains the message data bytes
+4. `len` of type `mesibo_uint_t` containing the length of the message ie; number of bytes in the data buffer
 
 Returns:
 `MESIBO_RESULT_CONSUMED` if message data is to be consumed and the recipient will not recieve THIS message.
+
 `MESIBO_RESULT_PASS` pass the message as it is
 
-`int (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status)`
+```C
+int (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status)
+```
 This function is called when message is sent from the module and you recieve the status of the message.
 
 

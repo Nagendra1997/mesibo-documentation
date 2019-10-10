@@ -8,25 +8,19 @@ Let's look at how you can build and use Mesibo Modules to unlock new possibiliti
 ## Overview
 0. Prerequisites
 1. Overview of a Mesibo Module  
-   a. What is a Mesibo Module  	
-   b. What can you build with a Mesibo Module
+a. What is a Mesibo Module  
+b. What can you build with a Mesibo Module  
+c. How do Mesibo Modules work  
+d. Loading a Mesibo Module  
+2. Anatomy of Mesibo Module  
+a. Module Configuration Struct  
+b. Module initialisation  
+c. Callback Functions  
+d. Core API functions (Better name)  
+e. Data types and structures
 
-   c. How do Mesibo Modules work
-
-   d. Loading a Mesibo Module 
-
-3. Anatomy of Mesibo Module
-   a. Module Configuration Struct
-   
-   b. Module initialisation
-   
-   c. Callback Functions
-   
-   d. Core API functions (Better name)
-   
-   e. Data types and structures
-4. Writing and Compiling Mesibo Modules 
-5. Loading modules
+3. Writing and Compiling Mesibo Modules 
+4. Loading modules
 5. Code references and Examples
 
 ## Prerequisites 

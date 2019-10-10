@@ -49,7 +49,11 @@ You can build on top of this core platform, by extending the functionality of Me
 Mesibo modules can be built and loaded at runtime. The functionality of the modules is programmed by you and its capability is limited only by your imagination. 
 
 For example, let us see how you can implement a simple profanity filter using a Mesibo Module.
-You can easily build a filter module on top of Mesibo. When you recieve a message ,you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments of this function. Now, you can create a module that takes this message data/ text as input,analyse the text to find any profanity or objectionable content and return whether the message is safe and free of profanity or not. Based on the profanity filter module's output, you can PASS the message and safely send it to the recipient using the `send_message` function or you can CONSUME the unsafe message and prevent the message from reaching the reciever.
+### Building a profanity filter
+You can easily build a filter module on top of Mesibo. 
+- When you recieve a message ,you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments. 
+- Now, you can create a module that takes this message data/ text as input,analyse the text to find any profanity or objectionable content and return whether the message is safe and free of profanity or not. 
+- Based on the profanity filter module's output, you can PASS the message and safely send it to the recipient using the `send_message` function or you can CONSUME the unsafe message and prevent the message from reaching the reciever.
 
 ### How do Mesibo Modules work?
 A mesibo module performs two functions by linking  with your main Mesibo instance

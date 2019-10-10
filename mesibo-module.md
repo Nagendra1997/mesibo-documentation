@@ -1,16 +1,21 @@
 # Dynamically Loadable Modules and Scripting
 
-Mesibo On-Premise is designed by developers for developers. 
-Its dynamically loadable module architecture lets you load your own code for deeper integration with your infrastructure, 
-enabling you for unlimited creative possibilities. 
+Mesibo is designed by developers for developers. Its dynamically loadable module architecture lets you load your own code for deeper integration with your infrastructure, enabling you for unlimited creative possibilities. 
 
 This makes Mesibo, the most compelling real-time communication platform existing today.
-<add more>
+Let's look at how you can build and use Mesibo Modules to unlock new possibilities and innovative solutions.
 
 ## Overview
 0. Prerequisites
-1. Mesibo Module and Service architecture
-2. Module process overview
+1. Overview of a Mesibo Module 
+   a. What is a Mesibo Module	
+
+   b. What can you build with a Mesibo Module
+
+   c. How do Mesibo Modules work
+
+   d. Loading a Mesibo Module 
+
 3. Anatomy of Mesibo Module
    a. Module Configuration Struct
    
@@ -32,21 +37,47 @@ This makes Mesibo, the most compelling real-time communication platform existing
 - Request and Callback mechanism
 <Explain>
 
-## Mesibo Module and Service architecture 
-- Where module resides and loads
-- A bridge between your library-Service-Script
-<diagram>
-   <Explain>
+## What is a Mesibo Module?
 
-## Module process overview
-Mesibo module is made of two components:
-1. Core functions
-2. Callback functions
+Mesibo Module is a shared library(basically a .so file) that extends the functionality of Mesibo. Mesibo offers a powerful communication platform which can be simplified into two major functionalities:
+- Sending Data
+- Recieving data
 
-Typical processing cycle:
-Client sends message → Mesibo chooses the appropriate function/process to launch as defined in your module interface→Processing through Module Chain →Call custom script interface→Return Response via callback→ Choose whether to PASS or CONSUME result → Send response to client
-<diagram>
-   <Explain>
+You can build on top of this core platform, by extending the functionality of Mesibo using a Mesibo Module.
+
+### What can you build with a Mesibo Module?
+Mesibo modules can be built and loaded at runtime. The functionality of the modules is programmed by you and its capability is limited only by your imagination. 
+
+For example, let us see how you can implement a simple profanity filter using a Mesibo Module.
+You can easily build a filter module on top of Mesibo. When you recieve a message ,you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments of this function. Now, you can create a module that takes this message data/ text as input,analyse the text to find any profanity or objectionable content and return whether the message is safe and free of profanity or not. Based on the profanity filter module's output, you can PASS the message and safely send it to the recipient using the `send_message` function or you can CONSUME the unsafe message and prevent the message from reaching the reciever.
+
+### How do Mesibo Modules work?
+A mesibo module performs two functions by linking  with your main Mesibo instance
+- Recieve request/data through callback functions
+- Process the data and send the result
+
+The mesibo API instance invokes and communicates with any number of mesibo modules to perform various operation instructed by you. Mesibo can pass data to a chain of mesibo modules where the output of one module is piped to the input of anotherand the final result obtained from the processing of the module chain is sent back to the client.
+
+### Loading a Mesibo Module 
+As described previously, a mesibo module is simply as shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
+
+So,how do you load your Mesibo module?
+To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and initialised your module,which is used to build your module.
+
+For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
+and the name of your module could be `test` with `test.c` being your C source file.
+
+You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container.
+For example,
+```
+sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
+-p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
+	      <app token> 
+``` 
+You need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
+`module= <module name>`
+
+Now that you understand the overall functionality of a Mesibo module, let's dive deep into the techincal details of what forms a mesibo module.
 
 ## Anatomy of Mesibo Module
 
@@ -76,17 +107,19 @@ typedef struct mesibo_module_s {
 } mesibo_module_t;
 
 ```
-`version`: Model Version which is of type `mesibo_uint_t`
+The mesibo module configuration contains:
+
+### a. Basic Configuration details
+`version`: Module Version 
 
 `flags`: 
 
 `name`: Name of your module which is a string 
 
-`signature`:
+`signature`: Module Signature which needs to be verified in the initialisation step
 
-These attributes need to be initialised in the init function which we shall study later.
-
-There are a set of callback functions corresponding to different events which needs to be initialised by the caller of the module. Callback functions that you provide should have the exact same signature as defined in the `mesibo_module_t` struct.
+### b. Callback functions
+There are a set of callback functions which needs to be initialised by the caller of the module. These callback functions are called by Mesibo based on different events. Callback functions that you provide should have the exact same signature as defined in the `mesibo_module_t` struct.
 For a detailed explanation of callback functions and their prototypes refer [Callback functions]
 
 `on_message`: When a message is sent from on endpoint to another in your application 
@@ -100,7 +133,7 @@ For a detailed explanation of callback functions and their prototypes refer [Cal
 `cleanup` When module completes its work and is unloaded
 
 
-
+### c. Core utility functions
 There are functions which are initialised by Mesibo which you can use. For a detailed explanation refer [Core API functions]()
 
 `send_message` To send message from one user to another
@@ -111,7 +144,7 @@ There are functions which are initialised by Mesibo which you can use. For a det
 
 
 ### Module initialisation
-The above module structure initialisation is performed by a callback function `mesibo_module_init_fn` the prototype for which can  be found in the file [module.h]().This function is automatically called by mesibo when module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
+The above module structure initialisation is performed by a callback function,the prototype for which can  be found in the file [module.h]().This function is automatically called by mesibo when module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
 
 The function takes two parameters:
 1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct

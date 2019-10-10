@@ -37,7 +37,7 @@ Mesibo Module is a shared library(basically a .so file) that extends the functio
 - Recieving data
 
 You can build on top of this core platform, by extending the functionality of Mesibo using a Mesibo Module.
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules.jpg" width="500">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules.jpg" width="1000" align='center'>
 
 ### What can you build with a Mesibo Module?
 Mesibo modules can be built and loaded at runtime. The functionality of the modules is programmed by you and its capability is limited only by your imagination. 
@@ -54,7 +54,7 @@ A mesibo module performs two functions by linking  with your main Mesibo instanc
 - Recieve request/data through callback functions
 - Process the data and send the result
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="500">
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="1000" align='center'>
 
 The mesibo API instance invokes and communicates with any number of mesibo modules to perform various operation instructed by you. Mesibo can pass data to a chain of mesibo modules where the output of one module is piped to the input of anotherand the final result obtained from the processing of the module chain is sent back to the client.
 

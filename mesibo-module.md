@@ -7,9 +7,8 @@ Let's look at how you can build and use Mesibo Modules to unlock new possibiliti
 
 ## Overview
 0. Prerequisites
-1. Overview of a Mesibo Module 
-   a. What is a Mesibo Module	
-
+1. Overview of a Mesibo Module  
+   a. What is a Mesibo Module  	
    b. What can you build with a Mesibo Module
 
    c. How do Mesibo Modules work

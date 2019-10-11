@@ -440,7 +440,7 @@ To write and build your Mesibo Module follow the steps below:
 4. Initialize mesibo module as follows by providing a module name, your callback function references, etc
 ```
 ```
-5. To compile your module you can refer the sample `MakeFile` provided which builds and places the resulting shared library in /etc/mesibo/module_<module name>.so
+5. To compile your module you can refer the sample `MakeFile` provided which builds and places the resulting shared library in `/etc/mesibo/module_<module name>.so`
 
 ## 4. Loading modules
 <How to load multiple modules?Ans: mount paths and list module names>

@@ -189,9 +189,8 @@ You need to provide the callback functions with same prototype while initialisin
 
 There are two important observations for all call back functions:
 - Mesibo Module Structure pointer: All callback functions include `the mesibo_module_t` structure pointer as the first argument
-- Pass or Consume mechanism according to return value: Each function returns an integer value which is defined in the file [module.h] 
-`MESIBO_RESULT_PASS` pass the data as it is and the recipient is notified
-
+- Pass or Consume mechanism according to return value: Each function returns an integer value which is defined in the file [module.h]()     
+`MESIBO_RESULT_PASS` pass the data as it is and the recipient is notified  
 `MESIBO_RESULT_CONSUMED` where the data is consumed and the recipient is not notified of this data
 
 

@@ -2,7 +2,7 @@
 
 Mesibo is designed by developers for developers. Its dynamically loadable module architecture lets you load your own code for deeper integration with your infrastructure, enabling you for unlimited creative possibilities. 
 
-With Mesibo Modules you can build powerful chatbots,filters,remotely communicate with hardware for IoT and robotics and much more, all the way keeping your data securely and private in your own servers.  
+With Mesibo Modules you can build powerful chatbots,filters,remotely communicate with hardware for IoT and robotics,integrate with Machine learning and Scientific computing backend such as TensorFlow,DialogFlow,Matlab,etc and much more, all the way keeping your data secure and private in your own servers.  
 
 This makes Mesibo, the most compelling real-time communication platform existing today.
 Let's look at how you can build and use Mesibo Modules to unlock new possibilities and innovative solutions.

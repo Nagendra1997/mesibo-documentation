@@ -5,6 +5,7 @@ Mesibo is designed by developers for developers. Its dynamically loadable module
 This makes Mesibo, the most compelling real-time communication platform existing today.
 Let's look at how you can build and use Mesibo Modules to unlock new possibilities and innovative solutions.
 
+
 ## Overview
 0. Prerequisites
 1. Overview of a Mesibo Module  
@@ -27,7 +28,7 @@ e. Data Structures
 - Getting Started Guide
 - Knowledge of Building and deploying C/C++ shared libraries
 - Request and Callback mechanism
-<Explain more ?>
+
 
 ## What is a Mesibo Module?
 

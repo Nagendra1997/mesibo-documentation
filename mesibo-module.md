@@ -133,7 +133,7 @@ For a detailed explanation of callback functions and their prototypes refer [Cal
 
 
 ### c. Core utility functions
-There are functions which are initialised by Mesibo which you can use. For a detailed explanation refer [Core API functions]()
+There are functions which are initialised by Mesibo which you can use. For a detailed explanation refer [Core Utility functions]()
 
 `send_message` To send message from one user to another
 
@@ -265,22 +265,93 @@ Parameters:
 Returns:
 Integer : 0 on Success , -1 on failure
 
+Example,
+```C
+	mesibo_message_params_t	p;
+	p.to = 'user_source';
+	p.from = 'user_destination';
+	p.id = rand();
+	const char* message = "Hello from Module";
+	mesibo_uint_t len = strlen(message);
+	mod->send_message(mod, &p, message, len);
+```
+
 ### http
-This function can be used to send a http request (REST API type)
+This function can be used to make an http request.
 ```C
 int (*http)(mesibo_module_t *mod, const char *url, const char *post, mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt)
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
 2. `url` is a string which contains the path of the request, e.g. "api.mesibo.com/api.php"
-3. `post` is a string which contains the POST data .For example the part of the request after the question mark (e.g. "op=getcontacts"
-4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. 
+3. `post` is a string which contains the POST data .For example the part of the request after the question mark (e.g. "op=userdel" )
+4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function]() provided.
 5. `cbdata` is a pointer to data of arbitrary user defined type. This callback data is passed on to your callback functionthat you have passed in the previous argument.
 6. `opt` is the structure which contains `options` or additional parameters that you need to pass in your http request such as extra_header,content_type,etc. For more details about the `module_http_option_t` structure, refer [Data Structures]()
 
 Returns:
 Integer : 0 on Success , -1 on failure
 
+Example,
+If your REST API url looks like https://api.mesibo.com/api.php?op=userdel&token=123434343xxxxxxxxx&uid=456, then you send the HTTP request as follows. You can store data of any arbitrary type such as a C struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
+```C
+ tMessageContext *b = (tMessageContext *)calloc(1, sizeof(tMessageContext));
+ b->mod = mod;
+ mod->http(mod,"https://app.mesibo.com/api.php","op=userdel&token=123434343xxxxxxxxx&uid=456",mesibo_http_callback,(void*)b,NULL);
+```
+
+### HTTP Callback Function
+The callback function reference,`cb` that you pass as a parameter should be defined as per the function protoype `mesibo_module_http_data_callback_t` in `module.h`.
+```C
+typedef int (*mesibo_module_http_data_callback_t)(void *cbdata, mesibo_int_t state, mesibo_int_t progress, const char *buffer, mesibo_int_t size);
+```
+The callback function takes the following parameters:
+`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while call the request function `http`.  
+`state` An integer indicating state of the response data being passed. 
+```C
+typedef enum {MODULE_HTTP_STATE_REQUEST, MODULE_HTTP_STATE_REQBODY, MODULE_HTTP_STATE_RESPHEADER, MODULE_HTTP_STATE_RESPBODY, MODULE_HTTP_STATE_DONE} module_http_state_t;
+```
+`buffer` The response is delievered via the callback function asynchronously using buffers. This means, for example, a module can start sending the response from a backend server and stream it to the client before the module has received the entire response from the backend.
+
+`size` Buffer size ie; Number of bytes in the buffer
+
+If you do not want to stream the response immediately ,you can keep copying the response bytes and save it to a buffer with each progress session and send the complete response to the client once the progress is complete. 
+For example,
+```C
+static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
+                                mesibo_int_t progress, const char *buffer,
+                                mesibo_int_t size) {
+  tMessageContext *b = (tMessageContext *)cbdata;
+  mesibo_module_t *mod = b->mod;
+  mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
+           (int)state, (int)size);
+
+  if (progress < 0) {
+    mod->log(mod, 0, " Error in http callback \n");
+    free(b);
+    return -1;
+  }
+
+  if (state != MODULE_HTTP_STATE_RESPBODY) {
+    mod->log(mod, 0, " Exit http callback \n");
+    free(b);
+    return 0;
+  }
+
+  if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
+    memcpy(b->buffer + b->datalen, buffer, size);
+    b->datalen += size;
+  }
+
+  if (progress == 100) {
+    mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
+    free(b);
+  }
+
+  return 0;
+}
+
+```
 ### log
 This function can be used to print to mesibo container logs.
 ```C
@@ -294,6 +365,10 @@ Parameters:
 Returns:
 Integer : 0 on Success , -1 on failure
 
+Example,
+```C
+mod->log(mod,0,"%s \n","Hello, from Mesibo Module!");
+```
 ## Data Structures
 
 ### Message Parameters Structure

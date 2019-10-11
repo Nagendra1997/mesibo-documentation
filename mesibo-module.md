@@ -399,7 +399,7 @@ typedef struct mesibo_message_params_s {
 
 ### HTTP Options Structure
 To pass`options` parameter of a HTTP request in the function `http()` (which is described in the previous section, Core  Utility Functions) you use the C structure `module_http_option_t`
-```
+```C
 typedef struct _module_http_option_t {
     const char *proxy;
 

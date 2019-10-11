@@ -306,15 +306,14 @@ The callback function reference,`cb` that you pass as a parameter should be defi
 ```C
 typedef int (*mesibo_module_http_data_callback_t)(void *cbdata, mesibo_int_t state, mesibo_int_t progress, const char *buffer, mesibo_int_t size);
 ```
-The callback function takes the following parameters:
-`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while call the request function `http`.  
-`state` An integer indicating state of the response data being passed. 
+The callback function takes the following parameters:  
+1.`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while call the request function `http`.  
+2.`state` An integer indicating state of the response data being passed.   
 ```C
 typedef enum {MODULE_HTTP_STATE_REQUEST, MODULE_HTTP_STATE_REQBODY, MODULE_HTTP_STATE_RESPHEADER, MODULE_HTTP_STATE_RESPBODY, MODULE_HTTP_STATE_DONE} module_http_state_t;
 ```
-`buffer` The response is delievered via the callback function asynchronously using buffers. This means, for example, a module can start sending the response from a backend server and stream it to the client before the module has received the entire response from the backend.
-
-`size` Buffer size ie; Number of bytes in the buffer
+3.`buffer` The response is delievered via the callback function asynchronously using buffers. This means, for example, a module can start sending the response from a backend server and stream it to the client before the module has received the entire response from the backend.
+4.`size` Buffer size ie; Number of bytes in the buffer
 
 If you do not want to stream the response immediately ,you can keep copying the response bytes and save it to a buffer with each progress session and send the complete response to the client once the progress is complete. 
 For example,

@@ -287,18 +287,20 @@ Parameters:
 2. `url` is a string which contains the path of the request, e.g. "api.mesibo.com/api.php"
 3. `post` is a string that contains the POST data.For example the part of the request after the question mark (e.g. "op=userdel" )
 4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function]() provided.
-5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument.
+5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument.You can store data of any arbitrary type such as a C struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
 6. `opt` is the structure that contains `options` or additional parameters that you need to pass in your HTTP request such as extra_header,content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures]()
 
 Returns:
 Integer : 0 on Success , -1 on failure
 
 Example,
-If your REST API url looks like https://api.mesibo.com/api.php?op=userdel&token=123434343xxxxxxxxx&uid=456, then you send the HTTP request as follows. You can store data of any arbitrary type such as a C struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
+If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123434343xxxxxxxxx&uid=456, then you send the HTTP request as follows. 
 ```C
  tMessageContext *b = (tMessageContext *)calloc(1, sizeof(tMessageContext));
  b->mod = mod;
- mod->http(mod,"https://app.mesibo.com/api.php","op=userdel&token=123434343xxxxxxxxx&uid=456",mesibo_http_callback,(void*)b,NULL);
+ const char* url = "https://app.mesibo.com/api.php"; //API endpoint
+ const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456" // POST Request Data
+ mod->http(mod, url, post, mesibo_http_callback,(void*)b,NULL);
 ```
 
 ### HTTP Callback Function

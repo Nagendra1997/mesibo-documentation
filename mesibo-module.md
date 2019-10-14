@@ -59,7 +59,7 @@ You can easily build a filter module on top of Mesibo.
 
 ### How do Mesibo Modules work?
 A mesibo module performs two functions by linking  with your main Mesibo instance
-- Recieve request/data through callback functions
+- Receive request/data through callback functions
 - Process the data and send the result
 
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="1000" align='center'>
@@ -510,7 +510,7 @@ int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
 ```
 ### 3.`bot_on_message`
 
-We need message containing queries from the end user only. `on_message` will alert you for any message sent or recieved. So, we filter these messages to match only those messages that are incoming from a particular user `bot_user`. 
+We need message containing queries from the end user only. `on_message` will alert you for any message sent or received. So, we filter these messages to match only those messages that are incoming from a particular user `bot_user`. 
 For incoming messages from `bot_user` we process the message/query and send a response from the chat-bot.
 For all other messages we pass the message as it is.
 ```C
@@ -563,7 +563,8 @@ An HTTP query sample for dialogFlow looks like below
 
 Follwing this POST format we send an HTTP request using the function `http`. 
 
-On recieving the response in the http callback function, from DialogFlow we need to send the response back to the user who made the request. So we store the context of the recieved message ie; message parameters and other data in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the _tMessageContext structure accordingly.
+On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters and other data in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the _tMessageContext structure accordingly.
+
 ```C
 typedef struct _tMessageContext {
   mesibo_module_t *mod;
@@ -598,11 +599,59 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
   message_context->mod = mod;
   message_context->params = p;
   
-  mod->http(mod, base_url, request_body, mesibo_http_callback, (void*)message_context, request_options)
+  mod->http(mod, base_url, request_body, bot_http_callback, (void*)message_context, request_options);
+  
+  return 0;
   
    }
 ```                           
+### 5. Define the Callback function to receive the response from your bot
+In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to user who sent the query.
 
+```C
+static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
+                                mesibo_int_t progress, const char *buffer,
+                                mesibo_int_t size) {
+  tMessageContext *b = (tMessageContext *)cbdata;
+  mesibo_module_t *mod = b->mod;
+  mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
+           (int)state, (int)size);
+
+  if (progress < 0) {
+    mod->log(mod, 0, " Error in http callback \n");
+    free(b);
+    return -1;
+  }
+
+  if (state != MODULE_HTTP_STATE_RESPBODY) {
+    mod->log(mod, 0, " Exit http callback \n");
+    free(b);
+    return 0;
+  }
+  
+  if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
+    memcpy(b->buffer + b->datalen, buffer, size);
+    b->datalen += size;
+  }
+
+  if (progress == 100) {
+    mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
+    mesibo_message_params_t* p = ( mesibo_message_params_t *)calloc(1, sizeof( mesibo_message_params_t));
+    p->id = rand();
+    p->aid = b->aid;
+    p->from = b->to; 
+    p->to = b->from; //User adress who sent the query is the recipient
+    p->expiry = 3600;
+
+    mod->log(mod,0 ," ===> Sending response :aid %u id %u from %s to %s  len %d\n",p->aid, p->id,p->from,p->to,b->datalen);
+    mod->send_message(mod, p, b->buffer, (mesibo_uint_t)b->datalen);
+
+    free(b);
+  }
+
+  return 0;
+
+```
 
 
 

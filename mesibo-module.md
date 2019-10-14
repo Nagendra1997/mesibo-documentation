@@ -286,7 +286,7 @@ If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123
 ```C
  const char* url = "https://app.mesibo.com/api.php"; //API endpoint
  const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456"; // POST Request Data
- mod->http(mod, url, post, mesibo_http_callback,(void*)msg_context,NULL);
+ mod->http(mod, url, post, mesibo_http_callback,NULL,NULL);
 ```
 
 ### HTTP Callback Function

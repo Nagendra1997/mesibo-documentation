@@ -13,7 +13,7 @@ Let's look at how you can build and use Mesibo Modules to unlock new possibiliti
 a. What is a Mesibo Module  
 b. What can you build with a Mesibo Module  
 c. How do Mesibo Modules work  
-d. Loading a Mesibo Module  
+
 2. Anatomy of Mesibo Module  
 a. Module Configuration Struct  
 b. Module initialization  
@@ -21,7 +21,7 @@ c. Callback Functions
 d. Core Utility functions (Better name)  
 e. Data Structures
 3. Writing and Compiling Mesibo Modules 
-4. Loading modules
+4. Loading a Mesibo Module
 5. Code references and Examples
 
 ## Prerequisites 
@@ -33,11 +33,16 @@ e. Data Structures
 
 ## What is a Mesibo Module?
 
-Mesibo Module is a shared library(basically a .so file) that extends the functionality of Mesibo. Mesibo offers a powerful communication platform which can be simplified into two major functionalities:
+Mesibo Module is essentially a message processor which allows you to :
+- Capture each message and decide whether to pass the message as it is or consume it
+- Alter,block or filter each message
+- Process the message and send an automatic response
+
+Mesibo offers a powerful communication platform which can be simplified into two major functionalities:
 - Sending Data
 - Receiving data
 
-You can build on top of this core platform, by extending the functionality of Mesibo using a Mesibo Module.
+You can build Mesibo Module on top of the core platform, as a shared library(basically a .so file) and load it to extend the functionality of the Mesibo.
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules.jpg" width="1000" align='center'>
 
 ### What can you build with a Mesibo Module?
@@ -58,25 +63,6 @@ A mesibo module performs two functions by linking  with your main Mesibo instanc
 <img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="1000" align='center'>
 
 The mesibo API instance invokes and communicates with any number of mesibo modules to perform various operation instructed by you. Mesibo can pass data to a chain of mesibo modules where the output of one module is piped to the input of another and the final result obtained from the processing of the module chain is sent back to the client.
-
-### Loading a Mesibo Module 
-As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
-
-So, how do you load your Mesibo module?
-To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and initialized your module, which is used to build your module.
-
-For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
-and the name of your module could be `test` with `test.c` being your C source file.
-
-You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container.
-For example,
-```
-sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
--p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
-          <app token> 
-``` 
-You need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
-`module= <module name>`
 
 Now that you understand the overall functionality of a Mesibo module, let's dive deep into the technical details of what forms a mesibo module.
 
@@ -442,10 +428,16 @@ To write and build your Mesibo Module follow the steps below:
 ```
 5. To compile your module you can refer the sample `MakeFile` provided which builds and places the resulting shared library in `/etc/mesibo/module_<module name>.so`
 
-## 4. Loading modules
-<How to load multiple modules?Ans: mount paths and list module names>
-You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container. You also need to mount the directory `/etc/mesibo/` which contains your mesibo configuration file `mesibo.conf`.
+## 4. Loading a Mesibo Module 
+As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
 
+So, how do you load your Mesibo module?
+To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and initialized your module, which is used to build your module.
+
+For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
+and the name of your module could be `test` with `test.c` being your C source file.
+
+You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container. You also need to mount the directory `/etc/mesibo/` which contains your mesibo configuration file `mesibo.conf`.
 For example,
 ```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
@@ -454,7 +446,6 @@ sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /
 ``` 
 You need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
 `module= <module name>`
-
 
 ## 5. Code references and Examples
  

@@ -441,6 +441,8 @@ To write and build your Mesibo Module follow the steps below:
 4. Initialize mesibo module as by providing a module name, your callback function references, etc
 5. To compile your module you can refer the sample `MakeFile` provided which builds and places the resulting shared library in `/etc/mesibo/module_<module name>.so`
 
+For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chatbot]()
+
 ## 4. Loading a Mesibo Module 
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
 initialized your module, which is used to build your module.
@@ -579,28 +581,39 @@ typedef struct _tMessageContext {
 ```
 
 ```C
-  static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-                           const char *message, mesibo_uint_t len){
-  mod->log(mod, 0, "Processing message from %s \n",p->from);
-  char* base_url = "https://api.dialogflow.com/v1/query?v=20150910";
-  char* request_body = "{'lang': 'en','sessionId': '12345','timezone': 'America/New_York','query':" ;
-  char* raw_post_data = (char*)calloc(1,strlen(request_body)+ len + 2);
-  memcpy(raw_post_data,request_body,strlen(request_body));
-  memcpy(raw_post_data + strlen(request_body),message,len);
-  memcpy(raw_post_data + strlen(request_body)+ len, "}\0",2);
+static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+                               const char *message, mesibo_uint_t len) {
+  mod->log(mod, 0, "Processing message from %s \n", p->from);
+  char *base_url = "https://api.dialogflow.com/v1/query?v=20150910";
+  char *request_body =
+      "{'lang': 'en','sessionId': '12345','timezone': "
+      "'America/New_York','query':";
+  char *raw_post_data = (char *)calloc(1, strlen(request_body) + len + 2);
+  memcpy(raw_post_data, request_body, strlen(request_body));
+  memcpy(raw_post_data + strlen(request_body), message, len);
+  memcpy(raw_post_data + strlen(request_body) + len, "}\0", 2);
 
-  module_http_option_t* request_options = (module_http_option_t*)calloc(1,sizeof(module_http_option_t)) ;
+  module_http_option_t *request_options =
+      (module_http_option_t *)calloc(1, sizeof(module_http_option_t));
   // Your dialogFlow CLIENT_ACCESS_TOKEN
-  request_options->extra_header =  "Authorization: Bearer 4b458b3febxxxxxxxxxxxxxxxxxxx";
-  request_options->content_type =  "application/json";
+  request_options->extra_header =
+      "Authorization: Bearer 4b458b3feba0448f9110c96d9b873de9";
+  request_options->content_type = "application/json";
 
-  tMessageContext* message_context =  (tMessageContext*)calloc(1,sizeof(tMessageContext)) ;
+  tMessageContext *message_context =
+      (tMessageContext *)calloc(1, sizeof(tMessageContext));
   message_context->mod = mod;
   message_context->params = p;
+  mod->log(
+      mod, 0,
+      " ===> Sending htpp for msg params :aid %u id %u from %s to %s  len %d\n",
+      p->aid, p->id, p->from, p->to, len);
 
-  mod->http(mod, base_url, request_body, bot_http_callback, (void*)message_context, request_options);
+  mod->http(mod, base_url, raw_post_data, bot_http_callback,
+            (void *)message_context, request_options);
 
   return 0;
+}
 
    }
 ```                           
@@ -610,11 +623,16 @@ In the callback function, we will be getting the response in asynchronous blocks
 ```C
 
 static int bot_http_callback(void *cbdata, mesibo_int_t state,
-                                mesibo_int_t progress, const char *buffer,
-                                mesibo_int_t size) {
+                             mesibo_int_t progress, const char *buffer,
+                             mesibo_int_t size) {
   tMessageContext *b = (tMessageContext *)cbdata;
   mesibo_module_t *mod = b->mod;
   mesibo_message_params_t *params = b->params;
+  mod->log(mod, 0,
+             " ===> message context parameters :aid %u id %u from %s to %s \n",
+             params->aid, params->id, params->from, params->to);
+
+
   mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
            (int)state, (int)size);
 
@@ -625,11 +643,12 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
   }
 
   if (state != MODULE_HTTP_STATE_RESPBODY) {
-    mod->log(mod, 0, " Exit http callback \n");
+    mod->log(mod, 0, " Exit http callback\n");
+    // mod->log(mod, 0, " Exit http callback %.*s \n",buffer,size);
     free(b);
     return 0;
   }
-  
+
   if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
     memcpy(b->buffer + b->datalen, buffer, size);
     b->datalen += size;
@@ -637,14 +656,17 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
 
   if (progress == 100) {
     mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
-    mesibo_message_params_t* p = ( mesibo_message_params_t *)calloc(1, sizeof( mesibo_message_params_t));
+    mesibo_message_params_t *p =
+        (mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
     p->id = rand();
     p->aid = params->aid;
-    p->from = params->to; 
-    p->to = params->from; //User adress who sent the query is the recipient
+    p->from = strdup(params->to);
+    p->to = strdup(params->from);  // User adress who sent the query is the recipient
     p->expiry = 3600;
 
-    mod->log(mod,0 ," ===> Sending response :aid %u id %u from %s to %s  len %d\n",p->aid, p->id,p->from,p->to,b->datalen);
+    mod->log(mod, 0,
+             " ===> Sending response :aid %u id %u from %s to %s  len %d\n",
+             p->aid, p->id, p->from, p->to, b->datalen);
     mod->send_message(mod, p, b->buffer, (mesibo_uint_t)b->datalen);
 
     free(b);
@@ -652,7 +674,6 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
 
   return 0;
 }
-
 ```
 ### 6. Compiling your module
 To compile your module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or the file path of your choice. 

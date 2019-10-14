@@ -38,7 +38,7 @@ Mesibo Module is essentially a message processor which allows you to :
 - Alter,block or filter each message
 - Process the message and send an automatic response
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="500" align='center'>
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (2).jpg" width="500" align='center'>
 
 Mesibo offers a powerful communication platform which can be simplified into two major functionalities:
 - Sending Data

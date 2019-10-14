@@ -520,18 +520,22 @@ For incoming messages from `bot_user` we process the message/query and send a re
 For all other messages we pass the message as it is.
 ```C
 static int bot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-                           const char *message, mesibo_uint_t len) {
+                          const char *message, mesibo_uint_t len) {
   mod->log(mod, 0, " %s on_message called\n", mod->name);
-  mod->log(mod, 0, "aid %u from %s to %s id %u message %s\n", p->aid, p->from,
+  mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
            p->to, (uint32_t)p->id, message);
-  
-  if(p->from == "bot_user"){ // Filter messages based on sender of message
-        bot_process_message(mod,p,message,len);
-        return MESIBO_RESULT_CONSUMED; // Process the message and CONSUME original message
-        }
-  else
-        return MESIBO_RESULT_PASS; // PASS the message as it is     
-  }
+
+  if (strcmp(p->from,"Nagendra")) {  // Filter messages based on sender of message
+    mod->log(mod, 0, " Processing message from %s \n", p->from);
+    //Don't modify original as other module will be use it 
+    mesibo_message_params_t* np = (mesibo_message_params_t*)calloc(1,sizeof(mesibo_message_params_t));
+    memcpy(np, p, sizeof(mesibo_message_params_t));
+    bot_process_message(mod, np, message, len);
+    return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
+                                    // message
+  } else
+    return MESIBO_RESULT_PASS;  // PASS the message as it is
+}
 ```
 ### 4. Processing the incoming message
 To process the incoming query we need to send it to a chatbot model. Here, as an example we will be using [DialogFlow](https://dialogflow.com) as the chatbot provider and will make a an HTTP request to your DialogFlow chatbot. Your chatbot will use it's dialogFlow model and send the appropriate respoonse to your HTTP request.
@@ -606,7 +610,7 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
   message_context->params = p;
   mod->log(
       mod, 0,
-      " ===> Sending htpp for msg params :aid %u id %u from %s to %s  len %d\n",
+      " ===> Sending http for msg params :aid %u id %u from %s to %s  len %d\n",
       p->aid, p->id, p->from, p->to, len);
 
   mod->http(mod, base_url, raw_post_data, bot_http_callback,

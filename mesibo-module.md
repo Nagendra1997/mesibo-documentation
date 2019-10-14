@@ -284,11 +284,9 @@ Integer : 0 on Success , -1 on failure
 Example,
 If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123434343xxxxxxxxx&uid=456, then you send the HTTP request as follows. 
 ```C
- tMessageContext *b = (tMessageContext *)calloc(1, sizeof(tMessageContext));
- b->mod = mod;
  const char* url = "https://app.mesibo.com/api.php"; //API endpoint
- const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456" // POST Request Data
- mod->http(mod, url, post, mesibo_http_callback,(void*)b,NULL);
+ const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456"; // POST Request Data
+ mod->http(mod, url, post, mesibo_http_callback,(void*)msg_context,NULL);
 ```
 
 ### HTTP Callback Function
@@ -415,9 +413,23 @@ typedef struct _module_http_option_t {
 
 } module_http_option_t;
 ```
-<Will refer http docs>
-`content_type` includes application/json,etc
-`extra_header` can contain Authorisation header ,etc
+### Basic Options Fields
+`proxy`	Proxy URL.You can pass authentication information here.
+`content_type` Content-Type header. For example "application/json".
+`extra_header` Any custom headers you like to send, can contain Authorisation header,etc
+`user_agent` User Agent, default mesibo/x.x
+`referrer` HTTP referer header
+`origin` HTTP origin header
+`cookie` Send HTTP Cookie Header
+`encoding` HTTP content encoding header
+`cache_control` HTTP content encoding header
+`accept`
+`etag`
+`ims` Set If-Modified-SInce header, timestamp
+`maxredirects` 
+`conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
+`retries` Retry broken downloads and uploads
+
  
 ## 3. Writing and Compiling Mesibo Modules
 To write and build your Mesibo Module follow the steps below:

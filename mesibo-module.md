@@ -654,8 +654,29 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
 }
 
 ```
-### 6. Compiling and loading your module
-
+### 6. Compiling your module
+To compile your module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or the file path of your choice. 
+For example.
+```
+/usr/lib64/mesibo/mesibo_mod_chatbot.so
+```
+Run the below command from your source directory. Before running make, ensure that all your source files are in the correct directory.
+```
+sudo make
+```
+ On successful build of your module, verify that the target path should contain your shared library `/usr/lib64/mesibo/mesibo_mod_chatbot.so`
+ 
+ ### 7. Loading your module
+ To load your chatbot module, specify the module name in mesibo configuration file `/etc/mesibo/mesibo.conf` like so
+ ```
+ module=chatbot
+ ```
+ Mount the directory containing your library which in this case is `/usr/lib64/mesibo/`, while running the mesibo container as follows. You also need to mount the directory containing the mesibo configuration file which in this case is `/etc/mesibo`
+ ```
+ sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
+-p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
+          <app token> 
+ ```
 
 
 

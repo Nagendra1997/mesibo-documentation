@@ -477,7 +477,10 @@ You can refer to the sample chatbot module which demonstrates building your modu
 Here is a step-by-step tutorial to building a chat-bot using Mesibo Module:
 
 ### 1. Create a C Source file
-First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C Source file with the same name as that of the module. ie; `chatbot.c`.
+First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C Source file with the same name as that of the module. ie; `chatbot.c`. Copy the header file `module.h` into your working directory and include it in your code.
+```C
+#include "module.h"
+```
 
 ### 2. Initialise the module
 Now, we need to initialise our module by filling in the configuration details- module version, the name of our module and  the references of our module callback functions.

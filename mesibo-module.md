@@ -573,17 +573,20 @@ An HTTP query sample for dialogFlow looks like below
 
 Follwing this POST format we send an HTTP request using the function `http`. 
 
-On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters and other data in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the _tMessageContext structure accordingly.
+On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
 
 ```C
 typedef struct _tMessageContext {
   mesibo_module_t *mod;
   mesibo_message_params_t *params;
-  //To copy data in response
-  char buffer[MIN_BUFFER_LEN]; 
+  const char* from;
+  const char* to;
+  // To copy data in response
+  char buffer[MIN_BUFFER_LEN];
   int datalen;
 } tMessageContext;
 ```
+On recieving the complete response from DialogFlow, we send the response to the original sender of the message and pass the message id of the query message as reference id for the response message. This way the client who sent the message will able to match the response recieved with the query sent. 
 
 ```C
 static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
@@ -609,10 +612,8 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
       (tMessageContext *)calloc(1, sizeof(tMessageContext));
   message_context->mod = mod;
   message_context->params = p;
-  mod->log(
-      mod, 0,
-      " ===> Sending http for msg params :aid %u id %u from %s to %s  len %d\n",
-      p->aid, p->id, p->from, p->to, len);
+  message_context->from = strdup(p->from);
+  message_context->to = strdup(p->to);
 
   mod->http(mod, base_url, raw_post_data, bot_http_callback,
             (void *)message_context, request_options);
@@ -664,6 +665,7 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
     mesibo_message_params_t *p =
         (mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
     p->id = rand();
+    p->refid = params->id;
     p->aid = params->aid;
     p->from = strdup(params->to);
     p->to = strdup(params->from);  // User adress who sent the query is the recipient

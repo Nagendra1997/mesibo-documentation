@@ -579,44 +579,42 @@ typedef struct _tMessageContext {
 ```
 
 ```C
-static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+  static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
                            const char *message, mesibo_uint_t len){
   mod->log(mod, 0, "Processing message from %s \n",p->from);
-  const char* base_url = 'https://api.dialogflow.com/v1/query?v=20150910'; 
-  const char* request_body = '{
-			"lang": "en", 
-			"sessionId": "12345",
-			"timezone": "America/New_York",
-                        "query":';
+  char* base_url = "https://api.dialogflow.com/v1/query?v=20150910";
+  char* request_body = "{'lang': 'en','sessionId': '12345','timezone': 'America/New_York','query':" ;
   char* raw_post_data = (char*)calloc(1,strlen(request_body)+ len + 2);
   memcpy(raw_post_data,request_body,strlen(request_body));
   memcpy(raw_post_data + strlen(request_body),message,len);
-  memcpy(raw_post_data + strlen(request_body)+ len, '}\0',2);
-  
+  memcpy(raw_post_data + strlen(request_body)+ len, "}\0",2);
+
   module_http_option_t* request_options = (module_http_option_t*)calloc(1,sizeof(module_http_option_t)) ;
   // Your dialogFlow CLIENT_ACCESS_TOKEN
-  request_options->extra_header =  "Authorization: Bearer 4b458b3febxxxxxxxxxxxxxxxxxxx"; 
+  request_options->extra_header =  "Authorization: Bearer 4b458b3febxxxxxxxxxxxxxxxxxxx";
   request_options->content_type =  "application/json";
-  
+
   tMessageContext* message_context =  (tMessageContext*)calloc(1,sizeof(tMessageContext)) ;
   message_context->mod = mod;
   message_context->params = p;
-  
+
   mod->http(mod, base_url, request_body, bot_http_callback, (void*)message_context, request_options);
-  
+
   return 0;
-  
+
    }
 ```                           
 ### 5. Define the Callback function to receive the response from your bot
 In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to user who sent the query.
 
 ```C
-static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
+
+static int bot_http_callback(void *cbdata, mesibo_int_t state,
                                 mesibo_int_t progress, const char *buffer,
                                 mesibo_int_t size) {
   tMessageContext *b = (tMessageContext *)cbdata;
   mesibo_module_t *mod = b->mod;
+  mesibo_message_params_t *params = b->params;
   mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
            (int)state, (int)size);
 
@@ -641,9 +639,9 @@ static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
     mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
     mesibo_message_params_t* p = ( mesibo_message_params_t *)calloc(1, sizeof( mesibo_message_params_t));
     p->id = rand();
-    p->aid = b->aid;
-    p->from = b->to; 
-    p->to = b->from; //User adress who sent the query is the recipient
+    p->aid = params->aid;
+    p->from = params->to; 
+    p->to = params->from; //User adress who sent the query is the recipient
     p->expiry = 3600;
 
     mod->log(mod,0 ," ===> Sending response :aid %u id %u from %s to %s  len %d\n",p->aid, p->id,p->from,p->to,b->datalen);
@@ -653,9 +651,10 @@ static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
   }
 
   return 0;
+}
 
 ```
-
+### 6. Compiling and loading your module
 
 
 

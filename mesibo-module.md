@@ -526,7 +526,7 @@ static int bot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
   mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
            p->to, (uint32_t)p->id, message);
 
-  if (strcmp(p->from,"Nagendra") == 0) {  // Filter messages based on sender of message
+  if (strcmp(p->from,"bot_user") == 0) {  // Filter messages based on sender of message
     mod->log(mod, 0, " Processing message from %s \n", p->from);
     //Don't modify original as other module will be use it 
     mesibo_message_params_t* np = (mesibo_message_params_t*)calloc(1,sizeof(mesibo_message_params_t));

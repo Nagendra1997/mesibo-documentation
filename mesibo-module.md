@@ -414,7 +414,8 @@ typedef struct _module_http_option_t {
 } module_http_option_t;
 ```
 ### Basic Options Fields  
--`proxy`	Proxy URL.You can pass authentication information here.
+
+-`proxy` Proxy URL.You can pass authentication information here.  
 -`content_type` Content-Type header. For example "application/json".
 -`extra_header` Any custom headers you like to send, such as contain Authorisation header,etc
 -`user_agent` User Agent, default mesibo/x.x

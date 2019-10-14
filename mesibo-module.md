@@ -435,13 +435,37 @@ typedef struct _module_http_option_t {
 ## 3. Writing and Compiling Mesibo Modules
 To write and build your Mesibo Module follow the steps below:
 
-1. Download the example module code, and copy all the required header files and C source file(s) into your working directory 
-2. Open a code editor
-3. Include `module.h` in your code 
-4. Initialize mesibo module as by providing a module name, your callback function references, etc
-5. To compile your module you can refer the sample `MakeFile` and modify the `TARGET` to the path where you need to place the resulting shared library .For example, `/etc/mesibo/module_<module name>.so`
+1. Download and copy all the required header files and C source file(s) into your working directory 
+2. Include `module.h` in your code 
+3. Initialize mesibo module as by providing a module name, your callback function references, etc. For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chat-bot]()
+4. To compile your module you can refer the sample `MakeFile` and modify the `TARGET` to the path where you need to place the resulting shared library accordingly. For example, `/etc/mesibo/module_<module name>.so`
+```cmake
+//Sample MakeFile to build Mesibo Module 
+CC = gcc
+FLAGS        = # -std=gnu99 -Iinclude
+CFLAGS       = -fPIC -g #-pedantic -Wall -Wextra -ggdb3
+LDFLAGS      = -shared
+RM = rm -f
 
-For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chatbot]()
+DEBUGFLAGS   = -O0 -D _DEBUG
+RELEASEFLAGS = -O2 -D NDEBUG -combine -fwhole-program
+
+TARGET  = /usr/lib64/mesibo/mesibo_mod_test.so
+SOURCES = $(wildcard *.c)
+HEADERS = $(wildcard *.h)
+OBJECTS = $(SOURCES:.c=.o)
+
+all: $(TARGET)
+
+clean: 
+        $(RM) *.o *.so $(TARGET)
+
+
+$(TARGET): $(OBJECTS)
+        @mkdir -p /usr/lib64/mesibo/
+        $(CC) $(FLAGS) $(LDFLAGS) $(DEBUGFLAGS) -o $(TARGET) $(OBJECTS)
+
+```
 
 ## 4. Loading a Mesibo Module 
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
@@ -453,15 +477,15 @@ To do this ,you need to tell mesibo the details of the module you wish to load- 
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
 and the name of your module could be `test` with `test.c` being your C source file.
 
-You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container. You also need to mount the directory `/etc/mesibo/` which contains your mesibo configuration file `mesibo.conf`.
-For example,
+You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container. You also need to mount the directory `/etc/mesibo/` which contains your mesibo configuration file `mesibo.conf` where you need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
+`module= <module name>`
+
 ```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
 -p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
           <app token> 
 ``` 
-You need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
-`module= <module name>`
+
 
 ## 5. Code references and Examples
  

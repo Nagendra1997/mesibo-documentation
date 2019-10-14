@@ -448,7 +448,8 @@ As described previously, a mesibo module is simply a shared library (.so file) t
 initialized your module, which is used to build your module.
 
 So, how do you load your Mesibo module?
-To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and 
+To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined your module.
+
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
 and the name of your module could be `test` with `test.c` being your C source file.
 
@@ -680,7 +681,7 @@ static int bot_http_callback(void *cbdata, mesibo_int_t state,
 }
 ```
 ### 6. Compiling your module
-To compile your module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or the file path of your choice. 
+To compile your module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or to a file path of your choice. 
 For example.
 ```
 /usr/lib64/mesibo/mesibo_mod_chatbot.so

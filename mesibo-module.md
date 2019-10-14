@@ -439,7 +439,7 @@ To write and build your Mesibo Module follow the steps below:
 2. Open a code editor
 3. Include `module.h` in your code 
 4. Initialize mesibo module as by providing a module name, your callback function references, etc
-5. To compile your module you can refer the sample `MakeFile` provided which builds and places the resulting shared library in `/etc/mesibo/module_<module name>.so`
+5. To compile your module you can refer the sample `MakeFile` and modify the `TARGET` to the path where you need to place the resulting shared library .For example, `/etc/mesibo/module_<module name>.so`
 
 For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chatbot]()
 
@@ -473,11 +473,11 @@ Let's look at how you can build a chatbot using Mesibo Modules:
 - Now, you can create a chatbot module function that takes this message data/ text as input and sends it to a REST endpoint as HTTP Post data which contains the query using the function `http`. 
 - In the function [http](),You pass the REST endpoint `url`, `post` data -which is as per the query format of your REST endpoint , callback function (where you will receive the response to your HTTP request) and Call back data (which is passed along to your callback function), `options` which will contain additional headers such as Authorisation header,etc (If required)
 - Now based on your request, your chatbot model will process the query and send the appropriate response.
-- In your callback function, you will receive the HTTP response for your query in the form of a JSON string. Extract the response text(As per your format) and send the text back as a response using the `send_message` function.
+- In your callback function, you will receive the HTTP response for your query in the form of a JSON string. Send the  response using  `send_message` function.
 
-You can refer to the sample chatbot module which demonstrates building your module with a dialog flow chatbot. 
+You can refer to the [Sample Chatbot Module] source code which demonstrates building your module with a DialogFlow chatbot. 
 
-Here is a step-by-step tutorial to building a chat-bot using Mesibo Module:
+The following is a step-by-step tutorial for building a chat-bot using Mesibo Module:
 
 ### 1. Create a C Source file
 First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C Source file with the same name as that of the module. ie; `chatbot.c`. Copy the header file `module.h` into your working directory and include it in your code.
@@ -488,7 +488,7 @@ First let us choose a name for our module. Since we will be building a chatbot ,
 ### 2. Initialise the module
 Now, we need to initialise our module by filling in the configuration details- module version, the name of our module and  the references of our module callback functions.
 
-For a simple chatbot, we need to provide a callback function reference for `on_message`:
+For a simple chatbot, we need to provide a callback function reference for `on_message`.  
 `bot_on_message` : To get input query from a message. This function needs to be called whenever there is an incoming message and alert us. So, we pass this function reference to be the module's `on_message` callback function.
 
 Following the naming convention of for the init function whcih is `mesibo_module_<module name>_init` the initialisation function for the module `chatbot` will be as defined below.
@@ -571,7 +571,7 @@ An HTTP query sample for dialogFlow looks like below
     
 ```
 
-Follwing this POST format we send an HTTP request using the function `http`. 
+Following this POST format we send an HTTP request using the function `http`. 
 
 On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
 
@@ -605,7 +605,7 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
       (module_http_option_t *)calloc(1, sizeof(module_http_option_t));
   // Your dialogFlow CLIENT_ACCESS_TOKEN
   request_options->extra_header =
-      "Authorization: Bearer 4b458b3feba0448f9110c96d9b873de9";
+      "Authorization: Bearer 4b458b3feba0448fxxxxxxxxxxxxxxxx";
   request_options->content_type = "application/json";
 
   tMessageContext *message_context =

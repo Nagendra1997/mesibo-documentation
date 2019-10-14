@@ -413,7 +413,7 @@ typedef struct _module_http_option_t {
 
 } module_http_option_t;
 ```
-### Basic Options Fields
+### Basic Options Fields  
 -`proxy`	Proxy URL.You can pass authentication information here.
 -`content_type` Content-Type header. For example "application/json".
 -`extra_header` Any custom headers you like to send, such as contain Authorisation header,etc
@@ -442,10 +442,10 @@ To write and build your Mesibo Module follow the steps below:
 
 ## 4. Loading a Mesibo Module 
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
+initialized your module, which is used to build your module.
 
 So, how do you load your Mesibo module?
-To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and initialized your module, which is used to build your module.
-
+To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined and 
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
 and the name of your module could be `test` with `test.c` being your C source file.
 

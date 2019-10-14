@@ -415,21 +415,21 @@ typedef struct _module_http_option_t {
 ```
 ### Basic Options Fields  
 
--`proxy` Proxy URL.You can pass authentication information here.  
--`content_type` Content-Type header. For example "application/json".
--`extra_header` Any custom headers you like to send, such as contain Authorisation header,etc
--`user_agent` User Agent, default mesibo/x.x
--`referrer` HTTP referer header
--`origin` HTTP origin header
--`cookie` Send HTTP Cookie Header
--`encoding` HTTP content encoding header
--`cache_control` HTTP content encoding header
--`accept`
--`etag`
--`ims` Set If-Modified-SInce header, timestamp
--`maxredirects` 
--`conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
--`retries` Retry broken downloads and uploads
+- `proxy` Proxy URL.You can pass authentication information here.  
+- `content_type` Content-Type header. For example "application/json".
+- `extra_header` Any custom headers you like to send, such as contain Authorisation header,etc
+- `user_agent` User Agent, default mesibo/x.x
+- `referrer` HTTP referer header
+- `origin` HTTP origin header
+- `cookie` Send HTTP Cookie Header
+- `encoding` HTTP content encoding header
+- `cache_control` HTTP content encoding header
+- `accept`
+- `etag`
+- `ims` Set If-Modified-SInce header, timestamp
+- `maxredirects` 
+- `conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
+- `retries` Retry broken downloads and uploads
 
  
 ## 3. Writing and Compiling Mesibo Modules

@@ -38,7 +38,7 @@ Mesibo Module is essentially a message processor which allows you to :
 - Alter,block or filter each message
 - Process the message and send an automatic response
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (2).jpg" width="1000" align='center'>
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (3).jpg" width="1000" align='center'>
 
 Mesibo offers a powerful communication platform which can be simplified into two major functionalities:
 - Sending Data
@@ -491,6 +491,8 @@ sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /
  
 ### Building a chat-bot 
 It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as DialogFlow, IBM Watson, TensorFlow, etc using REST endpoints.
+
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (4).jpg" width="1000" align='center'>
 
 Let's look at how you can build a chatbot using Mesibo Modules:
 - When you receive a message, you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments. This message is the `query` to your chatbot.

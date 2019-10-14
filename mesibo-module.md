@@ -62,7 +62,7 @@ A mesibo module performs two functions by linking  with your main Mesibo instanc
 - Recieve request/data through callback functions
 - Process the data and send the result
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (2).jpg" width="1000" align='center'>
+<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="1000" align='center'>
 
 The mesibo API instance invokes and communicates with any number of mesibo modules to perform various operation instructed by you. Mesibo can pass data to a chain of mesibo modules where the output of one module is piped to the input of another and the final result obtained from the processing of the module chain is sent back to the client.
 

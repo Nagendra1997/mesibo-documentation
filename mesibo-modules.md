@@ -22,7 +22,7 @@ c. How do Mesibo Modules work
 a. Module Configuration Struct  
 b. Module initialization  
 c. Callback Functions  
-d. Core Utility functions (Better name)  
+d. Callable Functions  
 e. Data Structures
 3. Writing and Compiling Mesibo Modules 
 4. Loading a Mesibo Module

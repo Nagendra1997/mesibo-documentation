@@ -13,7 +13,7 @@ This makes Mesibo, the most compelling real-time communication platform existing
 {% comment %} 
 ## Overview
 0. [Prerequisites](#prerequisites)
-1. **Overview of a Mesibo Module**  
+1. [Overview of a Mesibo Module](#what-is-a-mesibo-module)   
 a. [What is a Mesibo Module ](#what-is-a-mesibo-module) 
 b. [What can you build with a Mesibo Module](#what-can-you-build-with-a-mesibo-module)  
 c. [How do Mesibo Modules work](#how-do-mesibo-modules-work)  
@@ -27,7 +27,8 @@ e. [Data Structures](#data-structures)
 
 3. [Writing and Compiling Mesibo Modules](#writing-and-compiling-mesibo-modules) 
 4. [Loading a Mesibo Module](#loading-a-mesibo-module)
-5. [Code references and Examples](#code-references-and-examples)
+5. [Code references and Examples](#code-references-and-examples)  
+
 {% endcomment %}
 
 ## Prerequisites 

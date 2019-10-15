@@ -270,6 +270,11 @@ mesibo_int_t (*on_call)(mesibo_module_t *mod)
 ```cpp
 mesibo_int_t (*on_call_status)(mesibo_module_t *mod)
 ```
+### on_login
+```cpp
+mesibo_int_t (*on_login)(mesibo_module_t *mod, mesibo_login_params_t *params);
+```
+
 ##  Callable Functions
 These functions are initialized by Mesibo and you can utilize these functions to [send a message](#send_message), [send an HTTP request](#http), [print logs](#log), etc. Please note, that unlike the callback functions you need not pass any function references to initialize these functions as they are internally defined and initialized by Mesibo.
 

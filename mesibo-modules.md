@@ -30,7 +30,7 @@ e. Data Structures
 {% endcomment %}
 
 ## Prerequisites 
-- Running Mesibo On-Premise
+- [Running Mesibo On-Premise](https://mesibo.com/documentation/on-premise/)
 - Knowledge of Building and deploying C/C++ shared libraries
 
 ## What is a Mesibo Module?
@@ -41,13 +41,11 @@ Mesibo Module is essentially a message processor which allows you to intercept e
 - a **tranlator module** can translate each message before sending it to destination
 - a **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
 
-![Module Flowchart](module_flow_chart.jpg)
 
-The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules makes Mesibo a powerful communication platform.  
-
+The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules make Mesibo a powerful communication platform.  
 
 
-You can build Mesibo Module on top of the core platform, as a shared library(basically a .so file) and load it to extend the functionality of the Mesibo.
+You can build a Mesibo Module on top of the core platform, as a shared library(basically a .so file) and load it to extend the functionality of the Mesibo.
 ![Module Architecture](Mesibo_Loadable_Modules.jpg)
 
 ### How do Mesibo Modules work?
@@ -58,18 +56,18 @@ A Mesibo module is a shared library (`.so` file) which can be loaded at runtime 
  - Process further before sending it to the destination
  - Reply to the sender
    
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (1).jpg" width="1000" align='center'>
+![Module Flowchart](module_flow_chart.jpg)
 
-You can load multiple modules, each having their own features and functionalities. You can specify all the modules to be loaded and the order in the Mesibo configuration file, `/etc/mesibo/mesibo.conf`. Mesibo will pass data to each module in the order modules were loaded. 
+You can load multiple modules, each having their own features and functionalities. You can specify all the modules to be loaded and the order in the Mesibo configuration file, `/etc/mesibo/mesibo.conf`. Mesibo will pass data to each module in the order in which modules were loaded. 
 
-Create a mesibo module is extremely easy, for example, for example, you can implement a simple profanity filter module as follows.
+Creating a mesibo module is extremely easy.For example, you can implement a simple profanity filter module as follows.
 
 ### Building a profanity filter
 
 - Implement a callback function to process all the incoming messages and pass it to mesibo - we will call it `on_message` function 
 - When any user sends a message, Mesibo will invoke `on_message` callback function of your module with the message data and it's associated message parameters such as sender, expiry, flags, etc. 
-- Your module can analyze the message to find any profanity or objectionable content and returns whether the message is safe and free of profanity or not. 
-- if no profanity was found, you can `PASS` the message and safely send it to the recipient, else  you can `CONSUME` the unsafe message and prevent the message from reaching the receiver.
+- Your module can analyze the message to find any profanity or objectionable content and return whether the message is safe  or not. 
+- If no profanity was found, you can `PASS` the message and safely send it to the recipient, else  you can `CONSUME` the unsafe message and prevent the message from reaching the receiver.
 
 Now that you understand the overall functionality of a Mesibo module, let's dive deep into the technical details of what forms a mesibo module.
 
@@ -78,9 +76,10 @@ Now that you understand the overall functionality of a Mesibo module, let's dive
 A Mesibo module has three parts:
 
 - An initialization function which will be called by Mesibo once to initialize the module
-- A set of callback functions that will be defined by the modules. These functions are called by the Mesibo as and when required
+- A set of callback functions that will be defined by the modules. These functions are called by Mesibo as and when required
 - A set of callable functions provided by the Mesibo that can be called by the module as required
 - A configuration structure which declares aboved mentioned functions and other configuration information
+ ![Anatomy of Module](module_process_diagram.jpg)
 
 ### Mesibo Module Configuration 
 A Mesibo Module is described by `mesibo_module_t` structure as defined below. This is one of the most important data structures used in the Mesibo module. 
@@ -114,26 +113,24 @@ typedef struct mesibo_module_s {
 
 ```
 
-In the next section, we will learn how to initialize module configuration structure. Before that, it is essential to know how Mesibo knows about your modules and loads into the memory. 
+In the next section, we will learn how to initialize module configuration structure. Before that, it is essential to know how Mesibo knows about your modules and loads it into the memory. 
 
 ### Loading a module
-As described previously, a mesibo module is a shared library (`.so` file) that is loaded at runtime by the Mesibo. In order for Mesibo to load your module, you need to tell mesibo about the module you wish to load for example, path where your module is located and the name of the module shared library.
+As described previously, a mesibo module is a shared library (`.so` file) that is loaded at runtime by the Mesibo. For Mesibo to load your module, you need to tell mesibo about the module you wish to load for example, path where your module is located and the name of the module shared library.
 
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
-and the name of your module could be `test` with `test.c` being your C source file.
-
+and the name of your module could be `test` with `test.c` being your C/C++ source file.
 
 ### Module initialization
-The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`
+The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`.
 
 The function takes two parameters:
-1. `mod` of type `mesibo_module_t*` - Pointer to mesibo module struct
+1. `mod` of type `mesibo_module_t*` Pointer to mesibo module struct
 2. `len` of type `mesibo_uint_t`
 
 It is important to note that the size of the configuration structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
 
-
-For example,for a module named `test` (** which is defined in a file named `test.c`) the initialisation function looks like below.
+For example,for a module named `test` (** which is defined in a file named `test.cpp`) the initialisation function looks like below.
 ```cpp
 int mesibo_module_test_init(mesibo_module_t *m, mesibo_uint_t len) {
   if (sizeof(mesibo_module_t) != len) {
@@ -156,11 +153,11 @@ int mesibo_module_test_init(mesibo_module_t *m, mesibo_uint_t len) {
   return 0;
 }
 ```
-test_cleanup, test_on_message, test_on_message_status are functions that have been defined by you and serve as the corresponding callback functions cleanup,on_message & on_message_status .
+`test_cleanup`, `test_on_message`, `test_on_message_status` are functions that have been defined by you and serve as the corresponding callback function references to cleanup,on_message & on_message_status .
 
 ### b. Callback functions
 There are a set of callback functions that need to be initialized by the caller of the module. These callback functions are called by Mesibo based on different events. Callback functions that you provide should have the same signature as defined in the `mesibo_module_t` struct.
-For a detailed explanation of callback functions and their prototypes refer [Callback functions]
+For a detailed explanation of callback functions and their prototypes refer [Callback functions](#callback-functions)
 
 `on_message`: When a message is sent from one endpoint to another in your application 
 
@@ -173,8 +170,8 @@ For a detailed explanation of callback functions and their prototypes refer [Cal
 `cleanup` When module completes its work and is unloaded
 
 
-### c. Core utility functions
-Some functions are initialized by Mesibo which you can use. For a detailed explanation refer [Core Utility functions]()
+### c. Callable functions
+Some functions are initialized by Mesibo which you can use. For a detailed explanation refer [Callable functions](#callable-functions)
 
 `send_message` To send message from one user to another
 
@@ -190,7 +187,7 @@ There are different callback functions that you can define in your module and in
 - When you receive a call
 - When you complete the module process and reclaim memory/ perform the cleanup
 
-You need to provide the callback functions with the same prototype while initializing the module: ie; same number of arguments, data types of arguments and return type.All function prototypes are found in the file [module.h]().
+You need to provide the callback functions with the same prototype while initializing the module: ie; same number of arguments, data types of arguments and return type. All function prototypes are found in the file [module.h]().
 
 There are two important observations for all call back functions:
 - Mesibo Module Structure pointer: All callback functions include `the mesibo_module_t` structure pointer as the first argument
@@ -199,12 +196,11 @@ There are two important observations for all call back functions:
 `MESIBO_RESULT_CONSUMED` where the data is consumed and the recipient is not notified of this data
 
 
-
 Let's look in detail at the different callback functions and their prototypes:
 
 ### on_message 
 This function is called when the module receives a message.
-```C
+```cpp
 int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len)
 ```
 Parameters:
@@ -222,7 +218,7 @@ Returns:
 
 ### on_message_status
 This function is called when a message is sent from the module and you receive the status of the message.
-```C
+```cpp
 int (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status)
 ```
 Parameters:
@@ -239,25 +235,25 @@ Returns:
 
 ### on_cleanup
 This function is called when the module process is complete and to clean up.
-```C
+```cpp
 int (*cleanup)(mesibo_module_t *mod)
 ```
 ### on_call
-```C
+```cpp
 int (*on_call)(mesibo_module_t *mod)
 ```
 ### on_call_status
-```C
+```cpp
 int (*on_call_status)(mesibo_module_t *mod)
 ```
-##  Core Utility functions
+##  Callable Functions
 These functions are initialized by Mesibo and you can utilize these functions to send a message, send an HTTP request, print logs, etc. Please note, that unlike the callback functions you need not pass any function references to initialize these functions as they are internally defined and initialized by Mesibo.
 
 Let's look at the syntax of these functions.
 
 ### send_message
-This function can be used to send a message from one end-point or user to another.
-```C
+This function can be used to send a message from one end-point/user to another.
+```cpp
 int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len);
 ```
 Parameters:
@@ -271,8 +267,8 @@ Returns:
 Integer : 0 on Success , -1 on failure
 
 Example,
-```C
-    mesibo_message_params_t    p;
+```cpp
+    mesibo_message_params_t p;
     p.to = 'user_source';
     p.from = 'user_destination';
     p.id = rand();
@@ -283,7 +279,7 @@ Example,
 
 ### http
 This function can be used to make an HTTP request.
-```C
+```cpp
 int (*http)(mesibo_module_t *mod, const char *url, const char *post, mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt)
 ```
 Parameters:
@@ -299,7 +295,7 @@ Integer : 0 on Success , -1 on failure
 
 Example,
 If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123434343xxxxxxxxx&uid=456, then you send the HTTP request as follows. 
-```C
+```cpp
  const char* url = "https://app.mesibo.com/api.php"; //API endpoint
  const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456"; // POST Request Data
  mod->http(mod, url, post, mesibo_http_callback,NULL,NULL);
@@ -307,13 +303,13 @@ If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123
 
 ### HTTP Callback Function
 The callback function reference,`cb` that you pass as a parameter should be defined as per the function prototype `mesibo_module_http_data_callback_t` in `module.h`.
-```C
+```cpp
 typedef int (*mesibo_module_http_data_callback_t)(void *cbdata, mesibo_int_t state, mesibo_int_t progress, const char *buffer, mesibo_int_t size);
 ```
 The callback function takes the following parameters:  
 1.`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function `http`.  
 2.`state` An integer indicating the state of the response data being passed.   
-```C
+```cpp
 typedef enum {MODULE_HTTP_STATE_REQUEST, MODULE_HTTP_STATE_REQBODY, MODULE_HTTP_STATE_RESPHEADER, MODULE_HTTP_STATE_RESPBODY, MODULE_HTTP_STATE_DONE} module_http_state_t;
 ```
 3.`buffer` The response is delivered via the callback function asynchronously using buffers. This means, for example, a module can start sending the response from a backend server and stream it to the client before the module has received the entire response from the backend.
@@ -321,7 +317,7 @@ typedef enum {MODULE_HTTP_STATE_REQUEST, MODULE_HTTP_STATE_REQBODY, MODULE_HTTP_
 
 If you do not want to stream the response immediately, you can keep copying the response bytes and save it to a buffer with each progress session and send the complete response to the client once the progress is complete. 
 For example,
-```C
+```cpp
 static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
                                 mesibo_int_t progress, const char *buffer,
                                 mesibo_int_t size) {
@@ -358,7 +354,7 @@ static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
 ```
 ### log
 This function can be used to print to mesibo container logs.
-```C
+```cpp
 int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...)
 ```
 Parameters:
@@ -370,15 +366,15 @@ Returns:
 Integer : 0 on Success , -1 on failure
 
 Example,
-```C
+```cpp
 mod->log(mod,0,"%s \n","Hello, from Mesibo Module!");
 ```
 ## Data Structures
 
 ### Message Parameters Structure
-The C structure `mesibo_message_params_t` is used to define the various parameters of an incoming or outgoing message.
+The C/C++ structure `mesibo_message_params_t` is used to define the various parameters of an incoming or outgoing message.
 Message params is used as argument to functions such as `on_message`,`on_message_status`,`send_message`,etc.
-```C
+```cpp
 typedef struct mesibo_message_params_s {
     mesibo_uint_t     aid;
     mesibo_uint_t     id; 
@@ -402,8 +398,8 @@ typedef struct mesibo_message_params_s {
 -`to_online` -  
 
 ### HTTP Options Structure
-To pass`options` parameter of a HTTP request in the function `http()` (which is described in the previous section, Core  Utility Functions) you use the C structure `module_http_option_t`
-```C
+To pass`options` parameter of a HTTP request in the function `http()` (which is described in the previous section, Core  Utility Functions) you use the C/C++ structure `module_http_option_t`
+```cpp
 typedef struct _module_http_option_t {
     const char *proxy;
 
@@ -485,7 +481,6 @@ $(TARGET): $(OBJECTS)
 
 ## 4. Loading a Mesibo Module 
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
-initialized your module, which is used to build your module.
 
 So, how do you load your Mesibo module?
 To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined your module.
@@ -522,8 +517,8 @@ You can refer to the [Sample Chatbot Module] source code which demonstrates buil
 The following is a step-by-step tutorial for building a chat-bot using Mesibo Module:
 
 ### 1. Create a C Source file
-First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C Source file with the same name as that of the module. ie; `chatbot.c`. Copy the header file `module.h` into your working directory and include it in your code.
-```C
+First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C/++ Source file with the same name as that of the module. ie; `chatbot.cpp`. Copy the header file `module.h` into your working directory and include it in your code.
+```cpp
 #include "module.h"
 ```
 
@@ -535,8 +530,8 @@ For a simple chatbot, we need to provide a callback function reference for `on_m
 
 Following the naming convention of for the init function whcih is `mesibo_module_<module name>_init` the initialisation function for the module `chatbot` will be as defined below.
 
-```C
-//File : chatbot.c
+```cpp
+//File : chatbot.cpp
 int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
   if (sizeof(mesibo_module_t) != len) {
     m->log(m, 0, "module size mismatch\n");
@@ -561,7 +556,7 @@ int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
 We need message containing queries from the end user only. `on_message` will alert you for any message sent or received. So, we filter these messages to match only those messages that are incoming from a particular user `bot_user`. 
 For incoming messages from `bot_user` we process the message/query and send a response from the chat-bot.
 For all other messages we pass the message as it is.
-```C
+```cpp
 static int bot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
                           const char *message, mesibo_uint_t len) {
   mod->log(mod, 0, " %s on_message called\n", mod->name);
@@ -617,7 +612,7 @@ Following this POST format we send an HTTP request using the function `http`.
 
 On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
 
-```C
+```cpp
 typedef struct _tMessageContext {
   mesibo_module_t *mod;
   mesibo_message_params_t *params;
@@ -630,7 +625,7 @@ typedef struct _tMessageContext {
 ```
 On recieving the complete response from DialogFlow, we send the response to the original sender of the message and pass the message id of the query message as reference id for the response message. This way the client who sent the message will able to match the response recieved with the query sent. 
 
-```C
+```cpp
 static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
                                const char *message, mesibo_uint_t len) {
   mod->log(mod, 0, "Processing message from %s \n", p->from);
@@ -668,7 +663,7 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
 ### 5. Define the Callback function to receive the response from your bot
 In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to user who sent the query.
 
-```C
+```cpp
 
 static int bot_http_callback(void *cbdata, mesibo_int_t state,
                              mesibo_int_t progress, const char *buffer,

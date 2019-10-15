@@ -41,7 +41,7 @@ Mesibo Module is essentially a message processor which allows you to intercept e
 - a **tranlator module** can translate each message before sending it to destination
 - a **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
 
-![Module Flowchart](https://github.com/Nagendra1997/mesibo-documentation/raw/master/Mesibo_Loadable_Modules (3).jpg)
+![Module Flowchart]("Mesibo_Loadable_Modules (3).jpg")
 
 The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules makes Mesibo a powerful communication platform.  
 

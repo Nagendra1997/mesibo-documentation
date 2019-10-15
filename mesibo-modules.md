@@ -424,27 +424,28 @@ typedef struct mesibo_message_params_s {
 To pass`options` parameter of a HTTP request in the function [http()](#http) you use the C/C++ structure `module_http_option_t`
 ```cpp
 typedef struct _module_http_option_t {
-    const char *proxy;
+  const char *proxy;
 
-    //body or post data
-    const char *content_type; //body content type
+  // body or post data
+  const char *content_type;  // body content type
 
-    const char *extra_header;
-    const char *user_agent;
-    const char *referrer;
-    const char *origin;
-    const char *cookie;
-    const char *encoding; // could be gzip, deflate, identity, br (do not use 'compress' which is obsolete)
-    const char *cache_control; //cache control and expiry
-    const char *accept;
-    const char *etag;
-    mesibo_uint_t ims; //if modified since, gmt time
+  const char *extra_header;
+  const char *user_agent;
+  const char *referrer;
+  const char *origin;
+  const char *cookie;
+  const char *encoding;  // could be gzip, deflate, identity, br (do not use
+                         // 'compress' which is obsolete)
+  const char *cache_control;  // cache control and expiry
+  const char *accept;
+  const char *etag;
+  mesibo_uint_t ims;  // if modified since, gmt time
 
-    mesibo_uint_t maxredirects;
+  mesibo_uint_t maxredirects;
 
-    mesibo_uint_t conn_timeout, header_timeout, body_timeout, total_timeout;
+  mesibo_uint_t conn_timeout, header_timeout, body_timeout, total_timeout;
 
-    mesibo_uint_t retries;
+  mesibo_uint_t retries;
 
 } module_http_option_t;
 ```
@@ -515,9 +516,10 @@ You provide the directory path by mounting the directory path `<module path>` as
 `module= <module name>`
 
 ```
-sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
--p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
-          <app token> 
+sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \
+-v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
+-p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -d \ 
+mesibo/mesibo <app token> 
 ``` 
 
 
@@ -761,9 +763,10 @@ sudo make
  ```
  Mount the directory containing your library which in this case is `/usr/lib64/mesibo/`, while running the mesibo container as follows. You also need to mount the directory containing the mesibo configuration file which in this case is `/etc/mesibo`
  ```
- sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
--p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -it mesibo/mesibo \
-          <app token> 
+sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \
+-v /etc/mesibo:/etc/mesibo  -p 5222:5222 \
+-p 5228:5228 -p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -d \ 
+mesibo/mesibo <app token> 
  ```
 
 

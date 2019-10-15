@@ -18,7 +18,7 @@ a. [What is a Mesibo Module ](#what-is-a-mesibo-module)
 b. [How do Mesibo Modules work](#how-do-mesibo-modules-work)  
 c. [Building a profanity filter](#building-a-profanity-filter)
 
-2. [Anatomy of Mesibo Module](#anatomy-of-mesibo-module)  
+2. [Anatomy of a Mesibo Module](#anatomy-of-a-mesibo-module)  
 a. [Module Configuration Struct](#module-configuration-struct)  
 b. [Module initialization](#module-initialization)  
 c. [Callback Functions](#callback-functions)  
@@ -467,7 +467,7 @@ typedef struct _module_http_option_t {
 - `retries` Retry broken downloads and uploads
 
  
-## 3. Writing and Compiling Mesibo Modules
+## Writing and Compiling Mesibo Modules
 To write and build your Mesibo Module follow the steps below:
 
 1. Download and copy all the required header files and C/C++ source file(s) into your working directory 
@@ -502,7 +502,7 @@ $(TARGET): $(OBJECTS)
 
 ```
 
-## 4. Loading a Mesibo Module 
+## Loading a Mesibo Module 
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
 
 So, how do you load your Mesibo module?
@@ -521,7 +521,7 @@ sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /
 ``` 
 
 
-## 5. Code references and Examples
+## Code references and Examples
  
 ### Building a chat-bot 
 It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as DialogFlow, IBM Watson, TensorFlow, etc using REST endpoints.

@@ -86,29 +86,42 @@ A Mesibo Module is described by `mesibo_module_t` structure as defined below. Th
 
 ```cpp
 typedef struct mesibo_module_s {
-        mesibo_uint_t   version;	/* module API Version */
-        mesibo_uint_t   flags;		/* module Flags */
-        const char      *name;		/* module name */
-        
-	/* callback functions defined by the module */
+  mesibo_uint_t version;
+  mesibo_uint_t flags;
 
-        int             (*cleanup)(mesibo_module_t *mod);
-        int             (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, 
-				const char *message, mesibo_uint_t len);
-        int             (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status);
-        int             (*on_call)(mesibo_module_t *mod);
-        int             (*on_call_status)(mesibo_module_t *mod);
-        
-	mesibo_uint_t   signature;	/* module signature */
+  const char *name;
+  void *ctx;
 
-	/* functions defined by mesibo and can be called by module */
+  int (*cleanup)(mesibo_module_t *mod);
 
-        int             (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, 
-                         mesibo_uint_t len);
-        int             (*http)(mesibo_module_t *mod, const char *url, const char *post, 
-                         mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt);
-        int             (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...);
+  int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
+                    const char *message, mesibo_uint_t len);
+  int (*on_message_status)(mesibo_module_t *mod,
+                           mesibo_message_params_t *params,
+                           mesibo_uint_t status);
 
+  int (*on_call)(mesibo_module_t *mod);
+  int (*on_call_status)(mesibo_module_t *mod);
+
+  mesibo_uint_t signature;
+
+  // these functions will be initialized by Mesibo
+  int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
+                      const char *message, mesibo_uint_t len);
+  int (*http)(mesibo_module_t *mod, const char *url, const char *post,
+              mesibo_module_http_data_callback_t cb, void *cbdata,
+              module_http_option_t *opt);
+  int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
+             ...);
+
+  uintptr_t reserved_0;
+  uintptr_t reserved_1;
+  uintptr_t reserved_2;
+  uintptr_t reserved_3;
+  uintptr_t reserved_4;
+  uintptr_t reserved_5;
+  uintptr_t reserved_6;
+  uintptr_t reserved_7;
 } mesibo_module_t;
 
 ```
@@ -201,7 +214,8 @@ Let's look in detail at the different callback functions and their prototypes:
 ### on_message 
 This function is called when the module receives a message.
 ```cpp
-int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len)
+  int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
+                    const char *message, mesibo_uint_t len);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -219,7 +233,9 @@ Returns:
 ### on_message_status
 This function is called when a message is sent from the module and you receive the status of the message.
 ```cpp
-int (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status)
+  int (*on_message_status)(mesibo_module_t *mod,
+                           mesibo_message_params_t *params,
+                           mesibo_uint_t status);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -254,7 +270,8 @@ Let's look at the syntax of these functions.
 ### send_message
 This function can be used to send a message from one end-point/user to another.
 ```cpp
-int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len);
+  int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
+                      const char *message, mesibo_uint_t len);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -280,7 +297,9 @@ Example,
 ### http
 This function can be used to make an HTTP request.
 ```cpp
-int (*http)(mesibo_module_t *mod, const char *url, const char *post, mesibo_module_http_data_callback_t cb, void *cbdata, module_http_option_t *opt)
+  int (*http)(mesibo_module_t *mod, const char *url, const char *post,
+              mesibo_module_http_data_callback_t cb, void *cbdata,
+              module_http_option_t *opt);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -304,13 +323,23 @@ If your REST URL  looks like https://api.mesibo.com/api.php?op=userdel&token=123
 ### HTTP Callback Function
 The callback function reference,`cb` that you pass as a parameter should be defined as per the function prototype `mesibo_module_http_data_callback_t` in `module.h`.
 ```cpp
-typedef int (*mesibo_module_http_data_callback_t)(void *cbdata, mesibo_int_t state, mesibo_int_t progress, const char *buffer, mesibo_int_t size);
+typedef int (*mesibo_module_http_data_callback_t)(void *cbdata,
+                                                  mesibo_int_t state,
+                                                  mesibo_int_t progress,
+                                                  const char *buffer,
+                                                  mesibo_int_t size);
 ```
 The callback function takes the following parameters:  
 1.`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function `http`.  
 2.`state` An integer indicating the state of the response data being passed.   
 ```cpp
-typedef enum {MODULE_HTTP_STATE_REQUEST, MODULE_HTTP_STATE_REQBODY, MODULE_HTTP_STATE_RESPHEADER, MODULE_HTTP_STATE_RESPBODY, MODULE_HTTP_STATE_DONE} module_http_state_t;
+typedef enum {
+  MODULE_HTTP_STATE_REQUEST,
+  MODULE_HTTP_STATE_REQBODY,
+  MODULE_HTTP_STATE_RESPHEADER,
+  MODULE_HTTP_STATE_RESPBODY,
+  MODULE_HTTP_STATE_DONE
+} module_http_state_t;
 ```
 3.`buffer` The response is delivered via the callback function asynchronously using buffers. This means, for example, a module can start sending the response from a backend server and stream it to the client before the module has received the entire response from the backend.
 4.`size` Buffer size ie; Number of bytes in the buffer
@@ -355,7 +384,9 @@ static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
 ### log
 This function can be used to print to mesibo container logs.
 ```cpp
-int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format, ...)
+  int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
+             ...);
+
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct

@@ -398,7 +398,7 @@ typedef struct mesibo_message_params_s {
 -`to_online` -  
 
 ### HTTP Options Structure
-To pass`options` parameter of a HTTP request in the function `http()` (which is described in the previous section, Core  Utility Functions) you use the C/C++ structure `module_http_option_t`
+To pass`options` parameter of a HTTP request in the function [http()](#http) you use the C/C++ structure `module_http_option_t`
 ```cpp
 typedef struct _module_http_option_t {
     const char *proxy;

@@ -15,8 +15,8 @@ This makes Mesibo, the most compelling real-time communication platform existing
 0. [Prerequisites](#prerequisites)
 1. [Overview of a Mesibo Module](#what-is-a-mesibo-module)   
 a. [What is a Mesibo Module ](#what-is-a-mesibo-module)   
-b. [What can you build with a Mesibo Module](#what-can-you-build-with-a-mesibo-module)  
-c. [How do Mesibo Modules work](#how-do-mesibo-modules-work)  
+b. [How do Mesibo Modules work](#how-do-mesibo-modules-work)  
+c. [Building a profanity filter](#building-a-profanity-filter)
 
 2. [Anatomy of Mesibo Module](#anatomy-of-mesibo-module)  
 a. [Module Configuration Struct](#module-configuration-struct)  

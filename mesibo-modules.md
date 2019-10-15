@@ -287,7 +287,7 @@ Parameters:
 2. `url` ServerURL, both http and https url are supported. You can also pass authentication information in url. For example, https://username:password@yourapiurl.com
 3. `post` is a string that contains raw POST data.For example the part of the request after the question mark (e.g. "op=userdel" )
 4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function]() provided.
-5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument.You can store data of any arbitrary type such as a C struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
+5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument.You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
 6. `opt` is the structure that contains `options` or additional parameters that you need to pass in your HTTP request such as extra_header,content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures]()
 
 Returns:

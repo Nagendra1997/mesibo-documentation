@@ -86,26 +86,25 @@ A Mesibo Module is described by `mesibo_module_t` structure as defined below. Th
 
 ```cpp
 typedef struct mesibo_module_s {
-  mesibo_uint_t version;
-  mesibo_uint_t flags;
+  mesibo_uint_t version; /* module API Version */
+  mesibo_uint_t flags;   /* module Flags */
+  const char *name;      /* module name */
 
-  const char *name;
-  void *ctx;
+  /* callback functions defined by the module */
 
   int (*cleanup)(mesibo_module_t *mod);
-
   int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
                     const char *message, mesibo_uint_t len);
   int (*on_message_status)(mesibo_module_t *mod,
                            mesibo_message_params_t *params,
                            mesibo_uint_t status);
-
   int (*on_call)(mesibo_module_t *mod);
   int (*on_call_status)(mesibo_module_t *mod);
 
-  mesibo_uint_t signature;
+  mesibo_uint_t signature; /* module signature */
 
-  // these functions will be initialized by Mesibo
+  /* functions defined by mesibo and can be called by module */
+
   int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
                       const char *message, mesibo_uint_t len);
   int (*http)(mesibo_module_t *mod, const char *url, const char *post,
@@ -114,16 +113,7 @@ typedef struct mesibo_module_s {
   int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
              ...);
 
-  uintptr_t reserved_0;
-  uintptr_t reserved_1;
-  uintptr_t reserved_2;
-  uintptr_t reserved_3;
-  uintptr_t reserved_4;
-  uintptr_t reserved_5;
-  uintptr_t reserved_6;
-  uintptr_t reserved_7;
 } mesibo_module_t;
-
 ```
 
 In the next section, we will learn how to initialize module configuration structure. Before that, it is essential to know how Mesibo knows about your modules and loads it into the memory. 

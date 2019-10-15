@@ -447,7 +447,7 @@ typedef struct _module_http_option_t {
 ## 3. Writing and Compiling Mesibo Modules
 To write and build your Mesibo Module follow the steps below:
 
-1. Download and copy all the required header files and C source file(s) into your working directory 
+1. Download and copy all the required header files and C/C++ source file(s) into your working directory 
 2. Include `module.h` in your code 
 3. Initialize mesibo module as by providing a module name, your callback function references, etc. For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chat-bot]()
 4. To compile your module you can refer the sample `MakeFile` and modify the `TARGET` to the path where you need to place the resulting shared library accordingly. For example, `/etc/mesibo/module_<module name>.so`
@@ -483,10 +483,10 @@ $(TARGET): $(OBJECTS)
 As described previously, a mesibo module is simply a shared library (.so file) that needs to be loaded at runtime which links with your main Mesibo instance.
 
 So, how do you load your Mesibo module?
-To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C source file where you have defined your module.
+To do this ,you need to tell mesibo the details of the module you wish to load- where to find your module ie; the directory path where is your module is located and the name of the module -- the name of the C/C++ source file where you have defined your module.
 
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
-and the name of your module could be `test` with `test.c` being your C source file.
+and the name of your module could be `test` with `test.cpp` being your C/C++ source file.
 
 You provide the directory path by mounting the directory path `<module path>` as a `-v` option when you run the Mesibo container. You also need to mount the directory `/etc/mesibo/` which contains your mesibo configuration file `mesibo.conf` where you need to specify the name of the module in the configuration file `/etc/mesibo/mesibo.conf` like so:
 `module= <module name>`
@@ -503,7 +503,7 @@ sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ -v /
 ### Building a chat-bot 
 It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as DialogFlow, IBM Watson, TensorFlow, etc using REST endpoints.
 
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules (4).jpg" width="1000" align='center'>
+![Module Chatbot Sample](module_chat_bot.jpg)
 
 Let's look at how you can build a chatbot using Mesibo Modules:
 - When you receive a message, you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments. This message is the `query` to your chatbot.
@@ -516,8 +516,8 @@ You can refer to the [Sample Chatbot Module] source code which demonstrates buil
 
 The following is a step-by-step tutorial for building a chat-bot using Mesibo Module:
 
-### 1. Create a C Source file
-First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C/++ Source file with the same name as that of the module. ie; `chatbot.cpp`. Copy the header file `module.h` into your working directory and include it in your code.
+### 1. Create a C/C++ Source file
+First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C/C++ Source file with the same name as that of the module. ie; `chatbot.cpp`. Copy the header file `module.h` into your working directory and include it in your code.
 ```cpp
 #include "module.h"
 ```

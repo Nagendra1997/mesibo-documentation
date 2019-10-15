@@ -88,34 +88,49 @@ A Mesibo Module is described by `mesibo_module_t` structure as defined below. Th
 
 ```cpp
 typedef struct mesibo_module_s {
-  mesibo_uint_t version; /* module API Version */
-  mesibo_uint_t flags;   /* module Flags */
-  const char *name;      /* module name */
+  mesibo_uint_t version; /* mesibo module API version */
+  mesibo_uint_t flags;   /* module flags */
 
-  /* callback functions defined by the module */
+  const char *name; /* module name */
+  void *ctx;        /* module context */
 
-  int (*cleanup)(mesibo_module_t *mod);
-  int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
-                    const char *message, mesibo_uint_t len);
-  int (*on_message_status)(mesibo_module_t *mod,
-                           mesibo_message_params_t *params,
-                           mesibo_uint_t status);
-  int (*on_call)(mesibo_module_t *mod);
-  int (*on_call_status)(mesibo_module_t *mod);
+  mesibo_int_t (*cleanup)(mesibo_module_t *mod);
+
+  mesibo_int_t (*on_message)(mesibo_module_t *mod,
+                             mesibo_message_params_t *params,
+                             const char *message, mesibo_uint_t len);
+  mesibo_int_t (*on_message_status)(mesibo_module_t *mod,
+                                    mesibo_message_params_t *params,
+                                    mesibo_uint_t status);
+
+  mesibo_int_t (*on_call)(mesibo_module_t *mod);
+  mesibo_int_t (*on_call_status)(mesibo_module_t *mod);
+
+  mesibo_int_t (*on_login)(mesibo_module_t *mod, mesibo_login_params_t *params);
+
+  uintptr_t reserved_0;
+  uintptr_t reserved_1;
+  uintptr_t reserved_2;
+  uintptr_t reserved_3;
 
   mesibo_uint_t signature; /* module signature */
 
-  /* functions defined by mesibo and can be called by module */
+  uintptr_t reserved_4;
+  uintptr_t reserved_5;
+  uintptr_t reserved_6;
+  uintptr_t reserved_7;
 
-  int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
-                      const char *message, mesibo_uint_t len);
-  int (*http)(mesibo_module_t *mod, const char *url, const char *post,
-              mesibo_module_http_data_callback_t cb, void *cbdata,
-              module_http_option_t *opt);
-  int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
-             ...);
-
+  // These functions will be initialized by Mesibo
+  mesibo_int_t (*send_message)(mesibo_module_t *mod,
+                               mesibo_message_params_t *params,
+                               const char *message, mesibo_uint_t len);
+  mesibo_int_t (*http)(mesibo_module_t *mod, const char *url, const char *post,
+                       mesibo_module_http_data_callback_t cb, void *cbdata,
+                       module_http_option_t *opt);
+  mesibo_int_t (*log)(mesibo_module_t *mod, mesibo_uint_t level,
+                      const char *format, ...);
 } mesibo_module_t;
+
 ```
 
 In the next section, we will learn how to initialize module configuration structure. Before that, it is essential to know how Mesibo knows about your modules and loads it into the memory. 
@@ -206,8 +221,9 @@ Let's look in detail at the different callback functions and their prototypes:
 ### on_message 
 This function is called when the module receives a message.
 ```cpp
-  int (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
-                    const char *message, mesibo_uint_t len);
+  mesibo_int_t (*on_message)(mesibo_module_t *mod,
+                             mesibo_message_params_t *params,
+                             const char *message, mesibo_uint_t len);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -225,9 +241,9 @@ Returns:
 ### on_message_status
 This function is called when a message is sent from the module and you receive the status of the message.
 ```cpp
-  int (*on_message_status)(mesibo_module_t *mod,
-                           mesibo_message_params_t *params,
-                           mesibo_uint_t status);
+mesibo_int_t (*on_message_status)(mesibo_module_t *mod,
+                                    mesibo_message_params_t *params,
+                                    mesibo_uint_t status);
 ```
 Parameters:
 1. `mod` Pointer to mesibo module struct
@@ -244,15 +260,15 @@ Returns:
 ### on_cleanup
 This function is called when the module process is complete and to clean up.
 ```cpp
-int (*cleanup)(mesibo_module_t *mod)
+mesibo_int_t (*cleanup)(mesibo_module_t *mod)
 ```
 ### on_call
 ```cpp
-int (*on_call)(mesibo_module_t *mod)
+mesibo_int_t (*on_call)(mesibo_module_t *mod)
 ```
 ### on_call_status
 ```cpp
-int (*on_call_status)(mesibo_module_t *mod)
+mesibo_int_t (*on_call_status)(mesibo_module_t *mod)
 ```
 ##  Callable Functions
 These functions are initialized by Mesibo and you can utilize these functions to [send a message](#send_message), [send an HTTP request](#http), [print logs](#log), etc. Please note, that unlike the callback functions you need not pass any function references to initialize these functions as they are internally defined and initialized by Mesibo.
@@ -262,7 +278,7 @@ Let's look at the syntax of these functions.
 ### send_message
 This function can be used to send a message from one end-point/user to another.
 ```cpp
-  int (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
+  mesibo_int_t (*send_message)(mesibo_module_t *mod, mesibo_message_params_t *params,
                       const char *message, mesibo_uint_t len);
 ```
 Parameters:
@@ -289,7 +305,7 @@ Example,
 ### http
 This function can be used to make an HTTP request.
 ```cpp
-  int (*http)(mesibo_module_t *mod, const char *url, const char *post,
+  mesibo_int_t (*http)(mesibo_module_t *mod, const char *url, const char *post,
               mesibo_module_http_data_callback_t cb, void *cbdata,
               module_http_option_t *opt);
 ```
@@ -376,7 +392,7 @@ static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
 ### log
 This function can be used to print to mesibo container logs.
 ```cpp
-  int (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
+  mesibo_int_t (*log)(mesibo_module_t *mod, mesibo_uint_t level, const char *format,
              ...);
 
 ```
@@ -399,16 +415,19 @@ The C/C++ structure `mesibo_message_params_t` is used to define the various para
 Message params is used as argument to functions such as `on_message`,`on_message_status`,`send_message`,etc.
 ```cpp
 typedef struct mesibo_message_params_s {
-    mesibo_uint_t     aid;
-    mesibo_uint_t     id; 
-    mesibo_uint_t     refid;
-    mesibo_uint_t     groupid;
-    mesibo_uint_t     flags;
-    mesibo_uint_t     type;
-    mesibo_uint_t     expiry;
-    mesibo_uint_t     to_online;
+  mesibo_uint_t aid;
+  mesibo_uint_t id;  // original id, not the 64 bit
+  mesibo_uint_t refid;
+  mesibo_uint_t groupid;
+  mesibo_uint_t flags;
+  mesibo_uint_t type;
+  mesibo_uint_t expiry;
+  mesibo_uint_t to_online;
 
-    char     *to, *from;
+  uintptr_t reserved_0;
+  uintptr_t reserved_1;
+
+  char *to, *from;
 } mesibo_message_params_t;
 ```
 - `aid` - Application id.
@@ -419,6 +438,18 @@ typedef struct mesibo_message_params_s {
 - `type` - Message Type, any arbitrary user-defined types
 - `expiry` - Message Expiry for an outgoing message (time to live), in seconds
 -`to_online` -  
+
+### Login Params Structure
+```cpp
+typedef struct mesibo_login_params_s {
+  mesibo_uint_t flags;
+  char *address;
+  mesibo_int_t online;
+
+  uintptr_t reserved_0;
+  uintptr_t reserved_1;
+} mesibo_login_params_t;
+```
 
 ### HTTP Options Structure
 To pass`options` parameter of a HTTP request in the function [http()](#http) you use the C/C++ structure `module_http_option_t`
@@ -466,6 +497,7 @@ typedef struct _module_http_option_t {
 - `maxredirects` 
 - `conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
 - `retries` Retry broken downloads and uploads
+
 
  
 ## Writing and Compiling Mesibo Modules

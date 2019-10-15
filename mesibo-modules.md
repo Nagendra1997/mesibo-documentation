@@ -37,9 +37,9 @@ e. Data Structures
 
 Mesibo Module is essentially a message processor which allows you to intercept each message and decide whether to pass the message as it is to the destination, drop it, or process it before sending it to the destination. For example,
 
-- a **profinity filter module** can drop messages containing profanity 
-- a **tranlator module** can translate each message before sending it to destination
-- a **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
+- A **profinity filter module** can drop messages containing profanity 
+- A **tranlator module** can translate each message before sending it to destination
+- A **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
 
 
 The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules make Mesibo a powerful communication platform.  

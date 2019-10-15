@@ -124,7 +124,7 @@ In the next section, we will learn how to initialize module configuration struct
 As described previously, a mesibo module is a shared library (`.so` file) that is loaded at runtime by the Mesibo. For Mesibo to load your module, you need to tell mesibo about the module you wish to load for example, path where your module is located and the name of the module shared library.
 
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
-and the name of your module could be `test` with `test.c` being your C/C++ source file.
+and the name of your module could be `test` with `test.cpp` being your C/C++ source file.
 
 ### Module initialization
 The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`.
@@ -212,7 +212,7 @@ This function is called when the module receives a message.
 Parameters:
 1. `mod` Pointer to mesibo module struct
 2. `params` Pointer to message params struct. It contains message parameters such as 
-`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures]().
+`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures](#data-structures).
 3. `message` character buffer  which contains the message data bytes
 4. `len` contains the length of the message ie; number of bytes in the data buffer
 
@@ -232,7 +232,7 @@ This function is called when a message is sent from the module and you receive t
 Parameters:
 1. `mod` Pointer to mesibo module struct
 2. `params` Pointer to message params struct. It contains message parameters such as 
-`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures]().
+`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures](#data-structures).
 3. `status` containing the status of the sent message which corresponds to different [status codes](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams) such as `MSGSTATUS_SENT`,`MSGSTATUS_DELIVERED`,`MSGSTATUS_READ`, etc
 
 Returns:
@@ -255,7 +255,7 @@ int (*on_call)(mesibo_module_t *mod)
 int (*on_call_status)(mesibo_module_t *mod)
 ```
 ##  Callable Functions
-These functions are initialized by Mesibo and you can utilize these functions to send a message, send an HTTP request, print logs, etc. Please note, that unlike the callback functions you need not pass any function references to initialize these functions as they are internally defined and initialized by Mesibo.
+These functions are initialized by Mesibo and you can utilize these functions to [send a message](#send_message), [send an HTTP request](#http), [print logs](#log), etc. Please note, that unlike the callback functions you need not pass any function references to initialize these functions as they are internally defined and initialized by Mesibo.
 
 Let's look at the syntax of these functions.
 
@@ -268,7 +268,7 @@ This function can be used to send a message from one end-point/user to another.
 Parameters:
 1. `mod` Pointer to mesibo module struct
 2. `params` Pointer to message params struct. It contains message parameters such as 
-`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures]().
+`id`- Unique message identifier(For example it can be a pseudo-random number), `from`-  sender of the message, `to`-  message recipient, etc For more details refer [Data Structures](#data-structures).
 3. `message` character buffer which contains the message data bytes
 4. `len` containing the length of the message ie; number of bytes in the data buffer
 
@@ -297,9 +297,9 @@ Parameters:
 1. `mod` Pointer to mesibo module struct
 2. `url` ServerURL, both http and https url are supported. You can also pass authentication information in url. For example, https://username:password@yourapiurl.com
 3. `post` is a string that contains raw POST data.For example the part of the request after the question mark (e.g. "op=userdel" )
-4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function]() provided.
+4. `cb` is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
 5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument.You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details refer to the [sample code]()
-6. `opt` is the structure that contains `options` or additional parameters that you need to pass in your HTTP request such as extra_header,content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures]()
+6. `opt` is the structure that contains `options` or additional parameters that you need to pass in your HTTP request such as extra_header,content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures](#data-structures)
 
 Returns:
 Integer : 0 on Success , -1 on failure
@@ -322,7 +322,7 @@ typedef int (*mesibo_module_http_data_callback_t)(void *cbdata,
                                                   mesibo_int_t size);
 ```
 The callback function takes the following parameters:  
-1.`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function `http`.  
+1.`cbdata` Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function [http](#http).  
 2.`state` An integer indicating the state of the response data being passed.   
 ```cpp
 typedef enum {
@@ -472,7 +472,7 @@ To write and build your Mesibo Module follow the steps below:
 
 1. Download and copy all the required header files and C/C++ source file(s) into your working directory 
 2. Include `module.h` in your code 
-3. Initialize mesibo module as by providing a module name, your callback function references, etc. For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chat-bot]()
+3. Initialize mesibo module as by providing a module name, your callback function references, etc. For a detailed example with code on writing a Mesibo Module, refer to the example [Building a chat-bot](#building-a-chat-bot)
 4. To compile your module you can refer the sample `MakeFile` and modify the `TARGET` to the path where you need to place the resulting shared library accordingly. For example, `/etc/mesibo/module_<module name>.so`
 ```cmake
 //Sample MakeFile to build Mesibo Module 

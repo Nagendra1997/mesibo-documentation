@@ -41,14 +41,14 @@ Mesibo Module is essentially a message processor which allows you to intercept e
 - a **tranlator module** can translate each message before sending it to destination
 - a **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
 
-![Module Flowchart]("https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules%20(3).jpg")
+![Module Flowchart](module_flow_chart.jpg)
 
 The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules makes Mesibo a powerful communication platform.  
 
 
 
 You can build Mesibo Module on top of the core platform, as a shared library(basically a .so file) and load it to extend the functionality of the Mesibo.
-<img src="https://github.com/Nagendra1997/mesibo-documentation/blob/master/Mesibo_Loadable_Modules.jpg" width="1000" align='center'>
+![Module Architecture](Mesibo_Loadable_Modules.jpg)
 
 ### How do Mesibo Modules work?
 A Mesibo module is a shared library (`.so` file) which can be loaded at runtime by the Mesibo server. Mesibo then invokes various callback functions that you have defined in the share library whenever it receives messages or message status from your users. Your module can then decide what to do with those messages, for example:

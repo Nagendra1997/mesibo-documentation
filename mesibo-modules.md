@@ -6,7 +6,7 @@ title: Mesibo Loadable Modules
 
 Mesibo is designed by developers for developers. Its dynamically loadable module architecture lets you add new features and your own custom functionalities for deeper integration with your infrastructure, enabling you for unlimited creative possibilities. 
 
-With Mesibo Modules you can build powerful chatbots, filters, remotely communicate with hardware for IoT and robotics, integrate with Machine learning and Scientific computing backend such as TensorFlow, DialogFlow, Matlab, etc and much more, all the way keeping your data secure and private in your premises or private cloud.  
+With Mesibo Modules you can build powerful chatbots, filters, remotely communicate with hardware for IoT and robotics, integrate with Machine learning and Scientific computing backend such as Tensorflow, Dialogflow, Matlab, etc and much more, all the way keeping your data secure and private in your premises or private cloud.  
 
 This makes Mesibo, the most compelling real-time communication platform existing today. In this document, we will describe how you can build and use Mesibo Modules to unlock new possibilities and innovative solutions.
 
@@ -41,7 +41,7 @@ Mesibo Module is essentially a message processor which allows you to intercept e
 
 - A **profinity filter module** can drop messages containing profanity 
 - A **tranlator module** can translate each message before sending it to destination
-- A **chatbot module** can analyze messages using various AI and machine learning tools like TensorFlow, DialogFlow, etc. and send an automatic reply. 
+- A **chatbot module** can analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply. 
 
 
 The functionality of each module is programmed by you and its capability is limited only by your imagination.  Mesibo modules make Mesibo a powerful communication platform.  
@@ -526,7 +526,7 @@ mesibo/mesibo <app token>
 ## Code references and Examples
  
 ### Building a chat-bot 
-It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as DialogFlow, IBM Watson, TensorFlow, etc using REST endpoints.
+It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as Dialogflow, IBM Watson, Tensorflow, etc using REST endpoints.
 
 ![Module Chatbot Sample](module_chat_bot.jpg)
 
@@ -537,7 +537,7 @@ Let's look at how you can build a chatbot using Mesibo Modules:
 - Now based on your request, your chatbot model will process the query and send the appropriate response.
 - In your callback function, you will receive the HTTP response for your query in the form of a JSON string. Send the  response using  `send_message` function.
 
-You can refer to the [Sample Chatbot Module] source code which demonstrates building your module with a DialogFlow chatbot. 
+You can refer to the [Sample Chatbot Module] source code which demonstrates building your module with a Dialogflow chatbot. 
 
 The following is a step-by-step tutorial for building a chat-bot using Mesibo Module:
 
@@ -601,18 +601,121 @@ static int bot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
 }
 ```
 ### 4. Processing the incoming message
-To process the incoming query we need to send it to a chatbot model. Here, as an example we will be using [DialogFlow](https://dialogflow.com) as the chatbot provider and will make a an HTTP request to your DialogFlow chatbot. Your chatbot will use it's dialogFlow model and send the appropriate respoonse to your HTTP request.
+To process the incoming query we need to send it to a chatbot model. Here, as an example we will be using [Dialogflow](https://dialogflow.com) as the chatbot provider and will make a an HTTP request to your Dialogflow chatbot. Your chatbot will use it's dialogflow model and send the appropriate respoonse to your HTTP request.
 
-For more info on using DialogFlow and building chatbot models, checkout [DialogFlow Docs](https://dialogflow.com/docs).
+For more info on using Dialogflow and building chatbot models, checkout [Dialogflow Docs](https://dialogflow.com/docs).
 
 To send an HTTP request to your chatbot endpoint,the POST data must be in a specific input format as defined by your chatbot API provider. 
 
-In the case of dialogFlow,
+> :warning: **Warning**: It is recommended to use the example for [Dialogflow v2 API](#dialogflow-v2-api) than the depracated v1 API. On October 23, 2019 the Dialogflow V1 API will be deprecated and shut down.
+
+### Dialogflow V2 API 
+In the case of dialogflow v2 API,
+the request url is  `https://dialogflow.googleapis.com/v2beta1/{session=projects/*/agent/sessions/*}:detectIntent`
+and the POST data will contain the [detectIntent](https://cloud.google.com/dialogflow/docs/reference/rest/v2beta1/projects.agent.sessions/detectIntent) string.
+You also need to pass authentication information(your service account key) in the request header.
+
+An HTTP [query sample for dialogflow v2 API](https://cloud.google.com/dialogflow/docs/reference/rest/v2beta1/projects.agent.sessions/detectIntent) looks like below
+```
+ POST https://dialogflow.googleapis.com/v2beta1/{session=projects/*/agent/sessions/*}:detectIntent
+
+  Headers:
+  Authorization: Bearer YOUR_SERVICE_ACCOUNT_KEY
+  Content-Type: application/json
+
+  POST body:
+ {
+  "queryParams": {
+    object (QueryParameters)
+  },
+  "queryInput": {
+    object (QueryInput)
+  },
+  "outputAudioConfig": {
+    object (OutputAudioConfig)
+  },
+  "inputAudio": string
+}
+    
+```
+Following this POST format we send an HTTP request using the function `http`. 
+
+On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from Dialogflow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
+
+```cpp
+typedef struct _tMessageContext {
+  mesibo_module_t *mod;
+  mesibo_message_params_t *params;
+  const char* from;
+  const char* to;
+  // To copy data in response
+  char buffer[MIN_BUFFER_LEN];
+  int datalen;
+} tMessageContext;
+```
+On recieving the complete response from Dialogflow, we send the response to the original sender of the message and pass the message id of the query message as reference id for the response message. This way the client who sent the message will able to match the response recieved with the query sent. 
+
+```cpp
+static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+                               const char *message, mesibo_uint_t len) {
+  mod->log(mod, 0, "Processing message from %s \n", p->from);
+
+  // Dialogflow V2
+  // Dialogflow API reference https://cloud.google.com/dialogflow/docs
+  // POST https://dialogflow.googleapis.com/v2beta1/{session=projects/*/agent/sessions/*}:detectIntent
+  // Change Session ID and project name accordingly
+  char *base_url =
+      "https://dialogflow.googleapis.com/v2beta1/projects/<project name>/"
+      "agent/sessions/<session id>:detectIntent";
+  const char *request_body =
+      "{\"queryParams\":{\"timeZone\":\"Asia/"
+      "Calcutta\"},\"queryInput\":{\"text\":{\"text\":\""; //Append Query Text
+  int append_len = strlen("\",\"languageCode\":\"en\"}}}\0"); //Query language set to English
+  char *raw_post_data =
+      (char *)calloc(1, strlen(request_body) + len + append_len + 1);
+  memcpy(raw_post_data, request_body, strlen(request_body));
+  memcpy(raw_post_data + strlen(request_body), message, len);
+  memcpy(raw_post_data + strlen(request_body) + len,
+         "\",\"languageCode\":\"en\"}}}\0", append_len + 1);
+
+  module_http_option_t *request_options =
+      (module_http_option_t *)calloc(1, sizeof(module_http_option_t));
+
+  // Your dialogflow service account key,Refer
+  // https://cloud.google.com/docs/authentication/
+  request_options->extra_header =
+      "Authorization: Bearer "
+      "yaxx.c."
+      "Kl6bB3RdF81XC95YnV02j3LGhAYi0ZdlmrYKX5NveRB0SZx5oe0g1cRfc7xxxxxxxxxxxx-";
+  request_options->content_type = "application/json";
+
+  tMessageContext *message_context =
+      (tMessageContext *)calloc(1, sizeof(tMessageContext));
+  message_context->mod = mod;
+  message_context->params = p;
+  message_context->from = strdup(p->from);
+  message_context->to = strdup(p->to);
+  mod->log(
+      mod, 0,
+      " ===> Sending http for msg params :aid %u id %u from %s to %s  len %d\n",
+      p->aid, p->id, p->from, p->to, len);
+
+  mod->log(mod, 0, " %s %s %s %s \n", base_url, request_body, raw_post_data,
+           request_options->extra_header);
+  mod->http(mod, base_url, raw_post_data, bot_http_callback,
+            (void *)message_context, request_options);
+
+  return 0;
+}
+```  
+
+### Dialogflow V1 API (depracated)
+In the case of dialogflow v1 API (depracated),
 the request url is  `https://api.dialogflow.com/v1/query?v=20150910`
 and the POST data will contain the [query](https://dialogflow.com/docs/reference/agent/query#query_parameters_and_json_fields) string.
 You also need to pass authentication information in the request header.
 
-An HTTP query sample for dialogFlow looks like below
+An HTTP query sample for dialogflow v1 API looks like below
 ```
   POST https://api.dialogflow.com/v1/query?v=20150910
 
@@ -632,10 +735,9 @@ An HTTP query sample for dialogFlow looks like below
   }
     
 ```
-
 Following this POST format we send an HTTP request using the function `http`. 
 
-On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from DialogFlow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
+On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from Dialogflow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
 
 ```cpp
 typedef struct _tMessageContext {
@@ -648,7 +750,7 @@ typedef struct _tMessageContext {
   int datalen;
 } tMessageContext;
 ```
-On recieving the complete response from DialogFlow, we send the response to the original sender of the message and pass the message id of the query message as reference id for the response message. This way the client who sent the message will able to match the response recieved with the query sent. 
+On recieving the complete response from Dialogflow, we send the response to the original sender of the message and pass the message id of the query message as reference id for the response message. This way the client who sent the message will able to match the response recieved with the query sent. 
 
 ```cpp
 static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
@@ -665,7 +767,7 @@ static int bot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
 
   module_http_option_t *request_options =
       (module_http_option_t *)calloc(1, sizeof(module_http_option_t));
-  // Your dialogFlow CLIENT_ACCESS_TOKEN
+  // Your dialogflow CLIENT_ACCESS_TOKEN
   request_options->extra_header =
       "Authorization: Bearer 4b458b3feba0448fxxxxxxxxxxxxxxxx";
   request_options->content_type = "application/json";

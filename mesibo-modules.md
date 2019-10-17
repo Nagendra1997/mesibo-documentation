@@ -62,7 +62,7 @@ A Mesibo module is a shared library (`.so` file) which can be loaded at runtime 
 
 You can load multiple modules, each having their own features and functionalities. You can specify all the modules to be loaded and the order in the Mesibo configuration file, `/etc/mesibo/mesibo.conf`. Mesibo will pass data to each module in the order in which modules were loaded. 
 
-![Module Chain](module_chain_process)
+![Module Chain](module_chain_process.jpg)
 
 Creating a mesibo module is extremely easy.For example, you can implement a simple profanity filter module as follows.
 

@@ -145,8 +145,15 @@ and the name of your module could be `test` with `test.cpp` being your C/C++ sou
 
 You need to specify these details in the configuration file `/etc/mesibo/mesibo.conf`. You can also pass any other details that your module requires as a list of name-value pairs,where the `name` will correspond to the configuration attribute and the `value` being the defined value for that attribute.  
 
-### Module Configuration file
-The format to specify module configuration details in **mesibo.conf** is as follows:
+### Mesibo Configuration file
+
+To load a module, you need to specify the <module name> in the configuration file **mesibo.conf** like so:
+```
+ module = <module name>
+```
+ 
+You can specify module configuration details, as a configuration list consisting of `attribute name` and the corresponding `attribute value` as shown below.
+
 ```
 module = <module name> {
   <attribute name> = <attribute value>
@@ -156,8 +163,6 @@ module = <module name> {
   .
 }
 ```
-The config items that you specify in the module configuration file, will be available during module initialisation,as an argument to the initialization function `mesibo_module_<module name>_init` which is of type [module_configs_t](#data-structures)
-
 For example, for a module named `test` you can provide the configuration details as follows.
 ```
 module = test {
@@ -166,17 +171,46 @@ module = test {
 }
 
 ```
+
+
+To load multiple modules and their respective configuration :
+```
+module = <module_1 name> {
+  /**Configuration for module-1 **/
+  }
+
+module = <module_2 name> {
+  /**Configuration for module-2 **/
+  }
+
+module = <module_3 name> {
+  /**Configuration for module-3 **/
+  }
+  
+ .
+ .
+ .
+ module = <module_N name> {
+  /**Configuration for module-N **/
+  }
+  
+```  
+
+The config items that you specify in the module configuration file, will be available during module initialisation,as an argument to the initialization function `mesibo_module_<module name>_init` which is of type [module_configs_t](#data-structures)
+
 Refer to the code example in the next section, to see how configuration details are passed during initialisation. 
 
 ### Module initialization
 The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`.
 
-The function takes two parameters:
+The function takes the following parameters:
 1. `mod` of type `mesibo_module_t*` Pointer to mesibo module struct
 2. `len` of type `mesibo_uint_t`
 3. `config` of type ` module_configs_t *` Pointer to mesibo module configuration struct
 
-It is important to note that the size of the configuration structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
+It is important to note that the size of the module structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
+
+The configuration list that you pass in the [Module Configuration file]
 
 For example,for a module named `test` (** which is defined in a file named `test.cpp`) the initialisation function looks like below.
 ```cpp

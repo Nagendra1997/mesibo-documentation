@@ -196,7 +196,7 @@ module = <module_3 name> {
   
 ```  
 
-The config items that you specify in the module configuration file, will be available during module initialisation,as an argument to the initialization function `mesibo_module_<module name>_init` which is of type [module_configs_t](#data-structures)
+The config items that you specify in the module configuration file, will be available during module initialisation,as an argument to the initialization function `mesibo_module_<module name>_init` which is of type [module_configs_t](#module-configuration-structure)
 
 Refer to the code example in the next section, to see how configuration details are passed during initialisation. 
 
@@ -210,9 +210,16 @@ The function takes the following parameters:
 
 It is important to note that the size of the module structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
 
-The configuration list that you pass in the [Module Configuration file]
+The configuration list that you pass in the [Module Configuration file][#module-configuration-file] is available as a list of items in the structure `module_configs_t` where each item is a name-value pair of the type `module_config_item_t`
 
-For example,for a module named `test` (** which is defined in a file named `test.cpp`) the initialisation function looks like below.
+For example,for a module named `test` (** which is defined in a file named `test.cpp`) and the configuration provided is as below
+```
+module = test {
+  file_name = xyz
+  auth_key = abc
+}
+```
+the initialisation function looks like the following:
 ```cpp
 int mesibo_module_test_init(mesibo_int_t version, mesibo_module_t *m, mesibo_uint_t len, module_configs_t *config) {
         if(MESIBO_MODULE_VERSION != version) {
@@ -250,6 +257,12 @@ int mesibo_module_test_init(mesibo_int_t version, mesibo_module_t *m, mesibo_uin
 
   return 0;
 }
+```
+The logs will print the the configuration details for the example module `test`:
+```
+Following configuration item(s) were passed to the module
+module config item: name file_name value abc
+module config item: name auth_key value xyz
 ```
 `test_cleanup`, `test_on_message`, `test_on_message_status` are functions that have been defined by you and serve as the corresponding callback function references to cleanup,on_message & on_message_status .
 
@@ -563,6 +576,21 @@ typedef struct _module_http_option_t {
 
 } module_http_option_t;
 ```
+### Module Configuration Structure
+The configuration atrributes for a module can be provides as a configuaration list which shall be made available in the mesibo moduile initialization function, through the following structures
+```cpp
+typedef struct module_config_item_s {
+        char *name;
+        char *value;
+} module_config_item_t;
+```
+```cpp
+typedef struct module_configs_s {
+        int count;
+        module_config_item_t items[0];
+} module_configs_t;
+```
+`module_configs_t` contains `count`- the number of items in the configuration list &  a list of items of type  `module_config_item_t` - a structure containing a name-value pair.
 ### Basic Options Fields  
 
 - `proxy` Proxy URL.You can pass authentication information here.  

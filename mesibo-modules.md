@@ -143,34 +143,76 @@ As described previously, a mesibo module is a shared library (`.so` file) that i
 For example, the path to your module could be `/usr/lib64/mesibo/mesibo_test.so`
 and the name of your module could be `test` with `test.cpp` being your C/C++ source file.
 
+You need to specify these details in the configuration file `/etc/mesibo/mesibo.conf`. You can also pass any other details that your module requires as a list of name-value pairs,where the `name` will correspond to the configuration attribute and the `value` being the defined value for that attribute.  
+
+### Module Configuration file
+The format to specify module configuration details in **mesibo.conf** is as follows:
+```
+module = <module name> {
+  <attribute name> = <attribute value>
+  <attribute name> = <attribute value>
+  .
+  .
+  .
+}
+```
+The config items that you specify in the module configuration file, will be available during module initialisation,as an argument to the initialization function `mesibo_module_<module name>_init` which is of type [module_configs_t](#data-structures)
+
+For example, for a module named `test` you can provide the configuration details as follows.
+```
+module = test {
+  file_name = xyz
+  auth_key = abc
+}
+
+```
+Refer to the code example in the next section, to see how configuration details are passed during initialisation. 
+
 ### Module initialization
 The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`.
 
 The function takes two parameters:
 1. `mod` of type `mesibo_module_t*` Pointer to mesibo module struct
 2. `len` of type `mesibo_uint_t`
+3. `config` of type ` module_configs_t *` Pointer to mesibo module configuration struct
 
 It is important to note that the size of the configuration structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
 
 For example,for a module named `test` (** which is defined in a file named `test.cpp`) the initialisation function looks like below.
 ```cpp
-int mesibo_module_test_init(mesibo_module_t *m, mesibo_uint_t len) {
-  if (sizeof(mesibo_module_t) != len) {
-    m->log(m, 0, "module size mismatch\n");
-    return -1;
-  }
+int mesibo_module_test_init(mesibo_int_t version, mesibo_module_t *m, mesibo_uint_t len, module_configs_t *config) {
+        if(MESIBO_MODULE_VERSION != version) {
+                m->log(m, 0, "module version mismatch\n");
+                return -1;
+        }
 
-  if (MESIBO_MODULE_SIGNATURE != m->signature) {
-    m->log(m, 0, "module signature mismatch\n");
-    return -1;
-  }
+        if(sizeof(mesibo_module_t) != len) {
+                m->log(m, 0, "module size mismatch\n");
+                return -1;
+        }
+        
+        if(MESIBO_MODULE_SIGNATURE != m->signature) {
+                m->log(m, 0, "module signature mismatch\n");
+                return -1;
+        }
 
-  m->version = 1;
-  m->flags = 0;
-  m->name = strdup("Sample Module");
-  m->cleanup = test_cleanup;
-  m->on_message = test_on_message;
-  m->on_message_status = test_on_message_status;
+        if(config) {
+                m->log(m, 0, "Following configuration item(s) were passed to the module\n");
+                for(int i=0; i < config->count; i++) {
+                        m->log(m, 0, "module config item: name %s value %s\n", 
+                        config->items[i].name, 
+                        config->items[i].value);
+                }
+        }
+
+        m->version = 1;
+        m->flags = 0;
+        m->name = strdup("Sample Module");
+        m->cleanup = test_cleanup;
+        m->on_message = test_on_message;
+        m->on_message_status = test_on_message_status;
+        m->log(m, 0, "================> %s init called\n", m->name);
+                                                                     
 
   return 0;
 }

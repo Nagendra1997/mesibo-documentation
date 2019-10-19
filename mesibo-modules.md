@@ -24,6 +24,7 @@ b. [Module initialization](#module-initialization)
 c. [Callback Functions](#callback-functions)  
 d. [Callable Functions](#callable-functions)  
 e. [Data Structures](#data-structures)
+f. [Memory Management](#memory-management)
 
 3. [Writing and Compiling Mesibo Modules](#writing-and-compiling-mesibo-modules) 
 4. [Loading a Mesibo Module](#loading-a-mesibo-module)
@@ -204,11 +205,12 @@ Refer to the code example in the next section, to see how configuration details 
 The above module structure initialization is performed by a callback function, the prototype for which can be found in the file [module.h](). This function is automatically called by mesibo when the module is constructed. The naming convention for this function is `mesibo_module_<module name>_init`.
 
 The function takes the following parameters:
-1. `mod` of type `mesibo_module_t*` Pointer to mesibo module struct
-2. `len` of type `mesibo_uint_t`
-3. `config` of type ` module_configs_t *` Pointer to mesibo module configuration struct
+1. `version` of type `mesibo_int_t` Version of Mesibo Module
+2. `mod` of type `mesibo_module_t*` Pointer to mesibo module struct
+3. `len` of type `mesibo_uint_t` Size of configuration Structure
+4. `config` of type ` module_configs_t *` Pointer to mesibo module configuration struct
 
-It is important to note that the size of the module structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length and singature to ensure that structure is aligned as expected. 
+It is important to note that the size of the module structure `mesibo_module_t` defined should be equal to `len` and `signature` of your module should match with the defined `MESIBO_MODULE_SIGNATURE`.  You must check the module structure length,version and singature to ensure that structure is aligned as expected. 
 
 The configuration list that you pass in the [Module Configuration file][#module-configuration-file] is available as a list of items in the structure `module_configs_t` where each item is a name-value pair of the type `module_config_item_t`
 
@@ -300,9 +302,8 @@ There are different callback functions that you can define in your module and in
 
 You need to provide the callback functions with the same prototype while initializing the module: ie; same number of arguments, data types of arguments and return type. All function prototypes are found in the file [module.h]().
 
-There are two important observations for all call back functions:
-- Mesibo Module Structure pointer: All callback functions include `the mesibo_module_t` structure pointer as the first argument
-- Pass or Consume mechanism according to return value: Each function returns an integer value which is defined in the file [module.h]()     
+### Pass and consume mechanism
+Pass or Consume mechanism is followed according to return value of the function: Each function returns an integer value which is defined in the file [module.h]()     
 `MESIBO_RESULT_PASS` pass the data as it is and the recipient is notified  
 `MESIBO_RESULT_CONSUMED` where the data is consumed and the recipient is not notified of this data
 
@@ -362,8 +363,9 @@ mesibo_int_t (*on_call)(mesibo_module_t *mod)
 mesibo_int_t (*on_call_status)(mesibo_module_t *mod)
 ```
 ### on_login
+This function is called when a user logs in. When the user logs in, your server logs will conntain an entry saying X user logged in and here are the user-login parameters. The function callback you define,will get arguments passed containing login paramters such as user flags, online status, user address,etc. For more details refer to the data structure info on  [mesibo_user_t](#mesibo-user)
 ```cpp
-mesibo_int_t (*on_login)(mesibo_module_t *mod, mesibo_login_params_t *params);
+mesibo_int_t (*on_login)(mesibo_module_t *mod, mesibo_user_t *user);
 ```
 
 ##  Callable Functions
@@ -535,16 +537,16 @@ typedef struct mesibo_message_params_s {
 - `expiry` - Message Expiry for an outgoing message (time to live), in seconds
 -`to_online` -  
 
-### Login Params Structure
+### Mesibo User
 ```cpp
-typedef struct mesibo_login_params_s {
+typedef struct  mesibo_user_s {
   mesibo_uint_t flags;
   char *address;
   mesibo_int_t online;
 
   uintptr_t reserved_0;
   uintptr_t reserved_1;
-} mesibo_login_params_t;
+}mesibo_user_t;
 ```
 
 ### HTTP Options Structure
@@ -576,22 +578,7 @@ typedef struct _module_http_option_t {
 
 } module_http_option_t;
 ```
-### Module Configuration Structure
-The configuration atrributes for a module can be provides as a configuaration list which shall be made available in the mesibo moduile initialization function, through the following structures
-```cpp
-typedef struct module_config_item_s {
-        char *name;
-        char *value;
-} module_config_item_t;
-```
-```cpp
-typedef struct module_configs_s {
-        int count;
-        module_config_item_t items[0];
-} module_configs_t;
-```
-`module_configs_t` contains `count`- the number of items in the configuration list &  a list of items of type  `module_config_item_t` - a structure containing a name-value pair.
-### Basic Options Fields  
+### Options Fields  
 
 - `proxy` Proxy URL.You can pass authentication information here.  
 - `content_type` Content-Type header. For example "application/json".
@@ -609,6 +596,28 @@ typedef struct module_configs_s {
 - `conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
 - `retries` Retry broken downloads and uploads
 
+### Module Configuration Structure
+The configuration atrributes for a module can be provides as a configuaration list which shall be made available in the mesibo moduile initialization function, through the following structures
+```cpp
+typedef struct module_config_item_s {
+        char *name;
+        char *value;
+} module_config_item_t;
+```
+```cpp
+typedef struct module_configs_s {
+        int count;
+        module_config_item_t items[0];
+} module_configs_t;
+```
+`module_configs_t` contains `count`- the number of items in the configuration list &  a list of items of type  `module_config_item_t` - a structure containing a name-value pair.
+
+## Memory Mangement
+Data objects of various data types are configured and handled by Mesibo Modules. While some of them are user defined and user allocated, some data objects are configured internally and should be protected. Please go through this section carefully, so that you do not inadvertantly free memory that is protected/reserved by the module which may cause your module based application to fail.
+
+Module Memory Map:
+Freeable : Safe territory
+Not freeable: Unsafe territory. Tread with caution
 
  
 ## Writing and Compiling Mesibo Modules

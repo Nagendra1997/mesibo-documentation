@@ -23,7 +23,7 @@ a. [Module Configuration Struct](#module-configuration-struct)
 b. [Module initialization](#module-initialization)  
 c. [Callback Functions](#callback-functions)  
 d. [Callable Functions](#callable-functions)  
-e. [Data Structures](#data-structures)
+e. [Data Structures](#data-structures)  
 f. [Memory Management](#memory-management)
 
 3. [Writing and Compiling Mesibo Modules](#writing-and-compiling-mesibo-modules) 
@@ -612,7 +612,7 @@ typedef struct module_configs_s {
 ```
 `module_configs_t` contains `count`- the number of items in the configuration list &  a list of items of type  `module_config_item_t` - a structure containing a name-value pair.
 
-## Memory Mangement
+## Memory Management
 Data objects of various data types are configured and handled by Mesibo Modules. While some of them are user defined and user allocated, some data objects are configured internally and should be protected. Please go through this section carefully, so that you do not inadvertantly free memory that is protected/reserved by the module which may cause your module based application to fail.
 
 Module Memory Map:

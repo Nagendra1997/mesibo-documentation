@@ -26,7 +26,8 @@ Please note that the above is just an example configuration. You can pass name-v
 The skeleton module is initialized with the Mesibo Module Configuration details - module version, the name of the module and  references to the module callback functions.
 ```cpp
 
-int mesibo_module_skeleton_init(mesibo_int_t version, mesibo_module_t *m, mesibo_uint_t len, module_configs_t *config) {
+int mesibo_module_skeleton_init(mesibo_int_t version, mesibo_module_t *m,
+				mesibo_uint_t len, module_configs_t *config) {
 	if(MESIBO_MODULE_VERSION != version) {
 		m->log(m, 0, " module version mismatch\n");
 		return -1;

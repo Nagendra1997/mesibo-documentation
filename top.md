@@ -4,7 +4,7 @@ With Mesibo Modules you can build powerful chatbots, filters, remotely communica
 
 This repository contains the Sample Loadable Modules that you can use as reference. You can also load the pre-compiled binaries and see Mesibo Modules in action! The complete documentation for Mesibo Modules is availble [here](https://mesibo.com/documentation/loadable-modules/)
 
-## List of Sample Modules  :
+## List of Sample Modules 
 
 - [Skeleton]()   Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
 

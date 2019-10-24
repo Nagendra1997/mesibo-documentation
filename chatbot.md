@@ -396,8 +396,8 @@ static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
 }
 
 ```
-### 6. Compiling your module
-To compile your module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or to a file path of your choice. 
+### 6. Compiling the chatbot module
+To compile the module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or to a file path of your choice. 
 For example.
 ```
 /usr/lib64/mesibo/mesibo_mod_chatbot.so

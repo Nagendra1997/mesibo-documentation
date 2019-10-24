@@ -1,0 +1,1 @@
+This repo contains the Sample Modules for [Loadable Modules - add your own custom features to Mesibo]()This repo contains the Sample Modules for [Loadable Modules - add your own custom features to Mesibo](https://mesibo.com/documentation/loadable-modules/)

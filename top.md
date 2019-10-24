@@ -6,13 +6,13 @@ This repository contains the Sample Loadable Modules that you can use as referen
 
 ## List of Sample Modules 
 
-- [Skeleton]()   Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
+- [Skeleton](https://github.com/Nagendra1997/mesibo-documentation/blob/master/skeleton.md)   Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
 
 - [Filter]()   Profinity filter module to drop messages containing profanity
 
 - [Translation]()   Translator module to translate each message before sending it to destination. Sample translate Module provides an example using [Google Translate](https://cloud.google.com/translate)
 
-- [Chatbot]()   Chatbot module to analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply. Sample Chatbot Module provides an example using [Dialogflow](https://dialogflow.com)
+- [Chatbot](https://github.com/Nagendra1997/mesibo-documentation/blob/master/chatbot.md)   Chatbot module to analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply. Sample Chatbot Module provides an example using [Dialogflow](https://dialogflow.com)
 
 - [Javascript]()   JavaScript Module to load and call functions in [ECMAScript](http://www.ecma-international.org/ecma-262/5.1/)
 

@@ -1,4 +1,6 @@
-This repository contains a Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
+# Skeleton Module
+
+This repository contains a bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
 
 The Skeleton Module serves as a reference for all other Sample Modules. For complete documentation refer [Loadable Modules - add your own custom features to Mesibo](Loadable Modules - add your own custom features to Mesibo)
 

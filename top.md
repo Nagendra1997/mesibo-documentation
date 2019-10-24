@@ -10,7 +10,7 @@ This repository contains the Sample Loadable Modules that you can use as referen
 
 - [Filter]()   Profinity filter module to drop messages containing profanity
 
-- [Translation]()   Tranlator module to translate each message before sending it to destination. Sample translate Module provides an example using [Google Translate](https://cloud.google.com/translate)
+- [Translation]()   Translator module to translate each message before sending it to destination. Sample translate Module provides an example using [Google Translate](https://cloud.google.com/translate)
 
 - [Chatbot]()   Chatbot module to analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply. Sample Chatbot Module provides an example using [Dialogflow](https://dialogflow.com)
 

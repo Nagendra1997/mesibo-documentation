@@ -4,21 +4,22 @@ With Mesibo Modules you can build powerful chatbots, filters, remotely communica
 
 This repo contains the Sample Loadable Modules that you can use as reference. You can also load the pre-compiled binaries and see Mesibo Modules in action!
 
-**Documentation** [Loadable Modules - add your own custom features to Mesibo](https://mesibo.com/documentation/loadable-modules/)
+# Documentation 
+[Loadable Modules - add your own custom features to Mesibo](https://mesibo.com/documentation/loadable-modules/)
 
-**Available Modules**:
+# Available Modules  :
 
-1.[Skeleton]() Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
+1.[Skeleton]()   Bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
 
-2.[Filter]() Profinity filter module to drop messages containing profanity
+2.[Filter]()   Profinity filter module to drop messages containing profanity
 
-3.[Translation] Tranlator module to translate each message before sending it to destination. Sample translate Module provides an example using [Google Translate](https://cloud.google.com/translate)
+3.[Translation]()   Tranlator module to translate each message before sending it to destination. Sample translate Module provides an example using [Google Translate](https://cloud.google.com/translate)
 
-4.[Chatbot]() Chatbot module to analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply.Sample Chatbot Module provides an example using [Dialogflow](https://dialogflow.com)
+4.[Chatbot]()   Chatbot module to analyze messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and send an automatic reply.Sample Chatbot Module provides an example using [Dialogflow](https://dialogflow.com)
 
-5.[Javascript]() JavaScript Module to load and call functions in [ECMAScript](http://www.ecma-international.org/ecma-262/5.1/)
+5.[Javascript]()   JavaScript Module to load and call functions in [ECMAScript](http://www.ecma-international.org/ecma-262/5.1/)
 
-**Compiling Modules**
+## Compiling Modules
 
-**Loading Modules**
+## Loading Modules
 Load pre-compiled modules into Mesibo

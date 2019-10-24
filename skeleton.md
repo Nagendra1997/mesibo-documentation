@@ -2,7 +2,7 @@
 
 This repository contains a bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
 
-The Skeleton Module serves as a reference for all other Sample Modules. For complete documentation [refer](Loadable Modules - add your own custom features to Mesibo)
+The Skeleton Module serves as a reference for all other Sample Modules. The complete documentation for Mesibo Modules is availble [here](https://mesibo.com/documentation/loadable-modules/)
 
 ### 1. The C/C++ Source file
 The module name is `skeleton`. The C/C++ Source file ie; `skeleton.cpp`. The header file `module.h` containing the definitions of all module related components is included in the C/C++ source as follows:

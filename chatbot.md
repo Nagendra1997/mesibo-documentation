@@ -225,29 +225,27 @@ static int chatbot_init_dialogflow(mesibo_module_t* mod, chatbot_config_t* cbc){
 }
 ```
 
-### 3.`bot_on_message`
+### 3.`chatbot_on_message`
 
 We need message containing queries from the end user only. `on_message` will alert you for any message sent or received. So, we filter these messages to match only those messages that are incoming from a particular user `bot_user`. 
 For incoming messages from `bot_user` we process the message/query and send a response from the chat-bot.
 For all other messages we pass the message as it is.
 ```cpp
-static int bot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-                          const char *message, mesibo_uint_t len) {
-  mod->log(mod, 0, " %s on_message called\n", mod->name);
-  mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
-           p->to, (uint32_t)p->id, message);
+static mesibo_int_t chatbot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+		const char *message, mesibo_uint_t len) {
+	mod->log(mod, 0, " %s on_message called\n", mod->name);
+	mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
+			p->to, (uint32_t)p->id, message);
 
-  if (strcmp(p->from,"bot_user") == 0) {  // Filter messages based on sender of message
-    mod->log(mod, 0, " Processing message from %s \n", p->from);
-    //Don't modify original as other module will be use it 
-    mesibo_message_params_t* np = (mesibo_message_params_t*)calloc(1,sizeof(mesibo_message_params_t));
-    memcpy(np, p, sizeof(mesibo_message_params_t));
-    bot_process_message(mod, np, message, len);
-    return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
-                                    // message
-  } else
-    return MESIBO_RESULT_PASS;  // PASS the message as it is
+	mod->log(mod, 0, " Processing message from %s \n", p->from);
+	// Don't modify original as other module will be use it
+	mesibo_message_params_t *np =
+		(mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
+	memcpy(np, p, sizeof(mesibo_message_params_t));
+	chatbot_process_message(mod, np, message, len);
+	return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
 }
+
 ```
 ### 4. Processing the incoming message
 To process the incoming query we need to send it to a chatbot model. Here, as an example we will be using [Dialogflow](https://dialogflow.com) as the chatbot provider and will make a an HTTP request to your Dialogflow chatbot. Your chatbot will use it's dialogflow model and send the appropriate respoonse to your request.

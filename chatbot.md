@@ -138,8 +138,8 @@ int mesibo_module_chatbot_init(mesibo_int_t version, mesibo_module_t *m, mesibo_
 	}
 
 	else {
-		m->log(m, 0, "Error: DialogFlow not configured , 
-		Please provide details as per format in the configuration file");
+		m->log(m, 0, "Error: DialogFlow not configured ,"
+		"Please provide details as per format in the configuration file");
 		return MESIBO_RESULT_FAIL;
 	}
 

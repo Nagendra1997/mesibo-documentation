@@ -170,7 +170,7 @@ make
 from the source directory which uses the sample `Makefile` provided to build a shared object `mesibo_mod_skeleton.so`. It places the result at the `TARGET` location `/usr/lib64/mesibo/mesibo_mod_skeleton.so` which you can verify.
 
 ### Loading the skeleton module 
-You can load the precompiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `skeleton.conf` and mount the directory which contains the module shared library.
+You can load the precompiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `skeleton.conf` and mount the directory which contains the module shared library  while running the mesibo container.
 
 If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_skeleton.so` is located at `/path/to/mesibo_mod_skeleton.so`, mount the directory as 
 ```

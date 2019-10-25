@@ -1,4 +1,4 @@
-#  Translation Module
+#  Translate Module
 
 This repository contains the source code for Translate Module. The translate module translates each message before sending it to destination.   
 

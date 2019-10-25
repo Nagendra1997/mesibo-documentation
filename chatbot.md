@@ -353,56 +353,65 @@ static int chatbot_process_message(mesibo_module_t *mod, mesibo_message_params_t
 In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to the user who sent the query.
 
 ```cpp
+
 static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
-		mesibo_int_t progress, const char *buffer,
-		mesibo_int_t size) {
-	message_context_t *b = (message_context_t *)cbdata;
-	mesibo_module_t *mod = b->mod;
-	mesibo_message_params_t *params = b->params;
-	mod->log(mod, 0,
-			" ===> message context parameters :aid %u id %u from %s to %s \n",
-			params->aid, params->id, params->from, params->to);
+                mesibo_int_t progress, const char *buffer,
+                mesibo_int_t size) {
+        message_context_t *b = (message_context_t *)cbdata;
+        mesibo_module_t *mod = b->mod;
+        mesibo_message_params_t *params = b->params;
+        mod->log(mod, 0,
+                        " ===> message context parameters :aid %u id %u from %s to %s \n",
+                        params->aid, params->id, params->from, params->to);
 
-	mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
-			(int)state, (int)size);
+        mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
+                        (int)state, (int)size);
 
-	if (progress < 0) {
-		mod->log(mod, 0, " Error in http callback \n");
-		free(b);
-		return  MESIBO_RESULT_FAIL;
-	}
+        if (progress < 0) {
+                mod->log(mod, 0, " Error in http callback \n");
+                free(b->post_data);
+                free(b);
+                return MESIBO_RESULT_FAIL;
+        }
 
-	if (state != MODULE_HTTP_STATE_RESPBODY) {
-		mod->log(mod, 0, " Exit http callback\n");
-		if(size)
-			mod->log(mod, 0, " Exit http callback %.*s \n", size, buffer);
-		free(b);
-		return  MESIBO_RESULT_OK;
-	}
+        if (state != MODULE_HTTP_STATE_RESPBODY) {
+                mod->log(mod, 0, " Exit http callback\n");
+                if(size)
+                        mod->log(mod, 0, " Exit http callback %.*s \n", size, buffer);
+                free(b->post_data);
+                free(b);
+                return MESIBO_RESULT_OK;
+        }
 
-	if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
-		memcpy(b->buffer + b->datalen, buffer, size);
-		b->datalen += size;
-	}
+        if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
+                memcpy(b->buffer + b->datalen, buffer, size);
+                b->datalen += size;
+        }
 
-	if (progress == 100) {
-		mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
-		mesibo_message_params_t *p =
-			(mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
-		p->id = rand();
-		p->refid = params->id;
-		p->aid = params->aid;
-		p->from = b->to;
-		p->to = b->from;  // User adress who sent the query is the recipient
-		p->expiry = 3600;
 
-		mod->log(mod, 0,
-				" ===> Sending response :aid %u id %u from %s to %s  len %d\n",
-				p->aid, p->id, b->from, b->to, b->datalen);
-		mod->send_message(mod, p, b->buffer, (mesibo_uint_t)b->datalen);
+        if (progress == 100) {
+                mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
+                mesibo_message_params_t *p =
+                        (mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
+                p->id = rand();
+                p->refid = params->id;
+                p->aid = params->aid;
+                p->from = b->to;
+                p->to = b->from;  // User adress who sent the query is the recipient
+                p->expiry = 3600;
 
-		free(b);
-	}
+                mod->log(mod, 0,
+                                " ===> Recieved response :aid %u id %u from %s to %s  len %d\n",
+                                p->aid, p->id, b->from, b->to, b->datalen);
+
+                char* extracted_response = json_extract(mod, b->buffer , "fulfillmentText");
+                mod->log(mod, 0,"\n Extracted Response Text \n %s \n", ++extracted_response);
+                mod->send_message(mod, p, extracted_response ,strlen(extracted_response));
+
+                free(b->post_data);
+                free(b);
+        }
+
 
 	return  MESIBO_RESULT_OK;
 }

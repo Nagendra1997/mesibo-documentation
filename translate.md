@@ -282,7 +282,7 @@ You should see a JSON response similar to the following:
 ```
 ### translate_process_message
 
-Get the translate configuration from module context `mod->ctx` (Casting from `void*` to `filter_config_t*` ).  Following this [POST request format](https://cloud.google.com/translate/docs/translating-text) we send an HTTP request using the function `http`. We also pass the authorisation header containing the access token (Service Account Key)
+Get the translate configuration from module context `mod->ctx` (Casting from `void*` to `translate_config_t*` ).  Following this [POST request format](https://cloud.google.com/translate/docs/translating-text) we send an HTTP request using the function `http`. We also pass the authorisation header containing the access token (Service Account Key)
 
 On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from Google Translate we need to send the response back to the recipient. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http callback function by modifying the `tMessageContext` structure accordingly.
 
@@ -345,24 +345,90 @@ Returns:
  OR
 `MESIBO_RESULT_CONSUMED` If the message is found to contain profinity. The unsafe message is dropped and prevented from reaching the receiver.
 
-### 5. Compiling the filter module
+### 6. Extracting the translated text
+The response from Google Translate is recieved through a callback function.
+```cpp
 
-To compile the filter module from source run
+static int translate_http_callback(void *cbdata, mesibo_int_t state,
+		mesibo_int_t progress, const char *buffer,
+		mesibo_int_t size) {
+	message_context_t *b = (message_context_t *)cbdata;
+	mesibo_module_t *mod = b->mod;
+	mesibo_message_params_t *params = b->params;
+	mod->log(mod, 0,
+			" ===> message context parameters :aid %u id %u from %s to %s \n",
+			params->aid, params->id, params->from, params->to);
+
+	mod->log(mod, 0, "===> progress %d state %d size %d\n", (int)progress,
+			(int)state, (int)size);
+
+	if (progress < 0) {
+		mod->log(mod, 0, " Error in http callback \n");
+		free(b->post_data);
+		free(b);
+		return -1;
+	}
+
+	if (state != MODULE_HTTP_STATE_RESPBODY) {
+		mod->log(mod, 0, " Exit http callback\n");
+		if(size)
+			mod->log(mod, 0, " Exit http callback %.*s \n", size, buffer);
+		free(b->post_data);
+		free(b);
+		return 0;
+	}
+
+	if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
+		memcpy(b->buffer + b->datalen, buffer, size);
+		b->datalen += size;
+	}
+
+	if (progress == 100) {
+		mod->log(mod, 0, "%.*s", b->datalen, b->buffer);
+		mesibo_message_params_t *p =
+			(mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
+		p->id = rand();
+		p->refid = params->id;
+		p->aid = params->aid;
+		p->from = b->from;
+		p->to = b->to; 
+		p->expiry = 3600;
+
+		mod->log(mod, 0,
+				" ===> Sending response :aid %u id %u from %s to %s  len %d\n",
+				p->aid, p->id, b->from, b->to, b->datalen);
+		char* extracted_response = json_extract(mod, b->buffer , "fulfillmentText");
+                mod->log(mod, 0,"\n Extracted Response Text \n %s \n", extracted_response);
+
+                mod->send_message(mod, p, extracted_response ,strlen(extracted_response));
+		
+		free(b->post_data);
+		free(b);
+	}
+
+	return 0;
+}
+
+```
+
+### 7. Compiling the translate module
+
+To compile the translate module from source run
 ```
 make
 ```
-from the source directory which uses the sample `Makefile` provided to build a shared object `mesibo_mod_filter.so`. It places the result at the `TARGET` location `/usr/lib64/mesibo/mesibo_mod_filter.so` which you can verify.
+from the source directory which uses the sample `Makefile` provided to build a shared object `mesibo_mod_translate.so`. It places the result at the `TARGET` location `/usr/lib64/mesibo/mesibo_mod_translate.so` which you can verify.
 
-### 6. Loading the filter module 
-You can load the pre-compiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `filter.conf` and mount the directory which contains the module shared library while running the mesibo container.
+### 8. Loading the translate module 
+You can load the pre-compiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `translate.conf` and mount the directory which contains the module shared library while running the mesibo container.
 
-If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_filter.so` is located at `/path/to/mesibo_mod_filter.so`,you should mount the directory as 
+If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_translate.so` is located at `/path/to/mesibo_mod_translate.so`,you should mount the directory as 
 ```
- -v path/to/mesibo_mod_filter.so:/path/to/mesibo_mod_filter.so
+ -v path/to/mesibo_mod_translate.so:/path/to/mesibo_mod_translate.so
 
 ```
 
-For example, if `mesibo_mod_filter.so` is located at `/usr/lib64/mesibo/`
+For example, if `mesibo_mod_translate.so` is located at `/usr/lib64/mesibo/`
 ```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \
 -v /etc/mesibo:/etc/mesibo

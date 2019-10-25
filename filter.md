@@ -91,8 +91,8 @@ typedef struct filter_config_s{
 
 ```
 
-To get the configuaration details stored into `filter_config_t`, the config helper function `get_config_filter` is called.
-The list of blocked words is a single string (It the list of name-value pairs in configuration items, `blocked_words` is the `name` and comma seprated blocked words is the `value` which is stored as a SINGLE string). `strtok` breaks down the string into a sequence of tokens. We traverse through the sequence and store each blocked word in an array.
+To get the configuaration details the config helper function `get_config_filter` is called.
+The list of blocked words is a single string (It is a `value` in the list of name-value pairs in configuration items. `blocked_words` is the `name` and the list of comma seprated blocked words is the `value` which is stored as a SINGLE string). `strtok` breaks down the string into a sequence of tokens. We traverse through the sequence and store each blocked word in an array.
 ```cpp
 
 filter_config_t* get_config_filter(mesibo_module_t* mod, module_configs_t* config){
@@ -119,19 +119,56 @@ filter_config_t* get_config_filter(mesibo_module_t* mod, module_configs_t* confi
 }
 
 ```    
+A pointer to the filter configuration is stored in `m->ctx`
 
 ### 4. filter_on_message
 `filter_on_message` will notify the filter module when any message is exchanged between users. The filter module intercepts each message and decides what to do with it. It analyzes the message for profinity and decides to PASS the message as SAFE or CONSUME the message to prevent the unsafe message reaching the recipient. 
 
-If no profanity was found, `filter_on_message` returns `MESIBO_RESULT_PASS` and the message is safely sent to the recipient. . If the message is found to contain profinity `filter_on_message` returns `MESIBO_RESULT_CONSUME` and the unsafe message is dropped and prevented from reaching the receiver.
+### Analyzing the message for profinity
+Get the filter configuration from module context `mod->ctx` (Casting from `void*` to `filter_config_t*` ). Traverse the list of blocked words and check if the message contains the blocked word. This example is an extremely simplified implementation of a profanity filter. It is not a regex matching type filter, so it only detects profanity or blocked word if it is seen as an individual string. It cannot detect if the blocked word is a substring of a word.
+
+If no profanity was found return `MESIBO_RESULT_PASS` and the message is safely sent to the recipient. If the message is found to contain profinity return `MESIBO_RESULT_CONSUMED` and the unsafe message is dropped and prevented from reaching the receiver.
+
+
+```cpp
+
+static mesibo_int_t filter_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+		const char *message, mesibo_uint_t len) {
+	mod->log(mod, 0, " %s on_message called\n", mod->name);
+	mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
+			p->to, (uint32_t)p->id, message);
+	
+	char* in_message = strndup(message, len);
+	in_message = mesibo_strupr(in_message) ;//Convert to UPPER_CASE
+	
+	filter_config_t* fc = (filter_config_t*)mod->ctx;
+	mod->log(mod, 0, " Analyzing message %s \n", in_message );
+	for(int i =0; i< fc->count ;i++){ //Loop through list of blocked words
+		printf("Checking for blocked word %s \n", fc->blocked_words[i]);
+		if(strstr(in_message, fc->blocked_words[i])){ //Message Contains blocked word 
+			mod->log(mod, 0, "Message %s contains blocked word %s , "
+					"Message shall be dropped\n", in_message, fc->blocked_words[i]);
+			free(in_message);
+			return MESIBO_RESULT_CONSUMED; 
+			//drop message and prevent message from  reaching the recipient
+		}
+	}
+
+	mod->log(mod, 0, " Message is SAFE to be passed \n");  
+	free(in_message);
+	return MESIBO_RESULT_PASS;  
+	// PASS the message as it is, after checking that it is SAFE
+}
+
+```
 
 
 Returns:   
-`MESIBO_RESULT_PASS` If no profanity was found and the message is safely sent to the recipient
+`MESIBO_RESULT_PASS` If no profanity was found . The message is safely sent to the recipient
  OR
 `MESIBO_RESULT_CONSUMED` If the message is found to contain profinity. The unsafe message is dropped and prevented from reaching the receiver.
 
-### Compiling the filter module
+### 5. Compiling the filter module
 
 To compile the filter module from source run
 ```
@@ -139,7 +176,7 @@ make
 ```
 from the source directory which uses the sample `Makefile` provided to build a shared object `mesibo_mod_filter.so`. It places the result at the `TARGET` location `/usr/lib64/mesibo/mesibo_mod_filter.so` which you can verify.
 
-### Loading the filter module 
+### 6. Loading the filter module 
 You can load the pre-compiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `filter.conf` and mount the directory which contains the module shared library while running the mesibo container.
 
 If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_filter.so` is located at `/path/to/mesibo_mod_filter.so`,you should mount the directory as 

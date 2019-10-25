@@ -93,7 +93,7 @@ which should output something like
 ```
 ya29.c.Kl6iB-r90Gjj4o--m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsAw44MbZDSaksLH3xKbsSHGLgWeEXqIPSDmFO6
 ```
-Also, Refer (Quickstart)[https://cloud.google.com/translate/docs/quickstart] which explains how to make a Cloud Translation API request with curl.
+Also, Refer [Quickstart](https://cloud.google.com/translate/docs/quickstart) which explains how to make a Cloud Translation API request with curl.
 
 ### 3. Initializing the translate module
 The translate module is initialized with the Mesibo Module Configuration details - module version, the name of the module and  references to the module callback functions.

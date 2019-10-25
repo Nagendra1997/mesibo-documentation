@@ -22,7 +22,7 @@ Refer to the [Skeleton Module](https://github.com/Nagendra1997/mesibo-documentat
 ## Building the Translate Module
 
 ### 1. The C/C++ Source file
-The module name is `translate`. The C/C++ Source file is `translate.cpp`. The header file `module.h` containing the definitions of all module related components is included in the C/C++ source as follows:
+The module name is `translate`. The C/C++ Source file is `translate.c`. The header file `module.h` containing the definitions of all module related components is included in the C/C++ source as follows:
 ```cpp
 #include "module.h"
 ```

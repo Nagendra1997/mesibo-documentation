@@ -21,12 +21,12 @@ Refer to the [Skeleton Module](https://github.com/Nagendra1997/mesibo-documentat
 - Dialogflow sends a response from the chatbot, which is recieved through an http callback function.
 - The orginal message is CONSUMED . The fulfillment text from the chatbot is extracted from the JSON response and is sent to the sender of the query in the form of an automatic reply. 
 
-### 1. Create a C/C++ Source file
+### 1. The C/C++ Source file
 The module name is `chatbot`. The C/C++ Source file is `chatbot.cpp`. The header file `module.h` containing the definitions of all module related components is included in the C/C++ source as follows:
 ```cpp
 #include "module.h"
 ```
-### 2.Configuraing  the chatbot module
+### 2.Configuring the chatbot module
 While loading your module you need to provide your configuration details in the file `/etc/mesibo/mesibo.conf`. The sample configuration is provided in the file `chatbot.conf`. Copy the configuration from `chatbot.conf`into `/etc/mesibo/mesibo.conf`
 
 The chatbot module is configured as follows:

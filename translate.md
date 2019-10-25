@@ -53,6 +53,7 @@ target=de
 }
 
 ```
+### Configuration paramters:
 
 - `endpoint` The Google Translate REST endpoint to which your message will be sent and translated, Example: `https://translation.googleapis.com/language/translate/v2`
 
@@ -139,8 +140,9 @@ int mesibo_module_translate_init(mesibo_int_t version, mesibo_module_t *m, mesib
 	}
 
 	else {
-		m->log(m, 0, "Error: Google Translate not configured , Please provide details as per format in the configuration file");
-		return -1;
+		m->log(m, 0, "Error: Google Translate not configured ,"
+		"Please provide details as per format in the configuration file");
+		return MESIBO_RESULT_FAIL;
 	}
 
 	m->version = 1;
@@ -148,14 +150,15 @@ int mesibo_module_translate_init(mesibo_int_t version, mesibo_module_t *m, mesib
 	m->name = strdup("Sample Translate Module");
 	m->on_message = translate_on_message;
 	m->on_login = translate_on_login;
-	return 0;
+	return MESIBO_RESULT_OK;
 }
 
 ```
 The translation configuration is obtained from the configuration list and the callback function for `on_message` is initialized to `translate_on_message`.
 
 ### Storing the translate configuration in module context
-The profanity list is extracted from module configuration list and stored in the configuration context structure `translate_config_t` which is defined as follows:
+
+The translation configuration parameters is extracted from module configuration list and stored in the configuration context structure `translate_config_t` which is defined as follows:
 ```cpp
 
 typedef struct translate_config_s {
@@ -334,16 +337,10 @@ static int translate_process_message(mesibo_module_t *mod, mesibo_message_params
 	mod->http(mod, post_url, raw_post_data, translate_http_callback,
 			(void *)message_context, request_options);
 
-	return 0;
+	return MESIBO_RESULT_OK;
 }
 
 ```
-
-
-Returns:   
-`MESIBO_RESULT_PASS` If no profanity was found . The message is safely sent to the recipient
- OR
-`MESIBO_RESULT_CONSUMED` If the message is found to contain profinity. The unsafe message is dropped and prevented from reaching the receiver.
 
 ### 6. Extracting the translated text
 The response from Google Translate is recieved through a callback function.

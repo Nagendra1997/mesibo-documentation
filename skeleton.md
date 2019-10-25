@@ -1,6 +1,6 @@
 # Skeleton Module
 
-This repository contains a bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities.
+This repository contains a bare bones version of a Mesibo Module that explains the usage of different aspects of the module, various callback functions, callable functions and utilities. You can download the source code and compile it to obtain the module- a shared library file. Also, you can load the pre-compiled module which is provided as `mesibo_mod_skeleton.so`
 
 The Skeleton Module serves as a reference for all other Sample Modules. The complete documentation for Mesibo Modules is available [here](https://mesibo.com/documentation/loadable-modules/)
 

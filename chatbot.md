@@ -1,56 +1,71 @@
----
-description: Mesibo Loadable Modules
-keywords: open, source, on-premise, messaging, chat, voice, video
-title: Mesibo Loadable Modules
----
+#  Chatbot Module
 
-### Sample Chatbot Module
-It is extremely simple to get started with Mesibo to build chatbots, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc in your backend using loadable modules. You can interface with any tool or library of your choice such as Dialogflow, IBM Watson, Tensorflow, etc using REST endpoints.
+
+This repository contains the source code for Translate Module. Chatbot module analyzes messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and sends an automatic reply.  
+
+To build chatbots, you can use any chatbot provider of your choice such as Dialogflow, IBM Watson,Rasa,etc and connect with them through REST endpoints.
+This  Sample Translate Module provides an example using **Dialogflow**
+
+You can download the source and compile it to obtain the module- a shared library file. Also, you can load the pre-compiled module which is provided as `mesibo_mod_chatbot.so`
+
+Refer to the [Skeleton Module](https://github.com/Nagendra1997/mesibo-documentation/blob/master/skeleton.md) for a basic understanding of how Mesibo Modules work. The complete documentation for Mesibo Modules is available [here](https://mesibo.com/documentation/loadable-modules/)
 
 ![Module Chatbot Sample](module_chat_bot.jpg)
 
-Let's look at how you can build a chatbot using Mesibo Module:
-- When you receive a message, you get the message text via the callback function `on_message` with the message data and it's associated message parameters as arguments. This message is the `query` to your chatbot.
-- Now, you can create a chatbot module function that takes this message data/ text as input and sends it to a REST endpoint as HTTP Post data which contains the query using the function `http`. 
-- In the function [http](),You pass the REST endpoint `url`, `post` data -which is as per the query format of your REST endpoint , callback function (where you will receive the response to your HTTP request) and Call back data (which is passed along to your callback function), `options` which will contain additional headers such as Authorisation header,etc (If required)
-- Now based on your request, your chatbot model will process the query and send the appropriate response.
-- In your callback function, you will receive the HTTP response for your query in the form of a JSON string. Send the  response using  `send_message` function.
+## Overview of  Chatbot Module
+-  Chatbot configuration containing :project name, session id, Endpoint/base url for making REST call, access token (Service account key  for authenticating your requests) is provided in the module configuration (In the file `mesibo.conf`).
+- In module initialisation, all the configuration parameters is obtained from the configuration list and stored in a structure object  `chatbot_config_t`. The authorisation header is constructed and stored in the form 
+`" Authorisation : Bearer <access token> "`
+- In module initialisation,The callback function for `on_message` is initialized to  `chatbot_on_message`
+- When a message is sent from a user to a particular user named `bot_endpoint`, Mesibo invokes the `chatbot_on_message` callback function of the module with the message data and it’s associated message parameters such as sender, expiry, flags, etc.
+- Now, the chatbot module makes an HTTP request to a REST endpoint of Dialogflow .The HTTP Post body contains the message text as the `queryInput`. The authorisation header containing the access token is also sent in the POST request.
+- Dialogflow sends a response from the chatbot, which is recieved through an http callback function.
+- The orginal message is CONSUMED . The fulfillment text from the chatbot is extracted from the JSON response and is sent to the sender of the query in the form of an automatic reply. 
 
 ### 1. Create a C/C++ Source file
-First let us choose a name for our module. Since we will be building a chatbot , let our module name be `chatbot`. We  will create a C/C++ Source file with the same name as that of the module. ie; `chatbot.cpp`. Copy the header file `module.h` into your working directory and include it in your code.
+The module name is `chatbot`. The C/C++ Source file is `chatbot.cpp`. The header file `module.h` containing the definitions of all module related components is included in the C/C++ source as follows:
 ```cpp
 #include "module.h"
 ```
-### 2.Configure file for the chatbot module
-In this example we will configure a dialogflow chatbot. While loading your module you need to provide your configuration details in the file `/etc/mesibo/mesibo.conf` in the following format:
+### 2.Configuraing  the chatbot module
+While loading your module you need to provide your configuration details in the file `/etc/mesibo/mesibo.conf`. The sample configuration is provided in the file `chatbot.conf`. Copy the configuration from `chatbot.conf`into `/etc/mesibo/mesibo.conf`
+
+The chatbot module is configured as follows:
 ```
-module = <module name> {
-  <attribute name> = <attribute value>
-  <attribute name> = <attribute value>
-  .
-  .
-  .
-}
-```
-For a (dialogflow)chatbot module the required configuration is as follows (Note the use of No space ):
-```
+
 module=chatbot{
 project=<project name>
 session=<session id>
-base_url=https://dialogflow.googleapis.com/v2beta1
-service_account_key=<access token> 
+endpoint=<dialogfloe service endpoint>
+access_token=<service account key>
+chatbot_uid=<bot User address>
 }
+
+```
+For example,
+```
+
+module=chatbot{
+project=mesibo-chatbot
+session=4e72c746-7a38-66b6-xxxxxx
+endpoint=https://dialogflow.googleapis.com/v2beta1
+access_token=xxxxxx.Kl6iBzVH7dvV2XywzpnehLJwczdClfMoAHHOeTVNFkmTjqVX7VagKHH1-xxxxxxx
+chatbot_uid=my chatbot
+}
+
 ```
 ### Configuration paramters:
 - `project` is the Google Project name that contains your dialogflow chatbot. 
 - `session` The name of the session this query is sent to. Format: projects/<Project ID>/agent/sessions/<Session ID>, or projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/sessions/<Session ID>. If Environment ID is not specified, we assume default 'draft' environment. If User ID is not specified, we are using "-". It's up to the API caller to choose an appropriate Session ID and User Id. They can be a random number or some type of user and session identifiers (preferably hashed). The length of the Session ID and User ID must not exceed 36 characters.
   
-- `base_url` The dialogflow REST endpoint to which your query will be sent, Example: `https://dialogflow.googleapis.com/v2beta1`
+- `endpoint` The dialogflow REST endpoint to which your query will be sent, Example: `https://dialogflow.googleapis.com/v2beta1`
 
-- `service_account_key` access token linked with your project,Requires one of the following OAuth scopes:
+- `access_token` access token linked with your project, Requires one of the following OAuth scopes:
 `https://www.googleapis.com/auth/cloud-platform`
 `https://www.googleapis.com/auth/dialogflow`
 For more information, see the [Authentication Overview](https://cloud.google.com/docs/authentication/). In this example we will be passing dialogflow client access token in the auth header like so `Authorisation: Bearer <access token>.`
+
+- `chatbot_uid` User address. In your Mesibo Application, create a user that you can refer to as a chatbot endpoint user.  
 
 ### Authentication 
 To obtain the access token, follow the steps below:
@@ -79,16 +94,10 @@ which should output something like
 ya29.c.Kl6iB-r90Gjj4o--m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsAw44MbZDSaksLH3xKbsSHGLgWeEXqIPSDmFO6
 ```
 
-### 3. Initialise the chatbot module
-Now, we need to initialise our module by filling in the configuration details- module version, the name of our module and  the references of our module callback functions.
-
-For a simple chatbot, we need to provide a callback function reference for `on_message`.  
-`chabot_on_message` : To get input query from a message. This function needs to be called whenever there is an incoming message and alert us. So, we pass this function reference to be the module's `on_message` callback function.
-
-Following the naming convention of for the init function whcih is `mesibo_module_<module name>_init` the initialisation function for the module `chatbot` will be as defined below.
-
+### 3. Initializing the chatbot module
+The chatbot module is initialized with the Mesibo Module Configuration details - module version, the name of the module and  references to the module callback functions.
 ```cpp
-//File : chatbot.cpp
+
 int mesibo_module_chatbot_init(mesibo_int_t version, mesibo_module_t *m, mesibo_uint_t len, module_configs_t *config) {
 
 	if(MESIBO_MODULE_VERSION != version) {
@@ -129,8 +138,9 @@ int mesibo_module_chatbot_init(mesibo_int_t version, mesibo_module_t *m, mesibo_
 	}
 
 	else {
-		m->log(m, 0, "Error: DialogFlow not configured , Please provide details as per format in the configuration file");
-		return -1;
+		m->log(m, 0, "Error: DialogFlow not configured , 
+		Please provide details as per format in the configuration file");
+		return MESIBO_RESULT_FAIL;
 	}
 
 
@@ -139,63 +149,58 @@ int mesibo_module_chatbot_init(mesibo_int_t version, mesibo_module_t *m, mesibo_
 	m->name = strdup("Sample Chatbot Module");
 	m->on_message = chatbot_on_message;
 	m->on_login = chatbot_on_login;
-	return 0;
+	return MESIBO_RESULT_OK;
 ```
-### Storing the configuration in module context
-All the configuration items that you have passed in `mesibo.conf` will be available as a list of name-value pairs, which can be accessed in the init function as shown below
-```cpp
-if(config) {
-		m->log(m, 0, "Following configuration item(s) were passed to the module\n");
-		for(int i=0; i < config->count; i++) {
-			m->log(m, 0, "module config item: name %s value %s\n", 
-					config->items[i].name, config->items[i].value);
-		}
- }
-```
-We need to store this configuration for further use. To do this we use a structure called `chatbot_config_t` which is defined as follows:
-```cpp
-typedef struct chatbot_config_s {
-	/* To be configured in module configuration file */
-	char* project;
-	char* session;
-	char* base_url;
-	char* service_account_key;
+The chatbot configuration is obtained from the configuration list and the callback function for `on_message` is initialized to `chatbot_on_message`.
 
-	/* To be configured by dialogflow init function */
+### Storing the configuration in module context
+
+The translation configuration parameters is extracted from module configuration list and stored in the configuration context structure `chatbot_config_t` which is defined as follows:
+
+```cpp
+
+typedef struct chatbot_config_s {
+        /* To be configured in module configuration file */
+        char* project;
+        char* session;
+        char* endpoint;
+        char* access_token;
+        char* chatbot_uid;
+
+        /* To be configured by dialogflow init function */
         char* post_url;
-        char* post_data;
         char* auth_bearer;
 } chatbot_config_t;
+
 ```
 
-To get the configuaration details stored into `chatbot_config_t`, you can use the config helper function `get_config_dialogflow` 
+To get the configuaration details , the config helper function `get_config_dialogflow` is called.
 
-```cpp
-		chatbot_config_t* cbc = get_config_dialogflow(m, config);
-		if(cbc  == NULL){
-			m->log(m, 0, "Error: DialogFlow not configured , " 
-					"Please provide details as per format in the configuration file");
-			return MESIBO_RESULT_FAIL;
-		}
-```    
 `get_config_dialogflow` fetches all the configuration details as per format and stores into the appropriate members of the structure `chatbot_config_t`
 ```cpp
+
 chatbot_config_t*  get_config_dialogflow(mesibo_module_t* mod, module_configs_t *config){
-	chatbot_config_t* cbc = (chatbot_config_t*)calloc(1, sizeof(chatbot_config_t));
-	cbc->project = mesibo_module_get_config_item(mod, config, "project");
-	cbc->session = mesibo_module_get_config_item(mod, config, "session");
-	cbc->base_url = mesibo_module_get_config_item(mod, config, "base_url");
-	cbc->service_account_key = mesibo_module_get_config_ite(mod, config, "service_account_key");
+        chatbot_config_t* cbc = (chatbot_config_t*)calloc(1, sizeof(chatbot_config_t));
+        cbc->project = mesibo_module_get_config_item(mod, config, "project");
+        cbc->session = mesibo_module_get_config_item(mod, config, "session");
+        cbc->endpoint = mesibo_module_get_config_item(mod, config, "base_url");
+        cbc->access_token = mesibo_module_get_config_item(mod, config, "access_token");
+        cbc->chatbot_uid = mesibo_module_get_config_item(mod, config, "chatbot_uid");
 
-	mod->log(mod, 0, "Configured DialogFlow :\n project %s \n session %s \n base_url %s\n service_account_key %s\n", cbc->project, cbc->session, cbc->base_url, cbc->service_account_key);
-
-	return cbc;
+        mod->log(mod, 0, "Configured DialogFlow :\n project %s \n session %s \n endpoint %s\n access_token %s\n 
+                        chatbot_uid %s\n", cbc->project, cbc->session, cbc->base_url, cbc->access_token, 
+                        cbc->chatbot_uid);
+        
+        return cbc;
 }
+
 ```
+A pointer to the chatbot configuration is stored in `m->ctx`
+
 ### Initialising the request parmaters
 The chatbot module will interact with the Google dialogflow model over REST API. This example uses `Dialogflow V2 API` and the [detectIntent](https://cloud.google.com/dialogflow/docs/reference/rest/v2/projects.agent.sessions/detectIntent) method to process queries. 
 
-Once we get the configuration details, we can construct the request parameters such as the post url (endpoint), base post data format and the authorisation header. To do this we call the `chatbot_init_dialogflow` function as follows
+Once we get the configuration details, we can construct the request parameters such as the post url (endpoint) and the authorisation header. To do this we call the `chatbot_init_dialogflow` function as follows
 ```cpp
 static int chatbot_init_dialogflow(mesibo_module_t* mod, chatbot_config_t* cbc){
 	mod->log(mod, 0, "chatbot_init_dialogflow called \n");
@@ -227,27 +232,34 @@ static int chatbot_init_dialogflow(mesibo_module_t* mod, chatbot_config_t* cbc){
 
 ### 3.`chatbot_on_message`
 
-We need message containing queries from the end user only. `on_message` will alert you for any message sent or received. So, we filter these messages to match only those messages that are incoming from a particular user `bot_user`. 
+We only need message containing queries addressed to the uid configured in `chatbot_uid` . `chatbot_on_message` will alert you for any message sent . So, we filter these messages to match only those messages that are outgoing to a particular user corresponding to `chatbot_uid`. 
 For incoming messages from `bot_user` we process the message/query and send a response from the chat-bot.
 For all other messages we pass the message as it is.
-```cpp
-static mesibo_int_t chatbot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-		const char *message, mesibo_uint_t len) {
-	mod->log(mod, 0, " %s on_message called\n", mod->name);
-	mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
-			p->to, (uint32_t)p->id, message);
 
-	mod->log(mod, 0, " Processing message from %s \n", p->from);
-	// Don't modify original as other module will be use it
-	mesibo_message_params_t *np =
-		(mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
-	memcpy(np, p, sizeof(mesibo_message_params_t));
-	chatbot_process_message(mod, np, message, len);
-	return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
+```cpp
+
+static mesibo_int_t chatbot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
+                const char *message, mesibo_uint_t len) {
+        mod->log(mod, 0, " %s on_message called\n", mod->name);
+        mod->log(mod, 0, " aid %u from %s to %s id %u message %s\n", p->aid, p->from,
+                        p->to, (uint32_t)p->id, message);
+
+        chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
+        if(strcmp(p->from,cbc->chatbot_uid) == 0){
+                mod->log(mod, 0, " Processing message from %s \n", p->from);
+                // Don't modify original as other module will use it
+                mesibo_message_params_t *np =
+                        (mesibo_message_params_t *)calloc(1, sizeof(mesibo_message_params_t));
+                memcpy(np, p, sizeof(mesibo_message_params_t));
+                chatbot_process_message(mod, np, message, len);
+                return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
+        }
+
+        return MESIBO_RESULT_PASS;
 }
 
 ```
-### 4. Processing the incoming message
+### 4. Processing the query 
 To process the incoming query we need to send it to a chatbot model. Here, as an example we will be using [Dialogflow](https://dialogflow.com) as the chatbot provider and will make a an HTTP request to your Dialogflow chatbot. Your chatbot will use it's dialogflow model and send the appropriate respoonse to your request.
 
 For more info on using Dialogflow and building chatbot models, checkout [Dialogflow Docs](https://dialogflow.com/docs).
@@ -257,7 +269,7 @@ To send an HTTP request to your chatbot endpoint,the POST data must be in a spec
 ### Dialogflow V2 API 
 In the case of dialogflow v2 API,
 the request url is  `https://dialogflow.googleapis.com/v2beta1/{session=projects/*/agent/sessions/*}:detectIntent`
-and the POST data will contain the [detectIntent](https://cloud.google.com/dialogflow/docs/reference/rest/v2beta1/projects.agent.sessions/detectIntent) string.
+and the method to use is [detectIntent](https://cloud.google.com/dialogflow/docs/reference/rest/v2beta1/projects.agent.sessions/detectIntent) string.
 You also need to pass authentication information(your service account key) in the request header.
 
 An HTTP [query sample for dialogflow v2 API](https://cloud.google.com/dialogflow/docs/reference/rest/v2beta1/projects.agent.sessions/detectIntent) looks like below
@@ -285,7 +297,7 @@ An HTTP [query sample for dialogflow v2 API](https://cloud.google.com/dialogflow
 ```
 Following this POST format we send an HTTP request using the function `http`. 
 
-On recieving the response in the http callback function `bot_http_callback`(which we shall define in the next step), from Dialogflow we need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
+The response is recieved through the http callback function `chatbot_http_callback`(which we shall define in the next step), We need to send the response back to the user who made the request. So we store the context of the received message ie; message parameters ,the sender of the message,the reciever of the message in the following structure and pass it as callback data. Note that you can store any data that you require to be passed to the http_callback function by modifying the tMessageContext structure accordingly.
 
 ```cpp
 static int chatbot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
@@ -334,11 +346,11 @@ static int chatbot_process_message(mesibo_module_t *mod, mesibo_message_params_t
 	mod->http(mod, post_url, raw_post_data, chatbot_http_callback,
 			(void *)message_context, request_options);
 
-	return 0;
+	return MESIBO_RESULT_OK;
 }
 ```                     
 ### 5. Define the Callback function to receive the response from your bot
-In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to user who sent the query.
+In the callback function, we will be getting the response in asynchronous blocks. So,we copy the response data into a temporary buffer and once the complete response is received(indicated by progress=100) we send the response back to the user who sent the query.
 
 ```cpp
 static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
@@ -357,7 +369,7 @@ static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
 	if (progress < 0) {
 		mod->log(mod, 0, " Error in http callback \n");
 		free(b);
-		return -1;
+		return  MESIBO_RESULT_FAIL;
 	}
 
 	if (state != MODULE_HTTP_STATE_RESPBODY) {
@@ -365,7 +377,7 @@ static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
 		if(size)
 			mod->log(mod, 0, " Exit http callback %.*s \n", size, buffer);
 		free(b);
-		return 0;
+		return  MESIBO_RESULT_OK;
 	}
 
 	if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
@@ -392,37 +404,29 @@ static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
 		free(b);
 	}
 
-	return 0;
+	return  MESIBO_RESULT_OK;
 }
 
 ```
 ### 6. Compiling the chatbot module
-To compile the module,Copy the sample `MakeFile` provided. Change the `TARGET` to `/usr/lib64/mesibo/mesibo_mod_<module_name>.so` or to a file path of your choice. 
-For example.
+To compile the chatbot module from source run
 ```
-/usr/lib64/mesibo/mesibo_mod_chatbot.so
+make
 ```
-Run the below command from your source directory. Before running make, ensure that all your source files are in the correct directory.
-```
-sudo make
-```
- On successful build of your module, verify that the target path should contain your shared library `/usr/lib64/mesibo/mesibo_mod_chatbot.so`
- 
+from the source directory which uses the sample `Makefile` provided to build a shared object `mesibo_mod_chatbot.so`. It places the result at the `TARGET` location `/usr/lib64/mesibo/mesibo_mod_chatbot.so` which you can verify.
+
  ### 7. Loading your module
- To load your chatbot module, specify the module name in mesibo configuration file `/etc/mesibo/mesibo.conf` like so
+ You can load the pre-compiled module (.so) by specifying the matching configuration in `mesibo.conf` as provided in `chatbot.conf` and mount the directory which contains the module shared library while running the mesibo container.
+
+If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_chatbot.so` is located at `/path/to/mesibo_mod_chatbot.so`,you should mount the directory as 
 ```
-apptoken= f4awffepi012zbjwbpcoifchs8a4tetup6r9774326zjxcogij47goxxxxxx
-module=chatbot{
-project=mesibo-chatbot
-session=4e72c746-7a38-66b6-xxxxx
-base_url=https://dialogflow.googleapis.com/v2beta1
-service_account_key=ya29.c.Kl6iB-r90Gjj4oxxxx-m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsAw44MbZDSaksLH3xKbsSHGLgWeEXqI-xxxxxx
-}
- ```
- Mount the directory containing your library which in this case is `/usr/lib64/mesibo/`, while running the mesibo container as follows. You also need to mount the directory containing the mesibo configuration file which in this case is `/etc/mesibo`
- ```
+ -v path/to/mesibo_mod_translate.so:/path/to/mesibo_mod_chatbot.so
+
+```
+
+For example, if `mesibo_mod_chatbot.so` is located at `/usr/lib64/mesibo/`
+```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \
 -v /etc/mesibo:/etc/mesibo
 -net=host -d  \ 
-mesibo/mesibo <app token> 
-```
+mesibo/mesibo <app token>

@@ -154,7 +154,7 @@ The chatbot configuration is obtained from the configuration list and the callba
 
 ### Storing the configuration in module context
 
-The translation configuration parameters is extracted from module configuration list and stored in the configuration context structure `chatbot_config_t` which is defined as follows:
+The chatbot configuration parameters is extracted from module configuration list and stored in the configuration context structure `chatbot_config_t` which is defined as follows:
 
 ```cpp
 
@@ -428,7 +428,7 @@ from the source directory which uses the sample `Makefile` provided to build a s
 
 If you are loading a pre-compiled module make sure that you have mounted the path to the .so file. If `mesibo_mod_chatbot.so` is located at `/path/to/mesibo_mod_chatbot.so`,you should mount the directory as 
 ```
- -v path/to/mesibo_mod_translate.so:/path/to/mesibo_mod_chatbot.so
+ -v path/to/mesibo_mod_chatbot.so:/path/to/mesibo_mod_chatbot.so
 
 ```
 

@@ -666,7 +666,7 @@ Let's look at how you can build a chatbot using Mesibo Modules:
 - create a dedicated user (destination) for the chatbot, so that when a user sends a message to this destination, chatbot functionality can be invoked.
 - Now when a user sends a message, your module will get the message text via the callback function `on_message` along with message parameters. 
 - Check `to` field (destination) in message parameters. If it's not the chatbot destination, return PASS as explained in `on_message` callback function description so that the message can be sent to the requested destination.
-- Send the message to your message processing model which could be a local function or a remote service like Dialogflow, IBM Watson, Tensorflow, etc using REST endpoints. You can use the helper function `http` to invoke REST endpoints.
+- Send the message to your message processing model which could be a local function or a remote service like Dialogflow, IBM Watson, Tensorflow, etc using REST endpoints. You can use the helper function `mesibo_http` to invoke REST endpoints.
 - Now, based on your request, your messaging processing model will process the message and send the appropriate response.
 - You can send the response back to the user (sender) using `mesibo_message` function.
 
@@ -677,19 +677,21 @@ We will be using DiaglogFlow in this example. Before we get hands-on with coding
 ### Basics of Dialogflow
 Dialogflow is an AI powered Google Service to build interactive conversational interfaces, such as chatbots. Once you train DialogFlow with data of your interest like emails, FAQs, etc., it can answer questions from your users in natural language.  
 
-#### Dialogflow API (V2)
-Dialogflow Service is available through a REST interface.  What this means is,  you simply invoke a URL(called the REST Endpoint) with your query.
+### Dialogflow API
+Dialogflow Service is available through a REST interface.  What this means is,you simply invoke a URL(called the REST Endpoint) with your query.
 Dialogflow will process the query and send the appropriate response .
+
 For more details on using Dialogflow , refer [DialogFlow Documentation](https://cloud.google.com/dialogflow/docs/)
 
-### REST Endpoint
+#### REST Endpoint
 To connect with Dialogflow , invoke the URL with the following format:
 
 ```
 https://dialogflow.googleapis.com/v2beta1/projects/<Project ID>/agent/sessions/<Session ID>
 ```
-Project ID is the Google Project Name linked with Dialogflow.  You can get the project name from [GCP Console](https://console.cloud.google.com) 
-Session ID can be a random number or some type of user and session identifier (preferably hashed). 
+**Project ID** is the Google Project Name linked with Dialogflow.  You can get the project name from [GCP Console](https://console.cloud.google.com). 
+
+**Session ID** can be a random number or some type of user and session identifier (preferably hashed). 
 
 For example, a sample Dialogflow REST URL looks like
 
@@ -697,11 +699,11 @@ For example, a sample Dialogflow REST URL looks like
 https://dialogflow.googleapis.com/v2beta1/mesibo-dialogflow/agent/sessions/4e72c746-7a38-66b6-8798-1a87b00207a2
 ```
 
-Now, you send a POST request to the Dialogflow REST URL in the following format.
+**Now, you send a POST request to the Dialogflow REST URL in the following format.**
 
 Pass the authentication information(your service account key) in the request header.
 
-Headers:
+**Headers:**
 ```
 Authorization: Bearer YOUR_SERVICE_ACCOUNT_KEY
 Content-Type: application/json
@@ -709,7 +711,7 @@ Content-Type: application/json
 ```
 The POST data will contain your text/message.
 
-POST body:
+**POST body:**
 
 ```
 {
@@ -787,10 +789,10 @@ log = <log level>
 
 where, 
 - `project` is the Google Project name that contains your dialogflow chatbot.
-- `session` The session id witqueries are sent to. 
+- `session` The session id of the queries being sent. 
 - `endpoint` The dialogflow REST endpoint to which your query will be sent, Example: `https://dialogflow.googleapis.com/v2beta1`
-- `access_token` access token linked with your project. In this example we will be passing dialogflow client access token in the auth header like so `Authorisation: Bearer <access token>.`
-- `chatbot_uid` User address. In your Mesibo Application, create a user that you can refer to as a chatbot endpoint user. 
+- `access_token` access token linked with your project. 
+- `chatbot_uid` Dedicated user address for chatbot 
 - `log` Log level for printing to container logs
 
 For example,
@@ -808,6 +810,7 @@ log = 1
 
 ### 3. Initialize the module
 Now, we need to provide the initialization function for our module. For a simple chatbot, we only need to provide a callback function for `on_message`.  
+
 Since we chose the name for the module as `chatbot`, the name of the initialization function will be `mesibo_module_chatbot_init` which is defined below.
 
 ```cpp
@@ -842,7 +845,7 @@ int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
     return MESIBO_RESULT_OK;
 }
 ```
-The configuration for the chatbot is provided in `mesibo.conf`
+The configuration for the chatbot is provided in `mesibo.conf`.
 After reading the configuration, store the configuration in the module context `m->ctx` 
 
 #### Store the configuration in the module context
@@ -906,7 +909,6 @@ static int chatbot_init_dialogflow(mesibo_module_t* mod){
 }
 ```
 
-A pointer to the chatbot configuration is stored in `m->ctx`
 
 ### 3.`chatbot_on_message`
 
@@ -1067,7 +1069,7 @@ log = 0
 
 ```
 
-Mount the directory containing your library which in this case is `/usr/lib64/mesibo/`, while running the mesibo containeras follows. 
+Mount the directory containing your library which in this case is `/usr/lib64/mesibo/`, while running the mesibo container as follows. 
 
 ```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \

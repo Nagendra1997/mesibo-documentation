@@ -743,7 +743,7 @@ Following are the the steps:
     - Create a service account
     - Download a private service account key as JSON
 
-2. Set the environment variable GOOGLE_APPLICATION_CREDENTIALS pointing to the JSON file downloaded in the Step 1.
+2. Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS` pointing to the JSON file downloaded in the Step 1.
 
 ```
 export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
@@ -763,7 +763,7 @@ ya29.c.Kl6iB-r90Gjj4o--m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsA
 ```
 This is the access token, save it for later use.
 
-#### Invoking Dialogflow API (V2) 
+#### Invoking Dialogflow API  
 Once we have project ID and access token, invoking DialogFlow API is as simple as invoking following URL with access token and the data:
 
 ```

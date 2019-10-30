@@ -1011,7 +1011,7 @@ static int chatbot_process_message(mesibo_module_t *mod, mesibo_message_params_t
 }
 ```  
 
-### 5. Define the Callback function to receive the response from your bot
+### 5. Define the Callback function to receive the response from your chatbot
 
 We will get the response for the POST request in the HTTP callback function passed to `mesibo_http`. You may get the response in multiple chunks. Hence you need to store the response data into a buffer untill the complete response is received. 
 

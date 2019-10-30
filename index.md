@@ -730,7 +730,7 @@ Dialogflow is an AI powered Google service to build interactive conversational i
 
 Dialogflow service is available through a REST interface. For more details on using Dialogflow , refer [DialogFlow Documentation](https://cloud.google.com/dialogflow/docs/quick/api)
 
-#### Configuring Dialogflow API (V2) 
+#### Configuring Dialogflow API 
 To use Dialogflow API, you will need two parameters which you can obtain from the Google Cloud Console.
 
   - GCP project ID
@@ -767,7 +767,7 @@ This is the access token, save it for later use.
 Once we have project ID and access token, invoking DialogFlow API is as simple as invoking following URL with access token and the data:
 
 ```
-https://dialogflow.googleapis.com/v21/projects/<Project ID>/agent/sessions/<Session ID>
+https://dialogflow.googleapis.com/v2/projects/<Project ID>/agent/sessions/<Session ID>
 ```
 
 Where, Project ID is the GCP Project ID obtained earlier. Session ID can be a random number or some type of user and session identifiers (preferably hashed). 
@@ -810,7 +810,7 @@ include the header file `module.h` in your code.
 #include "module.h"
 ```
 
-### 2.Configuration for the chatbot module
+### 2. Configuration for the chatbot module
 The chatbot module uses DialogFlow. It would be nice if we can define some configuration entities to configure chatbot parameters and DialogFlow parameters. 
 
 We will define the following configurable items for The chatbot module:
@@ -1081,7 +1081,7 @@ Run `make` from your source directory.
 sudo make
 ```
 
-On successful build of your module, verify that the target path should contain your shared library `/usr/lib64/mesibo/mesibo_mod_chatbot.so`
+On successful build of your module, verify that the target path contains the shared library `/usr/lib64/mesibo/mesibo_mod_chatbot.so`
 
 ### 7. Load the chatbot module
 To load your chatbot module provide the configuration in `/etc/mesibo/mesibo.conf`. You can copy the configuration from `sample.conf` into `/etc/mesibo/mesibo.conf`and modify values accordingly. Change the value of `project` to match the Google Project you are using. Change the value of [`access_token`](#getting-access-token) to your `SERVICE_ACCOUNT_KEY`.  

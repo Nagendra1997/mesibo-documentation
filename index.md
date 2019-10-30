@@ -294,7 +294,7 @@ This function is called whenever a user sends a message. The module can process 
 
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `message`, buffer containing the message data bytes
 4. `len`, length of the message in bytes
 
@@ -313,7 +313,7 @@ mesibo_int_t (*on_message_status)(mesibo_module_t *mod,
 ```
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `status` containing the status of the sent message which corresponds to different [status codes](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams) such as `MSGSTATUS_SENT`, `MSGSTATUS_DELIVERED`, `MSGSTATUS_READ`, etc
 
 Returns:

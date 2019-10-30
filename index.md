@@ -767,7 +767,7 @@ This is the access token, save it for later use.
 Once we have project ID and access token, invoking DialogFlow API is as simple as invoking following URL with access token and the data:
 
 ```
-https://dialogflow.googleapis.com/v2beta1/projects/<Project ID>/agent/sessions/<Session ID>
+https://dialogflow.googleapis.com/v21/projects/<Project ID>/agent/sessions/<Session ID>
 ```
 
 Where, Project ID is the GCP Project ID obtained earlier. Session ID can be a random number or some type of user and session identifiers (preferably hashed). 
@@ -840,7 +840,7 @@ For example,
 module chatbot{
 project = mesibo-chatbot
 session = 4e72c746-7a38-66b6-xxxxxx
-endpoint = https://dialogflow.googleapis.com/v2beta1
+endpoint = https://dialogflow.googleapis.com/v2
 access_token = xxxxxx.Kl6iBzVH7dvV2XywzpnehLJwczdClfMoAHHOeTVNFkmTjqVX7VagKHH1-xxxxxxx
 address = my_chatbot
 log = 1

@@ -294,7 +294,7 @@ This function is called whenever a user sends a message. The module can process 
 
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `message`, buffer containing the message data bytes
 4. `len`, length of the message in bytes
 
@@ -313,7 +313,7 @@ mesibo_int_t (*on_message_status)(mesibo_module_t *mod,
 ```
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `status` containing the status of the sent message which corresponds to different [status codes](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams) such as `MSGSTATUS_SENT`, `MSGSTATUS_DELIVERED`, `MSGSTATUS_READ`, etc
 
 Returns:
@@ -336,6 +336,13 @@ This function is called whenever a user logs-in or logs-out.
 ```cpp
 mesibo_int_t (*on_login)(mesibo_module_t *mod, mesibo_user_t *user);
 ```
+Parameters:
+1. `mod`, pointer to mesibo module structure
+2. `user`, pointer to mesibo user structure. Refer [Module Data Structures](#module-data-structures). Contains user parmeters flag, user address and online status.
+
+Returns:
+
+`MESIBO_RESULT_OK` 
 
 ### on_cleanup
 This function is called when the module process is complete and to clean up.
@@ -356,7 +363,7 @@ This function can be used to send messages from the module to users and groups.
 ```
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `message`, buffer containing the message data bytes
 4. `len`, length of the message in bytes
 
@@ -394,7 +401,7 @@ Parameters:
 3. `post`, is a string that contains raw POST data. For example, "authtoken=xyz&user=abc" 
 4. `cb`, is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
 5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument. You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details, refer to the [sample code]()
-6. `opt` is the structure that contains `options` or additional parameters that you can pass in your HTTP request such as extra_header, content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures](#data-structures)
+6. `opt` is the structure that contains `options` or additional parameters that you can pass in your HTTP request such as extra_header, content_type, etc. For more details about the `module_http_option_t` structure, refer [Module Data Structures](#module-data-structures).
 
 Returns:
 Integer : 0 on success , -1 on failure
@@ -493,6 +500,54 @@ For example,
 ```cpp
 mesibo_log(mod, 0, "%s\n", "Hello, from Mesibo Module!");
 ```
+### mesibo_util_getconfig
+This function can be used to get the value of a configuration item from the name-value configuration list passed in `/etc/mesibo/mesibo.conf`
+
+```cpp
+char* mesibo_util_getconfig(mesibo_module_t* mod, const char* item_name);
+```
+Parameters:
+1. `mod`, Pointer to mesibo module structure
+2. `item_name`, Name of the configuration item
+
+Returns:
+String: Configuration item value
+
+For example,
+If the configuration is provided as 
+```
+module = skeleton {
+file = abc
+auth_token = xyz
+}
+```
+Then, 
+
+```cpp
+char* item_val =  mesibo_util_getconfig(mod, "file");
+```
+`item_val` will contain the string `abc`.
+
+### mesibo_util_json_extract
+This function can be used to get the value of a key in a JSON string.
+
+```cpp
+ char* mesibo_util_json_extract(char *src, const char *key, char **next);                                                                           
+```
+Parameters:
+1. `src`, JSON string source
+2. `key`, Key string
+3. `next`, Pointer to a list of json strings (If you need to provide a list of JSON strings)
+
+Returns: String: Value Matching the Key in the JSON string.
+
+For example,
+
+```cpp
+char* test_json = strdup("{ \"a\":\"apple\", \"b\" : \"ball\" }");
+char* value = mesibo_util_json_extract(test_json, "a" , NULL);
+```
+`value` will contain the string `apple`
 
 ## Module Data Structures
 
@@ -510,9 +565,6 @@ typedef struct mesibo_message_params_s {
     mesibo_uint_t expiry;
     mesibo_uint_t to_online;
 
-    uintptr_t reserved_0;
-    uintptr_t reserved_1;
-
     char *to, *from;
 } mesibo_message_params_t;
 ```
@@ -524,7 +576,7 @@ typedef struct mesibo_message_params_s {
 - `flags`- Message Flags
 - `type` - Message Type, any arbitrary user-defined types
 - `expiry` - Message Expiry for an outgoing message (time to live), in seconds
-- `to_online` - if the recipient is online 
+- `to_online` - Send the message only if the recipient is online 
 
 ### Mesibo User
 
@@ -534,10 +586,11 @@ typedef struct  mesibo_user_s {
     char *address;
     mesibo_int_t online;
 
-    uintptr_t reserved_0;
-    uintptr_t reserved_1;
 }mesibo_user_t;
 ```
+- `flags` - User flags
+- `address`- User Address. Can be any sequence of characters that identifies a user
+- `online` - Online Status of user
 
 ### HTTP Options Structure
 To pass`options` parameter of a HTTP request in the function [mesibo_http()](#mesibo_http) you use the C/C++ structure `module_http_option_t`
@@ -768,7 +821,7 @@ project = <project name>
 session = <session id>
 access_token = <service account key>
 endpoint = <dialogflow service endpoint>
-address = <bot user address>
+address = <chatbot user address>
 log = <log level>
 }
 ```
@@ -806,7 +859,7 @@ int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
 	m->description = strdup("Sample Chatbot Module");
 	m->on_message = chatbot_on_message;
     
-	//read configuration
+	//Read configuration
 	if(m->config) {
 		chatbot_config_t* cbc = get_config_dialogflow(m);
                 if(cbc  == NULL){

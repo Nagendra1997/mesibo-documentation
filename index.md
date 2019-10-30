@@ -356,7 +356,7 @@ This function can be used to send messages from the module to users and groups.
 ```
 Parameters:
 1. `mod`, pointer to mesibo module structure
-2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Data Structures](#data-structures).
+2. `params`, pointer to message parameters structure. It contains message parameters such as `id`, `from`-  sender of the message, `to`-  message recipient, etc. For more details, refer [Module Data Structures](#module-data-structures).
 3. `message`, buffer containing the message data bytes
 4. `len`, length of the message in bytes
 
@@ -393,8 +393,8 @@ Parameters:
 2. `url`, both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
 3. `post`, is a string that contains raw POST data. For example, "authtoken=xyz&user=abc" 
 4. `cb`, is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
-5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument. You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details, refer to the [sample code]()
-6. `opt` is the structure that contains `options` or additional parameters that you can pass in your HTTP request such as extra_header, content_type, etc. For more details about the `module_http_option_t` structure, refer [Data Structures](#data-structures)
+5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument. You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. 
+6. `opt` is the structure that contains `options` or additional parameters that you can pass in your HTTP request such as extra_header, content_type, etc. For more details about the `module_http_option_t` structure, refer [Module Data Structures](#module-data-structures)
 
 Returns:
 Integer : 0 on success , -1 on failure

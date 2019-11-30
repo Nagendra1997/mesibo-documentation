@@ -12,8 +12,14 @@ With frameworks and libraries like React-Native, Flutter, Swift etc there are a 
 
 You can add communication capabilities to your native application with Mesibo. To integrate with a framework on top of this platform you need to connect or interface with the native SDK. All popular frameworks support interfacing with native code. The general idea is to provide a channel or a bridge that connects the UI part built using the framework and application logic part built using the Native SDK. 
 
+You can refer to the Official Documentation of the framework that you are using on how to call native code from your application. In the coming section, we will look at how you can interface with  Native SDK in Android(using Flutter as an example) and interface with Native SDK in iOS (using Swift as an example). The steps are similar to what you do with other frameworks. So, if you are using say React-Native to develop your application you can follow a similar procedure by referring to this documentation.
+
 ## Interfacing Native SDK in Android
-Let us take a look at calling Native components in Android from Flutter. To call Native Components in Android you need to access Java code in Flutter. To do this you need to use a method channel.
+Let us take a look at calling Native components in Android . Here, we shall take the example of [Flutter](https://flutter.dev/) that is used to build the application UI and connect it with the Native Platform SDK. 
+
+To call Native Components in Android you need to access Java code in Flutter. To do this you need to use a method channel.
+
+Follow the steps below for calling [Native API from Android](https://flutter.dev/docs/development/platform-integration/platform-channels):
 
 ### Step-1: Create the Flutter platform client
 Implement a MethodChannel with a single platform method that connects the client UI and Android Host.The client and host sides of a channel are connected through a channel name passed in the channel constructor.
@@ -61,7 +67,7 @@ Import your Objective-C files by configuring the umbrella header:
 Now, your application will be interface with the iOS Native SDK Component from Swift.
 
 
-You can refer to the Official Documentation of the framework that you are using on how to call native code from your application. In the following sections we look at integrating Mesibo with some of the popular frameworks. Sample applications and documentation for is also provided using which you can quickly get started with using Mesibo in your apps.
+In the following sections we look at integrating Mesibo with some of the popular frameworks. Sample applications and documentation for is also provided using which you can quickly get started with using Mesibo in your apps.
 
 ## React Native
 [React Native](https://facebook.github.io/react-native/) is a way to develop mobile apps using React and JavaScript.

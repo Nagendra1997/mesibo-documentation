@@ -13,8 +13,52 @@ With frameworks and libraries like React-Native, Flutter, Swift etc there are a 
 You can add communication capabilities to your native application with Mesibo. To integrate with a framework on top of this platform you need to connect or interface with the native SDK. All popular frameworks support interfacing with native code. The general idea is to provide a channel or a bridge that connects the UI part built using the framework and application logic part built using the Native SDK. 
 
 ## Interfacing Native SDK in Android
+Let us take a look at calling Native components in Android from Flutter. To call Native Components in Android you need to access Java code in Flutter. To do this you need to use a method channel.
+
+### Step-1: Create the Flutter platform client
+Implement a MethodChannel with a single platform method that connects the client UI and Android Host.The client and host sides of a channel are connected through a channel name passed in the channel constructor.
+
+### Step-2: Add an Android platform-specific implementation using Java
+Start by opening the Android host portion of your Flutter app in Android Studio:
+
+Start Android Studio
+
+1. Select the menu item File > Open…
+
+2. Navigate to the directory holding your Flutter app, and select the android folder inside it. Click OK.
+
+3. Open the MainActivity.java file located in the java folder in the Project view.
+
+Next, create a MethodChannel and set a MethodCallHandler inside the onCreate() method.
+
+### Step-3: Build your application
+Now your application will be able to interface with the Android Native SDK component from Flutter UI client.
+
 
 ## Interfacing Native SDK in iOS
+
+Let us take a look at calling Native components in iOS from Swift. To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
+
+Follow the steps below for [Importing Objective-C in Swift](https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_objective-c_into_swift)
+
+### Step-1: Import Code Within an App Target
+Xcode offers to create the bridge header when you add a Swift file to an existing Objective-C app, or an Objective-C file to an existing Swift app. The created header file will be your product module name followed by "-Bridging-Header.h". Alternatively, you can create a bridging header yourself by choosing File > New > File > [operating system] > Source > Header File.
+
+### Step-2: Expose Objective-C code to Swift
+Edit the bridging header to expose your Objective-C code to your Swift code:
+
+1. In your Objective-C bridging header, import every Objective-C header you want to expose to Swift.
+
+2. In Build Settings, in Swift Compiler - Code Generation, make sure the Objective-C Bridging Header build setting has a path to the bridging header file. The path should be relative to your project, similar to the way your Info.plist path is specified in Build Settings. In most cases, you won't need to modify this setting.
+
+### Step-3: Import Code Within a Framework Target
+Import your Objective-C files by configuring the umbrella header:
+
+1. Under Build Settings, in Packaging, make sure the Defines Module setting for the framework target is set to Yes.
+
+2. In the umbrella header, import every Objective-C header you want to expose to Swift.
+
+Now, your application will be interface with the iOS Native SDK Component from Swift.
 
 
 You can refer to the Official Documentation of the framework that you are using on how to call native code from your application. In the following sections we look at integrating Mesibo with some of the popular frameworks. Sample applications and documentation for is also provided using which you can quickly get started with using Mesibo in your apps.

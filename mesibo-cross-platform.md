@@ -17,7 +17,7 @@ You can refer to the Official Documentation of the framework that you are using 
 ## Interfacing Native SDK in Android
 Let us take a look at calling Native components in Android . Here, we shall take the example of [Flutter](https://flutter.dev/) that is used to build the application UI and connect it with the Native Platform SDK. 
 
-![](''Mesibo_Cross_Platform.jpg')
+![]('Mesibo_Cross_Platform.jpg')
 
 To call Native Components in Android you need to access Java code in Flutter. To do this you need to use a method channel.
 
@@ -47,7 +47,7 @@ Now your application will be able to interface with the Android Native SDK compo
 
 Let us take a look at calling Native components in iOS from Swift. To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
 
-![](''Mesibo_Cross_Platform (1).jpg')
+![]('Mesibo_Cross_Platform (1).jpg')
 
 Follow the steps below for [Importing Objective-C in Swift](https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_objective-c_into_swift)
 

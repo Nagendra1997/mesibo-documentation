@@ -47,7 +47,7 @@ Now your application will be able to interface with the Android Native SDK compo
 
 Let us take a look at calling Native components in iOS from Swift. To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
 
-![](Mesibo_Cross_Platform (1).jpg)
+![](Mesibo_Cross_Platform%20(1).jpg)
 
 Follow the steps below for [Importing Objective-C in Swift](https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_objective-c_into_swift)
 

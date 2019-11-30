@@ -5,12 +5,11 @@ Building cross-platform applications is hard. You need to build seperate applica
 However, Frameworks and libraries like React-Native, Flutter, Swift etc have made it possible to quickly build applications for Mobile and Web .It is simple to build applications which are cross platform while also ensuring native performance. 
 
 Although, you will be using a framework (say React-Native) to write your app, under the hood, it invokes the native APIs in Objective-C (for iOS) or Java (for Android). The general idea is ,a channel or a bridge connects the UI part built using the framework and application logic part built using the Native SDK. 
-
+![](Mesibo_Cross_Platform%20(2).jpg)
 
 You can add communication capabilities to your native application using Mesibo - a communication platform. To integrate with a framework on top of this platform you need to connect or interface with the native SDK. In this article we will show you how you can interface with Mesibo Native SDK with a framework of your choice. 
 
 First we will look at how you can interface with  Native SDK in Android(using Flutter as an example) and interface with Native SDK in iOS (using Swift as an example). Then we will see some examples and sample application for interfacing Mesibo with popular frameworks like React-Native, Flutter, Swift,etc
-
 
 
 ## Interfacing Native SDK in Android

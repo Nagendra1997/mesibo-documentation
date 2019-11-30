@@ -1,18 +1,17 @@
 ## Cross Platform Application Development With Mesibo
 
-[Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
-  - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
-  - Add high quality voice chat between users
-  - Adding real-time video calling in your apps
+Building cross-platform applications is hard. You need to build seperate applications for Mobile and Web using tools and languages specific to your platform. Moving code between platforms is not the right step as you may need to compromise on performance. This way it is time consuming and resource intensive to create cross-platform apps.
 
-Mesibo APIs are provided as a Native SDK for Android, iOS and Web . Because of this, Mesibo can be integrated into any application on a platform of your choice by interfacing with the native API. 
+However, Frameworks and libraries like React-Native, Flutter, Swift etc have made it possible to quickly build applications for Mobile and Web .It is simple to build applications which are cross platform while also ensuring native performance. 
 
-## Building applications with frameworks
-With frameworks and libraries like React-Native, Flutter, Swift etc there are a lot of options to choose from which can help you build applications quickly, also ensuring native performance.
+Although, you will be using a framework (say React-Native) to write your app, under the hood, it invokes the native APIs in Objective-C (for iOS) or Java (for Android). The general idea is ,a channel or a bridge connects the UI part built using the framework and application logic part built using the Native SDK. 
 
-You can add communication capabilities to your native application with Mesibo. To integrate with a framework on top of this platform you need to connect or interface with the native SDK. All popular frameworks support interfacing with native code. The general idea is to provide a channel or a bridge that connects the UI part built using the framework and application logic part built using the Native SDK. 
 
-You can refer to the Official Documentation of the framework that you are using on how to call native code from your application. In the coming section, we will look at how you can interface with  Native SDK in Android(using Flutter as an example) and interface with Native SDK in iOS (using Swift as an example). The steps are similar to what you do with other frameworks. So, if you are using say React-Native to develop your application you can follow a similar procedure by referring to this documentation.
+You can add communication capabilities to your native application using Mesibo - a communication platform. To integrate with a framework on top of this platform you need to connect or interface with the native SDK. In this article we will show you how you can interface with Mesibo Native SDK with a framework of your choice. 
+
+First we will look at how you can interface with  Native SDK in Android(using Flutter as an example) and interface with Native SDK in iOS (using Swift as an example). Then we will see some examples and sample application for interfacing Mesibo with popular frameworks like React-Native, Flutter, Swift,etc
+
+
 
 ## Interfacing Native SDK in Android
 Let us take a look at calling Native components in Android . Here, we shall take the example of [Flutter](https://flutter.dev/) that is used to build the application UI and connect it with the Native Platform SDK. 
@@ -70,6 +69,13 @@ Import your Objective-C files by configuring the umbrella header:
 
 Now, your application will be interface with the iOS Native SDK Component from Swift.
 
+### Integrating Mesibo for cross platform development
+[Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.
+  - Enable 1-to-1 messaging, group chat, or add a chatbot in your apps or website
+  - Add high quality voice chat between users
+  - Adding real-time video calling in your apps
+
+Mesibo APIs are provided as a Native SDK for Android, iOS and Web . Because of this, Mesibo can be integrated into any application on a platform of your choice by interfacing with the native API. 
 
 In the following sections we look at integrating Mesibo with some of the popular frameworks. Sample applications and documentation for is also provided using which you can quickly get started with using Mesibo in your apps.
 

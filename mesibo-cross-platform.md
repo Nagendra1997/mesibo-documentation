@@ -30,8 +30,9 @@ Refer to the sample application tutorial for integrating [React Native with Mesi
 
 The user interface is developed using Flutter which interacts with Mesibo Native API.
 
-The Flutter portion of the app sends commands to its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a platform channel.For example ,to send a message you just need to enter the access token for your application and the destination user address.
-Mesibo listens on the platform channel, and receives the information about the action to be performed. In the case of sending a message, it will receive a "Send Message" command from flutter ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client, the Flutter portion of the app.
+- The Flutter portion of the app sends commands to its host to perform actions.Here ,the host is Mesibo which controls ,the iOS or Android portion of the app, over a platform channel.For example ,to send a message you just need to enter the access token for your application and the destination user address.
+
+- Mesibo listens on the platform channel, and receives the information about the action to be performed. In the case of sending a message, it will receive a "Send Message" command from flutter ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client, the Flutter portion of the app.
 
 Refer to the sample application tutorial for integrating [Flutter with Mesibo](https://github.com/mesibo/samples/tree/master/flutter).
 
@@ -40,8 +41,9 @@ Refer to the sample application tutorial for integrating [Flutter with Mesibo](h
 
 The user interface can be developed using Swift which interacts with Mesibo Native API.
 
-The Swift portion of the app sends commands to its host to perform actions. The host is Mesibo which controls ,the iOS portion of the app, over a platform bridge.For example ,to send a message you just need to enter the access token for your application and the destination user address.
-Mesibo listens and receives the information about the action to be performed. In the case of sending a message, it will receive a "Send Message" command from Swift ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client, the Swift portion of the app.
+- The Swift portion of the app sends commands to its host to perform actions. The host is Mesibo which controls ,the iOS portion of the app, over a platform bridge.For example ,to send a message you just need to enter the access token for your application and the destination user address.
+
+- Mesibo listens and receives the information about the action to be performed. In the case of sending a message, it will receive a "Send Message" command from Swift ,upon which Mesibo calls into any number of platform-specific APIs—using the native programming language to send a message to the destination user address entered—and sends a response back to the client, the Swift portion of the app.
  
 ## Xamarin
 Xamarin lets you build native apps for Android, iOS, and macOS using .NET code and platform-specific user interface.

@@ -58,7 +58,7 @@ Now your application will be able to interface with the Android Native SDK compo
 
 ## Interfacing iOS Native SDK in Swift
 
-Let us take a look at calling Native components in iOS. Here, we shall take the example of [Swift](https://developer.apple.com/swift/)that is used to build the application UI and connect it with the Native iOS SDK.  
+Let us take a look at calling Native components in iOS. Here, we shall take the example of [Swift](https://developer.apple.com/swift/) that is used to build the application UI and connect it with the Native iOS SDK.  
 To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
 
 ## Swift

@@ -18,10 +18,8 @@ Mesibo APIs are provided as a Native SDK for Android, iOS and Web . Because of t
 
 In the following sections we look at integrating Mesibo with some of the popular frameworks. Sample applications and documentation for is also provided using which you can quickly get started with using Mesibo in your apps.
 
-First we will look at how you can interface with  Native SDK in Android(using Flutter as an example) and interface with Native SDK in iOS (using Swift as an example). Then we will see some examples and sample application for interfacing Mesibo with popular frameworks like React-Native, Xamarin, Ionic,etc
-
-## Interfacing  Android Native SDK in Flutter
-Let us take a look at calling Native components in Android . Here, we shall take the example of [Flutter](https://flutter.dev/) that is used to build the application UI and connect it with the Native Android SDK. 
+We will see some examples and sample application for interfacing Mesibo with popular frameworks like Flutter, Swift, React-Native, Xamarin, Ionic,etc
+ 
 
 ## Flutter
 [Flutter](https://flutter.io/) by Google is a new framework that allows us to build beautiful native Apps on iOS and Android from a single codebase. To integrate Flutter with Mesibo Android SDK you need to use [platform channels](https://flutter.dev/docs/development/platform-integration/platform-channels).
@@ -55,14 +53,10 @@ Next, create a MethodChannel and set a MethodCallHandler inside the onCreate() m
 ### Step-3: Build your application
 Now your application will be able to interface with the Android Native SDK component from Flutter UI client.
 
-
-## Interfacing iOS Native SDK in Swift
-
-Let us take a look at calling Native components in iOS. Here, we shall take the example of [Swift](https://developer.apple.com/swift/) that is used to build the application UI and connect it with the Native iOS SDK.  
-To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
-
 ## Swift
 [Swift](https://developer.apple.com/swift/) is a fantastic way to write software, whether it’s for phones, desktops, servers, or anything else that runs code. To integrate Swift with Mesibo Objective-C SDK you need to use [Bridge Headers](https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_objective-c_into_swift).
+
+To call Native Components in iOS you need to access Objective-C code in Swift. To do this you need to use an Objective-C bridging header file to expose those files to Swift.
 
 Follow the steps below for [Importing Objective-C in Swift](https://developer.apple.com/documentation/swift/imported_c_and_objective-c_apis/importing_objective-c_into_swift)
 

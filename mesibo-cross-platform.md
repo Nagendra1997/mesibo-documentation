@@ -86,9 +86,43 @@ To integrate React Native with Mesibo you need to create a native module that ac
 
 Refer to the sample application tutorial for integrating [React Native with Mesibo](https://github.com/mesibo/samples/tree/master/react-native/helloworld)
 
+Follow the steps below:
+1. Create a new react-native project and initialise it. 
+```
+react-native init ProjectMesibo
+```
+This will provide you `App.js` where you need to develop your UI component in Javascript.
+
+2.Create a native module that acts as a bridge between Mesibo and React-Native. For example , `MesiboModule.js`
+
+```javascript
+import {NativeModules} from 'react-native';
+module.exports = NativeModules.MesiboModule;
+
+```
+3. Import Mesibo SDK and initialize it in the native part of Android/iOS
+For example in Android 
+```java
+import com.mesibo.api.mesibo;
+```
+4. Now,edit `App.js` to add UI components and call Mesibo Methods by importing `MesiboModule.js`
+```javascript
+import MesiboModule from './MesiboModule';
+
+```
+5. Start the React Native server and run your native app.
+
+That's it! You have sucessfully integrated Mesibo with React-Native.
+
+
 ## Xamarin
 Xamarin lets you build native apps for Android, iOS, and macOS using .NET code and platform-specific user interface.
-Xamarin  supports the use of native libraries via the standard PInvoke mechanism. To integrate Mesibo with Xamarin refer to the documentation for integrating Native Libraries
+Xamarin  supports the use of native libraries via the standard PInvoke mechanism. To integrate Mesibo with Xamarin refer to the documentation for integrating Native Libraries.
+
+For Android, refer [Using Native Libraries in Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/platform/native-libraries)
+
+
+For iOS, refer [Referencing Native Libraries in Xamarin.iOS](https://docs.microsoft.com/en-us/xamarin/ios/platform/native-interop)
 
 ## Ionic
 

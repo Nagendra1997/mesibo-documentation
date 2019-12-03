@@ -8,6 +8,7 @@ Although, you will be using a framework (say React-Native or Swift) to write you
 <img src="Mesibo_Cross_Platform_android.jpg" alt="Mesibo_Android_Native" width="400" />   
 <img src="Mesibo_Cross_Platform_ios.jpg" alt="Mesib_iOS_Native" width="400" /> 
 </p>
+
 ### Integrating Mesibo for cross platform development
 
 [Mesibo](https://mesibo.com) allows you to quickly add real-time messaging, voice and video calling into your mobile Apps, and Websites.

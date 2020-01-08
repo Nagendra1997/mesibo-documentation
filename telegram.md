@@ -37,15 +37,15 @@ Is there a better solution? The answer is  Mesibo.
 ## Mesibo's Real-Time Communication SDK
 Mesibo is built as a full-fledged real time SDK that lets you quickly add communication capabilities to your apps for Mobile, Web and IoT. The SDK is available for Android, iOS, Web, Linux and many more popular platforms. There is no restriction whatesoever in using Mesibo Source Code in your application. Meisbo is *built by developers for developers*. The APIs are designed to be consistent across all platforms in a developer friendly manner with rich documentation. Mesibo allows you to cut your development time in half by providing everything you need to build applications that are highly scalable and robust.
 
-## Build independent applications with your own brand
+### Build independent applications with your own brand
 You can customize each and every element of your application as you wish under your own branding. Mesibo offers you an Apache Style Licence. This means you need not open source your application if you do not wish to. 
 You can rebrand the application as you seem fit, with your name and colors. You can use Mesibo's Open Source UI Modules for [iOS](https://github.com/mesibo/ui-modules-ios) and [Android](https://github.com/mesibo/ui-modules-ios
 ) to develop a fully customised Mobile Application with all the features of Mesibo.
 
-## Deploy your application on your own premise
+### Deploy your application on your own premise
 While Mesibo offers you a cloud based solution that allows you to host your application on Mesibo Servers to quickly get started, it also allows you to host the application on your own datacenter/private cloud. You can interface with your private data in a secure manner without compromise. With [Mesibo On-Premise](https://mesibo.com/on-premise/) you can fully configure your backend as per your service requirements and scale at ease.
 
-## A powerful backend with Lodaable Modules and Scripting 
+### A powerful backend with Loadable Modules and Scripting 
 Mesibo allows you to extend the features and capabilities of the core platform with a loadable Module Architecture. With [Mesibo On-Premise Loadable Modules](https://mesibo.com/documentation/on-premise/loadable-modules/) you can add custom features to Mesibo and integrate more tightly with your application backend. You can interface with private data and secure connections without breaking a sweat. You can build powerful communication applications like chatbots, translators and much more.
 
 With the Scripting Module you can implement your application logic over a simple Javascript interface without compromising on performance.

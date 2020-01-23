@@ -67,7 +67,7 @@ The `Http` class can be used to make REST calls to a request endpoint and receiv
 `Http()` The constructor initializes the Http class. It must be called before you perform any method calls. 
 
 ### Properties  
-To make an HTTP call you can set the following properties for an `Http` class object. Some properties like `Http.respType` and `Http.respCode` are set when you receive a response. 
+To make an HTTP call you can set the following properties for an `Http` class object. 
 
 `Http.url`  
 Both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
@@ -103,6 +103,7 @@ HTTP cache control header
 
 `Http.etag`
 
+### Response Properties
 `Http.respType`  
 Returns the type of the response, can be `json`, `blob`, `text`, `xml`, etc. 
 

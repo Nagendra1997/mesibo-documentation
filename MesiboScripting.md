@@ -38,7 +38,7 @@ Fired when status of the message is recieved. Note that the status for a message
 `Mesibo.onlogin()` <sub>optional</sub>  
 Fired when a user logs in or out of your application. Initialization of this handler is optional.
 
-##Usage notes
+## Usage notes
 
 ### Instantiation restriction
 The class `Mesibo` is not instantiable. 
@@ -66,34 +66,34 @@ The `Http` class can be used to make REST calls to a request endpoint and receiv
 ### Properties  
 To make an HTTP call you can set the following properties for an `Http` class object. Some properties like `Http.respType` and `Http.respCode` are set when you receive a response. 
 
-`Http.url`
+`Http.url`  
 Both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
 
 > Only connections to safe url endpoints are allowed. A list of urls considered safe is [available here]. If you wish to connect to an API endpoint which is on a domain not listed in our safe list, please file a support request [here]().
 > Also note that there is no option to connect to a proxy or redirecting your request.
 
-`Http.contentType`
+`Http.contentType`  
 Content-Type header. You can request the resoponse to be of a particular type. For example, “application/json”.
 
-`Http.headers`
+`Http.headers`  
 Any custom headers you like to send, such as contain Authorisation header, etc
 
-`Http.userAgent`
+`Http.userAgent`  
 User Agent, default mesibo/x.x
 
-`Http.referrer`
+`Http.referrer`  
 HTTP referer header
 
-`Http.origin`
+`Http.origin`  
 HTTP origin header
 
-`Http.cookie`
+`Http.cookie`  
 Send HTTP Cookie Header
 
-`Http.encoding`
+`Http.encoding`  
 HTTP content encoding header
 
-`Http.cacheControl`
+`Http.cacheControl`  
 HTTP cache control header
 
 `Http.accept`
@@ -107,17 +107,19 @@ Returns the type of the response, can be `json`, `blob`, `text`, `xml`, etc.
 Returns the status code of the response. For example, if your request is successful and the response is valid the response code is `200`.  
 
 ### Methods
-`Http.send()` Make an HTTP request
-`Http.abort()` Abort an ongoing request
+`Http.send()`   
+Make an HTTP request
+`Http.abort()`   
+Abort an ongoing request
 
 ### Events
-`Http.ondata` 
+`Http.ondata`  
 Fired when an HTTP response is received.
 The function parameter will contatin the response to the request or null if the request was unsuccessful. To check the error you can inspect the response status code in the property `Http.respCode`.
 
 ## Usage notes
 
-##Global instantiation restriction
+## Global instantiation restriction  
 An object of the class `Http` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
 
  

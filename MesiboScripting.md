@@ -29,13 +29,13 @@ Operartion Failed
 ### Events  
 The following event handlers can be initialized in your script, which can be fired for different events like: receiving a message,  receiving the status of a sent message, etc. 
 
-`Mesibo.onmessage <sub>compulsory</sub>
+`Mesibo.onmessage` <sub>compulsory</sub>  
 Fired when message is receieved. It is a must to initialize this event handler.
 
 `Mesibo.onmessagestatus` <sub>optional</sub>  
 Fired when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
 
-`Mesibo.onlogin()` <sub>optional</sub> 
+`Mesibo.onlogin()` <sub>optional</sub>  
 Fired when a user logs in or out of your application. Initialization of this handler is optional.
 
 ##Usage notes

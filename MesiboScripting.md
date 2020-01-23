@@ -145,13 +145,13 @@ Enable for persistent connection
 `enableSsl`  
 Configure SSL 
 
-`Socket.ondata` 
+`Socket.ondata`  
 An event listener to be called when data is received from the server(host) 
 
-`Socket.onwrite`
+`Socket.onwrite`  
 An event listener to be called when data is written to socket
 
-`Socket.onclose`
+`Socket.onclose`  
 An event listener to be called when the connection is closed.
 
 ### Methods

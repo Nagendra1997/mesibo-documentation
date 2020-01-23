@@ -6,7 +6,32 @@ Mesibo Scripting offers you variety of functionality that help you interface wit
 The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  
 
 ### Constructor
-The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`, named `mesibo` exists in global context which you can use. Refer [Usage Notes]() for more details.
+The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`, named `mesibo` exists in global context whose properties can be initialized. Refer [Usage Notes]() for more details.
+
+### Properties
+
+`Mesibo.onmessage` <sub>compulsory</sub>  
+An event listener to be called when message is receieved. It is a must to initialize this event handler.
+
+For example, `mesibo.onmessage` can be initialized as follows:
+```javascript
+mesibo.onmessage = function(params, message){
+	mesibo.log(message);
+}
+```
+`Mesibo.onmessagestatus` <sub>optional</sub>  
+An event listener to be called when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
+
+`Mesibo.onlogin` <sub>optional</sub>  
+An event listener to be called when a user logs in or out of your application. Initialization of this handler is optional.
+
+`Mesibo.MESIBO_RESULT_OK`  
+Indicates Sucessful operation
+
+`Mesibo.MESIBO_RESULT_FAIL`  
+Indicates Failed Operation
+
+For more [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams).
 
 ### Methods  
 `Mesibo.sendmessage()`  
@@ -15,35 +40,6 @@ Utility to send a message
 `Mesibo.log()`  
 Utility to print to console
 
-### Error Codes  
-Error codes which indicate the result of an operation.
-
-`Mesibo.MESIBO_RESULT_OK`  
-Sucessful operartion
-
-`Mesibo.MESIBO_RESULT_FAIL`  
-Operartion Failed
-
-`Mesibo` also defines various [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams).
-
-### Events  
-The following event handlers can be initialized in your script, which can be fired for different events like: receiving a message,  receiving the status of a sent message, etc. 
-
-`Mesibo.onmessage` <sub>compulsory</sub>  
-Fired when message is receieved. It is a must to initialize this event handler.
-
-For example, `mesibo.onmessage` can be initialized as follows:
-```javascript
-mesibo.onmessage = function(params, message){
-	mesibo.log(message);
-}
-```
-
-`Mesibo.onmessagestatus` <sub>optional</sub>  
-Fired when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
-
-`Mesibo.onlogin` <sub>optional</sub>  
-Fired when a user logs in or out of your application. Initialization of this handler is optional.
 
 ## Usage notes
 
@@ -64,7 +60,8 @@ It is *necessary* to initialize the event handlers for the global `mesibo` objec
 The `Http` class can be used to make REST calls to a request endpoint and receive data asynchronously.
 
 ### Constructor  
-`Http()` The constructor initializes the Http class. It must be called before you perform any method calls. 
+`Http()`  
+The constructor initializes the Http class. It must be called before you perform any method calls. 
 
 ### Properties  
 To make an HTTP call you can set the following properties for an `Http` class object. 
@@ -103,7 +100,11 @@ HTTP cache control header
 
 `Http.etag`
 
-### Response Properties
+`Http.ondata`  
+An event listener to be called when a response is received from the server.
+
+The response to the request will be null if the request was unsuccessful. To check the error you can inspect the response status code using the property `Http.respCode`.
+
 `Http.respType`  
 Returns the type of the response, can be `json`, `blob`, `text`, `xml`, etc. 
 
@@ -117,14 +118,55 @@ Make an HTTP request
 `Http.abort()`  
 Abort an ongoing request
 
-### Events
-`Http.ondata`  
-Fired when an HTTP response is received.
-The function parameter will contatin the response to the request or null if the request was unsuccessful. To check the error you can inspect the response status code in the property `Http.respCode`.
-
 ## Usage notes
 
 ### Global instantiation restriction  
 An object of the class `Http` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
 
- 
+## Socket 
+The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
+
+### Constructor  
+`Socket()`  
+ The constructor initializes the  Socket class. It must be called before you perform any method calls.
+
+### Properties  
+To connect to a socket set the following properties for an `Socket` class object.
+
+`Socket.host`  
+Host name: url or ip address
+
+`Socket.port`  
+`unsigned 32-bit` Port Number
+
+`keepalive`  
+Enable for persistent connection
+
+`enableSsl`  
+Configure SSL 
+
+`Socket.ondata` 
+An event listener to be called when data is received from the server(host) 
+
+`Socket.onwrite`
+An event listener to be called when data is written to socket
+
+`Socket.onclose`
+An event listener to be called when the connection is closed.
+
+### Methods
+
+`Socket.connect()`  
+Open a new connection on specified host and port.
+
+`Socket.write()`  
+Send data to connected host 
+
+`Socket.close()`  
+Close connection
+
+
+## Usage notes
+
+### Global instantiation restriction  
+An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.

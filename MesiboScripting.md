@@ -54,7 +54,7 @@ Only a single global instance of `Mesibo` class , defined as `mesibo` exists thr
 
 ### Global Initialization 
 
-It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that you can defined if required.
+It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that can be defined if required.
 
 ## Http  
 The `Http` class can be used to make REST calls to a request endpoint and receive data asynchronously.
@@ -121,7 +121,7 @@ Abort an ongoing request
 ## Usage notes
 
 ### Global instantiation restriction  
-An object of the class `Http` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
+An object of the class `Http` cannot be instantiated in global context. Ensure that you are creating the instance inside a scoped area or function.
 
 ## Socket 
 The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.

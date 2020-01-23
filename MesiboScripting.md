@@ -32,10 +32,17 @@ The following event handlers can be initialized in your script, which can be fir
 `Mesibo.onmessage` <sub>compulsory</sub>  
 Fired when message is receieved. It is a must to initialize this event handler.
 
+For example, `mesibo.onmessage` can be initialized as follows:
+```javascript
+mesibo.onmessage = function(params, message){
+	mesibo.log(message);
+}
+```
+
 `Mesibo.onmessagestatus` <sub>optional</sub>  
 Fired when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
 
-`Mesibo.onlogin()` <sub>optional</sub>  
+`Mesibo.onlogin` <sub>optional</sub>  
 Fired when a user logs in or out of your application. Initialization of this handler is optional.
 
 ## Usage notes
@@ -49,14 +56,10 @@ var m = new Mesibo()
 ```
 Only a single global instance of `Mesibo` class , defined as `mesibo` exists throughout the lifetime of your script. 
 
-It is *necessary* to initialize the callback functions for the global `mesibo` object before you use any other class or function in your script. The callback `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional callbacks that you can define if required.
+### Global Initialization 
 
-For example, `mesibo.onmessage` can be initialized as follows:
-```javascript
-mesibo.onmessage = function(params, message){
-	mesibo.log(message);
-}
-```
+It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that you can defined if required.
+
 ## Http  
 The `Http` class can be used to make REST calls to a request endpoint and receive data asynchronously.
 
@@ -119,7 +122,7 @@ The function parameter will contatin the response to the request or null if the 
 
 ## Usage notes
 
-## Global instantiation restriction  
+### Global instantiation restriction  
 An object of the class `Http` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
 
  

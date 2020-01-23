@@ -113,7 +113,8 @@ Returns the status code of the response. For example, if your request is success
 ### Methods
 `Http.send()`   
 Make an HTTP request
-`Http.abort()`   
+
+`Http.abort()`  
 Abort an ongoing request
 
 ### Events

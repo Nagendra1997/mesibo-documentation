@@ -103,15 +103,15 @@ HTTP cache control header
 
 `Http.etag`
 
-`Http.ondata`<sub>compulsory</sub>  
+`Http.ondata` <sub>compulsory</sub>  
 An event listener to be called when a response is received from the server.
 
 The response to the request will be null if the request was unsuccessful. To check the error you can inspect the response status code using the property `Http.respCode`.
 
-`Http.respType`<sub>Read Only</sub>  
+`Http.respType` <sub>Read Only</sub>  
 Returns the type of the response, can be `json`, `blob`, `text`, `xml`, etc. 
 
-`Http.respCode`<sub>Read Only</sub>  
+`Http.respCode` <sub>Read Only</sub>  
 Returns the status code of the response. For example, if your request is successful and the response is valid the response code is `200`.  
 
 ### Methods
@@ -148,7 +148,7 @@ Enable for persistent connection
 `enableSsl`  
 Configure SSL 
 
-`Socket.ondata`  
+`Socket.ondata`  <sub>compulsory</sub>  
 An event listener to be called when data is received from the server(host) 
 
 `Socket.onwrite`  

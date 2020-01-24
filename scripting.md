@@ -50,8 +50,8 @@ mesibo.onmessage = function(message){
 	var replyMessage.params = Object.assign({}, message.params);
 
 	//Switch sender and recipient 
-	replyMessage.params.peer = message.from;
-	replyMessage.params.from = message.peer;
+	replyMessage.params.tp = message.from;
+	replyMessage.params.from = message.to;
 
 	//Custom response text/data	
 	replyMessage.data = "This is an automated response";
@@ -117,7 +117,7 @@ Mesibo_onChatbotResponse(http){
 	chatbotResponse = Object.assign({}, queryMessage);
 	
 	//Sending response to the sender of the query
-	chatbotResponse.peer = queryMessage.from;
+	chatbotResponse.to = queryMessage.from;
 	chatbotResponse.from = queryMessage.to;
 	
 	//Pass the fulfillment text in message data		
@@ -151,14 +151,33 @@ An event listener to be called when message is receieved. It is a must to initia
 For example, `mesibo.onmessage` can be initialized as follows:
 ```javascript
 mesibo.onmessage = function(message){
-	mesibo.log(message);
+	//Convert raw bytes to text
+	var messageText = BytesToString(message.data, 0, message.data.byteLength);	
+	mesibo.log("Got a message from"  + message.peer + " id: " + message.id + " msg: " + messageText);
 }
 ```
+
 `Mesibo.onmessagestatus` <sub>optional</sub>  
 An event listener to be called when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
 
+Example,
+
+```javascript
+mesibo.onmessagestatus = function(message){
+	mesibo.log("Message Status : from "  + message.peer + " status: " 
+			+ message.status + " id: " + message.id);
+}
+```
+
 `Mesibo.onlogin` <sub>optional</sub>  
 An event listener to be called when a user logs in or out of your application. Initialization of this handler is optional.
+
+Example,
+```javascript
+mesibo.onlogin = function(user){
+	mesibo.log("User: "  + user.address + " online status: " + user.online);
+}
+```
 
 `Mesibo.MESIBO_RESULT_OK`  
 Indicates Sucessful operation

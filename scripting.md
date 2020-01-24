@@ -55,7 +55,6 @@ mesibo.onmessage = function(message){
 
 	//Custom response text/data	
 	replyMessage.data = "This is an automated response";
-	replyMessage.length = replyMessage.data.length;
 
 	//Send Message!	
 	replyMessage.send();
@@ -185,15 +184,46 @@ Indicates Sucessful operation
 `Mesibo.MESIBO_RESULT_FAIL`  
 Indicates Failed Operation
 
-For more [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams).
+There are additional flags and status values defined in `Mesibo`. For example, `Mesibo.FLAG_DELIVERYRECEIPT`, `Mesibo.MSGSTATUS_SENT`,etc. For more details refer [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams)
 
-### Methods  
-`Mesibo.sendmessage()`  
-Utility to send a message 
+## Methods  
+
+`Mesibo.random()`  
+Returns a 32-bit psuedo-random number. 
+
+### Syntax
+
+```javascript
+mesibo.random()
+```
+### Parameters
+None.
+
+### Return value
+`unsigned 32-bit` integer 
 
 `Mesibo.log()`  
-Utility to print to console
+Utility to print to console window.
+Prints given comma seperated arguments, to console seperated by space.
 
+### Syntax
+
+```
+mesibo.log(string_1, string_2, ... , string_N)
+```
+
+### Parameters
+Comma seperated strings
+
+### Return value
+`undefined`
+
+### Example
+
+```javascript
+mesibo.log("Hello", "Mesibo");
+//Logs 'Hello Mesibo' to console window
+```
 
 ## Usage notes
 

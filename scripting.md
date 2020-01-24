@@ -144,7 +144,7 @@ The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`,
 
 # Properties
 
-## `Mesibo.onmessage` <sub>compulsory</sub>  
+## `Mesibo.onmessage` <sub>mandatory</sub>  
 An event listener to be called when message is receieved. It is a must to initialize this event handler.
 
 ### Syntax

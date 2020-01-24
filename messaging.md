@@ -8,10 +8,10 @@ The constructor initializes the Message class. It must be called before you perf
 
 # Properties  
 
-## `Message.aid` <sub>compulsory</sub> 
+## `Message.aid` <sub>mandatory</sub> 
 Application ID. If you are sending a message, it is necessary to set this field to a vaild aid.
 
-## `Message.id` <sub>compulsory</sub> 
+## `Message.id` <sub>mandatory</sub> 
 ID of the incoming message. If you are sending a message, it is necessary to set this field to a vaild 
 `unsigned 32-bit` integer.
 

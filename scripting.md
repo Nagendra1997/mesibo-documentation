@@ -50,14 +50,14 @@ mesibo.onmessage = function(message){
 	var replyMessage.params = Object.assign({}, message.params);
 
 	//Switch sender and recipient 
-	replyMessage.params.to = message.from;
-	replyMessage.params.from = message.to;
+	replyMessage.params.peer = message.from;
+	replyMessage.params.from = message.peer;
 
 	//Custom response text/data	
 	replyMessage.data = "This is an automated response";
 	replyMessage.length = replyMessage.data.length;
 
-	//Message Sent!	
+	//Send Message!	
 	replyMessage.send();
 }
 ```
@@ -131,6 +131,11 @@ Mesibo_onChatbotResponse(http){
 ```
 
 The further sections of this document will explain the usage of using various classes you can use in your script,their properties and methods in detail.
+
+- [Mesibo]()
+- [Messaging]()
+- [Http]()
+- [Socket]()
 
 ## Mesibo  
 The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  

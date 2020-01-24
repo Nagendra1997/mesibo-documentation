@@ -12,18 +12,18 @@ The scripting interface is provided through the Mesibo Cloud console and you nee
 
 You can also use the scripting module on your own premise/servers if you are [hosting Mesibo](https://mesibo.com/documentation/on-premise/). You can load the scripting module and configure it to run your script.
 
-### How to use Mesibo Scripting
+## How to use Mesibo Scripting
 You can specify your customised logic for each event such as when you receive a message, when a user logs in,etc and also use core utility functions provided by mesibo to perform different actions like sending a message, making an HTTP request, connecting to a socket, writing to a database, etc.
 
 From Mesibo Console , you can configure to run a custom script for each user,etc. 
 
 If you are using Mesibo On-Premise you can use the Scripting Module and configure the same.The module interface is provided in native C/C++ platform which ensures raw performance and stability.
 
-### How Mesibo Scripting Works
+## How Mesibo Scripting Works
 The script you configure is executed at runtime through the Mesibo Native Interface. This is done by using a Javascript Engine which compiles Javscript code into Native C/C++ code and then evaluating that script on each call.
 To do this, Mesibo uses V8 - Google’s open source high-performance JavaScript and WebAssembly engine, written in C++.
 
-### Pricing of the Scripting Platform
+## Pricing of the Scripting Platform
 
 Mesibo offers a Pay-as-you-GO pricing model. If you are using Mesibo Scripting on the cloud, you will be charged for running your script on a per-second basis. ie; If your script is active for 10 seconds, then your charge willbe $XX/second * 10 seconds = $YY. 
 
@@ -33,11 +33,11 @@ Please not that all other charges for using Mesibo APIs and services are indepen
 For more details refer [Mesibo Pricing](https://mesibo.com/pricing/) 
 
 
-### Examples for using Mesibo Scripting
+## Examples for using Mesibo Scripting
 
 Here is a glimpse of what you can do with Mesibo Scripting. This code snippet sends a custom reply to any message recieved. 
 
-### Sending an automatic response 
+## Sending an automatic response 
 
 ```javascript
 mesibo.onmessage = function(message){
@@ -61,7 +61,7 @@ mesibo.onmessage = function(message){
 }
 ```
 
-### Making an HTTP Request
+## Creating a Chatbot 
 Lets do something way more cooler. This message can be a query to your chatbot. You can even connect with a chatbot service of your choice. You can make a REST call your Chatbot API endpoint, get the response and send it back as a reply.
 
 ```javascript
@@ -139,10 +139,10 @@ The further sections of this document will explain the usage of using various cl
 # Mesibo  
 The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  
 
-## Constructor
+# Constructor
 The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`, named `mesibo` exists in global context whose properties can be initialized. Refer [Usage Notes]() for more details.
 
-## Properties
+# Properties
 
 ## `Mesibo.onmessage` <sub>compulsory</sub>  
 An event listener to be called when message is receieved. It is a must to initialize this event handler.
@@ -211,7 +211,7 @@ Indicates Failed Operation
 
 **There are additional flags and status values defined in `Mesibo`. For example, `Mesibo.FLAG_DELIVERYRECEIPT`, `Mesibo.MSGSTATUS_SENT`,etc. For more details refer [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams)**
 
-## Methods  
+# Methods  
 
 ## `Mesibo.random()`  
 Returns a 32-bit psuedo-random number. 
@@ -221,10 +221,10 @@ Returns a 32-bit psuedo-random number.
 ```javascript
 mesibo.random()
 ```
-### Parameters
+### `Parameters`
 None.
 
-### Return value
+### `Return value`
 `unsigned 32-bit` integer 
 
 ## `Mesibo.log()`  
@@ -237,10 +237,10 @@ Prints given comma seperated arguments, to console seperated by space.
 mesibo.log(string_1, string_2, ... , string_N)
 ```
 
-### Parameters
+### `Parameters`
 Comma seperated strings
 
-### Return value
+### `Return value`
 `undefined`
 
 ### Example
@@ -250,9 +250,9 @@ mesibo.log("Hello", "Mesibo");
 //Logs 'Hello Mesibo' to console window
 ```
 
-## Usage notes
+# Usage notes
 
-### Instantiation restriction
+## Instantiation restriction
 The class `Mesibo` is not instantiable. 
 
 ie; The following operation is invalid  
@@ -263,6 +263,6 @@ var m = new Mesibo()
 
 Only a single global instance of `Mesibo` class , defined as `mesibo` exists throughout the lifetime of your script. 
 
-### Global Initialization  
+## Global Initialization  
 It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that can be defined if required.
 

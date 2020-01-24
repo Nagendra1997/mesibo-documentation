@@ -203,10 +203,10 @@ mesibo.onlogin = function(user){
 }
 ```
 
-## `Mesibo.MESIBO_RESULT_OK`  
+## `Mesibo.RESULT_OK`  
 Indicates Sucessful operation
 
-## `Mesibo.MESIBO_RESULT_FAIL`  
+## `Mesibo.RESULT_FAIL`  
 Indicates Failed Operation
 
 **There are additional flags and status values defined in `Mesibo`. For example, `Mesibo.FLAG_DELIVERYRECEIPT`, `Mesibo.MSGSTATUS_SENT`,etc. For more details refer [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams)**

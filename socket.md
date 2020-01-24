@@ -1,24 +1,24 @@
 ## Socket 
-	The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
+The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
 
 ### Constructor  
-	`Socket()`  
-	The constructor initializes the  Socket class. It must be called before you perform any method calls.
+`Socket()`  
+The constructor initializes the  Socket class. It must be called before you perform any method calls.
 
 ### Properties  
-	To connect to a socket set the following properties for an `Socket` class object.
+To connect to a socket set the following properties for an `Socket` class object.
 
-	`Socket.host`  
-	Host name: url or ip address
+`Socket.host`  
+Host name: url or ip address
 
-	`Socket.port`  
-	`unsigned 32-bit` Port Number
+`Socket.port`  
+`unsigned 32-bit` Port Number
 
-	`keepalive`  
-	Enable for persistent connection
+`keepalive`  
+Enable for persistent connection
 
-	`enableSsl`  
-	Configure SSL 
+`enableSsl`  
+Configure SSL 
 
 	`Socket.ondata`  <sub>compulsory</sub>  
 An event listener to be called when data is received from the server(host) 

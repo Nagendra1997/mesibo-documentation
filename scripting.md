@@ -136,13 +136,13 @@ The further sections of this document will explain the usage of using various cl
 - [Http]()
 - [Socket]()
 
-## Mesibo  
+# Mesibo  
 The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  
 
-### Constructor
+## Constructor
 The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`, named `mesibo` exists in global context whose properties can be initialized. Refer [Usage Notes]() for more details.
 
-### Properties
+## Properties
 
 ## `Mesibo.onmessage` <sub>compulsory</sub>  
 An event listener to be called when message is receieved. It is a must to initialize this event handler.
@@ -164,7 +164,7 @@ mesibo.onmessage = function(message){
 }
 ```
 
-`Mesibo.onmessagestatus` <sub>optional</sub>  
+## `Mesibo.onmessagestatus` <sub>optional</sub>  
 An event listener to be called when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
 
 ### Syntax
@@ -184,7 +184,7 @@ mesibo.onmessagestatus = function(message){
 }
 ```
 
-`Mesibo.onlogin` <sub>optional</sub>  
+## `Mesibo.onlogin` <sub>optional</sub>  
 An event listener to be called when a user logs in or out of your application. Initialization of this handler is optional.
 
 ### Syntax
@@ -203,17 +203,17 @@ mesibo.onlogin = function(user){
 }
 ```
 
-`Mesibo.MESIBO_RESULT_OK`  
+## `Mesibo.MESIBO_RESULT_OK`  
 Indicates Sucessful operation
 
-`Mesibo.MESIBO_RESULT_FAIL`  
+## `Mesibo.MESIBO_RESULT_FAIL`  
 Indicates Failed Operation
 
-There are additional flags and status values defined in `Mesibo`. For example, `Mesibo.FLAG_DELIVERYRECEIPT`, `Mesibo.MSGSTATUS_SENT`,etc. For more details refer [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams)
+**There are additional flags and status values defined in `Mesibo`. For example, `Mesibo.FLAG_DELIVERYRECEIPT`, `Mesibo.MSGSTATUS_SENT`,etc. For more details refer [status codes and flags](https://mesibo.com/documentation/api/real-time-api/data-structures/#messageparams)**
 
 ## Methods  
 
-`Mesibo.random()`  
+## `Mesibo.random()`  
 Returns a 32-bit psuedo-random number. 
 
 ### Syntax
@@ -227,7 +227,7 @@ None.
 ### Return value
 `unsigned 32-bit` integer 
 
-`Mesibo.log()`  
+## `Mesibo.log()`  
 Utility to print to console window.
 Prints given comma seperated arguments, to console seperated by space.
 

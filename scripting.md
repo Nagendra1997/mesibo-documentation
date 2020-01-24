@@ -147,7 +147,15 @@ The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`,
 `Mesibo.onmessage` <sub>compulsory</sub>  
 An event listener to be called when message is receieved. It is a must to initialize this event handler.
 
-For example, `mesibo.onmessage` can be initialized as follows:
+### Syntax
+
+```
+mesibo.onmessage = callback;
+```
+### Values
+- callback is the function to be executed when a message is received. The parameter to this callback function is an object of type [`Message`]()
+
+### Example
 ```javascript
 mesibo.onmessage = function(message){
 	//Convert raw bytes to text
@@ -159,7 +167,15 @@ mesibo.onmessage = function(message){
 `Mesibo.onmessagestatus` <sub>optional</sub>  
 An event listener to be called when status of the message is recieved. Note that the status for a message will be received only when you set the corresponding flag in the message parameters while sending the message. Initialization of this handler is optional. 
 
-Example,
+### Syntax
+
+```
+mesibo.onmessagestatus = callback;
+```
+### Values
+- callback is the function to be executed when status of a sent message is received. The parameter to this callback function is an object of type [`Message`]()
+
+### Example
 
 ```javascript
 mesibo.onmessagestatus = function(message){
@@ -171,7 +187,16 @@ mesibo.onmessagestatus = function(message){
 `Mesibo.onlogin` <sub>optional</sub>  
 An event listener to be called when a user logs in or out of your application. Initialization of this handler is optional.
 
-Example,
+### Syntax
+
+```
+mesibo.onlogin = callback;
+```
+### Values
+- callback is the function to be executed when a user logs in or logs out. 
+
+### Example
+
 ```javascript
 mesibo.onlogin = function(user){
 	mesibo.log("User: "  + user.address + " online status: " + user.online);

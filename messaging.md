@@ -1,12 +1,12 @@
 # Message  
 The `Message` class can be used to send messages. Messages received in the callback `mesibo.onmessage` will be ofthis type. 
 
-## Constructor  
+# Constructor  
 
 ## `Message()`  
 The constructor initializes the Message class. It must be called before you perform any method calls. 
 
-## Properties  
+# Properties  
 
 ## `Message.aid` <sub>compulsory</sub> 
 Application ID. If you are sending a message, it is necessary to set this field to a vaild aid.
@@ -38,7 +38,7 @@ Send the message only if the recipient is online
 ## `Message.length`
 To send raw bytes (byte-array), set the number of bytes.
 
-## Methods
+# Methods
 
 ## `Message.send()`   
 Send a message
@@ -83,10 +83,10 @@ function sendTextMessage(to, text) {
 Send raw bytes. To send binary data, specify the number of bytes in `Message.length` and the raw bytes array in 
 `Message.data`
 
-## Usage notes
+# Usage notes
 
-### Global instantiation restriction  
+## Global instantiation restriction  
 An object of the class `Message` cannot be instantiated in global context. Ensure that you are creating the instance inside a scoped area or function.
 
-### Global Event listners
+## Global Event listners
 To receive the status of sent messages, ensure that you have initialized the global event listner `mesibo.onmessagestatus` and set the correct flag value in `Message.flags`.

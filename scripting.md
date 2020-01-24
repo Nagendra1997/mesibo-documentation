@@ -38,6 +38,7 @@ For more details refer [Mesibo Pricing](https://mesibo.com/pricing/)
 Here is a glimpse of what you can do with Mesibo Scripting. This code snippet sends a custom reply to any message recieved. 
 
 ### Sending an automatic response 
+
 ```javascript
 mesibo.onmessage = function(message){
 	//On receiving a message we send an automated reply to the sender 
@@ -60,11 +61,11 @@ mesibo.onmessage = function(message){
 	replyMessage.send();
 }
 ```
+
 ### Making an HTTP Request
 Lets do something way more cooler. This message can be a query to your chatbot. You can even connect with a chatbot service of your choice. You can make a REST call your Chatbot API endpoint, get the response and send it back as a reply.
 
 ```javascript
-
 mesibo.onmessage(message){
 	//Send an HTTP request to a Chatbot API service like Dialogflow with a query containing message data 
 	
@@ -128,6 +129,9 @@ Mesibo_onChatbotResponse(http){
 		
 }
 ```
+
+The further sections of this document will explain the usage of using various classes you can use in your script,their properties and methods in detail.
+
 ## Mesibo  
 The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  
 
@@ -173,12 +177,13 @@ Utility to print to console
 The class `Mesibo` is not instantiable. 
 
 ie; The following operation is invalid  
-	```javscript
+
+```javscript
 var m = new Mesibo()
-	```
-	Only a single global instance of `Mesibo` class , defined as `mesibo` exists throughout the lifetime of your script. 
+```
 
-### Global Initialization 
+Only a single global instance of `Mesibo` class , defined as `mesibo` exists throughout the lifetime of your script. 
 
-	It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that can be defined if required.
+### Global Initialization  
+It is *necessary* to initialize the event handlers for the global `mesibo` object before you use any other class or function in your script. The handler `mesibo.onmessage` needs to be initialized compulsorily in your script. `mesibo.onlogin` and `mesibo.onmessagestatus` are optional handlers that can be defined if required.
 

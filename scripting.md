@@ -158,8 +158,7 @@ mesibo.onmessage = callback;
 ### Example
 ```javascript
 mesibo.onmessage = function(message){
-	//Convert raw bytes to text
-	var messageText = BytesToString(message.data, 0, message.data.byteLength);	
+	var messageText = message.data; 
 	mesibo.log("Got a message from"  + message.peer + " id: " + message.id + " msg: " + messageText);
 }
 ```

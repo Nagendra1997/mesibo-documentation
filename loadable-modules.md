@@ -40,6 +40,8 @@ f. [Memory Management](#memory-management)
 {% comment %} 
 ## Ready-to-use modules Source Code
 Github
+Precompiled modules are already available along with source code. You can readily load them into your application with the required configuration. If you wish to modify the source code , you can do that too. You can adapt the source code to suit your requirements and then compile them in the given build environment in the docker container which has all the required tools like gcc, gdb, vim etcbundled into the mesibo docker container.
+
 {% endcomment %}
 
 ## What is a Mesibo Module?
@@ -392,6 +394,8 @@ mesibo_message(mod, &p, message, len);
 
 There a set of utility function provided by mesibo which you can use for asynchronous operations like executing on a thread, making HTTP requests, Socket I/O, etc.
 
+## HTTP
+
 ###mesibo_util_http 
 This function can be used to make an HTTP request. It is especially useful to invoke services like DialogFlow, etc.
 
@@ -409,74 +413,52 @@ Integer : 0 on success , -1 on failure
 For example,
 
 ```cpp
-const char* url = "https://example.com/api.php"; //API endpoint
-const char* post = "op=userdel&token=123434343xxxxxxxxx&uid=456"; // POST Request Data
-mesibo_http(mod, url, post, mesibo_http_callback, NULL, NULL);
+mesibo_http_t req;
+memset(&req, 0, sizeof(req));_
+req.url = "https://example.com/api.php"; //API endpoint
+req.post = "op=userdel&token=123434343xxxxxxxxx&uid=456"; // POST Request Data
+req.on_data = mesibo_http_on_data_callback;
+mesibo_util_http(&req, NULL);
 ```
+## Socket
+Mesibo Module provides you with a set of functions for performing socket I/O, such as writing to a socket, receiving data from a socket, etc.
 
-#### HTTP Callback Function
-The callback function reference, `cb` that you pass as a parameter should be defined as per the function prototype `mesibo_module_http_data_callback_t` in `module.h`.
+## mesibo_util_socket_connect
+Open a connection to a socket on a host through a specified port.
+```cpp
+mesibo_int_t      mesibo_util_socket_connect(mesibo_socket_t *sock, void *cbdata);
+```
+Parameters:
+1. `sock`, Pointer to mesibo socket structure
+2. `cbdata`, Callback data
+
+Returns:
+Integer : 0 on success , -1 on failure
+
+## mesibo_util_socket_write
+Write data to a connected socket
 
 ```cpp
-typedef int (*mesibo_module_http_data_callback_t)(void *cbdata,
-                                                  mesibo_int_t state,
-                                                  mesibo_int_t progress,
-                                                  const char *buffer,
-                                                  mesibo_int_t size);
-```
+mesibo_int_t      mesibo_util_socket_write(mesibo_int_t sock, const char *data, mesibo_int_t len);
+``` 
+Parameters:
+1. `sock`, Pointer to mesibo socket structure
+2. `data`, Raw data bytes
+3. `len`, NUmber of bytes
 
-The callback function takes the following parameters:  
- 1. `cbdata`, Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function [http](#http)
- 2. `state`, An integer indicating the state of the response data being passed
+Returns:
+Integer : 0 on success , -1 on failure
 
-```cpp
-typedef enum {
-  MODULE_HTTP_STATE_REQUEST,
-  MODULE_HTTP_STATE_REQBODY,
-  MODULE_HTTP_STATE_RESPHEADER,
-  MODULE_HTTP_STATE_RESPBODY,
-  MODULE_HTTP_STATE_DONE
-} module_http_state_t;
-```
-
- 3. `progress`, progress from 0 to 100. Progress is negative (< 0) for error 
- 4. `buffer`, response data 
- 5. `size`, size of data in the buffer, in bytes
-
-For example,
+## mesibo_util_socket_close
+Close the socket connection
 
 ```cpp
-static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
-        mesibo_int_t progress, const char *buffer,
-        mesibo_int_t size) {
-
-    tMessageContext *b = (tMessageContext *)cbdata;
-    mesibo_module_t *mod = b->mod;
-
-    if (progress < 0) {
-        mesibo_log(mod, 0, " Error in http callback \n");
-        
-        // cleanup
-        
-        return -1;
-    }
-
-    if (state != MODULE_HTTP_STATE_RESPBODY) {
-        return 0;
-    }
-
-    memcpy(b->buffer + b->datalen, buffer, size);
-    b->datalen += size;
-
-    if (progress == 100) {
-        // process it ...
-    }
-
-    return 0;
-}
-
+void      mesibo_util_socket_close(mesibo_int_t sock);
 ```
 
+
+## Logging
+Make use of the following functions to log output to container logs
 ### mesibo_log
 This function can be used to print to mesibo container logs.
 
@@ -500,6 +482,13 @@ For example,
 ```cpp
 mesibo_log(mod, 0, "%s\n", "Hello, from Mesibo Module!");
 ```
+### mesibo_vlog
+Similar to `mesibo_log` but you can provide a varaible list of arguents of type `va_list`
+```cpp
+ mesibo_int_t      mesibo_vlog(mesibo_module_t *mod, mesibo_uint_t level, const char *format, va_list args);
+```
+ 
+
 ### mesibo_util_getconfig
 This function can be used to get the value of a configuration item from the name-value configuration list passed in `/etc/mesibo/mesibo.conf`
 
@@ -626,8 +615,7 @@ typedef struct _mesibo_http_t {
 } mesibo_http_t;
 ```
 
-### HTTP Fields  
-
+### HTTP Properties 
 - `url`, both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
 - `post`, is a string that contains raw POST data. For example, "authtoken=xyz&user=abc" 
 - `proxy` Proxy URL, if any.(Disabled by default)
@@ -649,10 +637,65 @@ typedef struct _mesibo_http_t {
 ### HTTP Callbacks
 - `on_data` You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
 
+#### Receiving HTTP data 
+The callback function reference, `on_data` that you set in the HTTP request structure should be defined as per the function prototype `mesibo_http_on_data_t` in `module.h`.
+
 ```cpp
 typedef mesibo_int_t (*mesibo_http_ondata_t)(void *cbdata, mesibo_int_t state, 
 		mesibo_int_t progress, const char *buffer, 
 		mesibo_int_t size);
+```
+
+The callback function takes the following parameters:  
+ 1. `cbdata`, Pointer to arbitrary data, which the response callback function may need. You pass this while calling the request function [http](#http)
+ 2. `state`, An integer indicating the state of the response data being passed
+
+```cpp
+typedef enum {
+  MODULE_HTTP_STATE_REQUEST,
+  MODULE_HTTP_STATE_REQBODY,
+  MODULE_HTTP_STATE_RESPHEADER,
+  MODULE_HTTP_STATE_RESPBODY,
+  MODULE_HTTP_STATE_DONE
+} module_http_state_t;
+```
+
+ 3. `progress`, progress from 0 to 100. Progress is negative (< 0) for error 
+ 4. `buffer`, response data 
+ 5. `size`, size of data in the buffer, in bytes
+
+For example,
+
+```cpp
+static int mesibo_http_callback(void *cbdata, mesibo_int_t state,
+        mesibo_int_t progress, const char *buffer,
+        mesibo_int_t size) {
+
+    tMessageContext *b = (tMessageContext *)cbdata;
+    mesibo_module_t *mod = b->mod;
+
+    if (progress < 0) {
+        mesibo_log(mod, 0, " Error in http callback \n");
+        
+        // cleanup
+        
+        return -1;
+    }
+
+    if (state != MODULE_HTTP_STATE_RESPBODY) {
+        return 0;
+    }
+
+    memcpy(b->buffer + b->datalen, buffer, size);
+    b->datalen += size;
+
+    if (progress == 100) {
+        // process it ...
+    }
+
+    return 0;
+}
+
 ```
 - `on_status` You will get the response status code and response type through this callback. For example, on sucessful response the `status` is `200` and `response-type` can be `text/html`,etc.
 
@@ -665,21 +708,72 @@ typedef mesibo_int_t (*mesibo_http_onstatus_t)(void *cbdata, mesibo_int_t status
 ```cpp
 typedef void (*mesibo_http_onclose_t)(void *cbdata,  mesibo_int_t result);
 ```
+### Socket structure
+Use the C/C++ structure defined as follows to perform Socket related operations.
+
+```cpp
+typedef struct mesibo_socket_s {
+        const char *url;
+        const char *ws_protocol; /* only for websock - valid only if host is NULL */
+
+        mesibo_int_t keepalive;
+        mesibo_int_t verify_host;
+        void *ssl_ctx; //use if provided else generate if enable_ssl=1
+
+        mesibo_socket_onconnect_t on_connect;
+        mesibo_socket_onwrite_t on_write;
+        mesibo_socket_ondata_t on_data;
+        mesibo_socket_onclose_t on_close;
+} mesibo_socket_t;
+```
+### Socket Peoperties 
+- `url` Both HTTP and HTTPS url hosts are supported. 
+- `ws_protocol` Enabled if and only if  `url` is NULL, for connecting to a websocket. The `ws_protocol` string 
+should be of the format `ws://example.com` or `wss://example.com`
+- `keepalive` 	Keep Persistent (Keep-Alive) connection
+- `verify_host` Verify the validity of host. Disable if on a private network.
+- `ssl_ctx` Generated context in case of an SSL Connection- for HTTPS and WSS protocol
+
+### Socket Callbacks
+- `on_connect` Called when socket connection is made. On successful connection the callback parameter `asock` holds a valid socket address. 
+
+```cpp
+typedef void (*mesibo_socket_onconnect_t)(void *cbdata, mesibo_int_t asock, mesibo_int_t fd);
+```
+- `on_write` Called when socket write operation is performed
+
+```cpp
+typedef void (*mesibo_socket_onwrite_t)(void *cbdata);
+```
+- `on_data` Called when data is received.
+Parameters:
+1. `cbdata` Data object passed while connecting to socket. 
+2. `data` Raw bytes
+2. `len` Number of bytes
+
+```cpp
+typedef mesibo_int_t (*mesibo_socket_ondata_t)(void *cbdata, const char *data, mesibo_int_t len);
+```
+- `on_close` Called when Socket connection is closed
+
+```cpp
+typedef void (*mesibo_socket_onclose_t)(void *cbdata, mesibo_int_t type);
+```
 
 ### Module Configuration Structure
 The configuration attributes for a module can be provided as a configuration list which shall be made available in the mesibo module initialization function, through the following structures
 
 ```cpp
 typedef struct module_config_item_s {
-    char *name;
-    char *value;
+	char *name;
+	char *value;
 } module_config_item_t;
 ```
 
 ```cpp
 typedef struct module_configs_s {
-    int count;
-    module_config_item_t items[0];
+	int count;
+	module_config_item_t items[0];
 } module_config_t;
 ```
 
@@ -703,7 +797,7 @@ The development environment comes pre-loaded with source code of various useful 
 To checkout the source code and run build commands you need to get into the shell environment of the container. To do so, follow the steps below:
 1. Get the container-id
 You can find the CONTAINER_ID using `docker ps` command as shown below:
-	
+
 ```
 $ sudo docker ps
 ```
@@ -723,144 +817,144 @@ $ sudo docker exec -it <CONTAINER_ID> /bin/bash
 ```
 You can now execute commands and write/modify programs in the source.
 Example,
-```
-[root@mesibo /]# ls
-bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
-cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
-```
+	```
+	[root@mesibo /]# ls
+	bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+	cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+	```
 
-You can find the loadable modules source at `/mesibo/src/` and pre-compiled modules `/mesibo/src/bin`.
-```
-[root@mesibo /]# ls
-bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
-cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
-[root@mesibo /]# cd mesibo
-[root@mesibo mesibo]# ls
-bin  src
-[root@mesibo mesibo]# cd src
-[root@mesibo src]# ls
-README.md  chatbot  filter  include  js  make.inc  skeleton  translate	v8
-```
-If you wish to debug the main program that runs the mesibo onpremise server you can find the executable at `/mesibo/bin`.
+	You can find the loadable modules source at `/mesibo/src/` and pre-compiled modules `/mesibo/src/bin`.
+	```
+	[root@mesibo /]# ls
+	bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+	cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+	[root@mesibo /]# cd mesibo
+	[root@mesibo mesibo]# ls
+	bin  src
+	[root@mesibo mesibo]# cd src
+	[root@mesibo src]# ls
+	README.md  chatbot  filter  include  js  make.inc  skeleton  translate	v8
+	```
+	If you wish to debug the main program that runs the mesibo onpremise server you can find the executable at `/mesibo/bin`.
 
 ### Updating Modules (Recommended)
-For the bleeding edge versions check [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you update to the latest version by executing the following command inside the directory `/mesibo/src`:
-```
-git pull
-```
+	For the bleeding edge versions check [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you update to the latest version by executing the following command inside the directory `/mesibo/src`:
+	```
+	git pull
+	```
 ### Pre-compiled Modules
-Precompiled modules are already available at `/mesibo/bin`. To load them just modify `/etc/mesibo/mesibo.conf` to required configuration. For every module a `sample.conf` is provided in the source directory. You may refer to that configuration and modify accordingly.  
+	Precompiled modules are already available at `/mesibo/bin`. To load them just modify `/etc/mesibo/mesibo.conf` to required configuration. For every module a `sample.conf` is provided in the source directory. You may refer to that configuration and modify accordingly.  
 
 ### Compiling the modules
-The source code of all the modules are available along with other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
+	The source code of all the modules are available along with other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
 
-1. Compile all the sample modules to ensure that modules compile successfully on your machine. 
-1. Make a copy of `skeleton` module 
-3. Modify `skeleton` module by changing the module name, callback functions, etc. For a detailed example, refer to the [Building a chat-bot](#building-a-chat-bot) below
-4. Edit `MakeFile` and modify the `MODULE` field to reflect module name in the output file correctly
+	1. Compile all the sample modules to ensure that modules compile successfully on your machine. 
+	1. Make a copy of `skeleton` module 
+	3. Modify `skeleton` module by changing the module name, callback functions, etc. For a detailed example, refer to the [Building a chat-bot](#building-a-chat-bot) below
+	4. Edit `MakeFile` and modify the `MODULE` field to reflect module name in the output file correctly
 
-```cmake
+	```cmake
 #Sample MakeFile to build mesibo module 
-MODULE=skeleton
+	MODULE=skeleton
 
-include ../make.inc/make.inc
-```
-5. Run
-```
-make
-```
+	include ../make.inc/make.inc
+	```
+	5. Run
+	```
+	make
+	```
 ## Code references and Examples
 
 ### Building a chat-bot 
-Now since we have learned about how the module works, we will build a simple but capable chatbot, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc. in your backend using loadable modules. You can interface with any tool or library of your choice, such as Dialogflow, IBM Watson, Tensorflow, etc.
+	Now since we have learned about how the module works, we will build a simple but capable chatbot, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc. in your backend using loadable modules. You can interface with any tool or library of your choice, such as Dialogflow, IBM Watson, Tensorflow, etc.
 
 ![Module Chatbot Sample](module_chat_bot.jpg)
 
-Let's look at how you can build a chatbot using mesibo modules:
+	Let's look at how you can build a chatbot using mesibo modules:
 
-- Create a dedicated user (destination) for the chatbot, so that when a user sends a message to this destination, chatbot functionality can be invoked.
-- When a user sends a message, your module will get the message text via the callback function `on_message` along with message parameters. 
-- Check `'to'` field (destination) in message parameters to check if it was sent to the chatbot. If it's not the chatbot destination, return PASS as explained in `on_message` callback function description so that the message can be sent to the requested destination.
-- Send the message to your message processing model which could be a local function or a remote service like Dialogflow, IBM Watson, Tensorflow, etc. Your messaging processing model will process the message and send the appropriate response.
-- You can send the response back to the user (sender) using `mesibo_message` function.
+	- Create a dedicated user (destination) for the chatbot, so that when a user sends a message to this destination, chatbot functionality can be invoked.
+	- When a user sends a message, your module will get the message text via the callback function `on_message` along with message parameters. 
+	- Check `'to'` field (destination) in message parameters to check if it was sent to the chatbot. If it's not the chatbot destination, return PASS as explained in `on_message` callback function description so that the message can be sent to the requested destination.
+	- Send the message to your message processing model which could be a local function or a remote service like Dialogflow, IBM Watson, Tensorflow, etc. Your messaging processing model will process the message and send the appropriate response.
+	- You can send the response back to the user (sender) using `mesibo_message` function.
 
-Refer to the [Sample Chatbot Module](https://github.com/mesibo/onpremise-loadable-modules/tree/master/chatbot) source code which demonstrates building your module with a Dialogflow chatbot. 
+	Refer to the [Sample Chatbot Module](https://github.com/mesibo/onpremise-loadable-modules/tree/master/chatbot) source code which demonstrates building your module with a Dialogflow chatbot. 
 
-For this chatbot example, We will be using DiaglogFlow to process messages. Hence, before we dive into the code, let us quickly understand how Dialogflow works. You can skip this section if you are already familiar with Dialogflow. 
+	For this chatbot example, We will be using DiaglogFlow to process messages. Hence, before we dive into the code, let us quickly understand how Dialogflow works. You can skip this section if you are already familiar with Dialogflow. 
 
 ### Basics of Dialogflow
-Dialogflow is an AI powered Google service to build interactive conversational interfaces, such as chatbots. Once you train DialogFlow using data of your interest like emails, FAQs, etc., it can answer questions from your users in natural language.
+	Dialogflow is an AI powered Google service to build interactive conversational interfaces, such as chatbots. Once you train DialogFlow using data of your interest like emails, FAQs, etc., it can answer questions from your users in natural language.
 
-Dialogflow service is available through a REST interface. For more details on using Dialogflow , refer [DialogFlow Documentation](https://cloud.google.com/dialogflow/docs/quick/api)
+	Dialogflow service is available through a REST interface. For more details on using Dialogflow , refer [DialogFlow Documentation](https://cloud.google.com/dialogflow/docs/quick/api)
 
 #### Configuring Dialogflow API (V2) 
-To use Dialogflow API, you will need two parameters which you can obtain from the Google Cloud Console.
+	To use Dialogflow API, you will need two parameters which you can obtain from the Google Cloud Console.
 
-  - GCP project ID
-  - Access Token
+	- GCP project ID
+	- Access Token
 
-Following are the the steps:
+	Following are the the steps:
 
-1. Set up a [GCP Console](https://console.cloud.google.com) project.
-    - Create or select a project and note the project ID
-    - Create a service account
-    - Download a private service account key as JSON
+	1. Set up a [GCP Console](https://console.cloud.google.com) project.
+	- Create or select a project and note the project ID
+	- Create a service account
+	- Download a private service account key as JSON
 
-2. Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS` pointing to the JSON file downloaded in the Step 1.
+	2. Set the environment variable `GOOGLE_APPLICATION_CREDENTIALS` pointing to the JSON file downloaded in the Step 1.
 
-```
-export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
-```
+	```
+	export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
+	```
 
-3. [Install and initialize the Cloud SDK](https://cloud.google.com/sdk/docs/)
-4. Print your access token by using the following command
+	3. [Install and initialize the Cloud SDK](https://cloud.google.com/sdk/docs/)
+	4. Print your access token by using the following command
 
-```
+	```
 echo $(gcloud auth application-default print-access-token)
-```
+	```
 
-which should output something like
+	which should output something like
 
-```
-ya29.c.Kl6iB-r90Gjj4o--m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsAw44MbZDSaksLH3xKbsSHGLgWeEXqIPSDmFO6
-```
-This is the access token, save it for later use.
+	```
+	ya29.c.Kl6iB-r90Gjj4o--m7k7wr4dN4b84U4TLEtPqdEZ2xvfsj01awmUObMDEFwJIJ1lkZPym5dsAw44MbZDSaksLH3xKbsSHGLgWeEXqIPSDmFO6
+	```
+	This is the access token, save it for later use.
 
 #### Invoking Dialogflow API  
-Once we have project ID and the access token, invoking DialogFlow API is as simple as invoking following URL with access token and the data:
+	Once we have project ID and the access token, invoking DialogFlow API is as simple as invoking following URL with access token and the data:
 
-```
-https://dialogflow.googleapis.com/v21/projects/<Project ID>/agent/sessions/<Session ID>
-```
+	```
+	https://dialogflow.googleapis.com/v21/projects/<Project ID>/agent/sessions/<Session ID>
+	```
 
-where `Project ID` is the GCP Project ID obtained earlier. `Session ID` can be a random number or some type of user and session identifiers (preferably hashed). 
+	where `Project ID` is the GCP Project ID obtained earlier. `Session ID` can be a random number or some type of user and session identifiers (preferably hashed). 
 
-For example, a sample dialogflow REST URL looks like
+	For example, a sample dialogflow REST URL looks like
 
-```
-https://dialogflow.googleapis.com/v2/mesibo-dialogflow/agent/sessions/123456789
-```
+	```
+	https://dialogflow.googleapis.com/v2/mesibo-dialogflow/agent/sessions/123456789
+	```
 
-Now, you can send a POST request to the above URL in the following format.
+	Now, you can send a POST request to the above URL in the following format.
 
-Pass the authentication information in the request header.
+	Pass the authentication information in the request header.
 
-```
-Authorization: Bearer <YOUR_ACCESS_TOKEN>
-Content-Type: application/json
-```
+	```
+	Authorization: Bearer <YOUR_ACCESS_TOKEN>
+	Content-Type: application/json
+	```
 
-and your text/message in the POST data in a JSON string as shown below:
+	and your text/message in the POST data in a JSON string as shown below:
 
-```
+	```
 {
-    "queryInput": {
- 	{
-	"text": {
-		"text": <message text>}
-        	"languageCode" : <source language>
-	}   
-    }
+	"queryInput": {
+		{
+			"text": {
+				"text": <message text>}
+			"languageCode" : <source language>
+		}   
+	}
 }
 ```
 
@@ -885,25 +979,25 @@ We will define the following configurable items for The chatbot module:
 ```
 module chatbot{
 	project = <Project ID>
-	endpoint = <Dialogflow REST Endpoint>
-	access_token = <Service Account key>
-	language = <Source Language>
-	address = <Chatbot User Address>
-	log = <log level>
+		endpoint = <Dialogflow REST Endpoint>
+		access_token = <Service Account key>
+		language = <Source Language>
+		address = <Chatbot User Address>
+		log = <log level>
 }
 ```
 
 For example,
 
-```
-module chatbot{
-	project = mesibo-chatbot
-	endpoint = https://dialogflow.googleapis.com/v2
-	access_token = xxxxxx.Kl6iBzVH7dvV2XywzpnehLJwczdClfMoAHHOeTVNFkmTjqVX7VagKHH1-xxxxxxx
-	language = en
-	address = my_chatbot
-	log = 1
-}
+    ```
+    module chatbot{
+	    project = mesibo-chatbot
+		    endpoint = https://dialogflow.googleapis.com/v2
+		    access_token = xxxxxx.Kl6iBzVH7dvV2XywzpnehLJwczdClfMoAHHOeTVNFkmTjqVX7VagKHH1-xxxxxxx
+		    language = en
+		    address = my_chatbot
+		    log = 1
+    }
 ```
 
 ### 3. Initialize the module
@@ -911,33 +1005,33 @@ Now, we need to provide the initialization function for our module. Since we cho
 
 ```cpp
 int mesibo_module_chatbot_init(mesibo_module_t *m, mesibo_uint_t len) {
-    
+
 	MESIBO_MODULE_SANITY_CHECK(m, version. len);
-    
+
 	m->flags = 0;
 	m->description = strdup("Sample Chatbot Module");
 	m->on_message = chatbot_on_message;
-    
+
 	//Read configuration
 	if(m->config) {
 		chatbot_config_t* cbc = get_config_dialogflow(m);
-                if(cbc  == NULL){
-                        mesibo_log(m, MODULE_LOG_LEVEL_0VERRIDE, "%s : Missing Configuration\n", m->name);
-                        return MESIBO_RESULT_FAIL;
-                }
-                m->ctx = (void* )cbc;
+		if(cbc  == NULL){
+			mesibo_log(m, MODULE_LOG_LEVEL_0VERRIDE, "%s : Missing Configuration\n", m->name);
+			return MESIBO_RESULT_FAIL;
+		}
+		m->ctx = (void* )cbc;
 
-                int init_status = chatbot_init_dialogflow(m);
-                if(init_status != MESIBO_RESULT_OK){
-                        mesibo_log(m, MODULE_LOG_LEVEL_0VERRIDE, "%s : Bad Configuration\n", m->name);
-                        return MESIBO_RESULT_FAIL;
-                }
-        }
-        else {
-                return MESIBO_RESULT_FAIL;
-        }
+		int init_status = chatbot_init_dialogflow(m);
+		if(init_status != MESIBO_RESULT_OK){
+			mesibo_log(m, MODULE_LOG_LEVEL_0VERRIDE, "%s : Bad Configuration\n", m->name);
+			return MESIBO_RESULT_FAIL;
+		}
+	}
+	else {
+		return MESIBO_RESULT_FAIL;
+	}
 
-    	return MESIBO_RESULT_OK;
+	return MESIBO_RESULT_OK;
 }
 ```
 
@@ -947,18 +1041,18 @@ We will use the following configuration structure `chatbot_config_t` to store th
 
 ```cpp
 typedef struct chatbot_config_s {
-        /* To be configured in module configuration file */
-        const char* project;
-        const char* endpoint;
-        const char* access_token;
-        const char* address;
-        const char* language;
-        int log;
+	/* To be configured in module configuration file */
+	const char* project;
+	const char* endpoint;
+	const char* access_token;
+	const char* address;
+	const char* language;
+	int log;
 
-        /* To be configured by dialogflow init function */
-        char* post_url;
-        char* auth_bearer;
-        module_http_option_t* chatbot_http_opt;
+	/* To be configured by dialogflow init function */
+	char* post_url;
+	char* auth_bearer;
+	module_http_option_t* chatbot_http_opt;
 
 } chatbot_config_t;
 
@@ -968,15 +1062,15 @@ A helper function, `mesibo_util_getconfig` can be used to get the configuation i
 
 ```cpp
 static chatbot_config_t*  get_config_dialogflow(mesibo_module_t* mod){
-        chatbot_config_t* cbc = (chatbot_config_t*)calloc(1, sizeof(chatbot_config_t));
-        cbc->project = mesibo_util_getconfig(mod, "project");
-        cbc->endpoint = mesibo_util_getconfig(mod, "endpoint");
-        cbc->access_token = mesibo_util_getconfig(mod, "access_token");
-        cbc->address = mesibo_util_getconfig(mod, "address");
-        cbc->language = mesibo_util_getconfig(mod, "language");
-        cbc->log = atoi(mesibo_util_getconfig(mod, "log"));
+	chatbot_config_t* cbc = (chatbot_config_t*)calloc(1, sizeof(chatbot_config_t));
+	cbc->project = mesibo_util_getconfig(mod, "project");
+	cbc->endpoint = mesibo_util_getconfig(mod, "endpoint");
+	cbc->access_token = mesibo_util_getconfig(mod, "access_token");
+	cbc->address = mesibo_util_getconfig(mod, "address");
+	cbc->language = mesibo_util_getconfig(mod, "language");
+	cbc->log = atoi(mesibo_util_getconfig(mod, "log"));
 
-        return cbc;
+	return cbc;
 }
 
 ```
@@ -986,16 +1080,16 @@ Once we obtain the configuration, we can construct REST API parameters (URL and 
 
 ```cpp
 static int chatbot_init_dialogflow(mesibo_module_t* mod){
-        chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
+	chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
 
-        asprintf(&cbc->post_url,"%s/projects/%s/agent/sessions",
-                        cbc->endpoint, cbc->project);
-        mesibo_log(mod, cbc->log, "Configured post URL for HTTP requests: %s \n", cbc->post_url);
+	asprintf(&cbc->post_url,"%s/projects/%s/agent/sessions",
+			cbc->endpoint, cbc->project);
+	mesibo_log(mod, cbc->log, "Configured post URL for HTTP requests: %s \n", cbc->post_url);
 
-        asprintf(&cbc->auth_bearer,"Authorization: Bearer %s", cbc->access_token);
-        mesibo_log(mod, cbc->log, "Configured auth bearer for HTTP requests with token: %s \n", cbc->auth_bearer );
+	asprintf(&cbc->auth_bearer,"Authorization: Bearer %s", cbc->access_token);
+	mesibo_log(mod, cbc->log, "Configured auth bearer for HTTP requests with token: %s \n", cbc->auth_bearer );
 
-        cbc->chatbot_http_opt = mesibo_chatbot_get_http_opt(cbc);
+	cbc->chatbot_http_opt = mesibo_chatbot_get_http_opt(cbc);
 
 	return MESIBO_RESULT_OK;
 }
@@ -1006,19 +1100,19 @@ We only need to process messages addressed to the configured `address` of the ch
 
 ```cpp
 static mesibo_int_t chatbot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-                const char *message, mesibo_uint_t len) {
+		const char *message, mesibo_uint_t len) {
 
-        chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
-        
+	chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
+
 	if(0 == strcmp(p->to, cbc->address)){
-                // Don't modify original as other module will use it
-                mesibo_message_params_t* np = (mesibo_message_params_t*)calloc(1, sizeof(mesibo_message_params_t));
-                memcpy(np, p, sizeof(mesibo_message_params_t));
-                chatbot_process_message(mod, np, message, len);
+		// Don't modify original as other module will use it
+		mesibo_message_params_t* np = (mesibo_message_params_t*)calloc(1, sizeof(mesibo_message_params_t));
+		memcpy(np, p, sizeof(mesibo_message_params_t));
+		chatbot_process_message(mod, np, message, len);
 
-                return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
-        }
-        
+		return MESIBO_RESULT_CONSUMED;  // Process the message and CONSUME original
+	}
+
 	return MESIBO_RESULT_PASS;
 }
 ```
@@ -1032,15 +1126,15 @@ Once the response is received from DialogFlow, we need to send it to to the user
 
 ```cpp
 typedef struct message_context_s {
-        mesibo_module_t *mod;
-        mesibo_message_params_t *params;
-        char *from;
-        char *to;
-        // To copy data in response
-        char buffer[HTTP_BUFFER_LEN];
-        int datalen;
+	mesibo_module_t *mod;
+	mesibo_message_params_t *params;
+	char *from;
+	char *to;
+	// To copy data in response
+	char buffer[HTTP_BUFFER_LEN];
+	int datalen;
 
-        char* post_data; //For cleanup after HTTP request is complete   
+	char* post_data; //For cleanup after HTTP request is complete   
 } message_context_t;
 ```
 
@@ -1048,28 +1142,28 @@ The function to process the message and send an HTTP request to Dialogflow is as
 
 ```cpp
 static int chatbot_process_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-                const char *message, mesibo_uint_t len) {
+		const char *message, mesibo_uint_t len) {
 
-        chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
+	chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
 
-        char post_url[HTTP_POST_URL_LEN_MAX];
-        sprintf(post_url, "%s/%lu:detectIntent",cbc->post_url,p->id); //Pass Message ID as Session ID
-        char* raw_post_data; 
-        asprintf(&raw_post_data, "{\"queryInput\":{\"text\":{\"text\":\"%.*s\",\"languageCode\":\"%s\"}}}",
-                        (int)len, message, cbc->language);
+	char post_url[HTTP_POST_URL_LEN_MAX];
+	sprintf(post_url, "%s/%lu:detectIntent",cbc->post_url,p->id); //Pass Message ID as Session ID
+	char* raw_post_data; 
+	asprintf(&raw_post_data, "{\"queryInput\":{\"text\":{\"text\":\"%.*s\",\"languageCode\":\"%s\"}}}",
+			(int)len, message, cbc->language);
 
-        message_context_t *message_context =
-                (message_context_t *)calloc(1, sizeof(message_context_t));
-        message_context->mod = mod;
-        message_context->params = p;
-        message_context->from = strdup(p->from);
-        message_context->to = strdup(p->to);
-        message_context->post_data = raw_post_data;
+	message_context_t *message_context =
+		(message_context_t *)calloc(1, sizeof(message_context_t));
+	message_context->mod = mod;
+	message_context->params = p;
+	message_context->from = strdup(p->from);
+	message_context->to = strdup(p->to);
+	message_context->post_data = raw_post_data;
 
-        mesibo_http(mod, post_url, raw_post_data, chatbot_http_callback,
-                        (void *)message_context, cbc->chatbot_http_opt);
-                        
-        return MESIBO_RESULT_OK;
+	mesibo_http(mod, post_url, raw_post_data, chatbot_http_callback,
+			(void *)message_context, cbc->chatbot_http_opt);
+
+	return MESIBO_RESULT_OK;
 }
 ```  
 
@@ -1083,52 +1177,52 @@ You can pass the message-id of the query message as reference-id for the respons
 
 ```cpp
 static int chatbot_http_callback(void *cbdata, mesibo_int_t state,
-                mesibo_int_t progress, const char *buffer,
-                mesibo_int_t size) {
-        message_context_t *b = (message_context_t *)cbdata;
-        mesibo_module_t *mod = b->mod;
-        chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
+		mesibo_int_t progress, const char *buffer,
+		mesibo_int_t size) {
+	message_context_t *b = (message_context_t *)cbdata;
+	mesibo_module_t *mod = b->mod;
+	chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
 
-        mesibo_message_params_t *params = b->params;
+	mesibo_message_params_t *params = b->params;
 
-        if (progress < 0) {
-                mesibo_chatbot_destroy_message_context(b);
-                return MESIBO_RESULT_FAIL;
-        }
+	if (progress < 0) {
+		mesibo_chatbot_destroy_message_context(b);
+		return MESIBO_RESULT_FAIL;
+	}
 
-        if (state != MODULE_HTTP_STATE_RESPBODY) {
-                return MESIBO_RESULT_OK;
-        }
+	if (state != MODULE_HTTP_STATE_RESPBODY) {
+		return MESIBO_RESULT_OK;
+	}
 
-        if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
-                if(b->datalen + size > HTTP_BUFFER_LEN){
-                                        "Error in http callback : Buffer overflow detected \n", mod->name);
-                        return MESIBO_RESULT_FAIL;
-                }
+	if ((progress > 0) && (state == MODULE_HTTP_STATE_RESPBODY)) {
+		if(b->datalen + size > HTTP_BUFFER_LEN){
+			"Error in http callback : Buffer overflow detected \n", mod->name);
+			return MESIBO_RESULT_FAIL;
+		}
 
-                memcpy(b->buffer + b->datalen, buffer, size);
-                b->datalen += size;
-        }
+		memcpy(b->buffer + b->datalen, buffer, size);
+		b->datalen += size;
+	}
 
 	if (progress == 100) {
 
-                char* extracted_response = mesibo_util_json_extract(b->buffer , "fulfillmentText", NULL);
+		char* extracted_response = mesibo_util_json_extract(b->buffer , "fulfillmentText", NULL);
 
 		mesibo_message_params_t p;
-                memset(&p, 0, sizeof(mesibo_message_params_t));
-                p.id = rand();
-                p.refid = params->id;
-                p.aid = params->aid;
-                p.from = params->to;
-                p.to = params->from; // User adress who sent the query is the recipient
-                p.expiry = 3600;
+		memset(&p, 0, sizeof(mesibo_message_params_t));
+		p.id = rand();
+		p.refid = params->id;
+		p.aid = params->aid;
+		p.from = params->to;
+		p.to = params->from; // User adress who sent the query is the recipient
+		p.expiry = 3600;
 
 		mesibo_message(mod, &p, extracted_response , strlen(extracted_response));
 
-                mesibo_chatbot_destroy_message_context(b);
-        }
+		mesibo_chatbot_destroy_message_context(b);
+	}
 
-        return MESIBO_RESULT_OK;
+	return MESIBO_RESULT_OK;
 }
 
 ```
@@ -1158,5 +1252,5 @@ as follows. You also need to mount the directory containing the mesibo configura
 
 ```
 sudo docker run  -v /certs:/certs -v  /usr/lib64/mesibo/:/usr/lib64/mesibo/ \
-         -v /etc/mesibo:/etc/mesibo -net host -d mesibo/mesibo <app token> 
-```
+	     -v /etc/mesibo:/etc/mesibo -net host -d mesibo/mesibo <app token> 
+	     ```

@@ -815,16 +815,15 @@ $ sudo docker exec -it <CONTAINER_ID> /bin/bash
 ```
 [root@mesibo /]# 
 ```
-You can now execute commands and write/modify programs in the source.
-Example,
-	```
+You can now execute commands and write/modify programs in the source. Example,
+```
 [root@mesibo /]# ls
 bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
 cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
 ```
 
 You can find the loadable modules source at `/mesibo/src/` 
-```
+```bash
 [root@mesibo /]# ls
 bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
 cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var

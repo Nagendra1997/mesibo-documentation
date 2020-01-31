@@ -648,15 +648,20 @@ typedef struct _mesibo_http_t {
 
 ### HTTP Callbacks
 - `on_data` You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
-```cpp
-typedef mesibo_int_t (*mesibo_http_ondata_t)(void *cbdata, mesibo_int_t state, mesibo_int_t progress, const char *buffer, mesibo_int_t size);
-```
 
-- `on_status` You will get the response status code and response type. For example, on sucessful response the status code is `200` and content-type can be `text/html`,etc.
 ```cpp
-typedef mesibo_int_t (*mesibo_http_onstatus_t)(void *cbdata, mesibo_int_t status, const char *response_type);
+typedef mesibo_int_t (*mesibo_http_ondata_t)(void *cbdata, mesibo_int_t state, 
+		mesibo_int_t progress, const char *buffer, 
+		mesibo_int_t size);
+```
+- `on_status` You will get the response status code and response type. For example, on sucessful response the status code is `200` and content-type can be `text/html`,etc.
+
+```cpp
+typedef mesibo_int_t (*mesibo_http_onstatus_t)(void *cbdata, mesibo_int_t status, 
+		const char *response_type);
 ```
 - `on_close` Called when the HTTP connection is closed. If it was closed with an error the result parameter will be set to the value `MESIBO_RESULT_FAIL`
+
 ```cpp
 typedef void (*mesibo_http_onclose_t)(void *cbdata,  mesibo_int_t result);
 ```

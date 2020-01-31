@@ -388,23 +388,20 @@ const char* message = "Hello from Module";
 mesibo_uint_t len = strlen(message);
 mesibo_message(mod, &p, message, len);
 ```
+## Mesibo Utilities
 
-### mesibo_http
+There a set of utility function provided by mesibo which you can use for asynchronous operations like executing on a thread, making HTTP requests, Socket I/O, etc.
+
+###mesibo_util_http 
 This function can be used to make an HTTP request. It is especially useful to invoke services like DialogFlow, etc.
 
 ```cpp
-mesibo_int_t mesibo_http(mesibo_module_t *mod, const char *url, const char *post,
-              mesibo_module_http_data_callback_t cb, void *cbdata,
-              module_http_option_t *opt);
+mesibo_int_t      mesibo_util_http(mesibo_http_t *req, void *cbdata);
 ```
 
 Parameters:
-1. `mod`, pointer to mesibo module structure
-2. `url`, both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
-3. `post`, is a string that contains raw POST data. For example, "authtoken=xyz&user=abc" 
-4. `cb`, is the call back function pointer whose prototype should match `mesibo_module_http_data_callback_t`. You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
-5. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument. You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details, refer to the [sample code]()
-6. `opt` is the structure that contains `options` or additional parameters that you can pass in your HTTP request such as extra_header, content_type, etc. For more details about the `module_http_option_t` structure, refer [Module Data Structures](#module-data-structures).
+1. `req`, pointer to mesibo http request structure.The request structure that contains additional parameters that you can pass in your HTTP request such as url, post data, extra_header, content_type, etc. For more details about the `module_http_t` structure, refer [Module Data Structures](#module-data-structures).
+2. `cbdata` is a pointer to data of arbitrary user-defined type. This callback data is passed on to the callback function that you have passed in the previous argument. You can store data of any arbitrary type such as a C/C++ struct and pass it as callback data to your call back function. For more details, refer to the [sample code]()
 
 Returns:
 Integer : 0 on success , -1 on failure
@@ -600,36 +597,40 @@ typedef struct  mesibo_user_s {
 To pass`options` parameter of a HTTP request in the function [mesibo_http()](#mesibo_http) you use the C/C++ structure `module_http_option_t`
 
 ```cpp
-typedef struct _module_http_option_t {
-    const char *proxy;
+typedef struct _mesibo_http_t {
+        //const char *proxy;
+        const char *url;
+        const char *post;
 
-    // body or post data
-    const char *content_type;  // body content type
+        const char *content_type; //body content type
 
-    const char *extra_header;
-    const char *user_agent;
-    const char *referrer;
-    const char *origin;
-    const char *cookie;
-    const char *encoding;  // could be gzip, deflate, identity, br (do not use
-    // 'compress' which is obsolete)
-    const char *cache_control;  // cache control and expiry
-    const char *accept;
-    const char *etag;
-    mesibo_uint_t ims;  // if modified since, gmt time
+        const char *extra_header;
+        const char *user_agent;
+        const char *referrer;
+        const char *origin;
+        const char *cookie;
+        const char *encoding; // could be gzip, deflate, identity, br (do not use 'compress' which is obsolete)
+        const char *cache_control; //cache control and expiry
+        const char *accept;
+        const char *etag;
+        mesibo_uint_t ims; //if modified since, gmt time
 
-    mesibo_uint_t maxredirects;
+        //mesibo_uint_t maxredirects;
 
-    mesibo_uint_t conn_timeout, header_timeout, body_timeout, total_timeout;
+        mesibo_uint_t conn_timeout, header_timeout, body_timeout, total_timeout;
 
-    mesibo_uint_t retries;
+        mesibo_http_ondata_t on_data;
+        mesibo_http_onstatus_t on_status;
+        mesibo_http_onclose_t on_close;
 
-} module_http_option_t;
-```
+} mesibo_http_t;
+``
 
-### Options Fields  
+### HTTP Fields  
 
-- `proxy` Proxy URL, if any.
+- `url`, both http and https URL are supported. You can also pass authentication information in URL. For example, https://username:password@yourapiurl.com
+- `post`, is a string that contains raw POST data. For example, "authtoken=xyz&user=abc" 
+- `proxy` Proxy URL, if any.(Disabled by default)
 - `content_type` Content-Type header. For example "application/json".
 - `extra_header` Any custom headers you like to send, such as contain Authorisation header, etc
 - `user_agent` User Agent, default mesibo/x.x
@@ -641,9 +642,16 @@ typedef struct _module_http_option_t {
 - `accept`
 - `etag`
 - `ims` Set If-Modified-SInce header, timestamp
-- `maxredirects` 
+- `maxredirects` Maximum number of redirections to the host(Disabled by default) 
 - `conn_timeout`, `header_timeout`, `body_timeout`, `total_timeout` are Settable Timeouts for every state of the protocol (connection, headers, body)
 - `retries` Retry broken downloads and uploads
+
+### HTTP Callbacks
+- `on_data` You will get the response of your http request, asynchronously through this callback function. Refer the example [HTTP Callback Function](#http-callback-function) provided.
+
+- `on_status` You will get the response status code and response type. For example, on sucessful response the status code is `200` and content-type can be `text/html`,etc.
+
+- `on_close` Called when the HTTP connection is closed. If it was closed with an error the result parameter will be set to the value `MESIBO_RESULT_FAIL`
 
 ### Module Configuration Structure
 The configuration attributes for a module can be provided as a configuration list which shall be made available in the mesibo module initialization function, through the following structures
@@ -674,29 +682,64 @@ Module definition structure is allocated by Mesibo, and you MUST not free it.
 Configuration items structure is allocated by Mesibo and can be freed if required. However, configuration key-value pairs are statically allocated. You can freely use those pointers but should never free them.
 
 ## Writing and Compiling Mesibo Modules
-We have published source code of various useful modules like a chatbot, translation, filter, etc. on [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you start by downloading the repository.
 
-The repository also contains the source code of a skeleton module and other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
+## A Complete Development Environment
+The development environment comes pre-loaded with source code of various useful modules like a chatbot, translation, filter, etc. along with a set of essential development tools for the Linux Environment like gcc, vim, gdb, git, etc.
 
-### Downloading the Sample Modules Repository
+## Entering the shell environment 
+To checkout the source code and run build commands you need to get into the shell environment of the container. To do so, follow the steps below:
+1. Get the container-id
+You can find the CONTAINER_ID using `docker ps` command as shown below:
+	
+```
+$ sudo docker ps
+```
+```
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                                                                                                            NAMES
+4fd84018a651        mesibo/mesibo       "/usr/bin/mesibo_onp…"   56 minutes ago      Up 56 minutes       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp, 0.0.0.0:513->513/tcp, 0.0.0.0:4443->4443/tcp, 0.0.0.0:5222->5222/tcp, 0.0.0.0:5228->5228/tcp, 0.0.0.0:5443->5443/tcp   modest_mendeleev
 
-#### Clone the Repository (Recommended)
-If you have git installed, this is a recommended approach as you can quickly sync and stay up to date with the latest version. This is also a preferred way of downloading the code if you decide to contribute to the project. 
+```
+2. Run the `exec` command to enter the bash shell inteface
+```
+$ sudo docker exec -it <CONTAINER_ID> /bin/bash
+```
 
-To download, open a terminal and issue following commands:
+3. Now, you are in the shell environment and you should see something like below in your terminal
+```
+[root@mesibo /]# 
+```
+You can now execute commands and write/modify programs in the source.
+Example,
+```
+[root@mesibo /]# ls
+bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+```
 
-    $ mkdir mesibo-modules
-    $ cd mesibo-modules
-    $ git clone https://github.com/mesibo/onpremise-loadable-modules.git
+You can find the loadable modules source at `/mesibo/src/` and pre-compiled modules `/mesibo/src/bin`.
+```
+[root@mesibo /]# ls
+bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+[root@mesibo /]# cd mesibo
+[root@mesibo mesibo]# ls
+bin  src
+[root@mesibo mesibo]# cd src
+[root@mesibo src]# ls
+README.md  chatbot  filter  include  js  make.inc  skeleton  translate	v8
+```
+If you wish to debug the main program that runs the mesibo onpremise server you can find the executable at `/mesibo/bin`.
 
-#### Download the code as a zip file
-You can also download the complete modules repository as a zip file. Although simple, the downside of this approach is that you will have to download the full source code every time it is updated on the repository. 
+### Updating Modules (Recommended)
+For the bleeding edge versions check [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you update to the latest version by executing the following command inside the directory `/mesibo/src`:
+```
+git pull
+```
+### Pre-compiled Modules
+Precompiled modules are already available at `/mesibo/bin`. To load them just modify `/etc/mesibo/mesibo.conf` to required configuration. For every module a `sample.conf` is provided in the source directory. You may refer to that configuration and modify accordingly.  
 
-Click on the `Download` button to start downloading.
-
-[Download](https://github.com/mesibo/onpremise-loadable-modules/archive/master.zip){: class="button outline-btn" style="margin-bottom: 10px; margin-right: 100%"}
-
-Once the download completes, 
+### Compiling the modules
+The source code of all the modules are available along with other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
 
 1. Compile all the sample modules to ensure that modules compile successfully on your machine. 
 1. Make a copy of `skeleton` module 
@@ -709,7 +752,10 @@ MODULE=skeleton
 
 include ../make.inc/make.inc
 ```
-
+5. Run
+```
+make
+```
 ## Code references and Examples
 
 ### Building a chat-bot 

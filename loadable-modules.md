@@ -812,17 +812,20 @@ $ sudo docker exec -it <CONTAINER_ID> /bin/bash
 ```
 
 3. Now, you are in the shell environment and you should see something like below in your terminal
+
 ```
 [root@mesibo /]# 
 ```
 You can now execute commands and write/modify programs in the source. Example,
-```
+
+```bash
 [root@mesibo /]# ls
 bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
 cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
 ```
 
 You can find the loadable modules source at `/mesibo/src/` 
+
 ```bash
 [root@mesibo /]# ls
 bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr

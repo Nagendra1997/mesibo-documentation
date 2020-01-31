@@ -593,8 +593,8 @@ typedef struct  mesibo_user_s {
 - `address`- User Address. Can be any sequence of characters that identifies a user
 - `online` - Online Status of user
 
-### HTTP Options Structure
-To pass`options` parameter of a HTTP request in the function [mesibo_http()](#mesibo_http) you use the C/C++ structure `module_http_option_t`
+### HTTP Request Structure
+To send an HTTP request using the function [mesibo_util_http()](#mesibo_http) you use the C/C++ structure `module_http_t`
 
 ```cpp
 typedef struct _mesibo_http_t {

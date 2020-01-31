@@ -175,14 +175,6 @@ $ sudo docker run -v /certs:/etc/letsencrypt/live/mesibo.example.com --net=host 
 		-d mesibo/mesibo <APP_TOKEN>
 ```
 
-alternatively, you can also use following command if you have port conflicts:
-
-```bash
-$ sudo docker run -v /certs:/etc/letsencrypt/live/mesibo.example.com -p 5222:5222 -p 5228:5228 \
-		-p 80:80 -p 443:443 -p 4443:4443 -p 5443:5443 -p 513:513 -d mesibo/mesibo \
-	       	<APP_TOKEN>
-```
-
 You need to specify the APP_TOKEN which you noted in Step-3 above. For example,
 
 ![App token Mesibo Console](/images/on-premise/token.jpg)

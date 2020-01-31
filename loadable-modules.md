@@ -40,7 +40,7 @@ f. [Memory Management](#memory-management)
 {% comment %} 
 ## Ready-to-use modules Source Code
 Github
-Precompiled modules are already available along with source code. You can readily load them into your application with the required configuration. If you wish to modify the source code , you can do that too. You can adapt the source code to suit your requirements and then compile them in the given build environment in the docker container which has all the required tools like gcc, gdb, vim etcbundled into the mesibo docker container.
+The complete module source code is available in the container environment along with the necesary tools for building and debugging the source. You can readily load them into your application with the required configuration. If you wish to modify the source code , you can do that too. You can adapt the source code to suit your requirements and then compile them in the given build environment inthe docker container which has all the required tools like gcc, gdb, vim etcbundled into the mesibo docker container.
 
 {% endcomment %}
 
@@ -818,55 +818,54 @@ $ sudo docker exec -it <CONTAINER_ID> /bin/bash
 You can now execute commands and write/modify programs in the source.
 Example,
 	```
-	[root@mesibo /]# ls
-	bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
-	cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
-	```
+[root@mesibo /]# ls
+bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+```
 
-	You can find the loadable modules source at `/mesibo/src/` and pre-compiled modules `/mesibo/src/bin`.
-	```
-	[root@mesibo /]# ls
-	bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
-	cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
-	[root@mesibo /]# cd mesibo
-	[root@mesibo mesibo]# ls
-	bin  src
-	[root@mesibo mesibo]# cd src
-	[root@mesibo src]# ls
-	README.md  chatbot  filter  include  js  make.inc  skeleton  translate	v8
-	```
-	If you wish to debug the main program that runs the mesibo onpremise server you can find the executable at `/mesibo/bin`.
+You can find the loadable modules source at `/mesibo/src/` 
+```
+[root@mesibo /]# ls
+bin    dev  home  lib64       media   mnt  proc  run   srv  tmp		 usr
+cores  etc  lib   lost+found  mesibo  opt  root  sbin  sys  tringmedata  var
+[root@mesibo /]# cd mesibo
+[root@mesibo mesibo]# ls
+bin  src
+[root@mesibo mesibo]# cd src
+[root@mesibo src]# ls
+README.md  chatbot  filter  include  js  make.inc  skeleton  translate	v8
+```
+
+If you wish to debug the main program that runs the mesibo onpremise server you can find the executable at `/mesibo/bin`.
 
 ### Updating Modules (Recommended)
-	For the bleeding edge versions check [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you update to the latest version by executing the following command inside the directory `/mesibo/src`:
-	```
-	git pull
-	```
-### Pre-compiled Modules
-	Precompiled modules are already available at `/mesibo/bin`. To load them just modify `/etc/mesibo/mesibo.conf` to required configuration. For every module a `sample.conf` is provided in the source directory. You may refer to that configuration and modify accordingly.  
+For the bleeding edge versions check [GitHub](https://github.com/mesibo/onpremise-loadable-modules). It is recommended that you update to the latest version by executing the following command inside the directory `/mesibo/src`:
+```
+git pull
+```
 
 ### Compiling the modules
-	The source code of all the modules are available along with other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
+The source code of all the modules are available along with other necessary files like a module header file and a Makefile to compile a base module quickly. You can then modify it to suit your needs.
 
-	1. Compile all the sample modules to ensure that modules compile successfully on your machine. 
-	1. Make a copy of `skeleton` module 
-	3. Modify `skeleton` module by changing the module name, callback functions, etc. For a detailed example, refer to the [Building a chat-bot](#building-a-chat-bot) below
-	4. Edit `MakeFile` and modify the `MODULE` field to reflect module name in the output file correctly
+1. Compile all the sample modules to ensure that modules compile successfully on your machine. 
+1. Make a copy of `skeleton` module 
+3. Modify `skeleton` module by changing the module name, callback functions, etc. For a detailed example, refer to the [Building a chat-bot](#building-a-chat-bot) below
+4. Edit `MakeFile` and modify the `MODULE` field to reflect module name in the output file correctly
 
-	```cmake
+```cmake
 #Sample MakeFile to build mesibo module 
-	MODULE=skeleton
+MODULE=skeleton
 
-	include ../make.inc/make.inc
-	```
-	5. Run
-	```
-	make
-	```
+include ../make.inc/make.inc
+```
+5. Run
+```
+make
+```
 ## Code references and Examples
 
 ### Building a chat-bot 
-	Now since we have learned about how the module works, we will build a simple but capable chatbot, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc. in your backend using loadable modules. You can interface with any tool or library of your choice, such as Dialogflow, IBM Watson, Tensorflow, etc.
+Now since we have learned about how the module works, we will build a simple but capable chatbot, which can integrate powerful analytical abilities in speech, image recognition, Natural Language processing, etc. in your backend using loadable modules. You can interface with any tool or library of your choice, such as Dialogflow, IBM Watson, Tensorflow, etc.
 
 ![Module Chatbot Sample](module_chat_bot.jpg)
 

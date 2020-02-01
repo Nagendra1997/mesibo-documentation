@@ -219,10 +219,11 @@ README.md  chatbot  filter  include  make.inc  skeleton  translate
 
 ```
 [root@mesibo mesibo]# mkdir /home/mesibo/my-fav-dir/onpremise-loadable-modules
-[root@mesibo mesibo]# cp -r src/* /home/mesibo/my-fav-dir/onpremise-loadable-modules/
+[root@mesibo mesibo]# cp -r src/* /home/mesibo/my-fav-dir/onpremise-loadable-modules
 [root@mesibo mesibo]# cd /home/mesibo/my-fav-dir/onpremise-loadable-modules
 [root@mesibo onpremise-loadable-modules]# ls
 README.md  chatbot  filter  include  make.inc  skeleton  translate  
+
 ```
 Note that you have also mounted `/usr/lib64/mesibo` because, the compiled modules (basically .so files) will be stored in this location.
 

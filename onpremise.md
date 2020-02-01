@@ -210,9 +210,8 @@ You can find the CONTAINER_ID using `docker ps` command as shown below:
 $ sudo docker ps
 ```
 ```
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                                                                                                                                            NAMES
-4fd84018a651        mesibo/mesibo       "/usr/bin/mesibo_onp…"   56 minutes ago      Up 56 minutes       0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp, 0.0.0.0:513->513/tcp, 0.0.0.0:4443->4443/tcp, 0.0.0.0:5222->5222/tcp, 0.0.0.0:5228->5228/tcp, 0.0.0.0:5443->5443/tcp   modest_mendeleev
-
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES
+7508d3d78992        mesibo/mesibo  "/mesibo/bin/mesibo …"   8 seconds ago       Up 7 seconds                            blissful_ramanujan
 ```
 
 If your logs contain any errors indicating failure to start Mesibo, refer to the troubleshooting section.
@@ -234,7 +233,6 @@ Turn on the On-Premise switch and your app users will start connecting to your O
 : login successful: root (uid xxxx) aid: (xxxx) 
 
 ```
-
 Congratulations! You are now UP with Mesibo running on your own premise.
 
 ### Firewall Settings

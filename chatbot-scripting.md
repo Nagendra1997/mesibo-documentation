@@ -40,46 +40,57 @@ You need to send the following information to Dialogflow to get a valid response
 - `Language code`: The language code for the end-user expression. Use "en-US" for this example agent.
 
 ```javascript
+//POST https://dialogflow.googleapis.com/v2/projects/project-id/agent/sessions/session-id:detectIntent
 const gDialogflowUrl = "https://dialogflow.googleapis.com/v2/projects/mesibo-dialogflow/agent/sessions/"
 const gDialogflowToken = <Access Token>
+	const gMesiboChatbotUser = <Mesibo Chatbot User ID>
+
+	initialize();
+
+function initialize(){
+	mesibo.onmessage = Mesibo_onMessage;
+	mesibo.onmessagestatus = Mesibo_onMessageStatus;
+}
 
 function Mesibo_onChatbotResponse(h) {
-        var rp = JSON.parse(h.responseJSON);
-        var fulfillment = rp.queryResult.fulfillmentText;
+	var rp = JSON.parse(h.responseJSON);
+	var fulfillment = rp.queryResult.fulfillmentText;
 
-        var query = h.query;
-        var chatbot_response = query;
-        chatbotResponse.from = query.to;
-        chatbotResponse.to = query.from;
-        chatbotResponse.message = fulfillment;
-        chatbotResponse.refid = query.id;
-        chatbotResponse.id = parseInt(Math.floor(2147483647*Math.random()));
+	var query = h.query;
+	var chatbot_response = query;
+	chatbotResponse.from = query.to;
+	chatbotResponse.to = query.from;
+	chatbotResponse.message = fulfillment;
+	chatbotResponse.refid = query.id;
+	chatbotResponse.id = parseInt(Math.floor(2147483647*Math.random()));
 
-        chatbotResponse.send();
+	chatbotResponse.send();
 
-        return MESIBO_RESULT_OK;
+	return mesibo.RESULT_OK;
 }
 
 function Mesibo_onMessage(m) {
-        var dHttp = new Http();
-	//POST https://dialogflow.googleapis.com/v2/projects/project-id/agent/sessions/session-id:detectIntent
-        dHttp.url =  gDialogFlowUrl +m.id+ ":detectIntent";
-        var request_body = {
-                "queryInput": {
-                        "text": {
-                                "text": m.message",
-                                "languageCode" : "en"
-                        }
-                }
-        };
-        dHttp.post = JSON.stringify(request_body);
-        dHttp.ondata = Mesibo_onChatbotResponse;
-        dHttp.query = m;
-	dHttp.extraHeaders = "Authorization: Bearer"+ gDialogflowToken; 
-        dHttp.contentType = 'application/json';
-        dHttp.send();
-
-        return mesibo.RESULT_OK;
+	//Filter messages which are addressed to the chatbot
+	if(m.to == gMesiboChatbotUser){
+		var dHttp = new Http();
+		//POST https://dialogflow.googleapis.com/v2/projects/project-id/agent/sessions/session-id:detectIntent
+		dHttp.url =  gDialogFlowUrl +m.id+ ":detectIntent";
+		var request_body = {
+			"queryInput": {
+				"text": {
+					"text": m.message",
+					"languageCode" : "en"
+				}
+			}
+		};
+		dHttp.post = JSON.stringify(request_body);
+		dHttp.ondata = Mesibo_onChatbotResponse;
+		dHttp.query = m;
+		dHttp.extraHeaders = "Authorization: Bearer"+ gDialogflowToken; 
+		dHttp.contentType = 'application/json';
+		dHttp.send();
+	}
+	return mesibo.RESULT_OK;
 }
 ```
 

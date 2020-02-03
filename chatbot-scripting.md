@@ -3,7 +3,7 @@ With Mesibo scripting you can easily interface with chatbot and NLP engines like
 
 Here, we show you an example of using Dialogflow to build a powerful chatbot that can answer common questions(aka FAQ- Frequently Answered Questions) from users on your website or app. This FAQ chatbot can help you generate leads, keep a tab on your sales strategies, engage with your users, act as the first line of customer support.
 
-We provide you with an example chatbot that we at Mesibo have built to answer Frequently asked questions on our site! You can also enable small-talk in the chatbot that you built to make your bot more human like responses. 
+We provide you with an example chatbot that we at Mesibo have built to answer [Frequently Asked Questions](https://mesibo.com/documentation/faq/) on our site! You can also enable small-talk in the chatbot that you built to make your bot more human like responses. 
 
 ### Prerequisites
 - We will not get into the details of building the Dialogflow agent from scratch. Please refer to the [Dialogflow Docs](https://cloud.google.com/dialogflow/docs/quick/api) for learning the basics of Dialogflow and building your chat agents.
@@ -12,7 +12,7 @@ We provide you with an example chatbot that we at Mesibo have built to answer Fr
 ## Building an FAQ chatbot
 
 ### 1. Create a Dialogflow agent
-Go to Dialogflow Console and create an agent. Refer [Creating an Agent](https://cloud.google.com/dialogflow/docs/quick/api#create-an-agent)
+Go to Dialogflow Console and create an agent with the project name `mesibo-dialoflow`. Refer [Creating an Agent](https://cloud.google.com/dialogflow/docs/quick/api#create-an-agent)
 
 ### 2. Import the sample Mesibo FAQ chatbot
 The sample chatbot model is trained on questions and answers on the Mesibo FAQ page. Intents and entities are defined based on this model. The entire FAQ chatbot model files are provided which you can explore and build your own chatbots.
@@ -34,13 +34,13 @@ Each message from the user contains the question. Do deliver an appropriate resp
 ### Sending a request to Dialogflow
 You need to send the following information to Dialogflow to get a valid response.
 
-- `Project ID`: Use the project ID for the project you created in the setup steps.
-- `Session ID`: For the purpose of testing an agent, you can use anything. 
+- `Project ID`: Use the project ID for the project you created in the setup steps. Here, the project  name is `mesibo-dialogflow`
+- `Session ID`: For the purpose of testing an agent, you can use anything. Here, we pass the `message-id`
 - `Text or texts`: Message Query 
 - `Language code`: The language code for the end-user expression. Use "en-US" for this example agent.
 
 ```javascript
-const gDialogflowUrl = "https://dialogflow.googleapis.com/v2/projects/<Project ID>/agent/sessions/"
+const gDialogflowUrl = "https://dialogflow.googleapis.com/v2/projects/mesibo-dialogflow/agent/sessions/"
 const gDialogflowToken = <Access Token>
 
 function Mesibo_onChatbotResponse(h) {

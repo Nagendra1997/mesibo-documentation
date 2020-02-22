@@ -20,28 +20,28 @@ Enable for persistent connection
 `enableSsl`  
 Configure SSL 
 
-	`Socket.ondata`  <sub>compulsory</sub>  
+`Socket.ondata`  <sub>compulsory</sub>  
 An event listener to be called when data is received from the server(host) 
 
-	`Socket.onwrite`  
-	An event listener to be called when data is written to socket
+`Socket.onwrite`  
+An event listener to be called when data is written to socket
 
-	`Socket.onclose`  
-	An event listener to be called when the connection is closed.
+`Socket.onclose`  
+An event listener to be called when the connection is closed.
 
 ### Methods
 
-	`Socket.connect()`  
-	Open a new connection on specified host and port.
+`Socket.connect()`  
+Open a new connection on specified host and port.
 
-	`Socket.write()`  
-	Send data to connected host 
+`Socket.write()`  
+Send data to connected host 
 
-	`Socket.close()`  
-	Close connection
+`Socket.close()`  
+Close connection
 
 
 ## Usage notes
 
 ### Global instantiation restriction  
-	An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
+An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.

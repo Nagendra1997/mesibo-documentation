@@ -17,6 +17,9 @@ You can specify your customised logic for each event such as when you receive a 
 
 From Mesibo Console , you can configure to run a custom script for each user,etc. 
 
+With Mesibo Scripting you can specify your customized logic for each event such as when a user  sends or recieves a message,  when auser logs in,etc and also use core utility functions provided by mesibo to perform different actions like sending a message, makingan HTTP request, connecting to a socket, write to a database, etc. You can build chatbots, filter messages, modify or translate messages and much more to open up unlimited creative possibilities all from the comfort and ease of Javascript.
+
+You can configure a scripts that will be triggered when a user sends data or receives  data. You can also configure a default app script that runs for all events at the app level.
 If you are using Mesibo On-Premise you can use the Scripting Module and configure the same.The module interface is provided in native C/C++ platform which ensures raw performance and stability.
 
 ## How Mesibo Scripting Works
@@ -199,6 +202,24 @@ mesibo.onlogin = callback;
 ```javascript
 mesibo.onlogin = function(user){
 	mesibo.log("User: "  + user.address + " online status: " + user.online);
+}
+```
+
+## `Mesibo.onexception` <sub>optional</sub>  
+An event listener to be called when an exception occurs 
+
+### Syntax
+
+```
+mesibo.onexception = callback;
+```
+### Values
+- callback is the function to be executed to report an exception 
+
+### Example
+
+```javascript
+mesibo.onexception = function(exception){
 }
 ```
 

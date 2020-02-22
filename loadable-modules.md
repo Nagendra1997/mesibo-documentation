@@ -110,7 +110,7 @@ typedef struct mesibo_module_s {
 
     mesibo_int_t    (*on_cleanup)(mesibo_module_t *mod);
 
-    mesibo_int_t    (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, const char *message, mesibo_uint_t len);
+    mesibo_int_t    (*on_message)(mesibo_module_t *mod, mesibo_message_params_t *params, char *message, mesibo_uint_t len);
     mesibo_int_t    (*on_message_status)(mesibo_module_t *mod, mesibo_message_params_t *params, mesibo_uint_t  status);
     
     mesibo_int_t    (*on_call)(mesibo_module_t *mod);
@@ -119,15 +119,6 @@ typedef struct mesibo_module_s {
     mesibo_int_t    (*on_login)(mesibo_module_t *mod, mesibo_user_t *user);
 
     mesibo_uint_t    signature;    /* module signature */
-
-    uintptr_t    reserved_0;
-    uintptr_t    reserved_1;
-    uintptr_t    reserved_2;
-    uintptr_t    reserved_3;
-    uintptr_t    reserved_4;
-    uintptr_t    reserved_5;
-    uintptr_t    reserved_6;
-    uintptr_t    reserved_7;
     
     //this function will be initialized by Mesibo
     mesibo_int_t    (*invoke)(mesibo_int_t id, mesibo_module_t *mod, ...);
@@ -370,9 +361,9 @@ Let's look in detail at the different callback functions and their prototypes:
 This function is called whenever a user sends a message. The module can process messages or can ignore as appropriate. The module can then indicate Mesibo whether to pass the message to the next module/recipient OR drop it by returning an appropriate value. 
 
 ```cpp
-  mesibo_int_t (*on_message)(mesibo_module_t *mod,
-                             mesibo_message_params_t *params,
-                             const char *message, mesibo_uint_t len);
+mesibo_int_t    (*on_message)(mesibo_module_t *mod, 
+		mesibo_message_params_t *params, 
+		char *message, mesibo_uint_t len);
 ```
 
 Parameters:
@@ -1180,7 +1171,7 @@ We only need to process messages addressed to the configured `address` of the ch
 
 ```cpp
 static mesibo_int_t chatbot_on_message(mesibo_module_t *mod, mesibo_message_params_t *p,
-		const char *message, mesibo_uint_t len) {
+		char *message, mesibo_uint_t len) {
 
 	chatbot_config_t* cbc = (chatbot_config_t*)mod->ctx;
 

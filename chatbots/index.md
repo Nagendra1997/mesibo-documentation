@@ -90,20 +90,4 @@ In part 2, we will learn more about messaging and key properties like destinatio
 
 [On to Part 2 >>](messaging.md){: class="button outline-btn" style="margin-bottom: 30px; margin-right: 100%"}
 
-```javascript
-mesibo.onmessage = function(message){
-	//On receiving a message we send an automated reply to the sender 
-
-	//Create a new Message object
-	var replyMessage = new Message();
-
-	//Custom response text/data	
-	replyMessage.data = "This is an automated response";
-
-	//Send Message!	
-	replyMessage.send();
-}
-```
-
-
 

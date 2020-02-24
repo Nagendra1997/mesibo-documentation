@@ -1,3 +1,10 @@
+---
+description: Mesibo Chatbot and Scripting - Introduction
+keywords: chatbot, script, scripting
+title: Mesibo Chatbot and Scripting - Introduction
+---
+
+
 ## Socket 
 The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
 

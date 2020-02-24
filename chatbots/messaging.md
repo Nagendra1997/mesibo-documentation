@@ -1,3 +1,9 @@
+---
+description: Mesibo Chatbot and Scripting - Introduction
+keywords: chatbot, script, scripting
+title: Mesibo Chatbot and Scripting - Introduction
+---
+
 # Message  
 The `Message` class can be used to send messages. Messages received in the callback `mesibo.onmessage` will be ofthis type. 
 

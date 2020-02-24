@@ -28,7 +28,8 @@ msg.message = "This is a message";
 msg.send();
 ``` 
 The `to` and `from` address will be automatically initialized by mesibo for you. The `from` field will be the address of the user the script is running for. The `to` field will be the address of the user who has sent you the message and will be initialized in the context of `mesibo.onmessage`. You can modify the `to` and `from` values if you need to. 
-```javscript
+
+```javascript
 var msg = new Message();
 print(msg.from. msg.to);
 ```

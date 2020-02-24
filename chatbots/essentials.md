@@ -31,7 +31,8 @@ The `to` and `from` address will be automatically initialized by mesibo for you.
 
 ```javascript
 var msg = new Message();
-print(msg.from. msg.to);
+msg.to = "to_user";
+msg.from = "from_user";
 ```
 For example, This code snippet sends a custom reply to any message recieved. 
 

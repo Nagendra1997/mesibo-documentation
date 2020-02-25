@@ -67,7 +67,7 @@ mesibo makes it extremely simple to make chatbots or your scripting apps.
 
 3. That's it, mesibo will invoke your script as requested. Your script can analyze the message and decide on the action to perform, for example, respond, moderate, translate, modify, drop, or pass as it is.
 
-You can use the same script for multiple users or different scripts for different users. You can even use the different scripts for the same users in each message direction.
+You can use the same script for multiple users or different scripts for different users. You can even use different scripts for the same users in each message direction.
 
 The scripting interface is provided through the Mesibo Cloud console, and you need not configure or install anything additional to use it. Just login to your mesibo console, load your script, and get going!
 

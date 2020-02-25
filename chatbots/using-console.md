@@ -4,7 +4,9 @@ keywords: chatbot, script, scripting
 title: Using Console 
 ---
 
-## The scripting console 
+The scripting interface is provided through the Mesibo Cloud console, and you need not configure or install anything additional to use it. Just login to your mesibo console, load your script, and get going!
+
+## Managing scripts 
 
 You can upload and manage all your scripts from your mesibo console.
 

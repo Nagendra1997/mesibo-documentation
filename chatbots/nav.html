@@ -1,0 +1,7 @@
+<ul class="pagination">
+  <li {% if include.selected=="intro"%}class="active"{% endif %}><a href="{{ '/documentation/chatbot/' | relative_url }}">1: Introduction</a></li>
+  <li {% if include.selected=="uploading"%}class="active"{% endif %}><a href="{{ '/documentation/chatbot/uploading-scripts/' | relative_url }}">2: Uploading Scripts</a></li>
+  <li {% if include.selected=="scripting"%}class="active"{% endif %}><a href="{{ '/documentation/chatbot/scripting/' | relative_url }}">3: Scripting</a></li>
+  <li {% if include.selected=="reference"%}class="active"{% endif %}><a href="{{ '/documentation/chatbot/reference/' | relative_url }}">4: Reference</a></li>
+  <li {% if include.selected=="sample"%}class="active"{% endif %}><a href="{{ '/documentation/chatbot/sample-app/' | relative_url }}">5: Sample Bot</a></li>
+</ul>

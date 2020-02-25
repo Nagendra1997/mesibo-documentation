@@ -1,40 +1,40 @@
 ---
-title: Reference documentation
-notoc: true
+description: Mesibo Reference List of Classes 
+keywords: chatbot, script, scripting
+title: Reference 
 ---
 
-This section includes the reference documentation for the Docker platform's
-various APIs, CLIs, and file formats.
+This section includes the reference documentation for the various classes and utilities provided in mesibo scripting. 
 
-## File formats
+## Core Functionality 
 
-| File format                                                         | Description                                                     |
+| Functionality Class  	| Description                                                     |
 |:--------------------------------------------------------------------|:----------------------------------------------------------------|
-| [Dockerfile](/engine/reference/builder/)                            | Defines the contents and startup behavior of a single container |
-| [Compose file](/compose/compose-file/)                              | Defines a multi-container application                           |
+| [Mesibo](/documentation/chatbot/reference/mesibo)                            | Defines the core mesibo functionality class and various callbacks like `onmessage`, `onmessagestatus`, `onlogin`, etc 
+| [Message](/documentation/chatbot/reference/message/)                              | The Message class that can be used to send messages
 
+## Networking 
 
-## Command-line interfaces (CLIs)
-
-| CLI                                                           | Description                                                                                                     |
+| Functionality Class | Description                                                                                                     |
 |:--------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
-| [Docker CLI](/engine/reference/commandline/cli/)              | The main CLI for Docker, includes all `docker` commands |
-| [Compose CLI](/compose/reference/overview/)                   | The CLI for Docker Compose, which allows you to build and run multi-container applications                      |
-| [Daemon CLI (dockerd)](/engine/reference/commandline/dockerd/)                            | Persistent process that manages containers                                                 |
+| [Http](/documentation/chatbot/reference/http/)              | A networking utility class for sending REST API requests 
+| [Socket](/documentation/chatbot/reference/socket/)                   | Connect to sockets(regular and websockets) to read and write data asynchronously
 
 
-## Application programming interfaces (APIs)
+## Third Party APIs and Services 
 
 | API                                                   | Description                                                                            |
 |:------------------------------------------------------|:---------------------------------------------------------------------------------------|
-| [Engine API](/engine/api/)                            | The main API for Docker, provides programmatic access to a daemon |
-| [Registry API](/registry/spec/api/)                   | Facilitates distribution of images to the engine                                       |
-| [Template API](app-template/api-reference)| Allows users to create new Docker applications by using a library of templates.|
+| [Dialogflow](/documentation/chatbot/reference/dialogflow)                            | Connect to chatbots built on Dialogflow, send queries and receive responses(async) from your chatbots 
+| [GoogleCloudAuth](/documentation/chatbot/reference/googlecloudauth)                            | An authentication utility for various Google Cloud APIs like Dialogflow, Google Translate, Maps,etc requiring OAuth2 . 
 
-## Drivers and specifications
+## Miscellaneous Utilities 
 
-| Driver                                                 | Description                                                                        |
+| Utility | Description                                                                        |
 |:-------------------------------------------------------|:-----------------------------------------------------------------------------------|
-| [Image specification](/registry/spec/manifest-v2-2/)   | Describes the various components of a Docker image                                 |
-| [Registry token authentication](/registry/spec/auth/)  | Outlines the Docker registry authentication scheme                                 |
-| [Registry storage drivers](/registry/storage-drivers/) | Enables support for given cloud providers when storing images with Registry        |
+| [random32]()   | Returns a 32-bit unsigned integer 
+| [random64]()   | Returns a 64-bit unsigned integer 
+| [hash64]()  |Returns a hash value 
+| [timeInMicros]() | Returns the time elapsed in microseconds since the Unix epoch 
+| [timeInMillis]() | Returns the time elapsed in milliseconds since the Unix epoch      |
+| [timeInSeconds]() | Returns the time elapsed in seconds since the Unix epoch         	|

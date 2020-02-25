@@ -26,7 +26,7 @@ This section includes the reference documentation for the various classes and ut
 | API                                                   | Description                                                                            |
 |:------------------------------------------------------|:---------------------------------------------------------------------------------------|
 | [Dialogflow](/documentation/chatbot/reference/dialogflow)                            | Connect to chatbots built on Dialogflow, send queries and receive responses(async) from your chatbots 
-| [GoogleCloudAuth](/documentation/chatbot/reference/googlecloudauth)                            | An authentication utility for various Google Cloud APIs like Dialogflow, Google Translate, Maps,etc requiring OAuth2 . 
+| [GoogleCloudService](/documentation/chatbot/reference/googlecloudauth)                            | A generic utility for various Google Cloud APIs like Dialogflow, Google Translate, Maps,etc requiring OAuth2 . 
 
 ## Miscellaneous Utilities 
 

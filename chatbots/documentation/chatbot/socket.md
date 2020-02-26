@@ -1,10 +1,3 @@
----
-description: Mesibo Chatbot and Scripting - Introduction
-keywords: chatbot, script, scripting
-title: Mesibo Chatbot and Scripting - Introduction
----
-
-
 ## Socket 
 The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
 
@@ -13,33 +6,17 @@ The `Socket` class can be used to connect to a host through a scoket, to send an
 The constructor initializes the  Socket class. It must be called before you perform any method calls.
 Call the constructor by passing the url(For websockets) or host address(for regular sockets).
 
-The URL is to be specified in the format:
-`<type>://<url>`
-
-The following socket types are available:
-`sock`: Regular sockets
-`socks`: Secure Regular Sockets
-`ws`: Web Sockets
-`wss`: Secure Web Sockets
-
 ## Example
 ```javascript
 //Regular Sockets
-var s = new Socket("sock://example.com");
-
-//Secure Regular Sockets
-var ss = new Socket("socks://example.com");
+var s = new Socket("sock://example.com:80");
 
 //Websockets
-var ws = new Socket("ws://echo.websocket.org");
-
-//Secure Websockets
-var wss = new Socket("wss://echo.websocket.org");
-
+var ws = new Socket("wss://echo.websocket.org");
 ```
 
 ### Properties  
-To connect to a socket set the following properties for a `Socket` class object.
+To connect to a socket set the following properties for an `Socket` class object.
 
 `keepalive`  
 Enable for persistent connection
@@ -90,4 +67,4 @@ s.open();
 ## Usage notes
 
 ### Global instantiation restriction  
-An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instance inside a scoped area or function.
+An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.

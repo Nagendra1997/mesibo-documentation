@@ -70,7 +70,7 @@ mesibo.onmessage = function(m){
 
 ### Getting status of a sent message
 
-To get the status of messages send from the script, you may register an event handler for `mesibo.onmessagestatus`. It is not mandatory to define this listener.
+To get the status of messages send from the script, you may register an event handler for `mesibo.onmessagestatus`. It is not mandatory to define this event handler.
 
 ## Exceptions Handling
 When an exception error occurs in your JavaScript, mesibo calls `onexception` event handler with exception string so that you know what has gone wrong and fix it. You can register the exception handler like below:

@@ -74,7 +74,7 @@ print("Hello", "Mesibo");
 ### Timing Utilities
 
 ## `startTimer()`
-Start a timer for specified number of seconds and execute the event handler defined in `mesibo.ontimeout`.
+Start a timer for specified number of seconds and execute the function callback defined in `mesibo.ontimeout`.
 The next call to `startTimer()` will reset the timer.
 
 ### Syntax
@@ -84,7 +84,7 @@ startTimer(tms)
 ```
 
 ### `Parameters`
-`tms` :  The value of the time after which the timeout event will be triggered, in milliseconds
+`tms` :  The value of the time after which the callback will be triggered, in milliseconds
 
 ### `Return value`
 `undefined`
@@ -97,7 +97,7 @@ mesibo.ontimeout = function () {
 }
 
 startTimer(3000);
-//timeout handler will be fired after three seconds
+//Timer callback will be fired after three seconds
 ```
 
 ## `timeInMicros()`

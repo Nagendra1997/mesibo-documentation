@@ -12,7 +12,7 @@ In this tutorial, we will create a simple chatbot with mesibo scripting. Mesibo 
 - DialogFlow Project ID and the keys which you can get from DialogFlow console.
 
 ## 1. Create a Dialogflow agent
-Go to Dialogflow Console and create an agent. Refer to [Creating an Agent](https://cloud.google.com/dialogflow/docs/quick/api#create-an-agent). You can build your agent from scratch or import prebuilt-agents like Smalltalk.  If you wish to customize the responses, you can do so by clicking on the intent and modifying the Text response. Here is a detailed tutorial for [building a basic chatbot in Dialogflow]()
+Go to Dialogflow Console and create an agent. Refer to [Creating an Agent](https://cloud.google.com/dialogflow/docs/quick/api#create-an-agent). You can build your agent from scratch or import prebuilt-agents like Smalltalk.  If you wish to customize the responses, you can do so by clicking on the intent and modifying the Text response. Here is a detailed tutorial for [building a basic chatbot in Dialogflow]
 
 
 ### 2. Getting the credentials

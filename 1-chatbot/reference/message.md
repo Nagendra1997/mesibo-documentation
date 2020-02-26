@@ -5,7 +5,7 @@ title: Mesibo Chatbot and Scripting - Introduction
 ---
 
 # Message  
-The `Message` class can be used to send messages. Messages received in the handler `mesibo.onmessage` will be of this type. 
+The `Message` class can be used to send messages. Messages received in the callback `mesibo.onmessage` will be ofthis type. 
 
 # Constructor  
 
@@ -39,6 +39,20 @@ Message Type, any arbitrary user-defined types
 ## `Message.expiry`  
 Message Expiry for an outgoing message (time to live), in seconds
 
+## `Message.PASS`
+Pass the message data and parameters as it is to the recipient 
+
+## `Message.CONSUMED`
+Message is consumed by the script and will not be passed to the recipient 
+
+## `Message.FAIL`
+Message processing failed. 
+
+## `Message.READ`
+Flag value to get read status
+
+## `Message.DELIVERED` 
+Flag value to get delivery status
 
 # Methods
 
@@ -72,23 +86,6 @@ function sendTextMessage(text) {
 }
 ```
 
-## Static Properties
-These properties are static proprties of the class `Message` and can be accessed without creating an instance of `Message`.
-
-## `Message.PASS`
-Pass the message data and parameters as it is to the recipient 
-
-## `Message.CONSUMED`
-Message is consumed by the script and will not be passed to the recipient 
-
-## `Message.FAIL`
-Message processing failed. 
-
-## `Message.READ`
-Flag value to get read status
-
-## `Message.DELIVERED` 
-Flag value to get delivery status
 
 # Usage notes
 

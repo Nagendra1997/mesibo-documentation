@@ -5,7 +5,7 @@ title: Mesibo
 ---
 
 # Mesibo  
-The core class `Mesibo` defines a set of event handlers and utilities that you can use to send messages, get message flags, receive messages, etc.  
+The core class `Mesibo` defines a set of callbacks and utilities that you can use to send messages, get message flags, receive messages, etc.  
 
 # Constructor
 The class `Mesibo` is not instantiable. A single instance of the class `Mesibo`, named `mesibo` exists in global context whose properties can be initialized. Refer [Usage Notes]() for more details.
@@ -19,10 +19,10 @@ MUST return Message.PASS, Message.FAIL, Message.CONSUMED, Message.READ, Message.
 ### Syntax
 
 ```javscript
-mesibo.onmessage = message_handler;
+mesibo.onmessage = callback;
 ```
 ### Values
-- message_handler is the function to be executed when a message is received. The parameter to this handler is an object of type [`Message`]()
+- callback is the function to be executed when a message is received. The parameter to this callback function is an object of type [`Message`]()
 
 ### Example
 ```javascript
@@ -39,10 +39,10 @@ An event listener to be called when status of the message is recieved. Note that
 ### Syntax
 
 ```javascript
-mesibo.onmessagestatus = message_status_handler;
+mesibo.onmessagestatus = callback;
 ```
 ### Values
-- message_status_handler is the function to be executed when status of a sent message is received. The parameter to this handler is an object of type [`Message`]()
+- callback is the function to be executed when status of a sent message is received. The parameter to this callback function is an object of type [`Message`]()
 
 ### Example
 
@@ -59,10 +59,10 @@ An event listener to be called when a user logs in or out of your application. I
 ### Syntax
 
 ```
-mesibo.onlogin = login_handler;
+mesibo.onlogin = callback;
 ```
 ### Values
-- login_handler is the function to be executed when a user logs in or logs out. 
+- callback is the function to be executed when a user logs in or logs out. 
 
 ### Example
 
@@ -78,10 +78,10 @@ An event listener to be called when an exception occurs
 ### Syntax
 
 ```
-mesibo.onexception = exception_handler;
+mesibo.onexception = callback;
 ```
 ### Values
-- exception_handler is the function to be executed to report an exception 
+- callback is the function to be executed to report an exception 
 
 ### Example
 
@@ -90,6 +90,13 @@ mesibo.onexception = function(e){
 	print(e);
 }
 ```
+
+## `Mesibo.OK`  
+Indicates Sucessful operation
+
+## `Mesibo.FAIL`  
+Indicates Failed Operation
+
 ## Mesibo.session_id <sub>read-only</sub>
 Session value generted by mesibo. This number describes a session and stays constant throughout the lifetime of the script.
 If this value is null, it is a bad session.

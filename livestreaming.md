@@ -28,7 +28,7 @@ The conference room is fundamentally a group - with a group name and group id. Y
 You can build various types of rooms and additional features for conferencing with the same set of [group management apis](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
 
 For example,
-- **Webinar**: One-to-many broadcast, a single publisher and muliple members. Admin can mute all and have additional privelages in `Javascript` y
+- **Webinar**: One-to-many broadcast, a single publisher and muliple members. Admin can mute all and have additional privelages,
 - **Private Rooms**: Only invited/selecteed room members can join and publish to a group. 
 - **Public Rooms**: Anyone can join and publish to group.
 

@@ -4,22 +4,24 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Live Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Mesibo Streaming Platform offers a plethora of capabilities and features to build applications for live streaming, conferencing calling integrated with group chat, one-to-one messaging, one-to-one calls and more. With Mesibo's APIs for group calling, chat and streaming you can build streaming applications at scale, with high quality and low latency.
+Mesibo Live Conferencing and Streaming Platform enables you to build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost when using the platform on-premise!
 
-> **Disclaimer** : The conferencing and Livestreaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
+> **Disclaimer** : The Live Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
 
-# How Mesibo Live Platform APIs work?
-Mesibo has made it extremely simple to use and build with group calling and streaming APIs. With Mesibo Group Management API 
-you can extend and build all the required features for your streaming or conferencing app. So, there is no need to learn anything additional or restructure your applicaton. Mesibo conferencing and streaming can be readily integrated with your applications which are using Mesibo messaging and call APIs.
+# How do Mesibo Live Platform APIs work?
+Mesibo has made it extremely simple to use and build with group calling and streaming APIs. Mesibo conferencing and streaming can be readily integrated with your existing applications which are using Mesibo messaging and call APIs.
 
-In fact, mesibo APIs for conferencing, simply extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis).
+Mesibo APIs for conferencing, simply extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). So, there is absolutely no need to learn anything additional or restructure your applicaton.
 
-For example, here's what you do while [creating a group](https://mesibo.com/documentation/api/backend-api/#create-a-group) where users send messages to each other with Mesibo:
+If you are not already familiar with using [Mesibo Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis), here's a little recap. 
+
+Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. To set up a group with Mesibo APIs you follow the steps below:
 
 1. Create a group with a group name and id.
 2. Create, Add and remove Members 
 3. Grant Permissions about who can send and received messages
 4. Members can now send messages and files to group
+
 
 Just like one-to-one messaging is extended to group-messaging, we are now extending group messaging to group calls. What more, when you are using the platform on-premise it is absolutely free!
 

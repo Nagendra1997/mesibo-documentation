@@ -22,14 +22,16 @@ For example, here's what you do while [creating a group](https://mesibo.com/docu
 4. Modify group settings
 5. Members can now send messages and files to group
 
-*--Just like one-to-one messaging is extended to group-messaging, we are now extending group messaging to group calls--*
+Just like one-to-one messaging is extended to group-messaging, we are now extending group messaging to group calls. What more, when you are using the platform on-premise it is absolutely free!
 
-So, for live conferencing and streaming, there is a small addition to these existing API functions and steps.  
+So, for live conferencing and streaming, there is a small addition to these existing steps that you perform with Mesibo Group API.  
+
 5. Get list of members   
 6. Place a call to the group  
 7. Connect to each member of the group over voice and video.
 
-With the same set of APIs you can build and support any type of conferencing and streaming use case that your application demands. Example,
+With the same set of APIs you can build and support any type of conferencing and streaming use case that your application demands. For example,
+
 - **Tele-Conferencing**: A many-to-many cast scenario, where you create the group, get a list of participants, publish your own stream for others to subscribe to and you subscribe to other streams simultaneously to build an application like Zoom or Meet.
 - **Webinar**: A one-to-many scenario, where you create the group and only one person has been granted the permission to broadcast to the group. All other members are listeners.
 - **On-Demand Streaming** You can upload media to the group, which members can subscribe to on-demand to create a service like Youtube and Netflix

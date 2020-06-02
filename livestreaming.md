@@ -19,8 +19,7 @@ For example, here's what you do while [creating a group](https://mesibo.com/docu
 1. Create a group with a group name and id.
 2. Create, Add and remove Members 
 3. Grant Permissions about who can send and received messages
-4. Modify group settings
-5. Members can now send messages and files to group
+4. Members can now send messages and files to group
 
 Just like one-to-one messaging is extended to group-messaging, we are now extending group messaging to group calls. What more, when you are using the platform on-premise it is absolutely free!
 

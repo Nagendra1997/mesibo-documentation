@@ -17,7 +17,7 @@ In fact, mesibo APIs for conferencing, simply extend the core features offered b
 For example, here's what you do while [creating a group](https://mesibo.com/documentation/api/backend-api/#create-a-group) where users send messages to each other with Mesibo:
 
 1. Create a group with a group name and id.
-2. Create,Add and remove Members 
+2. Create, Add and remove Members 
 3. Grant Permissions about who can send and received messages
 4. Modify group settings
 5. Members can now send messages and files to group

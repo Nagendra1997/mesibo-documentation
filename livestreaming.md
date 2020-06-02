@@ -6,7 +6,7 @@ title: Mesibo Live Streaming Platform- Conference Calling, Live Streaming, Scree
 
 Mesibo Streaming Platform offers a plethora of capabilities and features to build applications for live streaming, conferencing calling integrated with group chat, one-to-one messaging, one-to-one calls and more. With Mesibo's APIs for group calling, chat and streaming you can build streaming applications at scale, with high quality and low latency.
 
-> Disclaimer : The conferencing and Livestreaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
+> **Disclaimer** : The conferencing and Livestreaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
 
 ### How Mesibo Group Calling or Conferencing works?
 Mesibo has made it extremely simple to use and build with group calling and streaming APIs. There is no need to learn anything additional or restructure your applicaton. With a single fundamental concept of a group, you can extend and build all the required features for your streaming or conferencing app.
@@ -15,20 +15,43 @@ If you are not already familiar with Mesibo's Group Management API [refer](https
 
 ## Fundamentals of Group Calling and Streaming
 
- There are three components of any group calling system:
- 1. Publisher : Your own stream, where you publish your camera stream or share screen
- 2. Participants Stream : Streams of others who are publishing, whom you can subscribe to.
- 3. Streaming Backend: Mesibo's real time backend that collects and delivers various streams from remote endpoints to you.
+ There are three basic components of the conferencing and streaming system:
+ 1. **Publisher** : Your own stream, where you publish your self through a camera stream or share screen
+ 2. **Participants**  : Streams of others who are publishing, whom you can subscribe to.
+ 3. **Streaming Backend**: Mesibo's real time backend collects and delivers various streams from remote endpoints to you.
+ 
+Let's now take a look at how all of this is built on top of Mesibo's User and Group Management APIs.
 
-Let's now take a look how all of these features are built on top of Mesibo's User and Group Management APIs.
+## Conference Room
+The conference room is fundamentally a group - with a group name and group id. You can [create a group](https://mesibo.com/documentation/api/backend-api/#create-a-group), [add and remove members](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members), with all the features of a Mesibo Group like sending messages and files,etc.
+
+You can build various types of rooms and additional features for conferencing with the same set of [group management apis](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
+
+For example,
+- **Webinar**: One-to-many broadcast, a single publisher and muliple members. Admin can mute all and have additional privelages 
+- **Private Rooms**: Only invited/selecteed room members can join and publish to a group. 
+- **Public Rooms**: Anyone can join and publish to group.
+
+### Privacy & Security
+You can also have room pin set up for privacy along with say something like a waiting room, where only members you approve of can join the room.
+
+You can dynamically change the group or the member behavior at any point in time and it will be instantly applied to the group or group member(s).
 
 ### Publisher
+You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. 
+
+### Participants
+Other members who are part of a group who are publishing their own streams.
+
+### Subscribing to Streams
+Once you join a room, you get a list of other group members. You can choose and subscribe to the stream of each member.
+Mesibo will be listening for any members leaving or joining the group and will inform you through appropriate callback functions.
 
 ### Unlimited Participants
 There is no limit to the number of groups that you can create with Mesibo. Or the number of participants a group can have.
 So, unlike other streaming platforms or services, mesibo does not impose any limit on the total number of participants in a single group call.
 
-> Note: The number of participants you can stream simulataneously is limited by your CPU capacity and not by an arbitrary limit imposed by mesibo APIs
+> **Note**: The number of participants you can stream simulataneously is limited by your CPU capacity and not by an arbitrary limit imposed by mesibo APIs
 
 
 Let's take a look at the different callbacks and functions of the mesibo streaming API

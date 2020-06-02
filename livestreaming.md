@@ -24,9 +24,9 @@ For example, here's what you do while [creating a group](https://mesibo.com/docu
 
 *--Just like one-to-one messaging is extended to group-messaging, we are now extending group messaging to group calls--*
 
-So, for live conferencing and streaming, there is a small addition to these existing API functions and steps.
-5. Get list of members  
-6. Place a call to the group 
+So, for live conferencing and streaming, there is a small addition to these existing API functions and steps.  
+5. Get list of members   
+6. Place a call to the group  
 7. Connect to each member of the group over voice and video.
 
 With the same set of APIs you can build and support any type of conferencing and streaming use case that your application demands. Example,

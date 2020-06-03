@@ -74,8 +74,9 @@ To place a call to the group, first you need initialize the group call. For this
 ### Connecting to voice and video of members
 Once you get a list of participants, you can choose to connect to each of those streams. 
 
-## Mesibo Live Demo
-In this section we will build a functional conferencing application like Zoom. Let us first design the app, by listing out our requirements. Here's what we need:
+# Mesibo Live Demo App
+
+In this section we will build Mesibo Live- a functional conferencing application like Zoom. Let us first design the app, by listing out our requirements. Here's what we need:
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
 3. View the streams of participants in the group
@@ -83,18 +84,44 @@ In this section we will build a functional conferencing application like Zoom. L
 
 You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
 
-### Conference Room
+## Conference Room
 
 The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group, will be able to view the streams of other members of the same group.
 
+### Creating a User
+Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+
+So, for the first step we need to create a login form, where we authenticate them and generate a token for them. 
+
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
+```
+https://app.mesibo.com/conf/api.php?op=login&name=NAME&email=USER_EMAIL
+```
+2. The user will now need to enter the OTP receieved which we then send to backend for verification with the following request
+```
+https://app.mesibo.com/conf/api.php?op=login&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+```
+If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
+
+
+### Creating a Group
+For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
+
 For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
+
+For simplicity, we will only set the room name and pin for now. We will be creating a normal group where all members can send and receive streams.
 
 If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
 Here, we will use `https://app.mesibo.com/conf/api.php`.
 
-For example, to create a group named mesibo you can use the API as follows.
+You can create a group, by making a request in the following format:
 ```
-https://app.mesibo.com/conf/api.php?token=xxx&op=setgroup&name=mesibo&pin=1234
+https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN
+```
+
+For example, to create a group named `mesibo` you can use the API as follows.
+```
+https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
 ```
 
 ## Fundamentals of Group Calling and Streaming

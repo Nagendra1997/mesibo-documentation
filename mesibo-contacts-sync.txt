@@ -1,0 +1,96 @@
+
+
+Mesibo Contact Synchronization
+
+<It’s great to connect with people. It’s much better to connect with people who you already know.  Carrying a compressed version of a telephone directory in your pocket.> <Better intro>
+
+Applications like Linkedin, Whatsapp, Telegram, Slack, etc synchronize with your contacts
+to personalize the context of using the app. For example, in Telegram , you are notified when a new person joins the app with an invitation to connect. In case of Whatsapp and other messaging apps, the user name is customized to the one you have saved in your contacts.
+
+<flow miss>
+We have released demo applications like the messenger-app (for Android & iOS) that help you evaluate mesibo for your needs. The messenger app is live on the Android and iOS App Stores and we have got many people trying out the app. Many users have reached out to us with queries about the platform. One of the most persistent of those questions is “Why do I need to provide contact permissions to use the app?”. At mesibo, we take user privacy seriously and we recommend all our developers using our platform to do the same. We also received many queries from developers asking us about the contact synchronization process, to understant how it works.
+
+In this article we want to address both these major queries. First we will understand why contacts synchronization is one of the important features of mesibo and why you need to provide the required permission to make use of this feature. Second, we will describe the whole contacts syncing process in technical detail, so that we are transparent about how this feature is built. 
+
+<1. Why contact sync. What is contact sync>
+
+<2.>
+Stages of Contact Syncronization
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A brief introduction to contact sync, whatsapp, telegram, mesibo, slack
+
+COntact Permissions
+
+
+Stages of contact sync
+
+1) fetch contacts
+2) For each contact
+   3) make fully qualified numbner, missing country code
+   4) validate, valid number, use libphone number, with example
+   5) check if the contact is alrteady syncronized - why -> expensive process for backedn to store and match against other users for thousants of contacts (other than network payload(
+   6) if not, syncronize [instead of syncronizing one by one, you can create an array and send it one or mulktiple requests]
+   7) save in local db as syncronized
+
+3) on back, how to store - example of mysql
+	unique pair 
+table 1
+        [userid, <self number>]
+
+table 2 contacts
+        [userid, <contacts>]
+
+Why all contacts to be stored 
+
+4) when it syncronmizes
+	backend -> inform other users that this user has join by mathing against existing conatcts
+        also, back end informs this user that who are other contacts using app alreadyt
+
+

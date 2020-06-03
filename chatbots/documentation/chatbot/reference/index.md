@@ -32,9 +32,10 @@ Here you will find the reference documentation for all various mesibo javascript
 
 | Utility | Description                                                                        |
 |:-------------------------------------------------------|:-----------------------------------------------------------------------------------|
-| [random32](/documentation/chatbot/reference/dialogflow/#random32)   | Returns a 32-bit unsigned integer 
-| [random64](/documentation/chatbot/reference/dialogflow/#random64)   | Returns a 64-bit unsigned integer 
-| [hash64](/documentation/chatbot/reference/dialogflow/#hash64)  |Returns a hash value 
-| [timeInMicros](/documentation/chatbot/reference/dialogflow/#timeInMicros) | Returns the time elapsed in microseconds since the Unix epoch 
-| [timeInMillis](/documentation/chatbot/reference/dialogflow/#timeInMillis) | Returns the time elapsed in milliseconds since the Unix epoch      |
-| [timeInSeconds](/documentation/chatbot/reference/dialogflow/#timeInSeconds) | Returns the time elapsed in seconds since the Unix epoch         	|
+| [random32](/documentation/chatbot/reference/utilities/#random32)   | Returns a 32-bit unsigned integer 
+| [random64](/documentation/chatbot/reference/utilities/#random64)   | Returns a 64-bit unsigned integer 
+| [hash64](/documentation/chatbot/reference/utilities/#hash64)  |Returns a hash value 
+| [startTimer](/documentation/chatbot/reference/utilities/#starattimer)  |Start a timer for specified number of seconds and execute the event handler defined in mesibo.ontimeout. 
+| [timeInMicros](/documentation/chatbot/reference/utilities/#timeinmicros) | Returns the time elapsed in microseconds since the Unix epoch 
+| [timeInMillis](/documentation/chatbot/reference/utilities/#timeinmillis) | Returns the time elapsed in milliseconds since the Unix epoch      |
+| [timeInSeconds](/documentation/chatbot/reference/utilities/#timeinseconds) | Returns the time elapsed in seconds since the Unix epoch         	|

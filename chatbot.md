@@ -1,6 +1,5 @@
 #  Chatbot Module
 
-
 This repository contains the source code for Chatbot Module. Chatbot module analyzes messages using various AI and machine learning tools like Tensorflow, Dialogflow, etc. and sends an automatic reply.  
 
 To build chatbots, you can use any chatbot provider of your choice such as Dialogflow, IBM Watson,Rasa,etc and connect with them through REST endpoints. This Chatbot Module provides an example using **Dialogflow**

@@ -66,6 +66,17 @@ Then, you can place a `call` to the group.
 ### Connecting to other streams
 Once you get a list of participants, you can choose to connect to each of those streams. To do this you can place a `call` to the selcted participant 
 
+## Mesibo Live Demo
+
+We have provided a sample web application which contains examples for using Mesibo Conferencing and Live Streaming APIs, to build various features required for a functional video conferencing app. The current demo is built using Mesibo Javascript SDK. Conferencing and Streaming APIs for other platforms are also currently under development and will be made available soon.
+
+## Conference Room
+The conference room is fundamentally a group - with a group name and group id. You can [create a group](https://mesibo.com/documentation/api/backend-api/#create-a-group), [add and remove members](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members), with all the features of a Mesibo Group like sending messages and files,etc.
+
+### Privacy & Security
+You can also have room pin set up for privacy along with say something like a waiting room, where only members you approve of can join the room.
+
+You can dynamically change the group or the member behavior at any point in time and it will be instantly applied to the group or group member(s).
 
 ## Fundamentals of Group Calling and Streaming
 
@@ -90,19 +101,6 @@ There is no limit to the number of groups that you can create with Mesibo. Or th
 So, unlike other streaming platforms or services, Mesibo does not impose any limit on the total number of participants in a single group call.
 
 > **Note**: The number of participants you can stream simulataneously is limited by your CPU capacity and not by an arbitrary limit imposed by Mesibo APIs
-
-## Mesibo Live Demo
-We have provided a sample web application which contains examples for using Mesibo Conferencing and Live Streaming APIs, to build various features required for a functional video conferencing app. The current demo is built using Mesibo Javascript SDK. Conferencing and Streaming APIs for other platforms are also currently under development and will be made available soon.
-
-## Conference Room
-The conference room is fundamentally a group - with a group name and group id. You can [create a group](https://mesibo.com/documentation/api/backend-api/#create-a-group), [add and remove members](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members), with all the features of a Mesibo Group like sending messages and files,etc.
-
-### Privacy & Security
-You can also have room pin set up for privacy along with say something like a waiting room, where only members you approve of can join the room.
-
-You can dynamically change the group or the member behavior at any point in time and it will be instantly applied to the group or group member(s).
-
-## Creating & Joining a Room
 
 ## Setup Mesibo Group Calling
 

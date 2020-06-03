@@ -77,10 +77,6 @@ To place a call to the group, first you need initialize the group call. For this
 ### Connecting to voice and video of members
 Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
 
-### on_stream
-### on_status
-### attach
-
 # Mesibo Live Demo App
 
 In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs.

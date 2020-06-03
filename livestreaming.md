@@ -36,9 +36,7 @@ So, for live conferencing and streaming there is a small addition to setting up 
 
 It is that simple!
 
-Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build groups of different [types](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
-
-Using the very same group settings you can build any type of conferencing and streaming app that you need. 
+Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build groups of different [types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). Using the very same group settings you can build any type of conferencing and streaming app that you need. 
 
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this.
 

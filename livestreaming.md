@@ -50,6 +50,7 @@ Now, for group calling, each participant has the following permissions:
 
 You can build any type of conferencing and streaming app that you need by configuring these group calling permissions.
  
+![streaming-scenarios](live.jpg)
 
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this.
 
@@ -57,7 +58,6 @@ You can build any type of conferencing and streaming app that you need by config
 
 - **On-Demand Streaming** You can upload media to the group, which only members can view on-demand, whenever they need it. You can think of Youtube and Netflix as an example of such applications.
 
-![streaming-scenarios](live.jpg)
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here] and will be explained with examples in the next section 
@@ -84,7 +84,7 @@ In this section we will build Mesibo Live- a functional conferencing application
 
 You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
 
-## Conference Room
+## 1. Creating a Conference Room
 
 The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group, will be able to view the streams of other members of the same group.
 
@@ -123,57 +123,33 @@ For example, to create a group named `mesibo` you can use the API as follows.
 ```
 https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
 ```
-
-## Fundamentals of Group Calling and Streaming
-
- There are three basic components to the conferencing and streaming system:
- 1. **Publisher** : Your own stream, where you publish your self through a camera stream or share screen
- 2. **Participants**  : A list of members whom you can subscribe to.
- 3. **Streaming Backend**: Mesibo's real time backend collects and delivers various streams from remote endpoints to you.
- 
-Let's now take a look at how all of this is built on top of Mesibo's User and Group Management APIs.
-
-### Publisher
-You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. The publisher is a Mesibo User with an access token and is a member of the group - conference room.
-
-### Participants
+### Getting a list of Participants
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
 
-### Subscribing to Streams
 Once you join a room, you get a list of other group members through the callback function `Mesibo_onParticipant`. You can choose and subscribe to the stream of each member to view it. Mesibo will be listening for any members leaving or joining the group and will inform you through appropriate callback functions.
 
-### Unlimited Participants
 There is no limit to the number of groups that you can create with Mesibo. Or the number of participants a group can have.
 So, unlike other streaming platforms or services, Mesibo does not impose any limit on the total number of participants in a single group call.
 
-> **Note**: The number of participants you can stream simulataneously is limited by your CPU capacity and not by an arbitrary limit imposed by Mesibo APIs
+### Setting Up Mesibo Group Calling
+First initialize and Run Mesibo.
 
-## Setup Mesibo Group Calling
-
-### Install Mesibo Javascript SDK
-The easiest way to [install Mesibo Javascript SDK](https://mesibo.com/documentation/install/javascript/) is to just include following in your code:
-
-<script type="text/javascript" src="https://api.mesibo.com/mesibo.js"></script>
-
-You must use a secure website (https) to use mesibo javascript. It may NOT work from http:// or file:// sites due to browser security restrictions.
-
-### Initialize and Run Mesibo
 To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. 
  For example, you can initialize and run mesibo as follows:
  
 ```javascript
 $scope.initMesibo = function(){
 
-    $scope.mesibo = new Mesibo();
-    $scope.mesibo.setAppName(MESIBO_APP_ID);
-    if( false == $scope.mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
+    var mesibo = new Mesibo();
+    mesibo.setAppName(MESIBO_APP_ID);
+    if( false == mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
         return -1;
 
-    $scope.mesibo.setListener($scope);
-    $scope.mesibo.setDatabase("mesibo");
-    $scope.mesibo.start();
+    mesibo.setListener($scope);
+    mesibo.setDatabase("mesibo");
+    mesibo.start();
 
-    $scope.initializeStreaming();
+    initializeStreaming();
     
     return 0;
 }
@@ -186,32 +162,32 @@ Call the `getLocalParticipant` method to initialize publisher(your self stream)
 
 An example in javascript is as follows,
 ```javascript
-$scope.initializeStreaming = function() {
+function initializeStreaming(mesibo) {
 
     //Create group call object
-    $scope.live = $scope.mesibo.initGroupCall(); 
+    var live = mesibo.initGroupCall(); 
     
     //Set Group ID
-    $scope.live.setRoom($scope.room.gid); 
+    live.setRoom(GROUP_ID); 
     
     // Create a local stream object, Set Publisher name and address
-    $scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address); 
-    if(!isValid($scope.publisher))
+    var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
+    if(!isValid(publisher))
         	return -1; 
     
     return 0;
 }          
 ```
 ### Publishing your self stream
+You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. T
+
 ```javascript
-    $scope.publish = function() {
+function publish(publisher){
 	var o = {};
-	o.peer = 0;
-	o.name = '';
-	o.groupid = $scope.room.gid;	
-	o.source = $scope.toggle_source;	   
+	o.groupid = GROUP_ID;	
+	o.source = '720p';	   
 	
-        $scope.publisher.call(o, 'video-publisher', $scope.on_stream, $scope.on_status);
+        publisher.call(o, 'video-publisher', on_stream, on_status);
 }
 ```
 

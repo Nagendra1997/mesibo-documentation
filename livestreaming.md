@@ -59,6 +59,7 @@ You can build any type of conferencing and streaming app that you need by config
 - **Live Streaming**: A one-to-many group. Only one person has been granted the permission to publish. All other members can only receive the stream ie; They are just listeners. An online webinar, a live class, are examples of such a scenario.
 
 - **On-Demand Streaming** You can upload media to the group, which only members can view on-demand, whenever they need it. You can think of Youtube and Netflix as an example of such applications.
+![streaming-app-scenarios](stream-app-scenarios.jpg)
 
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.

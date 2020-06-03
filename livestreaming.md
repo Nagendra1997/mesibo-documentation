@@ -25,7 +25,7 @@ Mesibo allows you to create groups having a set of users as group members. Once 
 3. Grant Permissions about who can send and received messages. For example you can set permissions such that only members can send, only selected members can send, only Selected Members can receive, etc. You can also grant admin rights to who can change group settings, who can remove members, etc
 
 ## Extending Group Messaging to Group Calling
-In group messaging, when you send a message to the common group every member gets a message notification. The user opens the message and reads it. In the same way, in group calling, when you make a call to the group, every member of the group get's a call notification. Now each member of the group will connect with the call. 
+In group messaging, when you send a message to the common group every member gets a message notification. The user opens the message and reads it. In the same way, in group calling, when you make a call to the group, every member of the group get's a call notification and each member of the group will connect with the call. 
 
 So, for live conferencing and streaming there is a small addition to setting up a group.
 

@@ -194,7 +194,7 @@ Call the `getLocalParticipant` method to initialize local publisher(the stream y
 var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
 
 ```    
-You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. T
+You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. 
 
 ```javascript
 function publish(publisher){

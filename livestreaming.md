@@ -63,7 +63,7 @@ You can build any type of conferencing and streaming app that you need by config
 
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
-A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section where we build a conferencing app. 
+A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
 
 ### Create a group
 Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.

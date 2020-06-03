@@ -91,9 +91,13 @@ The conference room is a group. We will use REST APIs to perform the operations 
 ### Creating a User
 Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
 
-So, for the first step we need to create a login form, where we authenticate them and generate a token for them. 
+So, for the first step we need to create a user, where we authenticate them and generate a token for them. 
 
 1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
+
+If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
+Here, we will use `https://app.mesibo.com/conf/api.php`.
+
 ```
 https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
@@ -127,7 +131,7 @@ https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setg
 
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
 
-Before we get the list of participants, first we need to initialize mesibo and connect to a group.
+Before we get the list of participants, we need to initialize mesibo and connect to a group.
 
 ### Initialize Mesibo
 To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating theuser.

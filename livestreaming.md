@@ -4,7 +4,9 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Live Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Mesibo Live Conferencing and Streaming Platform helps you  build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost with an on-premise platform!
+Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media. Imagine if you can build such applications with minimal setup and cost, to deploy for your own use cases. 
+
+With Mesibo Live Conferencing and Streaming Platform, this is now a reality. You can build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost with an on-premise platform!
 
 This article consists of two parts. In the first part, we will understand how group calling works by simply extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo) 
 
@@ -60,7 +62,7 @@ You can build any type of conferencing and streaming app that you need by config
 
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
-A detailed documentaion of each function/method can be found [here] and will be explained with examples in the next section 
+A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section where we build a conferencing app. 
 
 ### Create a group
 Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.
@@ -69,20 +71,34 @@ Use Mesibo's Group Management APIs to create a group. Add members and set permis
 When any member joins the group, they will be getting a list of other members in the group. The callback function `Mesibo_onParticipant` will be called.
 
 ### Place a call to group
-To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object.
+To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object and then link it with a group using `setRoom`. 
 
 ### Connecting to voice and video of members
-Once you get a list of participants, you can choose to connect to each of those streams. 
+Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
+
+### on_stream
+### on_status
+### attach
 
 # Mesibo Live Demo App
 
-In this section we will build Mesibo Live- a functional conferencing application like Zoom. Here's what we need:
+In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs.
+
+### Prerequisites
+
+- This demo use Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
+- Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
+- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
+
+### Basic features required for video conferencing 
+
+We need the following features.
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
-3. View the streams of participants in the group
-4. Send my ownstream, to the group.
+3. View the videos of participants in the group
+4. Send my own video, to the group.
 
-You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
+You can checkout the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
 
 ## 1. Creating a Conference Room
 
@@ -160,7 +176,7 @@ An example in javascript is as follows,
     
 ```
 
-Now you get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called and you can subscribe to the stream of each participant.
+Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
 ```javascript
 
@@ -171,13 +187,22 @@ MesiboListener.prototype.Mesibo_OnParticipants = function(all, latest) {
 	}
 }
 
-``` 
+```
+The parameter `all` contains an array of all members in the group.
+The parameter `latest` contains the array of users that have just joined the group.
+
+You can now iterate through the list of participants and subscribe to the stream of each participant.
+
 ### 3. View the streams of participants in the group
 You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method
+The `call` method takes the following parameters:
+- The ID of the HTML element where the video will be rendered
+- A callback function `on_stream` where you will be notified of the stream
+- A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
 
 ```javascript
 function subscribe(p){
-	p.call(null, "video-"+ p.getId(), on_stream, on_status);
+	p.call(null, "video-stream", on_stream, on_status);
 }
 
 ```
@@ -190,7 +215,7 @@ Call the `getLocalParticipant` method to initialize local publisher(the stream y
 var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
 
 ```    
-You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. T
+You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
 
 ```javascript
 function publish(publisher){
@@ -201,9 +226,7 @@ function publish(publisher){
 	publisher.call(o, 'video-publisher', on_stream, on_status);
 }
 ```
-Streaming quality options available are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
+The available are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
 
-## Callback Functions
-Various callback functions are called for different events such as when a participant enters the room, 
 
 

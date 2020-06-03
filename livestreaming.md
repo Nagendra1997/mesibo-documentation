@@ -76,7 +76,7 @@ Once you get a list of participants, you can choose to connect to each of those 
 
 # Mesibo Live Demo App
 
-In this section we will build Mesibo Live- a functional conferencing application like Zoom. Let us first design the app, by listing out our requirements. Here's what we need:
+In this section we will build Mesibo Live- a functional conferencing application like Zoom. Here's what we need:
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
 3. View the streams of participants in the group
@@ -95,11 +95,11 @@ So, for the first step we need to create a login form, where we authenticate the
 
 1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
 ```
-https://app.mesibo.com/conf/api.php?op=login&name=NAME&email=USER_EMAIL
+https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
 2. The user will now need to enter the OTP receieved which we then send to backend for verification with the following request
 ```
-https://app.mesibo.com/conf/api.php?op=login&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
 If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
 
@@ -123,62 +123,73 @@ For example, to create a group named `mesibo` you can use the API as follows.
 ```
 https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
 ```
-### Getting a list of Participants
+## 2. Getting a list of Participants
+
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
 
-Once you join a room, you get a list of other group members through the callback function `Mesibo_onParticipant`. You can choose and subscribe to the stream of each member to view it. Mesibo will be listening for any members leaving or joining the group and will inform you through appropriate callback functions.
+Before we get the list of participants, first we need to initialize mesibo and connect to a group.
 
-There is no limit to the number of groups that you can create with Mesibo. Or the number of participants a group can have.
-So, unlike other streaming platforms or services, Mesibo does not impose any limit on the total number of participants in a single group call.
-
-### Setting Up Mesibo Group Calling
-First initialize and Run Mesibo.
-
-To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. 
- For example, you can initialize and run mesibo as follows:
+### Initialize Mesibo
+To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating theuser.
+ 
+You can initialize and run mesibo as follows:
  
 ```javascript
-$scope.initMesibo = function(){
 
     var mesibo = new Mesibo();
     mesibo.setAppName(MESIBO_APP_ID);
-    if( false == mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
-        return -1;
-
-    mesibo.setListener($scope);
+    mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
+    mesibo.setListener(MesiboNotify);
     mesibo.setDatabase("mesibo");
     mesibo.start();
 
-    initializeStreaming();
-    
-    return 0;
-}
 ```
 ### Initialize Group Calling & Streaming
 
-After initializing Mesibo, To set up group calling and streaming call the `initGroupCall` method to create the group call object.
-
-Call the `getLocalParticipant` method to initialize publisher(your self stream) 
+To set up group calling and streaming call `initGroupCall()` to create the group call object. 
+To link the room with a group, call the `setRoom` method of the group call object, by passing the group-id.
 
 An example in javascript is as follows,
 ```javascript
-function initializeStreaming(mesibo) {
-
+    
     //Create group call object
     var live = mesibo.initGroupCall(); 
     
     //Set Group ID
     live.setRoom(GROUP_ID); 
     
-    // Create a local stream object, Set Publisher name and address
-    var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
-    if(!isValid(publisher))
-        	return -1; 
-    
-    return 0;
-}          
 ```
+
+Now you get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called and you can subscribe to the stream of each participant.
+
+```javascript
+
+MesiboListener.prototype.Mesibo_OnParticipants = function(all, latest) {
+	for(var i in latest) {
+		var p = latest[i];
+		subscribe(p);			
+	}
+}
+
+``` 
+### 3. View the streams of participants in the group
+You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method
+
+```javascript
+function subscribe(p){
+	p.call(null, "video-"+ p.getId(), on_stream, on_status);
+}
+
+```
+
 ### Publishing your self stream
+Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
+```javascript
+
+// Create a local participant, Set Publisher name and address
+var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
+
+```    
 You are the publisher. As a member of the conference room group you can stream your own self and send messages to other members. T
 
 ```javascript
@@ -186,10 +197,11 @@ function publish(publisher){
 	var o = {};
 	o.groupid = GROUP_ID;	
 	o.source = '720p';	   
-	
-        publisher.call(o, 'video-publisher', on_stream, on_status);
+
+	publisher.call(o, 'video-publisher', on_stream, on_status);
 }
 ```
+Streaming quality options available are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
 
 ## Callback Functions
 Various callback functions are called for different events such as when a participant enters the room, 

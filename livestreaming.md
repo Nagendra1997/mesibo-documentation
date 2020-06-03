@@ -6,7 +6,7 @@ title: Mesibo Live Conferencing and Streaming Platform- Conference Calling, Live
 
 Mesibo Live Conferencing and Streaming Platform helps you  build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost with an on-premise platform!
 
-This article consists of two parts. In the first part, we will understand how group calling works by simply extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can find a live demo [here](https://mesibo.com/livedemo) and the source code [here](https://github.com/mesibo) 
+This article consists of two parts. In the first part, we will understand how group calling works by simply extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo) 
 
 > **Disclaimer** : The Live Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
 
@@ -31,15 +31,25 @@ In group messaging, when you send a message to the common group every member get
 So, for live conferencing and streaming there is a small addition to setting up a group.
 
 1. Set up group
-2. Get list of members  
+2. Get the list of members  
 2. Place a call to group   
 4. Connect to each member of the group over voice and video.
 
 It is that simple!
 
-Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). Since the same group settings are used to build conferencing and streaming, you can similary build any type of conferencing and streaming app that you need.
+Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
-![streaming-scenarios](live.jpg)
+In case of group messaging, each member has the following permissions:
+- can send
+- can receive
+
+Now, for group calling, each participant has the following permissions:
+- can publish
+- can subscribe
+- can list
+
+You can build any type of conferencing and streaming app that you need by configuring these group calling permissions.
+ 
 
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this.
 
@@ -47,32 +57,45 @@ Remember how you can specify member behaviour in case of group messaging? You ca
 
 - **On-Demand Streaming** You can upload media to the group, which only members can view on-demand, whenever they need it. You can think of Youtube and Netflix as an example of such applications.
 
+![streaming-scenarios](live.jpg)
+
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here] and will be explained with examples in the next section 
 
 ### Create a group
-Use Mesibo's Group Management APIs to create a group. Add members and set permissions of the group members.
+Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.
 
 ### Get list of members
-When any member joins the group, they will be getting a list of other members in the group. You will be getting the list through the callback function `Mesibo_onParticipant`
+When any member joins the group, they will be getting a list of other members in the group. The callback function `Mesibo_onParticipant` will be called.
 
 ### Place a call to group
-To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object. Now you can link that group call object with a group-id.
+To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object.
 
 ### Connecting to voice and video of members
-Once you get a list of participants, you can choose to connect to each of those streams. To do this you can place a `call` to the selcted participant 
+Once you get a list of participants, you can choose to connect to each of those streams. 
 
 ## Mesibo Live Demo
+In this section we will build a functional conferencing application like Zoom. Let us first design the app, by listing out our requirements. Here's what we need:
+1. A conference room which people can join
+2. A list of participants and a way to update the list of participants as and when people join or leave the room
+3. View the streams of participants in the group
+4. Send my ownstream, to the group.
 
-We have provided a sample web application which contains examples for using Mesibo Conferencing and Live Streaming APIs, to build various features required for a functional video conferencing app. The current demo is built using Mesibo Javascript SDK. Conferencing and Streaming APIs for other platforms are also currently under development and will be made available soon.
+You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
 
-## Conference Room
-The conference room is fundamentally a group - with a group name and group id. You can [create a group](https://mesibo.com/documentation/api/backend-api/#create-a-group), [add and remove members](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members), with all the features of a Mesibo Group like sending messages and files,etc.
+### Conference Room
 
-### Privacy & Security
-You can also have room pin set up for privacy along with say something like a waiting room, where only members you approve of can join the room.
+The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group, will be able to view the streams of other members of the same group.
 
-You can dynamically change the group or the member behavior at any point in time and it will be instantly applied to the group or group member(s).
+For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
+
+If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
+Here, we will use `https://app.mesibo.com/conf/api.php`.
+
+For example, to create a group named mesibo you can use the API as follows.
+```
+https://app.mesibo.com/conf/api.php?token=xxx&op=setgroup&name=mesibo&pin=1234
+```
 
 ## Fundamentals of Group Calling and Streaming
 

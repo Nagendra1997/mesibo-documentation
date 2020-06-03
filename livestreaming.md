@@ -16,6 +16,7 @@ Mesibo has made it extremely simple to use and build with group calling and stre
 Mesibo APIs for conferencing, simply extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). So, there is absolutely no need to learn anything additional.
 
 If you are not familiar with using [Mesibo Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis), here's a little recap. Feel free to skip ahead if you are already familiar with group messaging.
+![group-messaging-calling](grp-msg-vs-call.jpg)
 
 ## Group Messaging
 Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. To set up a group with Mesibo APIs you follow the steps below:
@@ -36,7 +37,9 @@ So, for live conferencing and streaming there is a small addition to setting up 
 
 It is that simple!
 
-Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build groups of different [types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). Using the very same group settings you can build any type of conferencing and streaming app that you need. 
+Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build groups of different [types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). Using the very same group settings you can build any type of conferencing and streaming app that you need.
+
+![streaming-scenarios](live.jpg)
 
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this.
 

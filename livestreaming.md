@@ -30,9 +30,9 @@ In group messaging, when you send a message to the common group every member get
 
 So, for live conferencing and streaming there is a small addition to setting up a group.
 
-1. Set up a group
+1. Set up group
 2. Get list of members  
-2. Place a call to the group   
+2. Place a call to group   
 4. Connect to each member of the group over voice and video.
 
 It is that simple!
@@ -50,20 +50,16 @@ Remember how you can specify member behaviour in case of group messaging? You ca
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here] and will be explained with examples in the next section 
 
-### Creating a group
-Use Mesibo's Group Management APIs to create a group.Add members and set permissions of the group members.
+### Create a group
+Use Mesibo's Group Management APIs to create a group. Add members and set permissions of the group members.
 
 ### Get list of members
 When any member joins the group, they will be getting a list of other members in the group. You will be getting the list through the callback function `Mesibo_onParticipant`
 
-### Initializing Group Call
-To initialize a group call, you need to use `initGroupCall()` which will provide you with a group call object. Now you can link that group call object with a group-id.
+### Place a call to group
+To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object. Now you can link that group call object with a group-id.
 
-### Placing a call to the group
-To place a call to the group, you first need to set up your own local stream. To do this you need to call `getLocalParticipant()` and pass your name and address as arguments.
-Then, you can place a `call` to the group.
-
-### Connecting to other streams
+### Connecting to voice and video of members
 Once you get a list of participants, you can choose to connect to each of those streams. To do this you can place a `call` to the selcted participant 
 
 ## Mesibo Live Demo

@@ -251,9 +251,25 @@ The available quality options for the source are `180p`,`240p`,`360p`,`480p`,`72
 ### Muting Streams
 We can mute video and audio locally, for the streams that we are view. For this there are methods available in the stream object. For muting video, we use the method `toggleMute(true)` and for muting audio we use the method `toggleMute(false)`.
 
-### Getting the Mute Status of a stream
-`stream.muteStatus(true)` gives the video mute status
-`stream.muteStatus(false)` gives the audio mute status
+For example, to mute audio and video of your own stream-- the publisher
+```javascript
+	publisher.toggleMute(false); //Mute Audio
+	publisher.toggleMute(true); //Mute Video
+```
 
+### Getting the Mute Status of a stream
+`muteStatus(true, false)` gives the local video mute status  
+`muteStatus(false, false)` gives the local audio mute status
+`muteStatus(true, true)` gives the remote video mute status  
+`muteStatus(false, true)` gives the remote audio mute status
+
+Example,
+```javascript
+	stream.muteStatus(true, false);
+	stream.muteStatus(false, true);
+	
+	stream.muteStatus(true, true);
+	stream.muteStatus(false, true);
+```
 # Building the App
 

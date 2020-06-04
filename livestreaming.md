@@ -102,7 +102,7 @@ You can checkout the [complete demo app](https://mesibo.com/livedemo) and downlo
 For starters, let us layout a basic UI in HTML and then understand how the Javascript API works.
 
 ### UI Features needed for group calling
-Based on the features we discused before, we need to have a few UI elements such as the local video stream, the remote video streams, buttons for muting audio/video streams,  a button to share our screen with the group and exit the group or hangup.
+Based on the features we discused before, we need to have a few UI elements to display the local video stream, the remote video streams, buttons for muting audio/video streams,  a button to share our screen with the group and exit the group or hangup.
 
 For now, we will just have one local video stream and one remote video stream.
 

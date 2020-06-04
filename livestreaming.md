@@ -106,11 +106,12 @@ For starters, let us layout a basic UI in HTML and then understand how the Javas
 ### UI Features needed for group calling
 Based on the features we discused before, we need to have a few UI elements to display the local video stream, the remote video streams, buttons for muting audio/video streams,  a button to share our screen with the group and exit the group or hangup.
 
-For now, we will just have one local video stream and one remote video stream.
+For now, we will just have one local video stream and one remote video stream in `room.html`
 
 ```HTML
-<!-- Publish your own stream-->
+
 <div class="row">
+	<!-- Publish your own stream-->
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">

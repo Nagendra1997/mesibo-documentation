@@ -79,7 +79,7 @@ Once you get a list of participants, you can choose to connect to each of those 
 
 # Mesibo Live Demo App
 
-In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs.
+In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs. First we will build a simple, basic version of the group calling app using basic HTML/CSS and Javascript . Then we will build the complete app with all the necessary features.
 
 ### Prerequisites
 
@@ -87,18 +87,31 @@ In this section we will build Mesibo Live- a video conferencing app like Zoom. B
 - Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
 - Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
 - A basic understanding of HTML/CSS/JS
+- A minimal understanding of Bootstrap
 
-### Basic features required for video conferencing 
+### Core features needed for group calling
 
-We need the following features.
+For our group calling app, we need the following core features.
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
-3. View the videos of participants in the group
-4. Send my own video, to the group.
+3. Stream my own video, to the group.
+4. View the videos of participants in the group
 
 You can checkout the [complete demo app](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo). 
 
-For starters, let us first understand the APIs by building a basic application with simple HTTL and Javascript.
+For starters, let us layout a basic UI in HTML and then understand how the Javascript API works.
+
+### UI Features needed for group calling
+Based on the features we discused before, we need to have a few UI elements such as the local video stream, the remote video streams, buttons for muting audio/video streams,  a button to share our screen with the group and exit the group or hangup.
+
+For now, we will just have one remote video stream and one local video stream.
+
+```HTML
+
+
+```
+
+
 
 ## 1. Creating a Conference Room
 

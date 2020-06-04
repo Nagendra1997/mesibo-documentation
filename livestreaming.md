@@ -271,5 +271,8 @@ Example,
 	stream.muteStatus(true, true);
 	stream.muteStatus(false, true);
 ```
+
+Putting it all together, let's get started building the full application. 
+
 # Building the App
 

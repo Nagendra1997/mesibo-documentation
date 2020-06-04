@@ -258,18 +258,18 @@ For example, to mute audio and video of your own stream-- the publisher
 ```
 
 ### Getting the Mute Status of a stream
-`muteStatus(true, false)` gives the local video mute status  
-`muteStatus(false, false)` gives the local audio mute status
-`muteStatus(true, true)` gives the remote video mute status  
-`muteStatus(false, true)` gives the remote audio mute status
+- `muteStatus(true, false)` gives the local video mute status  
+- `muteStatus(false, false)` gives the local audio mute status
+- `muteStatus(true, true)` gives the remote video mute status  
+- `muteStatus(false, true)` gives the remote audio mute status
 
 Example,
 ```javascript
-	stream.muteStatus(true, false);
-	stream.muteStatus(false, true);
+	stream.muteStatus(true, false); //local video mute status
+	stream.muteStatus(false, false); //local audio mute status
 	
-	stream.muteStatus(true, true);
-	stream.muteStatus(false, true);
+	stream.muteStatus(true, true); //remote video mute status
+	stream.muteStatus(false, true); //remote audio mute status
 ```
 
 Putting it all together, let's get started building the full application. 

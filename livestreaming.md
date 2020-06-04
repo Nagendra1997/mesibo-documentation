@@ -212,9 +212,13 @@ function publish(publisher){
 The available quality options for the source are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
 
 ### Muting Streams
+We can mute video and audio locally, for the streams that we are view. For this there are methods available in the stream object. For muting video, we use the method `toggleMute(true)` and for muting audio we use the method `toggleMute(false)`.
 
+### Getting the Mute Status of a stream
+`stream.muteStatus(true)` gives the video mute status
+`stream.muteStatus(false)` gives the audio mute status
 
-### Building the App
+# Building the App
 
 ### Creating a User
 Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 

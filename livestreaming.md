@@ -86,6 +86,7 @@ In this section we will build Mesibo Live- a video conferencing app like Zoom. B
 - This demo use Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
 - Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
 - Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
+- A basic understanding of HTML/CSS/JS
 
 ### Basic features required for video conferencing 
 
@@ -95,7 +96,9 @@ We need the following features.
 3. View the videos of participants in the group
 4. Send my own video, to the group.
 
-You can checkout the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo).
+You can checkout the [complete demo app](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo). 
+
+For starters, let us first understand the APIs by building a basic application with simple HTTL and Javascript.
 
 ## 1. Creating a Conference Room
 

@@ -162,7 +162,7 @@ The `call` method takes the following parameters:
 - A callback function `on_stream` where you will be notified of the stream
 - A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
 
-For example, if the ID of the HTML element where the video will be displayed is `video-stream` then, we call as follows:
+For example, if the ID of the HTML element where the video will be displayed is `video-stream` then, we can connect to the call as follows:
 ```javascript
 function subscribe(p){
 	p.call(null, 'video-stream', on_stream, on_status);
@@ -190,9 +190,10 @@ Call the `getLocalParticipant` method to initialize local publisher(the stream y
 
 // Create a local participant, Set Publisher name and address
 var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
-
+publish(publisher);
 ```    
 You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
+If the ID of the HTML Element is `video-publisher` then we publish as follows:
 
 ```javascript
 function publish(publisher){

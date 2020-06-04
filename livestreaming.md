@@ -81,6 +81,10 @@ Once you get a list of participants, you can choose to connect to each of those 
 
 In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs. First we will build a simple, basic version of the group calling app using basic HTML/CSS and Javascript . Then we will build the complete app with all the necessary features.
 
+You can download the source code for the basic group calling demo [here](https://github.com/mesibo) to understand the basic functionality of conferencing and steaming APIs
+
+Checkout [Mesibo Live Demo](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app. You can also download the entire source code from [github](https://github.com/mesibo). 
+
 ### Prerequisites
 
 - This demo use Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
@@ -96,8 +100,6 @@ For our group calling app, we need the following core features.
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
 3. Stream my own video, to the group.
 4. View the videos of participants in the group
-
-You can checkout the [complete demo app](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo). 
 
 For starters, let us layout a basic UI in HTML and then understand how the Javascript API works.
 
@@ -227,7 +229,7 @@ You can subscribe to the stream of each participant  that you get in `Mesibo_onP
 The `call` method takes the following parameters:
 - The ID of the HTML element where the video will be rendered
 - A callback function `on_stream` where you will be notified of the stream
-- A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
+- A callback function `on_status` where you will be notified when the mute status changes, there is a change in quality of the stream,if the participant has hung up, etc
 
 For example, if the ID of the HTML element where the video will be displayed is `video-stream` then, we can connect to the call as follows:
 ```javascript
@@ -292,18 +294,31 @@ function muteSelfAudio() {
 ```
 
 ### Getting the Mute Status of a stream
+
+You can get mute status of a stream with `muteStatus` which has the syntax below:
+```javascript
+Stream.muteStatus(video,remote)
+```
+Parameters:
+- `video` Boolean , `true` for video, `false` for audio
+- `remote` Boolean, `true` for remote source, `false` for local source
+
+
 - `muteStatus(true, false)` gives the local video mute status  
 - `muteStatus(false, false)` gives the local audio mute status
-- `muteStatus(true, true)` gives the remote video mute status  
-- `muteStatus(false, true)` gives the remote audio mute status
+
+That is , if you have muted the stream at your local end, muteStatus() will return true for that stream.
+
+- `muteStatus(true, true)` gives the remote source video mute status  
+- `muteStatus(false, true)` gives the remote source audio mute status
 
 Example,
 ```javascript
-	stream.muteStatus(true, false); //local video mute status
-	stream.muteStatus(false, false); //local audio mute status
+	remote.muteStatus(true, false); // video mute status-local
+	remote.muteStatus(false, false); // audio mute status-local
 	
-	stream.muteStatus(true, true); //remote video mute status
-	stream.muteStatus(false, true); //remote audio mute status
+	remote.muteStatus(true, true); // video mute status-remote
+	remote.muteStatus(false, true); // audio mute status-remote
 ```
 
 Putting it all together, let's get started building the full application. 

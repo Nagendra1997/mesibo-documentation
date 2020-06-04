@@ -182,7 +182,12 @@ function on_stream(p){
 	p.attach('video-stream');
 }
 ```
-
+Now, we will have multiple streams in our conference room, from different participants. So, the ID of the HTML Element where the video will be rendered will be different for each user. So, we need to make a small change to the subscribe function.
+```javascript
+function subscribe(p){
+	p.call(null, 'video-stream', on_stream, on_status);
+}
+```
 
 ### Publishing your self stream
 Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
@@ -205,6 +210,9 @@ function publish(publisher){
 }
 ```
 The available quality options for the source are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
+
+### Muting Streams
+
 
 ### Building the App
 

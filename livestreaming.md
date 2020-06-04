@@ -170,7 +170,7 @@ Refer [First Tutorial](https://mesibo.com/documentation/tutorials/first-app/) to
 ### Creating a Group
 For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
 
-Refer [Creating a Group](https://mesibo.com/documentation/api/backend-api/#create-a-group. Set `DEMO_GROUP_ID` and `DEMO_GROUP_NAME` in `demo.js`.
+Refer to [Creating a Group](https://mesibo.com/documentation/api/backend-api/#create-a-group). Set `DEMO_GROUP_ID` and `DEMO_GROUP_NAME` in `demo.js`.
 
 ## 2. Getting a list of Participants
 
@@ -280,7 +280,13 @@ function publish() {
 The available quality options for the source are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
 
 ### Muting Streams
-We can mute video and audio locally, for the streams that we are view. For this there are methods available in the stream object. For muting video, we use the method `toggleMute(true)` and for muting audio we use the method `toggleMute(false)`.
+We can mute video and audio locally, for the streams that we are view. For this there are methods available in the stream object. 
+
+```javascript
+Stream.toggleMute(video)
+```
+Parameters:
+- `video` Boolean , `true` for video, `false` for audio
 
 For example, to mute audio and video of your own stream-- the publisher
 ```javascript
@@ -304,22 +310,13 @@ Parameters:
 - `video` Boolean , `true` for video, `false` for audio
 - `remote` Boolean, `true` for remote source, `false` for local source
 
-
-- `muteStatus(true, false)` gives the local video mute status  
-- `muteStatus(false, false)` gives the local audio mute status
-
-That is , if you have muted the stream at your local end, muteStatus() will return true for that stream.
-
-- `muteStatus(true, true)` gives the remote source video mute status  
-- `muteStatus(false, true)` gives the remote source audio mute status
-
 Example,
 ```javascript
-	remote.muteStatus(true, false); // video mute status-local
-	remote.muteStatus(false, false); // audio mute status-local
+	remote.muteStatus(true, false); // video mute status-local source
+	remote.muteStatus(false, false); // audio mute status-local source
 	
-	remote.muteStatus(true, true); // video mute status-remote
-	remote.muteStatus(false, true); // audio mute status-remote
+	remote.muteStatus(true, true); // video mute status-remote source
+	remote.muteStatus(false, true); // audio mute status-remote source
 ```
 
 Putting it all together, let's get started building the full application. 

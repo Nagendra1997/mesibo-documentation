@@ -160,41 +160,14 @@ For now, we will just have one local video stream and one remote video stream.
 The conference room is a group. Only the members of a group, will be able to view the streams of other members of the same group. 
 
 ### Creating a User
-Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+Before creating a group, we need to create a mesibo user for the admin. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
 
-So, for the first step we need to create a login form, where we authenticate them and generate a token for them. 
-
-1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
-```
-https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
-```
-2. The user will now need to enter the OTP receieved which we then send to backend for verification with the following request
-```
-https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
-```
-If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
-
+Refer [First Tutorial](https://mesibo.com/documentation/tutorials/first-app/) to know how to create a user. Set the token as `MESIBO_ACCESS_TOKEN` in `demo.js`.
 
 ### Creating a Group
 For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
 
-For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
-
-For simplicity, we will only set the room name and pin for now. We will be creating a normal group where all members can send and receive streams.
-
-If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
-Here, we will use `https://app.mesibo.com/conf/api.php`.
-
-You can create a group, by making a request in the following format:
-```
-https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN
-```
-
-For example, to create a group named `mesibo` you can use the API as follows.
-```
-https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
-```
-
+Refer [Creating a Group](https://mesibo.com/documentation/api/backend-api/#create-a-group. Set `DEMO_GROUP_ID` and `DEMO_GROUP_NAME` in `demo.js`.
 
 ## 2. Getting a list of Participants
 
@@ -229,8 +202,7 @@ An example in Javascript is as follows,
     //Create group call object
     var live = mesibo.initGroupCall(); 
     
-    //Set Group ID
-    live.setRoom(GROUP_ID);     
+    live.setRoom(DEMO_GROUP_ID);     
 ```
 
 Now you will get a list of group members through the listener `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
@@ -277,12 +249,6 @@ function on_stream(p){
 	p.attach('video-stream');
 }
 ```
-Now, we will have multiple streams in our conference room, from different participants. So, the ID of the HTML Element where the video will be rendered will be different for each user. So, we need to make a small change to the subscribe function.
-```javascript
-function subscribe(p){
-	p.call(null, 'video-stream', on_stream, on_status);
-}
-```
 
 ### Publishing your self stream
 Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
@@ -296,13 +262,17 @@ You are the publisher. As a member of the conference room group you can stream y
 If the ID of the HTML Element is `video-publisher` then we publish as follows:
 
 ```javascript
-function publish(publisher){
-	var o = {};
-	o.groupid = GROUP_ID;	
-	o.source = '720p';	   
-
-	publisher.call(o, 'video-publisher', on_stream, on_status);
+function publish() {
+        console.log('publish');
+        var o = {};
+        o.name = 'local publisher';
+        o.groupid = DEMO_GROUP_ID;
+        //Can be camera source indicated by stream quality. Ex: '720p'. Or 'screen' for sharing screen
+        o.source = publisher_source;
+        publisher.call(o, "video-publisher", on_stream, on_status);
 }
+
+
 ```
 The available quality options for the source are `180p`,`240p`,`360p`,`480p`,`720p`,`1080p`,`2160p`
 
@@ -311,8 +281,14 @@ We can mute video and audio locally, for the streams that we are view. For this 
 
 For example, to mute audio and video of your own stream-- the publisher
 ```javascript
-	publisher.toggleMute(false); //Mute Audio
-	publisher.toggleMute(true); //Mute Video
+function muteSelfVideo() {
+        publisher.toggleMute(true, false);
+}
+
+function muteSelfAudio() {
+        publisher.toggleMute(false, false);
+}
+
 ```
 
 ### Getting the Mute Status of a stream

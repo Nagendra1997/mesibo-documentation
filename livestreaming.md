@@ -107,51 +107,51 @@ Based on the features we discused before, we need to have a few UI elements such
 For now, we will just have one local video stream and one remote video stream.
 
 ```HTML
-		<!-- Publish your own stream-->
-		<div class="row">
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title" id="publisher">Your Stream</span>
-						</h3>
-					</div>
-					<div class="panel-body" id="videolocal" style="background-color: grey">
-						<video class="rounded centered" id="video-publisher" width= "320px" height="240px" autoplay playsinline muted="muted" /></video>
-						<div class="btn-group" role="group" aria-label="video controls" >
-							<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="publish()">Publish</button>
-							<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteSelfVideo()">Mute Video</button>
-							<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteSelfAudio()">Mute Audio</button>
-							<button type="button" class="btn btn-secondary" style="font-size: 15px" >Hangup</button>
-						</div>
-					</div>
-				</div>
+<!-- Publish your own stream-->
+<div class="row">
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title" id="publisher">Your Stream</span>
+				</h3>
 			</div>
-
-			<!-- Load remote streams dynamically -->
-			<div class="col-md-8">
-				<div class="row">
-					<div class="col-md-4 letter-box">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h4 class="panel-title" id="video-stream-name">Remote Stream</span>
-								</h4>
-							</div>
-							<div class="panel-body">
-								<div style="background-color: grey; width: 320px; height: 240px">
-									<video class="rounded centered" id="video-remote" autoplay playsinline muted="muted"/> 				            </div>
-							</div>
-							<div class="btn-group" role="group" aria-label="video controls" >
-								<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="subscribe()">Subscribe</button>
-								<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteRemoteVideo()">Mute Remote Video</button>
-								<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteRemoteAudio()">Mute Remote Audio</button>
-								<button type="button" class="btn btn-secondary" style="font-size: 15px" >Hangup</button>
-							</div>
-
-						</div>
-					</div>
+			<div class="panel-body" id="videolocal" style="background-color: grey">
+				<video class="rounded centered" id="video-publisher" width= "320px" height="240px" autoplay playsinline muted="muted" /></video>
+				<div class="btn-group" role="group" aria-label="video controls" >
+					<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="publish()">Publish</button>
+					<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteSelfVideo()">Mute Video</button>
+					<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteSelfAudio()">Mute Audio</button>
+					<button type="button" class="btn btn-secondary" style="font-size: 15px" >Hangup</button>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- Load remote streams dynamically -->
+	<div class="col-md-8">
+		<div class="row">
+			<div class="col-md-4 letter-box">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title" id="video-stream-name">Remote Stream</span>
+						</h4>
+					</div>
+					<div class="panel-body">
+						<div style="background-color: grey; width: 320px; height: 240px">
+							<video class="rounded centered" id="video-remote" autoplay playsinline muted="muted"/>			  </div>
+					</div>
+					<div class="btn-group" role="group" aria-label="video controls" >
+						<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="subscribe()">Subscribe</button>
+						<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteRemoteVideo()">Mute Remote Video</button>
+						<button type="button" class="btn btn-secondary" style="font-size: 15px" onclick="muteRemoteAudio()">Mute Remote Audio</button>
+						<button type="button" class="btn btn-secondary" style="font-size: 15px" >Hangup</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 ```
 

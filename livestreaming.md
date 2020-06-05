@@ -4,11 +4,11 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Live Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media. Imagine if you can build such applications with minimal setup and cost.
+Applications like Zoom and Google Meet are showing new ways for people to connect. Streaming services like Netflix, Youtube, Prime Video, etc are changing the way people consume entertainment. Imagine if you can build such applications with minimal setup and cost.
 
 With Mesibo Live Conferencing and Streaming Platform, this is now a reality. You can build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost with an on-premise platform!
 
-Mesibo offers the most powerful combination of features to build any kind of conferencing and streaming application that you can think of
+Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application , with all the features that you can think of with minimal setup and cost.
  
 - Just under a 700KB memory footprint. This means that you can run Mesibo's platform on any server with minimum resources. You can ieven run it on something that fits in your palm -a Raspberry Pi.
 - Optimized to scale to billions of users, with efficient load balancing
@@ -17,14 +17,14 @@ Mesibo offers the most powerful combination of features to build any kind of con
 - Host the entire platform on your own premise with no additional cost.
 - Compliant with GDPR and HIPAA
 
-This article consists of two parts. In the first part, we will understand how group calling works by simply extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo) 
+This article consists of two parts. In the first part, we will understand how group calling works by extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo) 
 
-> **Disclaimer** : The Live Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and refering to updated documentation
+> **Disclaimer** : The Live Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and documentation.
 
 # How do Mesibo Live Platform APIs work?
-Mesibo has made it extremely simple to use and build with group calling and streaming APIs. Mesibo conferencing and streaming can be readily integrated with your existing applications which are using Mesibo messaging and call APIs.
+Mesibo has made it simple to use and build with group calling and streaming APIs. Mesibo conferencing and streaming can be readily integrated with your existing applications which are using Mesibo messaging and call APIs.
 
-Mesibo APIs for conferencing, simply extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). So, there is absolutely no need to learn anything additional.
+Mesibo APIs for conferencing, extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
 If you are not familiar with using [Mesibo Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis), here's a little recap. Feel free to skip ahead if you are already familiar with group messaging.
 ![group-messaging-calling](grp-msg-vs-call.jpg)

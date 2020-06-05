@@ -4,9 +4,18 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Live Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media. Imagine if you can build such applications with minimal setup and cost, to deploy for your own use cases. 
+Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media. Imagine if you can build such applications with minimal setup and cost.
 
 With Mesibo Live Conferencing and Streaming Platform, this is now a reality. You can build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more - all at no additional cost with an on-premise platform!
+
+Mesibo offers the most powerful combination of features to build any kind of conferencing and streaming application that you can think of
+ 
+- Just under a 700KB memory footprint. This means that you can run Mesibo's platform on any server with minimum resources. You can ieven run it on something that fits in your palm -a Raspberry Pi.
+- Optimized to scale to billions of users, with efficient load balancing
+- Stream any number of media to any number of end users, with zero compromize on quality.
+- Fine grain control over user media and data with guarenteed security. 
+- Host the entire platform on your own premise with no additional cost.
+- Compliant with GDPR and HIPAA
 
 This article consists of two parts. In the first part, we will understand how group calling works by simply extending the concept of group messaging. In the next part, we will build a fully functional Zoom like conferencing application. You can try the [live demo](https://mesibo.com/livedemo) and download the source code from [github](https://github.com/mesibo) 
 
@@ -42,25 +51,28 @@ It is that simple!
 Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
 In case of group messaging, each member has the following permissions:
-- can send
-- can receive
+- can send :  If member can send messages to the group
+- can receive: If member can receive messages from the group
 
-Now, for group calling, each participant has the following permissions:
-- can publish
-- can subscribe
-- can list
+Now, for group calling, in addition to above, each member has the following permissions:
+- can publish :  If member can make (publish) group voice or video calls
+- can subscribe: If member can subscribe to group voice or video calls 
+- can list: If member can get a list of active callers in the group
 
-You can build any type of conferencing and streaming app that you need by configuring these group calling permissions.
+This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
  
 ![streaming-scenarios](live.jpg)
 
-- **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this.
+- **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this. You can also checkout a a zoom like application built using mesibo [here](https://mesibo.com/livedemo). 
 
 - **Live Streaming**: A one-to-many group. Only one person has been granted the permission to publish. All other members can only receive the stream ie; They are just listeners. An online webinar, a live class, are examples of such a scenario.
 
-- **On-Demand Streaming** You can upload media to the group, which only members can view on-demand, whenever they need it. You can think of Youtube and Netflix as an example of such applications.
+- **Live Events** Online conferences and events are definitely not a thing of the future anymore. With Mesibo, Multiple streams can be published to multiple groups simultaneously. You can organize your attendees into multiple groups, with custom permissions set toeach member handle all their streams simultaneously without breaking a sweat.
+
+- **On-Demand Streaming** You can upload media to the group, which only selected members can view on-demand, whenever they need it. You can think of OTT platforms like Youtube and Netflix as an example of such applications.
 ![streaming-app-scenarios](stream-app-scenarios.jpg)
 
+- **Online Education** Students can join online classes live to only LISTEN to the stream of the teacher- with the student permissions set to can subscribe. They will not be able to publish any of their media(can be enabled if required)- essentially their media controls are muted. Students can also consume educational material and media on demand.
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 

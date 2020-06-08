@@ -74,6 +74,8 @@ This offers you a very fine level of control that allows you to have to ensure h
 
 - **Online Education** Students can join online classes live to only LISTEN to the stream of the teacher- with the student permissions set to can subscribe. They will not be able to publish any of their media(can be enabled if required)- essentially their media controls are muted. Students can also consume educational material and media on demand.
 
+- **Customer Support** Screen sharing and messaging, where you can securely connect to the customers device. [Rethink about including this, screen sharing like this is generally discouraged]
+
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
 

@@ -21,7 +21,7 @@ This article consists of two parts. In the first part, we will understand how gr
 
 > **Disclaimer** : The Live Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and documentation.
 
-# How do Mesibo Live Platform APIs work?
+# Mesibo Streaming and Conferencing APIs
 Mesibo has made it simple to use and build with group calling and streaming APIs. Mesibo conferencing and streaming can be readily integrated with your existing applications which are using Mesibo messaging and call APIs.
 
 Mesibo APIs for conferencing, extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 

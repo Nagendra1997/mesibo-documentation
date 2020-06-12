@@ -9,7 +9,7 @@ Mesibo Conferencing and Streaming Platform helps you build applications at scale
 Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application , with all the features that you can think of with minimal setup and cost.
  
 - With efficient load balancing, you can add as many servers as you require to match the demand
-- Just under a 700KB memory footprint. This means that you can run Mesibo's platform on any server with minimum resources. You can ieven run it on something that fits in your palm -a Raspberry Pi.
+- Just under a 700KB memory footprint. This means that you can run Mesibo's platform on any server with minimum resources. You can even run it on something that fits in your palm -a Raspberry Pi.
 - Supported codecs include VP8, VP9, H.264, H.265, Opus, Opus multichannel for high quality streaming
 - Fine control over all video & audio parameters and user permissions
 - Run the entire platform on your own premise at no additional cost.

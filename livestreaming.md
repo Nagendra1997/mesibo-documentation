@@ -50,6 +50,8 @@ It is that simple!
 
 Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
+![Group Permissions](group_member_settings.png)
+
 In case of group messaging, each member has the following permissions:
 - can send :  If member can send messages to the group
 - can receive: If member can receive messages from the group
@@ -75,6 +77,25 @@ This offers you a very fine level of control that allows you to have to ensure h
 - **Online Education** Students can join online classes live to only LISTEN to the stream of the teacher- with the student permissions set to can subscribe. They will not be able to publish any of their media(can be enabled if required)- essentially their media controls are muted. Students can also consume educational material and media on demand.
 
 - **Customer Support** Screen sharing and messaging, where customers or peers  can easily share their screen for debugging/support.
+
+You can also fine tune the permissions for each and every participant in the group. This is especially useful in the case of an online event or webinar, where you only provide certain participants the permission to publish.
+
+## Streaming Settings
+You can also set the type of streams permitted, such as audio only or video only, enable screen sharing. You can also share multiple streams at once. For example, both your camera stream and desktop screen can be streamed simulataneously in case of a webinar. By enabling the Simulcast option, you can enable mutiple streams.
+
+![Selcted Participants](selected_participants_stream_settings.png)
+
+## Resolution
+Mesibo provides you with the following streaming quality options.Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+
+### VGA - 640x480
+### HD - 1280x720
+### Full HD - 1920x1080  
+### QVGA - 320x240
+### 4K - 3840×2160
+
+![Group Calling Quality](stream_quality_settings.png)
+
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 

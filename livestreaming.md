@@ -80,19 +80,12 @@ This offers you a very fine level of control that allows you to have to ensure h
 
 You can also fine tune the permissions for each and every participant in the group. This is especially useful in the case of an online event or webinar, where you only provide certain participants the permission to publish.
 
-## Streaming Settings
-You can also set the type of streams permitted, such as audio only or video only, enable screen sharing. You can also share multiple streams at once. For example, both your camera stream and desktop screen can be streamed simulataneously in case of a webinar. By enabling the Simulcast option, you can enable mutiple streams.
-
 ![Selcted Participants](selected_participants_stream_settings.png)
 
-## Resolution
-Mesibo provides you with the following streaming quality options.Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+## Streaming & Quality Settings
+You can also set the type of streams permitted, such as audio only or video only, enable screen sharing. You can also share multiple streams at once. For example, both your camera stream and desktop screen can be streamed simulataneously in case of a webinar. By enabling the Simulcast option, you can enable mutiple streams.
 
-### VGA - 640x480
-### HD - 1280x720
-### Full HD - 1920x1080  
-### QVGA - 320x240
-### 4K - 3840×2160
+Mesibo provides you with the following streaming quality options.Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
 
 ![Group Calling Quality](stream_quality_settings.png)
 

@@ -63,6 +63,9 @@ Now, for group calling, in addition to above, each member has the following perm
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
 
+![streaming-scenarios](live.jpg)
+
+
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this. You can also checkout a a zoom like application built using mesibo [here](https://mesibo.com/livedemo). 
 
 - **Live Streaming**: A one-to-many group. Only one person has been granted the permission to publish. All other members can only receive the stream ie; They are just listeners. An online webinar, a live class, are examples of such a scenario.
@@ -70,9 +73,8 @@ This offers you a very fine level of control that allows you to have to ensure h
 - **Live Events** Online conferences and events are definitely not a thing of the future anymore. With Mesibo, Multiple streams can be published to multiple groups simultaneously. You can organize your attendees into multiple groups, with custom permissions set toeach member handle all their streams simultaneously without breaking a sweat.
 
 - **On-Demand Streaming** You can upload media to the group, which only selected members can view on-demand, whenever they need it. You can think of OTT platforms like Youtube and Netflix as an example of such applications.
-![streaming-app-scenarios](stream-app-scenarios.jpg)
 
-- **Online Education** Students can join online classes live to only LISTEN to the stream of the teacher- with the student permissions set to can subscribe. They will not be able to publish any of their media(can be enabled if required)- essentially their media controls are muted. Students can also consume educational material and media on demand.
+- **Online Classes** Students can join online classes live to only LISTEN to the stream of the teacher- with the student permissions set to can subscribe. They will not be able to publish any of their media(can be enabled if required)- essentially their media controls are muted. Students can also consume educational material and media on demand.
 
 - **Customer Support** Screen sharing and messaging, where customers or peers  can easily share their screen for debugging/support.
 

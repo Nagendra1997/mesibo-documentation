@@ -62,8 +62,6 @@ Now, for group calling, in addition to above, each member has the following perm
 - can list: If member can get a list of active callers in the group
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
- 
-![streaming-scenarios](live.jpg)
 
 - **Conferencing**: A many-to-many group. All members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. Apps like Zoom, Google Meet,etc are examples of this. You can also checkout a a zoom like application built using mesibo [here](https://mesibo.com/livedemo). 
 

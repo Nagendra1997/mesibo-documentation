@@ -72,26 +72,23 @@ Now, for group calling, in addition to above, each member has the following perm
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
 
+
+In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. So, you have the following permissions set.
 ![conference scenario](conference.png)
-In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant.
 
-
+In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the following permission levels.
 ![webinar scenario](webinar.png)
-In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the permission:
-Who can publish live streams: Selected
-Who can view live streams: Anyone
-Who can view streams list: Anyone
 
-This is for an open webinar. In case of a members only webinar, you can change the permission to Who can view live streams: Members & Who can view streams list: Members 
+This is for an open webinar. So, what would you do in case of a members only webinar? You can change the permission as follows
+Who can view live streams: Members , Who can view streams list: Members 
+
+![class room](classroom-1.png)
+If you have an online classroom, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish- The teachers. The students by default do not have the permission to publish. By default you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
+![student in class room](classroom-2.png)
 
 You can similarly build the set of required permissions for any scenario. Consider an online panel discussion of 4 people. Only these 4 people need to be publishing their streams, while the rest of the members simply listen. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
 
 ![streaming-scenarios](live.jpg)
-
-You can also fine tune the permissions for each and every participant in the group. This is especially useful in the case of an online event or webinar, where you only provide certain participants the permission to publish.
-
-![Selcted Participants](selected_participants_stream_settings.png)
-
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 

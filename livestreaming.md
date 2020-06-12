@@ -30,9 +30,9 @@ What kind of quality do you need for your calls? Mesibo provides you with a wide
 
 ![Group Calling Quality](stream_quality_settings.png)
 
-That's it. You are now good to go!
+That's it. You are now good to go! You can now use Mesibo's group calling APIs and build a conferencing app.
 
-This is good enough for a basic conference call. A one size fits all approach will not work for all your needs. For example, you may need a conference room where only the department heads are allowed to be publishing their stream, while all others are by default muted.There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this?  
+This sounds good enough for a basic conference call. But, a one size fits all approach will not work for all your needs. For example, you may need a conference room where only the department heads are allowed to be publishing their stream, while all others are by default muted.There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this?  
 
 You can achieve this with a fine control on who can connect and publish to your room, what kind of streams they can send or receive. In fact with Mesibo's custom group settings and permissions you can create any kind of streaming and conferencing app you require. 
 

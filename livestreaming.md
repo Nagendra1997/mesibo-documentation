@@ -34,8 +34,10 @@ That's it. You are now good to go!
 
 You can have more finer control about who can connect and publish to your room, what kind of streams they can send or receive etc. With more custom group settings and permissions you can create any kind of streaming and conferencing app you require.
 
+[!conference.png]
 For example, a conference room. You need the members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this? 
 
+[!webinar.png]
 Consider an online panel discussion of 4 people. Only these 4 people need to be publishing their streams, while the rest of the members simply listen. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
 
 ### Group Calling - Group messaging with extra steps

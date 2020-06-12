@@ -34,10 +34,8 @@ That's it. You are now good to go!
 
 You can have more finer control about who can connect and publish to your room, what kind of streams they can send or receive etc. With more custom group settings and permissions you can create any kind of streaming and conferencing app you require.
 
-[!conference.png]
 For example, a conference room. You need the members of the group can publish their own stream and see other's streams. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this? 
 
-[!webinar.png]
 Consider an online panel discussion of 4 people. Only these 4 people need to be publishing their streams, while the rest of the members simply listen. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
 
 ### Group Calling - Group messaging with extra steps
@@ -55,16 +53,7 @@ Mesibo allows you to create groups having a set of users as group members. Once 
 
 In group messaging, when you send a message to the common group every member gets a message notification. The user opens the message and reads it. In the same way, in group calling, when you make a call to the group, every member of the group get's a call notification and each member of the group will connect with the call. 
 
-So, for live conferencing and streaming there is a small addition to setting up a group.
-
-1. Set up group
-2. Get the list of members  
-2. Place a call to group   
-4. Connect to each member of the group over voice and video.
-
-It is that simple!
-
-Remember how you can specify member behaviour in case of group messaging? You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
+You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
 ![Group Permissions](group_member_settings.png)
 
@@ -78,6 +67,19 @@ Now, for group calling, in addition to above, each member has the following perm
 - can list: If member can get a list of active callers in the group
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
+
+![conference scenario](conference.png)
+In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant.
+
+![webinar scenario](webinar.png)
+In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the permission:
+Who can publish live streams: Selected
+Who can view live streams: Anyone
+Who can view streams list: Anyone
+
+This is for an open webinar. In case of a members only webinar, you can change the permission to Who can view live streams: Members & Who can view streams list: Members 
+
+
 
 ![streaming-scenarios](live.jpg)
 

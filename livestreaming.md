@@ -509,27 +509,18 @@ You can subscribe to the stream of each participant  that you get in `Mesibo_onP
 
 ```javascript
 	$scope.subscribe = function(p) {
-		MesiboLog('subscribe', p);The `call` method takes the following parameters:
-526
-- The ID of the HTML element where the video will be rendered
-527
-- A callback function `on_stream` where you will be notified of the stream
-528
-- A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
-529
-
+		MesiboLog('subscribe', p);
 
 		p.isVisible = true;
 		p.isSelected = false;
 		p.isFullScreen = false;
 		p.isConnected = true;
-		
+
 		$scope.updateParticipants(p);
 		$scope.updateStreams(p);	
-
 	}
 	
-		$scope.updateParticipants = function(p){
+	$scope.updateParticipants = function(p){
 		MesiboLog('updateParticipants', p, $scope.participants, $scope.streams);
 		if(!isValid(p))
 			return;
@@ -568,6 +559,8 @@ You can subscribe to the stream of each participant  that you get in `Mesibo_onP
 		});
 
 	}	
-
 ```
+
 ### 4. Displaying the grid of videos
+
+We need to dynamically render the grid of videos from the list of streams. That is, if there is only a single video we need to display the video upto the full width of the screen. But, if there are four streams , we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screeen)

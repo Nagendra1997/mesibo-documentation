@@ -358,6 +358,8 @@ Let us now build a Zoom like Conferencing app using Mesibo Conferencing and Stre
 
 You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
 
+![Mesibo Room](mesibo-room.png)
+
 ### Prerequisites
 
 - We will be using the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
@@ -400,28 +402,37 @@ https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_E
 If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
 
 
-### Creating a Group
+### Creating a Room
 For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
 
 For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
 
 For simplicity, we will only set the room name and pin for now. We will be creating a normal group where all members can send and receive streams.
 
-![room](room.png)
+![create room](create-room.png)
+
+You can choose between two room types: Webinar and conference. In case of webinar, participants should not be allowed to publish by default.
+```javascript
+const GROUP_TYPE_CONFERENCE = 0;
+const GROUP_TYPE_WEBINAR = 1;
+```
+
+We can also set the video quality settings required.
+```javascript
+const STREAM_RESOLUTION_DEFAULT = 0 ;
+const STREAM_RESOLUTION_QVGA  = 1 ;
+const STREAM_RESOLUTION_VGA = 2 ; 
+const STREAM_RESOLUTION_HD = 3 ;
+const STREAM_RESOLUTION_FHD = 4;
+```
 
 If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
 Here, we will use `https://app.mesibo.com/conf/api.php`.
 
 You can create a group, by making a request in the following format:
 ```
-https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN
+https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN&type=ROOM_TYPE&resolution=ROOM_RESOLUTION
 ```
-
-For example, to create a group named `mesibo` you can use the API as follows.
-```
-https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
-```
-
 ## 2. Getting a list of Participants
 
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
@@ -430,17 +441,44 @@ Before we get the list of participants, first we need to initialize mesibo and c
 
 ### Initialize Mesibo
 To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating theuser.
- 
+Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
+You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
+
 You can initialize and run mesibo as follows:
  
 ```javascript
 
-    var mesibo = new Mesibo();
-    mesibo.setAppName(MESIBO_APP_ID);
-    mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
-    mesibo.setListener(MesiboNotify);
-    mesibo.setDatabase("mesibo");
-    mesibo.start();
+	$scope.initMesibo = function(){
+		$scope.mesibo = new Mesibo();
+
+		//Initialize Mesibo
+
+		MesiboLog(MESIBO_APP_ID, $scope.user.token, 'initMesibo');
+		$scope.mesibo.setAppName(MESIBO_APP_ID);
+		if( false == $scope.mesibo.setCredentials($scope.user.token))
+			return -1;
+
+		$scope.mesibo.setListener($scope);
+		$scope.mesibo.setDatabase("mesibo");
+		$scope.mesibo.start();
+
+		$scope.live = $scope.mesibo.initGroupCall();        
+		$scope.live.setRoom($scope.room.gid);
+		$scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address);
+		if(!isValid($scope.publisher))
+			return -1;        
+
+
+		MesiboLog('publisher', $scope.publisher);
+
+		$scope.call = new MesiboCall($scope);
+		$scope.file = new MesiboFile($scope);
+
+		$scope.refresh();
+
+		return 0;
+	}
+
 
 ```
 ### Initialize Group Calling & Streaming
@@ -462,50 +500,88 @@ An example in javascript is as follows,
 Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
 ```javascript
+	$scope.Mesibo_OnParticipants = function(all, latest) {
 
-MesiboListener.prototype.Mesibo_OnParticipants = function(all, latest) {
-	for(var i in latest) {
-		var p = latest[i];
-		subscribe(p);			
+		MesiboLog('Mesibo_OnParticipants', all, latest);
+		for(var i in latest) {
+			var p = latest[i];
+			if(isValid(p.getAddress) && isValid(p.getName()))
+				$scope.addressBook[p.getAddress()] = p.getName();
+			$scope.subscribe(p);			
+			playSound('assets/audio/join');
+			$scope.addTicker(p.getName() + ' has entered the room');
+		}
 	}
-}
+
 
 ```
-The parameter `all` contains an array of all members in the group.
-The parameter `latest` contains the array of users that have just joined the group.
 
 You can now iterate through the list of participants and subscribe to the stream of each participant.
 
-### 3. View the streams of participants in the group
-You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method
-The `call` method takes the following parameters:
+### 3. Subcribe to the streams of participants in the group
+You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update two lists `$scope.participants` & `$scope.streams`. 
+
+```javascript
+	$scope.subscribe = function(p) {
+		MesiboLog('subscribe', p);The `call` method takes the following parameters:
+526
 - The ID of the HTML element where the video will be rendered
+527
 - A callback function `on_stream` where you will be notified of the stream
+528
 - A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
+529
 
-```javascript
-function subscribe(p){
-	p.call(null, "video-stream", on_stream, on_status);
-}
+
+		p.isVisible = true;
+		p.isSelected = false;
+		p.isFullScreen = false;
+		p.isConnected = true;
+		
+		$scope.updateParticipants(p);
+		$scope.updateStreams(p);	
+
+	}
+	
+		$scope.updateParticipants = function(p){
+		MesiboLog('updateParticipants', p, $scope.participants, $scope.streams);
+		if(!isValid(p))
+			return;
+
+		for(var i = 0; i < $scope.participants.length; i++){ 
+			if ( $scope.participants[i].getId() === p.getId()) { 
+				MesiboLog('updateParticipants','existing');
+				$scope.participants[i] = p;
+				return;
+			}
+		}
+
+		$scope.participants.push(p);
+	}
+
+	$scope.updateStreams = function(p){
+		MesiboLog('updateStreams', p, $scope.participants, $scope.streams);
+		if(!isValid(p))
+			return;
+
+		for(var i = 0; i < $scope.streams.length; i++){ 
+			if ( $scope.streams[i].getId() === p.getId()) { 
+				MesiboLog('updateStreams','existing');
+				$scope.streams[i] = p;
+				return;
+			}
+		}
+
+		$scope.streams.push(p);		
+
+		$scope.setGrid($scope.streams.length);
+
+		$scope.$applyAsync(function()  {
+			MesiboLog('call stream', p);
+			p.call(null, "video-"+ p.getId(), $scope.on_stream, $scope.on_status);
+		});
+
+	}	
 
 ```
-
-### Publishing your self stream
-Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
-```javascript
-
-// Create a local participant, Set Publisher name and address
-var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
-
-```    
-You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
-
-```javascript
-function publish(publisher){
-	var o = {};
-	o.groupid = GROUP_ID;	
-	o.source = '720p';	   
-
-	publisher.call(o, 'video-publisher', on_stream, on_status);
-}
-```
+### 4. Displaying the grid of videos

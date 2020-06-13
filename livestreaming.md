@@ -4,7 +4,7 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more. The platform is available both on the cloud and on-premise- at no additional cost.
+Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more. The platform is available both on the cloud and on-premise at no additional cost.
 
 Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application with minimal setup and cost.
  
@@ -26,13 +26,13 @@ For example, say you want to build a conference room to host a virtual meeting. 
 You can set the type of stream you need, such as audio or video or both. For example, you can have an audio only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simulataneously, with your camera feed streaming your own self and the screen containing your presentation.
 
 ### Call Quality 
-What kind of quality do you need for your calls? Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+What kind of quality do you need for your calls? If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but highest quality live stream, turn on 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
 
 ![Group Calling Quality](stream_quality_settings.png)
 
-That's it. You are now good to go!
+That's it. You are now good to go! You can now use Mesibo's group calling APIs and build a conferencing app.
 
-This is good enough for a basic conference call. A one size fits all approach will not work for all your needs. For example, you may need a conference room where only the department heads are allowed to be publishing their stream, while all others are by default muted.There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this?  
+This sounds good enough for a basic conference call. But, a one size fits all approach will not work for all your needs. For example, you may need a conference room where only the department heads are allowed to be publishing their stream, while all others are by default muted.There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this?  
 
 You can achieve this with a fine control on who can connect and publish to your room, what kind of streams they can send or receive. In fact with Mesibo's custom group settings and permissions you can create any kind of streaming and conferencing app you require. 
 
@@ -42,11 +42,10 @@ Mesibo offers you these settings at two levels:
 
 In case of group messaging you have the same type of controls. With group calling you just have an additional set of settings along with these permissons. Mesibo Group Calling APIs simply extend the features offered in group messaging.
 
-### Group Calling - That's Just Group messaging with extra steps!
+### Group Calling - That's just Group messaging with extra steps!
 In your console, along with the settings for a normal group we will now see new settings for group calling. Mesibo APIs for conferencing, extend the core features offered by mesibo [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
 If you are not familiar with using [Mesibo Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis), here's a little recap. Feel free to skip ahead if you are already familiar with group messaging.
-![group-messaging-calling](grp-msg-vs-call.jpg)
 
 ## Group Messaging
 Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. To set up a group with Mesibo APIs you follow the steps below:
@@ -72,26 +71,28 @@ Now, for group calling, in addition to above, each member has the following perm
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
 
+### Conference
+In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. So, you have the following permissions set.
+
 ![conference scenario](conference.png)
-In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant.
 
-
+### Webinar
+In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the following permission levels.
 ![webinar scenario](webinar.png)
-In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the permission:
-Who can publish live streams: Selected
-Who can view live streams: Anyone
-Who can view streams list: Anyone
 
-This is for an open webinar. In case of a members only webinar, you can change the permission to Who can view live streams: Members & Who can view streams list: Members 
+This is for an open webinar. So, what would you do in case of a members only webinar? You can change the permission as follows
+Who can view live streams: Members , Who can view streams list: Members 
 
-You can similarly build the set of required permissions for any scenario. Consider an online panel discussion of 4 people. Only these 4 people need to be publishing their streams, while the rest of the members simply listen. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
+### Class Room
+If you have an online classroom, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish- The teachers.
 
-![streaming-scenarios](live.jpg)
+![class room](classroom-1.png)
 
-You can also fine tune the permissions for each and every participant in the group. This is especially useful in the case of an online event or webinar, where you only provide certain participants the permission to publish.
+The students by default do not have the permission to publish. By default you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
 
-![Selcted Participants](selected_participants_stream_settings.png)
+![student in class room](classroom-2.png)
 
+You can similarly build the set of required permissions for any scenario.In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
 
 Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
 A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 

@@ -356,7 +356,7 @@ Video conferencing apps like Zoom and Google Meet are showing new ways for peopl
 
 Let us now build a Zoom like Conferencing app using Mesibo Conferencing and Streaming APIs.
 
-You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [github](https://github.com/mesibo). 
+You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
 
 ### Prerequisites
 

@@ -349,8 +349,3 @@ Example,
 	remote.muteStatus(true, true); // video mute status-remote source
 	remote.muteStatus(false, true); // audio mute status-remote source
 ```
-
-Putting it all together, let's get started building the full application. 
-
-# Building a Zoom Like conferencing app 
-

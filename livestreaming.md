@@ -481,21 +481,7 @@ You can initialize and run mesibo as follows:
 
 
 ```
-### Initialize Group Calling & Streaming
-
-To set up group calling and streaming call `initGroupCall()` to create the group call object. 
-To link the room with a group, call the `setRoom` method of the group call object, by passing the group-id.
-
-An example in javascript is as follows,
-```javascript
-    
-    //Create group call object
-    var live = mesibo.initGroupCall(); 
-    
-    //Set Group ID
-    live.setRoom(GROUP_ID); 
-    
-```
+### List of Participants
 
 Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 

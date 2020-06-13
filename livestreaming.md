@@ -350,3 +350,158 @@ Example,
 	remote.muteStatus(true, true); // video mute status-remote source
 	remote.muteStatus(false, true); // audio mute status-remote source
 ```
+# Building a Zoom Like Conferencing app 
+
+Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media.
+
+Let us now build a Zoom like Conferencing app using Mesibo Conferencing and Streaming APIs.
+
+You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [github](https://github.com/mesibo). 
+
+### Prerequisites
+
+- We will be using the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
+- Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
+- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
+- A basic understanding of HTML/CSS/JS
+- A minimal understanding of Bootstrap
+- Not an absolute need, but a familiarity with Angular would be good to have
+
+Let's get started!
+
+### Basic Requirements
+
+We need the following features.
+1. A conference room which people can join
+2. A list of participants and a way to update the list of participants as and when people join or leave the room
+3. View the videos of participants in the group
+4. Send my own video, to the group.
+5. Mute audio/video of other participants and my own
+
+## 1. Creating a Conference Room
+
+The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group, will be able to view the streams of other members of the same group.
+
+### Creating a User
+Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+
+So, for the first step we need to create a login form, where we authenticate them and generate a token for them. 
+
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
+```
+https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+```
+2. The user will now need to enter the OTP receieved which we then send to backend for verification with the following request
+```
+https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+```
+If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
+
+
+### Creating a Group
+For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
+
+For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
+
+For simplicity, we will only set the room name and pin for now. We will be creating a normal group where all members can send and receive streams.
+
+If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
+Here, we will use `https://app.mesibo.com/conf/api.php`.
+
+You can create a group, by making a request in the following format:
+```
+https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN
+```
+
+For example, to create a group named `mesibo` you can use the API as follows.
+```
+https://app.mesibo.com/conf/api.php?token=9adbur3748chhsdj8ry88y8fy33fkj&op=setgroup&name=mesibo&pin=1234
+```
+
+## 2. Getting a list of Participants
+
+Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
+
+Before we get the list of participants, first we need to initialize mesibo and connect to a group.
+
+### Initialize Mesibo
+To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating theuser.
+ 
+You can initialize and run mesibo as follows:
+ 
+```javascript
+
+    var mesibo = new Mesibo();
+    mesibo.setAppName(MESIBO_APP_ID);
+    mesibo.setCredentials(MESIBO_ACCESS_TOKEN))
+    mesibo.setListener(MesiboNotify);
+    mesibo.setDatabase("mesibo");
+    mesibo.start();
+
+```
+### Initialize Group Calling & Streaming
+
+To set up group calling and streaming call `initGroupCall()` to create the group call object. 
+To link the room with a group, call the `setRoom` method of the group call object, by passing the group-id.
+
+An example in javascript is as follows,
+```javascript
+    
+    //Create group call object
+    var live = mesibo.initGroupCall(); 
+    
+    //Set Group ID
+    live.setRoom(GROUP_ID); 
+    
+```
+
+Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
+
+```javascript
+
+MesiboListener.prototype.Mesibo_OnParticipants = function(all, latest) {
+	for(var i in latest) {
+		var p = latest[i];
+		subscribe(p);			
+	}
+}
+
+```
+The parameter `all` contains an array of all members in the group.
+The parameter `latest` contains the array of users that have just joined the group.
+
+You can now iterate through the list of participants and subscribe to the stream of each participant.
+
+### 3. View the streams of participants in the group
+You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method
+The `call` method takes the following parameters:
+- The ID of the HTML element where the video will be rendered
+- A callback function `on_stream` where you will be notified of the stream
+- A callback function `on_status` whre you will be notified when the mute status changes, there is a change in quality of the stream,etc
+
+```javascript
+function subscribe(p){
+	p.call(null, "video-stream", on_stream, on_status);
+}
+
+```
+
+### Publishing your self stream
+Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
+```javascript
+
+// Create a local participant, Set Publisher name and address
+var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
+
+```    
+You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
+
+```javascript
+function publish(publisher){
+	var o = {};
+	o.groupid = GROUP_ID;	
+	o.source = '720p';	   
+
+	publisher.call(o, 'video-publisher', on_stream, on_status);
+}
+```

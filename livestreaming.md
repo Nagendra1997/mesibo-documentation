@@ -564,3 +564,48 @@ You can subscribe to the stream of each participant  that you get in `Mesibo_onP
 ### 4. Displaying the grid of videos
 
 We need to dynamically render the grid of videos from the list of streams. That is, if there is only a single video we need to display the video upto the full width of the screen. But, if there are four streams , we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screeen)
+
+To build this feature we will use Bootstrap [Column Wrapping](https://getbootstrap.com/docs/4.0/layout/grid/#column-wrapping).
+
+Based on the `grid_mode` we will define the number of columns our grid will have. Based on the number of streams, we will define the grid mode.
+
+```javascript
+
+	$scope.setGrid = function(stream_count){
+		MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+		var isGridChange = false;
+		var previous_grid_mode = $scope.grid_mode;
+
+		if(!isValid(stream_count) || stream_count <= 0){
+			$scope.grid_mode = DEFAULT_GRID_MODE;
+			return isGridChange;
+		}
+		
+
+		if(1 == stream_count)
+			$scope.grid_mode = 1;
+		else if(stream_count >=2 && stream_count <=4 )
+			$scope.grid_mode = 2;
+		else if(stream_count >=5 && stream_count <=9 )
+			$scope.grid_mode = 3;
+		else if(stream_count >=10 && stream_count <=16 )
+			$scope.grid_mode = 4;
+		else
+			$scope.grid_mode = 4; /** Maximum 16 thumbnails can be displayed for now **/
+
+		MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+
+		if(previous_grid_mode != $scope.isGridChange)
+			isGridChange = true;
+
+		$scope.refresh();
+
+		return isGridChange;
+	}
+
+
+```
+And our grid rendering is as follows
+```html
+<div ng-repeat="s in streams track by $index" ng-if="streams[$index] != null"  class ="pl-0 pr-0" ng-class="{'col-md-12': grid_mode==1, 'col-md-6': grid_mode==2, 'col-md-4': grid_mode==3, 'col-md-3': grid_mode==4>
+```

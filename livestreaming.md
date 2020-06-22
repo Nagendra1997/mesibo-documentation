@@ -583,17 +583,10 @@ If the entered OTP matches, we generate a token for that user, you will receive 
 ### Creating a Room
 For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
 
-For better safety and privacy, we can also set a pin or password to our group. When anyone needs to enter the group they need to enter this pin. This is optional. If you do not need this, do not use the pin parmeter while sending the request.
+For better safety and privacy, participants also will need to enter a pin to join then group. Mesibo will automatically generate a pin for you.
 
-For simplicity, we will only set the room name and pin for now. We will be creating a normal group where all members can send and receive streams.
+Since we are creating a conference room, We will be creating a normal group where all members can send and receive streams.
 
-![create room](create-room.png)
-
-You can choose between two room types: Webinar and conference. In case of webinar, participants should not be allowed to publish by default.
-```javascript
-const GROUP_TYPE_CONFERENCE = 0;
-const GROUP_TYPE_WEBINAR = 1;
-```
 
 We can also set the video quality settings required.
 ```javascript
@@ -609,7 +602,7 @@ Here, we will use `https://app.mesibo.com/conf/api.php`.
 
 You can create a group, by making a request in the following format:
 ```
-https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&pin=ROOM_PIN&type=ROOM_TYPE&resolution=ROOM_RESOLUTION
+https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&type=ROOM_TYPE&resolution=ROOM_RESOLUTION
 ```
 ## 2. Getting a list of Participants
 

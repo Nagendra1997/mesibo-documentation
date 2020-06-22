@@ -7,14 +7,17 @@ title: Mesibo Conferencing and Streaming Platform- Conference Calling, Live Stre
 Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events and webinars, on-demand streaming and more. The platform is available both on the cloud and on-premise at no additional cost.
 
 Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application with minimal setup and cost.
- 
-- With efficient load balancing, add as many servers as you need
-- Just under a 700KB memory footprint. You can run Mesibo's platform on any server with minimum resources, even on something like a Raspberry Pi
-- Supported codecs include VP8, VP9, H.264, H.265, Opus, Opus multichannel for high quality streaming
-- Fine control over all video & audio parameters and user permissions
-- Run the entire platform on your own premise at no additional cost.
-- Compliant with GDPR and HIPAA
- 
+
+- Just under 700KB footprint makes mesibo, the lightest conferencing server in the world. You can run mesibo's conferencing platform on any server with minimum resources, even on something like a Raspberry Pi.
+
+- Capacity on Demand - Elastic architecture lets you use Kubernetes or Docker Swarm orchestration to scale-up or scale-down capacity on demand!
+
+- Simultaneous publishing to multiple groups - this unique mesibo capability enabled you to make interesting use cases for live-streaming.
+Standard, HD, Full-HD, and 4K conference rooms - you can even select different resolution per participant, e.g HD for key speakers and low resolution for others.
+
+- Per participant authentication, permissions, and controls of the resolution, bandwidth, CPU, and other parameters.
+Run the entire platform on your own premise at no additional cost.
+
 > **Disclaimer** : The Conferencing and Streaming APIs are currently under development for more platforms and will be continously updated. Please ensure that you are using the latest version of Mesibo APIs and documentation.
 
 # Mesibo Conferencing and Streaming 

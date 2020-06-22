@@ -16,6 +16,9 @@ Enable high quality streaming options at scale with adaptive  resolutions and fr
 mesibo offers a transparent pricing model with no hidden charges. Zero commitments. There is no additional charge to your consumption of the streaming service. You are only charged for the bandwidth is consumed. Typically a 60 minute call with a group of 4 participants should consume X bytes and you will be charged X*($y/ byte) = $Z
 
 
+![mesibo conf features](mesibo_conferencing.jpg)
+
+
 
 
 

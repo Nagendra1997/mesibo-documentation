@@ -76,8 +76,8 @@ To synchronize contacts, you need to invoke this API with the following paramete
 
 - `op` = “getcontacts”
 - `token` = Application Token obtained by authenticating a phone number. If the token generated is not linked with a phone number you will get `AUTHFAIL` in the response
-- `ts` = Last known sync time. You only need to fetch the changes after your previous sync. For the first time sync call pass `0` ie; `ts=0`
-- `phones` An array of phone numbers who you need to check if they are using the mesibo demo app. Don not pass this parameter if you need to get a list of all contacts who are using mesibo and groups that you are a part of.
+- `ts` = Last known sync time. You only need to fetch the changes after your previous sync. For the first time sync call pass `0` 
+- `phones` An array of phone numbers who you need to check if they are using the mesibo demo app.  Do not pass this parameter if you need to get a list of all contacts from the previous sync and a list of groups you are member of. 
 
 For example, 
 ```

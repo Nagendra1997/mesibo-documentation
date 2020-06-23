@@ -4,7 +4,7 @@ keywords: messaging platform, chat api platform, voice, video calling, mesibo co
 title: Mesibo Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
 ---
 
-Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming and more. The platform is available both on the cloud and on-premise at no additional cost.
+Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more. The platform is available both on the cloud and on-premise at no additional cost.
 
 Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application with minimal setup and cost.
 
@@ -57,66 +57,66 @@ Mesibo allows you to create groups having a set of users as group members. Once 
 2. Add Members.
 3. Grant Permissions about who can send and received messages. For example, you can set permissions such that only members can send, only selected members can send, only Selected Members can receive, etc. You can also grant admin rights to who can change group settings, who can remove members, etc
 
-In group messaging, when you send a message to the common group every member gets a message notification. The user opens the message and reads it. In the same way, in group calling, when you make a call to the group, every member of the group get's a call notification and each member of the group will connect with the call. 
+In group messaging, when you send a message to the common group every member gets a message notification. The user opens the message and reads it. In the same way, in group calls, when you make a call to the group, every member of the group gets a call notification and each member of the group will connect with the call. 
 
-You can restrict which member can send a message,who can only recieve message, etc. By specifying member behaviour and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
+You can restrict which member can send a message, who can only receive a message, etc. By specifying member behavior and permissions you can build [groups of different types](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
 ![Group Permissions](group_member_settings.png)
 
-In case of group messaging, each member has the following permissions:
-- can send :  If member can send messages to the group
-- can receive: If member can receive messages from the group
+In the case of group messaging, each member has the following permissions:
+- can send:  If the member can send messages to the group
+- can receive: If the member can receive messages from the group
 
 Now, for group calling, in addition to above, each member has the following permissions:
-- can publish :  If member can make (publish) group voice or video calls
-- can subscribe: If member can subscribe to group voice or video calls 
-- can list: If member can get a list of active callers in the group
+- can publish:  If the member can make (publish) group voice or video calls
+- can subscribe: If the member can subscribe to group voice or video calls 
+- can list: If the member can get a list of active callers in the group
 
 This offers you a very fine level of control that allows you to have to ensure higher levels of privacy and security. It also helps you build exactly what you need your application to be, with maximum customizability. If you can think it, you can build it. Any type of conferencing and streaming app that you need can be easily configured.
 
 ### Conference
-In a conference room you need the members of the group to publish their own stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. So, you have the following permissions set.
+In a conference room, you need the members of the group to publish their stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. So, you have the following permissions set.
 
 ![conference scenario](conference.png)
 
 ### Webinar
-In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their own streams. This can be achieved with the following permission levels.
+In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their streams. This can be achieved with the following permission levels.
 ![webinar scenario](webinar.png)
 
-This is for an open webinar. So, what would you do in case of a members only webinar? You can change the permission as follows
-Who can view live streams: Members , Who can view streams list: Members 
+This is for an open webinar. So, what would you do in case of a members-only webinar? You can change the permission as follows
+Who can view live streams: Members, Who can view streams list: Members 
 
 ### Class Room
 If you have an online classroom, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish- The teachers.
 
 ![class room](classroom-1.png)
 
-The students by default do not have the permission to publish. By default you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
+The students by default do not have the permission to publish. By default, you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
 
 ![student in class room](classroom-2.png)
 
-You can similarly build the set of required permissions for any scenario.In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
+You can similarly build the set of required permissions for any scenario. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
 
-Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platorm.
-A detailed documentaion of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
+Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platform.
+Detailed documentation of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
 
 ### Create a group
 Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.
 
-### Get list of members
+### Get the list of members
 When any member joins the group, they will be getting a list of other members in the group. The callback function `Mesibo_onParticipant` will be called.
 
-### Place a call to group
-To place a call to the group, first you need initialize the group call. For this you need to use `initGroupCall()` which will provide you with a group call object and then link it with a group using `setRoom`. 
+### Place a call to the group
+To place a call to the group, first, you need to initialize the group call. For this, you need to use `initGroupCall()` which will provide you with a group call object and then link it with a group using `setRoom`. 
 
 ### Connect to voice and video of members
 Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
 
 # Mesibo Live Demo App
 
-In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs. First we will build a simple, basic version of the group calling app using basic HTML/CSS and Javascript . Then we will build the complete app with all the necessary features.
+In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs. First, we will build a simple, basic version of the group calling app using basic HTML/CSS and Javascript. Then we will build the complete app with all the necessary features.
 
-You can download the source code for the basic group calling demo [here](https://github.com/mesibo) to understand the basic functionality of conferencing and steaming APIs
+You can download the source code for the basic group calling demo [here](https://github.com/mesibo) to understand the basic functionality of conferencing and streaming APIs
 
 Checkout [Mesibo Live Demo](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app. You can also download the entire source code from [github](https://github.com/mesibo). 
 
@@ -129,7 +129,7 @@ The basic conferencing demo will help you get familiar with using mesibo confere
 Once you are familiar with the basic conferencing functionality and the API functions, you can go on to build a full-featured conferencing app with unlimited participants, group messaging, personal chat, etc. - [mesibo Live](https://github.com/mesibo/conferencing/livedemo). You can also try it here [https://mesibo.com/livedemo](https://mesibo.com/livedemo)
 
 ### Prerequisites
-- This demo uses mesibo Javascript SDK. Ensure that you are familiar with using it.
+- This demo uses the mesibo Javascript SDK. Ensure that you are familiar with using it.
 - Familiarity with mesibo API. Refer [Getting Started Guide](https://mesibo.com/documentation/get-started/) and [First App Tutorial](https://mesibo.com/documentation/tutorials/first-app/#preparation) if you are not familiar.
 - Familiarity with mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
 - A basic understanding of HTML/CSS/JS
@@ -180,7 +180,7 @@ To create our first user, enter the address as `user0` and the app id as `basicr
 const MESIBO_APP_ID = 'basicroom';
 ```
 
-Similarly, create four more users with the same App ID `basicroom`. 
+Similarly, create four more users with the same App ID `basic room`. 
 
 You now have five users
 ![Conference Users](images/users_list.png)
@@ -470,7 +470,7 @@ function streamFromScreen() {
 
 ### Muting Streams
 
-We can mute video and audio locally, for the streams that we are viewing. You can use `toggleMute` method to toggle the audio and video status of a stream. 
+We can mute video and audio locally, for the streams that we are viewing. You can use the `toggleMute` method to toggle the audio and video status of a stream. 
 
 ```javascript
 Stream.toggleMute(video, remote)
@@ -555,17 +555,17 @@ We need the following features.
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
 3. View the videos of participants in the group
-4. Send my own video, to the group.
+4. Send my video, to the group.
 5. Mute audio/video of other participants and my own
 
 ## 1. Creating a Conference Room
 
-The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group, will be able to view the streams of other members of the same group.
+The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group will be able to view the streams of other members of the same group.
 
 ### Creating a User
-Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user, while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
 
-So, for the first step we need to create a login form, where we authenticate them and generate a token for them.
+So, for the first step, we need to create a login form, where we authenticate them and generate a token for them.
 
 ![login](login.png)
 
@@ -573,7 +573,7 @@ So, for the first step we need to create a login form, where we authenticate the
 ```
 https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
-2. The user will now need to enter the OTP receieved which we then send to backend for verification with the following request
+2. The user will now need to enter the OTP received which we then send to the backend for verification with the following request
 ```
 https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
@@ -581,7 +581,7 @@ If the entered OTP matches, we generate a token for that user, you will receive 
 
 
 ### Creating a Room
-For a conference room we need to create a group that other people can join. The creator of the room, will configure all the room properties.
+For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties.
 
 For better safety and privacy, participants also will need to enter a pin to join then group. Mesibo will automatically generate a pin for you.
 
@@ -600,55 +600,55 @@ const STREAM_RESOLUTION_FHD = 4;
 If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
 Here, we will use `https://app.mesibo.com/conf/api.php`.
 
-You can create a group, by making a request in the following format:
+You can create a group, by making an API request in the following format:
 ```
 https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&type=ROOM_TYPE&resolution=ROOM_RESOLUTION
 ```
 ## 2. Getting a list of Participants
 
-Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their own streams.
+Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.
 
 Before we get the list of participants, first we need to initialize mesibo and connect to a group.
 
 ### Initialize Mesibo
-To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating theuser.
+To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating the user.
 Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
-You are the publisher. As a member of the conference room group you can stream your own self, which other members can view.
+You are the publisher. As a member of the conference room group, you can stream your self, which other members can view.
 
 You can initialize and run mesibo as follows:
  
 ```javascript
 
-	$scope.initMesibo = function(){
-		$scope.mesibo = new Mesibo();
+    $scope.initMesibo = function(){
+        $scope.mesibo = new Mesibo();
 
-		//Initialize Mesibo
+        //Initialize Mesibo
 
-		MesiboLog(MESIBO_APP_ID, $scope.user.token, 'initMesibo');
-		$scope.mesibo.setAppName(MESIBO_APP_ID);
-		if( false == $scope.mesibo.setCredentials($scope.user.token))
-			return -1;
+        MesiboLog(MESIBO_APP_ID, $scope.user.token, 'initMesibo');
+        $scope.mesibo.setAppName(MESIBO_APP_ID);
+        if( false == $scope.mesibo.setCredentials($scope.user.token))
+            return -1;
 
-		$scope.mesibo.setListener($scope);
-		$scope.mesibo.setDatabase("mesibo");
-		$scope.mesibo.start();
+        $scope.mesibo.setListener($scope);
+        $scope.mesibo.setDatabase("mesibo");
+        $scope.mesibo.start();
 
-		$scope.live = $scope.mesibo.initGroupCall();        
-		$scope.live.setRoom($scope.room.gid);
-		$scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address);
-		if(!isValid($scope.publisher))
-			return -1;        
+        $scope.live = $scope.mesibo.initGroupCall();        
+        $scope.live.setRoom($scope.room.gid);
+        $scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address);
+        if(!isValid($scope.publisher))
+            return -1;        
 
 
-		MesiboLog('publisher', $scope.publisher);
+        MesiboLog('publisher', $scope.publisher);
 
-		$scope.call = new MesiboCall($scope);
-		$scope.file = new MesiboFile($scope);
+        $scope.call = new MesiboCall($scope);
+        $scope.file = new MesiboFile($scope);
 
-		$scope.refresh();
+        $scope.refresh();
 
-		return 0;
-	}
+        return 0;
+    }
 
 
 ```
@@ -657,84 +657,84 @@ You can initialize and run mesibo as follows:
 Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
 ```javascript
-	$scope.Mesibo_OnParticipants = function(all, latest) {
+    $scope.Mesibo_OnParticipants = function(all, latest) {
 
-		MesiboLog('Mesibo_OnParticipants', all, latest);
-		for(var i in latest) {
-			var p = latest[i];
-			if(isValid(p.getAddress) && isValid(p.getName()))
-				$scope.addressBook[p.getAddress()] = p.getName();
-			$scope.subscribe(p);			
-			playSound('assets/audio/join');
-			$scope.addTicker(p.getName() + ' has entered the room');
-		}
-	}
+        MesiboLog('Mesibo_OnParticipants', all, latest);
+        for(var i in latest) {
+            var p = latest[i];
+            if(isValid(p.getAddress) && isValid(p.getName()))
+                $scope.addressBook[p.getAddress()] = p.getName();
+            $scope.subscribe(p);            
+            playSound('assets/audio/join');
+            $scope.addTicker(p.getName() + ' has entered the room');
+        }
+    }
 
 
 ```
 
 You can now iterate through the list of participants and subscribe to the stream of each participant.
 
-### 3. Subcribe to the streams of participants in the group
-You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update two lists `$scope.participants` & `$scope.streams`. 
+### 3. Subscribe to the streams of participants in the group
+You can subscribe to the stream of each participant that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update two lists `$scope.participants` & `$scope.streams`. 
 
 ```javascript
-	$scope.subscribe = function(p) {
-		MesiboLog('subscribe', p);
+    $scope.subscribe = function(p) {
+        MesiboLog('subscribe', p);
 
-		p.isVisible = true;
-		p.isSelected = false;
-		p.isFullScreen = false;
-		p.isConnected = true;
+        p.isVisible = true;
+        p.isSelected = false;
+        p.isFullScreen = false;
+        p.isConnected = true;
 
-		$scope.updateParticipants(p);
-		$scope.updateStreams(p);	
-	}
-	
-	$scope.updateParticipants = function(p){
-		MesiboLog('updateParticipants', p, $scope.participants, $scope.streams);
-		if(!isValid(p))
-			return;
+        $scope.updateParticipants(p);
+        $scope.updateStreams(p);    
+    }
+    
+    $scope.updateParticipants = function(p){
+        MesiboLog('updateParticipants', p, $scope.participants, $scope.streams);
+        if(!isValid(p))
+            return;
 
-		for(var i = 0; i < $scope.participants.length; i++){ 
-			if ( $scope.participants[i].getId() === p.getId()) { 
-				MesiboLog('updateParticipants','existing');
-				$scope.participants[i] = p;
-				return;
-			}
-		}
+        for(var i = 0; i < $scope.participants.length; i++){ 
+            if ( $scope.participants[i].getId() === p.getId()) { 
+                MesiboLog('updateParticipants','existing');
+                $scope.participants[i] = p;
+                return;
+            }
+        }
 
-		$scope.participants.push(p);
-	}
+        $scope.participants.push(p);
+    }
 
-	$scope.updateStreams = function(p){
-		MesiboLog('updateStreams', p, $scope.participants, $scope.streams);
-		if(!isValid(p))
-			return;
+    $scope.updateStreams = function(p){
+        MesiboLog('updateStreams', p, $scope.participants, $scope.streams);
+        if(!isValid(p))
+            return;
 
-		for(var i = 0; i < $scope.streams.length; i++){ 
-			if ( $scope.streams[i].getId() === p.getId()) { 
-				MesiboLog('updateStreams','existing');
-				$scope.streams[i] = p;
-				return;
-			}
-		}
+        for(var i = 0; i < $scope.streams.length; i++){ 
+            if ( $scope.streams[i].getId() === p.getId()) { 
+                MesiboLog('updateStreams','existing');
+                $scope.streams[i] = p;
+                return;
+            }
+        }
 
-		$scope.streams.push(p);		
+        $scope.streams.push(p);        
 
-		$scope.setGrid($scope.streams.length);
+        $scope.setGrid($scope.streams.length);
 
-		$scope.$applyAsync(function()  {
-			MesiboLog('call stream', p);
-			p.call(null, "video-"+ p.getId(), $scope.on_stream, $scope.on_status);
-		});
+        $scope.$applyAsync(function()  {
+            MesiboLog('call stream', p);
+            p.call(null, "video-"+ p.getId(), $scope.on_stream, $scope.on_status);
+        });
 
-	}	
+    }    
 ```
 
 ### 4. Displaying the grid of videos
 
-We need to dynamically render the grid of videos from the list of streams. That is, if there is only a single video we need to display the video upto the full width of the screen. But, if there are four streams , we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screeen)
+We need to dynamically render the grid of videos from the list of streams. That is if there is only a single video we need to display the video up to the full width of the screen. But, if there are four streams, we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screen)
 
 To build this feature we will use Bootstrap [Column Wrapping](https://getbootstrap.com/docs/4.0/layout/grid/#column-wrapping).
 
@@ -742,37 +742,37 @@ Based on the `grid_mode` we will define the number of columns our grid will have
 
 ```javascript
 
-	$scope.setGrid = function(stream_count){
-		MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
-		var isGridChange = false;
-		var previous_grid_mode = $scope.grid_mode;
+    $scope.setGrid = function(stream_count){
+        MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+        var isGridChange = false;
+        var previous_grid_mode = $scope.grid_mode;
 
-		if(!isValid(stream_count) || stream_count <= 0){
-			$scope.grid_mode = DEFAULT_GRID_MODE;
-			return isGridChange;
-		}
-		
+        if(!isValid(stream_count) || stream_count <= 0){
+            $scope.grid_mode = DEFAULT_GRID_MODE;
+            return isGridChange;
+        }
+        
 
-		if(1 == stream_count)
-			$scope.grid_mode = 1;
-		else if(stream_count >=2 && stream_count <=4 )
-			$scope.grid_mode = 2;
-		else if(stream_count >=5 && stream_count <=9 )
-			$scope.grid_mode = 3;
-		else if(stream_count >=10 && stream_count <=16 )
-			$scope.grid_mode = 4;
-		else
-			$scope.grid_mode = 4; /** Maximum 16 thumbnails can be displayed for now **/
+        if(1 == stream_count)
+            $scope.grid_mode = 1;
+        else if(stream_count >=2 && stream_count <=4 )
+            $scope.grid_mode = 2;
+        else if(stream_count >=5 && stream_count <=9 )
+            $scope.grid_mode = 3;
+        else if(stream_count >=10 && stream_count <=16 )
+            $scope.grid_mode = 4;
+        else
+            $scope.grid_mode = 4; /** Maximum 16 thumbnails can be displayed for now **/
 
-		MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+        MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
 
-		if(previous_grid_mode != $scope.isGridChange)
-			isGridChange = true;
+        if(previous_grid_mode != $scope.isGridChange)
+            isGridChange = true;
 
-		$scope.refresh();
+        $scope.refresh();
 
-		return isGridChange;
-	}
+        return isGridChange;
+    }
 
 
 ```

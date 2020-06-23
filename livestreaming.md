@@ -25,11 +25,10 @@ Mesibo has made it simple to use and build with group calling and streaming APIs
 
 For example, say you want to build a conference room to host a virtual meeting. A conference room is a group, where members are streaming their camera feed. So to create a group conference call, you need to create a group. You can [create a group](https://mesibo.com/documentation/api/backend-api/#group-management-apis) from the console or use the backend APIs. Then, you can enable the required features for the calls. 
 
-### Call Type
+### Setting up a call
 You can set the type of stream you need, such as audio or video or both. For example, you can have an audio-only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simultaneously, with your camera feed streaming your self and the screen containing your presentation.
 
-### Call Quality 
-What kind of quality do you need for your calls? If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+Next, decide what kind of quality you need for your calls. If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
 
 ![Group Calling Quality](stream_quality_settings.png)
 
@@ -595,6 +594,7 @@ const STREAM_RESOLUTION_QVGA  = 1 ;
 const STREAM_RESOLUTION_VGA = 2 ; 
 const STREAM_RESOLUTION_HD = 3 ;
 const STREAM_RESOLUTION_FHD = 4;
+const STREAM_RESOLUTION_UHD = 5;
 ```
 
 If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.

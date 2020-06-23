@@ -863,6 +863,8 @@ There are three possible states for a stream in a call:
 - `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
 - `MESIBO_CALLSTATUS_COMPLETE`: Call has ended , terminate the stream.
 
+You will be getting the state of a stream in the callback function `on_status`
+
 For each state we need to display appropriate indicators. For example, if the call is reconnecting then we will show a spinner for that stream and once it is up, we hide the spinner. Also, when the call is complete we remove the stream from the streams area (Refer to `on_hangup`)
 
 ```javascript

@@ -20,6 +20,15 @@ This will inform the backend to send an OTP to the phone number the user signs u
 ```
 https://app.mesibo.com/conf/api.php? op=login&phone=USER_PHONE_TO_SEND_OTP&name=USER_NAME&appid=MESIBO_APPLICATION_ID
 ```
+For example, 
+```
+https://app.mesibo.com/conf/api.php? op=login&phone=USER_PHONE_TO_SEND_OTP&name=USER_NAME&appid=MESIBO_APPLICATION_ID
+```
+
+```
+{op: "login", ts: 1592890269, result: "OK"}
+```
+
 
 This will verify the OTP entered in the next step if it matches the one sent in the previous sign-up step. If OTP matches then authentication is successful and in the response of this request you will get the access token generated for that user.
 ```
@@ -33,6 +42,7 @@ In the case of Whatsapp and other messaging apps, the displayed contact name is 
 
 To do this you need to synchronize the contacts with the mesibo backend which has a list of all users who are using the demo app. First, you need to obtain the list of contacts stored on your device and validate them. Next you send the list of contacts to the backend and mark them as synchronized. This is convenient because in the future when you need to sync again you only need to send the contacts which are not previously synced up.
 
+To use this the token generated must be by authenticating a phone number. 
 
 For contact synchronization in the demo app, mesibo provides the following private API
 ```
@@ -43,10 +53,13 @@ In the response of `getcontacts` request you will get:
 1. A list of your contacts who are using the demo app
 2. The latest status and profile pictures of each of these contacts, that they are using on the demo app. 
 3. Your own profile picture and status in the demo app
+4. If you have passed an empty array to phones parameter or if you have not passed the phones parameter, you will get the list of contacts already on mesibo having your phone number as contact and it will also give
 
 Now, the backend/host will carry out the synchronization process and store the results in the database. You can take a look at the mesibo messenger backend database schema and use it as a reference. Your backend also needs to inform the appropriate users who are having the synced user in their contact list. This way your users will get to know who is already using your app when they signup and also be notified when a new person (who is already in your contacts) joins the app.
 
-On the demo app, when any new user/contact joins the app you will be notified through `Mesibo_onMessage`
+
+
+
 
 
 

@@ -636,6 +636,9 @@ To enter a room you need to enter a `room-ID` and a `room pin`. In code, you tak
 https://app.mesibo.com/conf/api.php?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
 
+![Enter Room](enter-room.png)
+
+
 ## 2. Getting a list of Participants
 
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.
@@ -819,9 +822,60 @@ You can configure two things while placing a call to the group.
 - `audio` Set it to false to disable audio
 - `video` Set it to false to disable video
 
-Before making the call, you can initialize the `audio` and `video` parameters to make it an audio or video only call to the group. Refer to the `connectStream`  function in `controller.js` which eventually calls the `call` method of the stream object to place a all to the group.  
+Before making the call, you can initialize the `audio` and `video` parameters to make it an audio or video only call to the group. Refer to the `connectStream`  function in `controller.js` which eventually calls the `call` method of the stream object to place a all to the group. 
+
+Just like other streams, we call `attach` for the stream with an HTML element in `on_stream`
 
 ### 5. Mute participants
 In case of mute there are two possibilities.
 - The remote end can mute  their stream
 - You can mute the participant stream a your end
+
+The mute status is reflected in the `stream.muteStatus` method of that stream and we will display the appropriate icon. 
+```javascript
+        $scope.getAudioStatusClass = function(stream){
+                if(!isValid(stream))
+                        return "";
+
+                if(stream.muteStatus(false) == true)
+                        return "fas fa-microphone-slash";
+
+                return "fas fa-microphone";
+        }
+
+        $scope.getVideoStatusClass = function(stream){
+                if(!isValid(stream))
+                        return "";
+
+                if(stream.muteStatus(true) == true)
+                        return "fas fa-video-slash";
+
+                return "fas fa-video";
+        }
+
+```
+The above is for local mute. When remote end mutes you can pass an additional parameter to the `muteStatus` method.
+`stream.muteStatus(true, true)`  for remote video status and `stream.muteStatus(false, true)`. We display an prropriate icon when remote audio/video is muted.
+
+### 6. Stream Status
+There are three possible states for a stream in a call:
+- `MESIBO_CALLSTATUS_CHANNELUP` : Call is established and you are getting the stream
+- `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
+- `MESIBO_CALLSTATUS_COMPLETE`: Call has ended , terminate the stream.
+
+For each state we need to display appropriate indicators. For example, if the call is reconnecting then we will show a spinner for that stream and once it is up, we hide the spinner. Also, when the call is complete we remove the stream from the streams area (Refer to `on_hangup`)
+
+```javascript
+            if(MESIBO_CALLSTATUS_COMPLETE  == status){
+                    $scope.on_hangup(p, true);
+            }
+
+            else if(MESIBO_CALLSTATUS_CHANNELUP == status){
+                    $scope.streams[i].isConnected = true;
+            }
+            else if(MESIBO_CALLSTATUS_RECONNECTING == status){
+                    MesiboLog('show-spinner');
+                    $scope.streams[i].isConnected = false;
+            }
+```
+These are some of the major features of the live demo app. This tutorial is intended as a birds-eye view of the app. You can explore the [demo app](https://mesibo.com/livedemo) and take a look at the [source code](https://github.com/mesibo/conferencing/tree/master/live-demo) to dig deeper.

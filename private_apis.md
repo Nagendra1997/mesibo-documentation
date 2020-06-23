@@ -77,11 +77,11 @@ To synchronize contacts, you need to invoke this API with the following paramete
 - `op` = “getcontacts”
 - `token` = Application Token obtained by authenticating a phone number. If the token generated is not linked with a phone number you will get `AUTHFAIL` in the response
 - `ts` = Last known sync time. You only need to fetch the changes after your previous sync. For the first time sync call pass `0` ie; `ts=0`
-- `phones` An array of phone numbers who you need to check if they are using the mesibo demo app. Pass an empty array to get a list of all contacts who are having your phone number in their contact and are using mesibo and groups.
+- `phones` An array of phone numbers who you need to check if they are using the mesibo demo app. Don not pass this parameter if you need to get a list of all contacts who are using mesibo and groups that you are a part of.
 
 For example, 
 ```
-https://app.mesibo.com/conf/api.php?op=getcontacts&token=bfab7bxxxxxxxxxxxxxxxxxxxxxxxxxx&ts=0&phones=[]
+https://app.mesibo.com/conf/api.php?op=getcontacts&token=bfab7bxxxxxxxxxxxxxxxxxxxxxxxxxx&ts=0
 ```
 
 Your response will look like
@@ -109,20 +109,7 @@ The contacts array `response['contacts]` will look like below
 .
 .
 ```
-2. The latest status and profile pictures of each of these contacts, that they are using on the demo app.
-
-3. Your own profile picture and status in the demo app, `response['u']` 
-```
-connection_status: ""
-name: ""
-phone: "91xxxxxxxxxx"
-photo: "1587123154-3c7462a54cfb2ded.jpg"
-status: "update profile"
-ts: "1592891231"
-```
-
-4. If you have passed an empty array to phones parameter or if you have not passed the phones parameter, you will get the list of contacts already on mesibo having your phone number as contact and it will also include groups that you are a part of.
-In this case `response['contacts]` will also contain the groups that you are a part of.
+If you have not passed the phones parameter, you will get the list of contacts already on mesibo having your phone number as contact and it will also include groups that you are a part of. In this case `response['contacts]` will also contain the groups that you are a part of.
 For example,
 ```
 10:{
@@ -135,6 +122,19 @@ status: ""
 ts: "1566287105"
 }
 ```
+
+2. The latest status and profile pictures of each of these contacts, that they are using on the demo app.
+
+3. Your own profile picture and status in the demo app, `response['u']` 
+```
+connection_status: ""
+name: ""
+phone: "91xxxxxxxxxx"
+photo: "1587123154-3c7462a54cfb2ded.jpg"
+status: "update profile"
+ts: "1592891231"
+```
+
 
 Now, the backend/host will carry out the synchronization process and store the results in the database. You can take a look at the mesibo messenger backend database schema and use it as a reference. Your backend also needs to inform the appropriate users who are having the synced user in their contact list. This way your users will get to know who is already using your app when they signup and also be notified when a new person (who is already in your contacts) joins the app.
 

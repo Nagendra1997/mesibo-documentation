@@ -545,6 +545,7 @@ You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a
 - A basic understanding of HTML/CSS/JS
 - A minimal understanding of Bootstrap
 - Not an absolute need, but a familiarity with Angular would be good to have
+- Note that in this tutorial the word `stream` may refer to both audio or video or both. When we say stream we are just talking about some form of media
 
 Let's get started!
 
@@ -706,8 +707,8 @@ Now you will get a list of group members through the callback function `Mesibo_o
 
 You can now iterate through the list of participants and subscribe to the stream of each participant.
 
-### 3. Subscribe to the streams of participants in the group
-You can subscribe to the stream of each participant that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update two lists `$scope.participants` & `$scope.streams`. 
+### 3. View the videos of participants in the group
+You can subscribe to the stream of each participant that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update the list `$scope.streams` as and when people join and leave the room.
 
 ```javascript
     $scope.subscribe = function(p) {
@@ -722,21 +723,6 @@ You can subscribe to the stream of each participant that you get in `Mesibo_onPa
         $scope.updateStreams(p);    
     }
     
-    $scope.updateParticipants = function(p){
-        MesiboLog('updateParticipants', p, $scope.participants, $scope.streams);
-        if(!isValid(p))
-            return;
-
-        for(var i = 0; i < $scope.participants.length; i++){ 
-            if ( $scope.participants[i].getId() === p.getId()) { 
-                MesiboLog('updateParticipants','existing');
-                $scope.participants[i] = p;
-                return;
-            }
-        }
-
-        $scope.participants.push(p);
-    }
 
     $scope.updateStreams = function(p){
         MesiboLog('updateStreams', p, $scope.participants, $scope.streams);
@@ -763,9 +749,9 @@ You can subscribe to the stream of each participant that you get in `Mesibo_onPa
     }    
 ```
 
-### 4. Displaying the grid of videos
+### Displaying the grid of videos
 
-We need to dynamically render the grid of videos from the list of streams. That is if there is only a single video we need to display the video up to the full width of the screen. But, if there are four streams, we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screen)
+We need to dynamically render the grid of videos from the list of streams. That is if there is only a single video we need to display the video up to the full width of the screen. But, if there are four streams, we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screen). As and when participants leave and join the group, our grid mode may change.
 
 To build this feature we will use Bootstrap [Column Wrapping](https://getbootstrap.com/docs/4.0/layout/grid/#column-wrapping).
 
@@ -811,3 +797,31 @@ And our grid rendering is as follows
 ```html
 <div ng-repeat="s in streams track by $index" ng-if="streams[$index] != null"  class ="pl-0 pr-0" ng-class="{'col-md-12': grid_mode==1, 'col-md-6': grid_mode==2, 'col-md-4': grid_mode==3, 'col-md-3': grid_mode==4>
 ```
+### 4. Publish my stream to the group.
+On this demo application, you either publish through a camera or share a screen. If you wish, you may similataneosuly publish both your camera and screen at the same time. But, more on that later. Let us first understand how you can publish a single stream to the group.
+
+```javascript
+        $scope.publish = function() {
+            var o = {};
+            o.peer = 0;
+            o.name = $scope.room.name;
+            o.groupid = $scope.room.gid;
+            o.source = $scope.toggle_source;
+
+            $scope.publisher.streamOptions = false;
+            $scope.connectStream(o, $scope.publisher, 'video-publisher', $scope.room.init.audio, $scope.room.init.video);
+            $scope.refresh();
+        }    
+
+```
+You can configure two things while placing a call to the group.
+- `source` It can be camera or screen
+- `audio` Set it to false to disable audio
+- `video` Set it to false to disable video
+
+Before making the call, you can initialize the `audio` and `video` parameters to make it an audio or video only call to the group. Refer to the `connectStream`  function in `controller.js` which eventually calls the `call` method of the stream object to place a all to the group.  
+
+### 5. Mute participants
+In case of mute there are two possibilities.
+- The remote end can mute  their stream
+- You can mute the participant stream a your end

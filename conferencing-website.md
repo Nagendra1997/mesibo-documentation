@@ -3,7 +3,7 @@
 Mesibo Conferencing and Streaming Platform is the lightest, highly scalable, and the most powerful platform to add group calling, live streaming, webinars, on-demand video to your apps in no-time.
 
 ### Linear Scalability	
-mesibo's platform for conferencing is an elastic microservice architecture lets you use Kubernetes or Docker Swarm orchestration to scale-up or scale-down capacity on demand. For example, when you have more conference calls being made on your app, you can allocate more resource by spawning more instances and scale smoothly. You can add or remove instances on demand without affecting performance keeping your costs down and scale as per needs. 
+mesibo's platform for conferencing is an elastic microservice architecture that lets you scale-up or scale-down capacity on demand using orchestration tools like Docker Swarm, Kubernetes, etc. For example, when you have more conference calls being made on your app, you can allocate more resource by spawning more instances and scale smoothly. You can add or remove instances on demand without affecting performance keeping your costs down and scale as per needs. 
 
 For example, if your application is hosting around a 100 conferences on average, at a single point of time and assume you have allocated X amount of resources. For a sudden surge in growth, if you need to host  a 1000 conferences, you need to allocate more resources Y. Once you are past the surge, you will destroy the additional Y resources and go back to X . mesibo's platform smoothly adapts to all of this container resource orchestration at ease.
 

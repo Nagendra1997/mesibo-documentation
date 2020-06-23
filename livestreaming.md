@@ -797,8 +797,8 @@ Based on the `grid_mode` we will define the number of columns our grid will have
 
         MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
 
-        if(previous_grid_mode != $scope.isGridChange)
-            isGridChange = true;
+        if(previous_grid_mode != $scope.grid_mode)
+           isGridChange = true;
 
         $scope.refresh();
 

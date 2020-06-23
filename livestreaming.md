@@ -572,7 +572,7 @@ So, for the first step, we need to create a login form, where we authenticate th
 ```
 https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
-2. The user will now need to enter the OTP received which we then send to the backend for verification with the following request
+2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication)). The user will now need to enter the OTP received which we then send to the backend for verification with the following request
 ```
 https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
@@ -580,12 +580,11 @@ If the entered OTP matches, we generate a token for that user, you will receive 
 
 
 ### Creating a Room
-For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties.
-
-For better safety and privacy, participants also will need to enter a pin to join then group. Mesibo will automatically generate a pin for you.
+For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties such as the room name, etc
 
 Since we are creating a conference room, We will be creating a normal group where all members can send and receive streams.
 
+![create a room](create-room.png)
 
 We can also set the video quality settings required.
 ```javascript
@@ -597,13 +596,45 @@ const STREAM_RESOLUTION_FHD = 4;
 const STREAM_RESOLUTION_UHD = 5;
 ```
 
-If you are hosting [Mesibo Backend](https://github.com/mesibo/messenger-app-backend), modify the REST Endpoint accordingly.
-Here, we will use `https://app.mesibo.com/conf/api.php`.
-
 You can create a group, by making an API request in the following format:
 ```
-https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&type=ROOM_TYPE&resolution=ROOM_RESOLUTION
+https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
 ```
+For a successful request, you response will look like below:
+```
+{
+    "op": "setgroup",
+    "ts": 1592913675,
+    "gid": 96734,
+    "name": "newroom",
+    "type": 0,
+    "resolution": "0",
+    "publish": 1,
+    "pin": "93799667",
+    "spin": "35399768",
+    "result": "OK"
+}
+```
+You can store all these room parameters.
+
+As the creator of the room, you have the permissions to publish to the group and view other streams. But, you may need to control the permissions of other particpants in the conference. You may wish to permit only a select few of the participants to both publish, participate and view other streams, while for some you only grant the permission to view other streams.
+
+In the next section we will explore how you can achieve this by sending the appropriate pin.
+
+### Inviting people to join
+Any participant who wishes to enter the room need to enter a `pin`, to enter a room with a particular `room-ID`. You can send the roomid
+When a room is created, the response will contain two pins :
+- `response['pin']` Participant Pin. Send this to those who you want to actively participate in the conference. They will be able to make a video or voice call to the conference.
+- `response['spin']` Subscriber Pin. Send this to those who you want to silently participate in the conference. They will not be able to make a call -but they will be able to view the conference.
+
+Also note that the option to invite ie; to get these special pins is only available to the creator of the room. So, we will not be displaying the invite option for anyone  other than the creator of the room.
+
+### Entering a room
+To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+```
+https://app.mesibo.com/conf/api.php?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+```
+
 ## 2. Getting a list of Participants
 
 Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.

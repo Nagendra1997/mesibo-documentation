@@ -5,7 +5,7 @@ Mesibo Conferencing and Streaming Platform is the lightest, highly scalable, and
 ### Linear Scalability	
 mesibo's platform for conferencing is an elastic microservice architecture lets you use Kubernetes or Docker Swarm orchestration to scale-up or scale-down capacity on demand. For example, when you have more conference calls being made on your app, you can allocate more resource by spawning more instances and scale smoothly. You can add or remove instances on demand without affecting performance keeping your costs down and scale as per needs. 
 
-For example, if your application is hosting around a 100 conferences on average, at a single point of time and assume you have allocated X amount of resources. For a sudden surge in growth, if you need to host  a 1000 conferences, you need to allocate more resources Y. Once you are past the surge, you will destroy the additional Y resources and go back to X . mesibo's platform smmothly adapts to all of this container resource orchestration at ease.
+For example, if your application is hosting around a 100 conferences on average, at a single point of time and assume you have allocated X amount of resources. For a sudden surge in growth, if you need to host  a 1000 conferences, you need to allocate more resources Y. Once you are past the surge, you will destroy the additional Y resources and go back to X . mesibo's platform smoothly adapts to all of this container resource orchestration at ease.
 
 ### Security and Control	
 Mesibo provides you with fine grained control of your conference settings. With per participant authentication, permissions for who can view, who can connect to group stream, who can publish their stream, you can ensure that you build secure streaming and conferencing apps. 

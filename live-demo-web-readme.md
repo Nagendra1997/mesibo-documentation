@@ -1,0 +1,387 @@
+## mesibo Live Demo 
+
+This repository contains the source code for the mesibo sample conferencing app hosted at [https://mesibo.com/livedemo](https://mesibo.com/livedemo), This is a fully functional, Zoom Like Video Conferencing app which you can directly integrate into your website.
+
+It is recommended that you first look at [basic demo](https://github.com/mesibo/conferencing/tree/master/basic-demo) to familiarize yourself with API before diving into this app.
+
+> Please note that this documentation is **under progress** and will be updated. 
+
+## Features:
+- Group Voice and Video Call with unlimited members
+- Live Streaming
+- Screen Sharing
+- Fine control over all video & audio parameters and user permissions
+- Supports video streaming at various resolutions: Standard, HD, FHD and 4K
+- Group Chat
+- One-to-One chat
+- Invite Participants
+
+### Known Issues
+- If both remote end and local end participant has muted video, remote unmuting overrides mute 
+
+We have also hosted the same code at [https://mesibo.com/livedemo](https://mesibo.com/livedemo) so that you can quickly try it out. 
+
+### Configuring the backend
+
+If you want to setup your backend for the conferencing app, refer to the [backend](https://github.com/mesibo/conferencing/tree/master/live-demo/backend) and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
+
+If you choose not to setup the backend, you can use the Mesibo API backend at `https://app.mesibo.com/conf/api.php` and use the default configuration in [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+
+Please note that mesibo needs a **secure https connection**. If you have not configured an https server, you can test the app on a [local testing server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server).
+
+# Building a Zoom Like Conferencing app 
+
+Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media.
+
+Let us now build a Zoom like Conferencing app using Mesibo Conferencing and Streaming APIs.
+
+You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
+
+![Mesibo Room](mesibo-room.png)
+
+### Prerequisites
+
+- We will be using the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
+- Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
+- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
+- A basic understanding of HTML/CSS/JS
+- A minimal understanding of Bootstrap
+- Not an absolute need, but a familiarity with Angular would be good to have
+- Note that in this tutorial the word `stream` may refer to both audio or video or both. When we say stream we are just talking about some form of media
+
+Let's get started!
+
+### Basic features for conferecing
+
+We need the following features.
+1. A conference room which people can join
+2. A list of participants and a way to update the list of participants as and when people join or leave the room
+3. View the videos of participants in the group
+4. Send my video, to the group.
+5. Mute audio/video of other participants and my own
+
+## 1. Creating a Conference Room
+
+The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group will be able to view the streams of other members of the same group.
+
+### Creating a User
+Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+
+So, for the first step, we need to create a login form, where we authenticate them and generate a token for them.
+
+![login](login.png)
+
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js] (https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+
+```
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+```
+2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication) The user will now need to enter the OTP received which we then send to the backend for verification with the following request
+
+```
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+```
+If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
+
+
+### Creating a Room
+For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties such as the room name, etc
+
+Since we are creating a conference room, We will be creating a normal group where all members can send and receive streams.
+
+![create a room](create-room.png)
+
+We can also set the video quality settings required.
+```javascript
+const STREAM_RESOLUTION_DEFAULT = 0 ;
+const STREAM_RESOLUTION_QVGA  = 1 ;
+const STREAM_RESOLUTION_VGA = 2 ; 
+const STREAM_RESOLUTION_HD = 3 ;
+const STREAM_RESOLUTION_FHD = 4;
+const STREAM_RESOLUTION_UHD = 5;
+```
+
+You can create a group, by making an API request in the following format:
+```
+MESIBO_API_BACKEND?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
+```
+For a successful request, you response will look like below:
+```
+{
+    "op": "setgroup",
+    "ts": 1592913675,
+    "gid": 96734,
+    "name": "newroom",
+    "type": 0,
+    "resolution": "0",
+    "publish": 1,
+    "pin": "93799667",
+    "spin": "35399768",
+    "result": "OK"
+}
+```
+You can store all these room parameters.
+
+As the creator of the room, you have the permissions to publish to the group and view other streams. But, you may need to control the permissions of other particpants in the conference. You may wish to permit only a select few of the participants to both publish, participate and view other streams, while for some you only grant the permission to view other streams.
+
+In the next section we will explore how you can achieve this by sending the appropriate pin.
+
+### Inviting people to join
+Any participant who wishes to enter the room need to enter a `pin`, to enter a room with a particular `room-ID`. You can send the roomid
+When a room is created, the response will contain two pins :
+- `response['pin']` Participant Pin. Send this to those who you want to actively participate in the conference. They will be able to make a video or voice call to the conference.
+- `response['spin']` Subscriber Pin. Send this to those who you want to silently participate in the conference. They will not be able to make a call -but they will be able to view the conference.
+
+Also note that the option to invite ie; to get these special pins is only available to the creator of the room. So, we will not be displaying the invite option for anyone  other than the creator of the room.
+
+### Entering a room
+To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+```
+MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+```
+
+![Enter Room](enter-room.png)
+
+
+## 2. Getting a list of Participants
+
+Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.
+
+Before we get the list of participants, first we need to initialize mesibo and connect to a group.
+
+### Initialize Mesibo
+To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating the user.
+Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
+You are the publisher. As a member of the conference room group, you can stream your self, which other members can view.
+
+You can initialize and run mesibo as follows:
+ 
+```javascript
+
+    $scope.initMesibo = function(){
+        $scope.mesibo = new Mesibo();
+
+        //Initialize Mesibo
+
+        MesiboLog(MESIBO_APP_ID, $scope.user.token, 'initMesibo');
+        $scope.mesibo.setAppName(MESIBO_APP_ID);
+        if( false == $scope.mesibo.setCredentials($scope.user.token))
+            return -1;
+
+        $scope.mesibo.setListener($scope);
+        $scope.mesibo.setDatabase("mesibo");
+        $scope.mesibo.start();
+
+        $scope.live = $scope.mesibo.initGroupCall();        
+        $scope.live.setRoom($scope.room.gid);
+        $scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address);
+        if(!isValid($scope.publisher))
+            return -1;        
+
+
+        MesiboLog('publisher', $scope.publisher);
+
+        $scope.call = new MesiboCall($scope);
+        $scope.file = new MesiboFile($scope);
+
+        $scope.refresh();
+
+        return 0;
+    }
+
+
+```
+### List of Participants
+
+Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
+
+```javascript
+    $scope.Mesibo_OnParticipants = function(all, latest) {
+
+        MesiboLog('Mesibo_OnParticipants', all, latest);
+        for(var i in latest) {
+            var p = latest[i];
+            if(isValid(p.getAddress) && isValid(p.getName()))
+                $scope.addressBook[p.getAddress()] = p.getName();
+            $scope.subscribe(p);            
+            playSound('assets/audio/join');
+            $scope.addTicker(p.getName() + ' has entered the room');
+        }
+    }
+
+
+```
+
+You can now iterate through the list of participants and subscribe to the stream of each participant.
+
+### 3. View the videos of participants in the group
+You can subscribe to the stream of each participant that you get in `Mesibo_onParticipants` as follows with the `call()` method. We need to update the list `$scope.streams` as and when people join and leave the room.
+
+```javascript
+    $scope.subscribe = function(p) {
+        MesiboLog('subscribe', p);
+
+        p.isVisible = true;
+        p.isSelected = false;
+        p.isFullScreen = false;
+        p.isConnected = true;
+
+        $scope.updateParticipants(p);
+        $scope.updateStreams(p);    
+    }
+    
+
+    $scope.updateStreams = function(p){
+        MesiboLog('updateStreams', p, $scope.participants, $scope.streams);
+        if(!isValid(p))
+            return;
+
+        for(var i = 0; i < $scope.streams.length; i++){ 
+            if ( $scope.streams[i].getId() === p.getId()) { 
+                MesiboLog('updateStreams','existing');
+                $scope.streams[i] = p;
+                return;
+            }
+        }
+
+        $scope.streams.push(p);        
+
+        $scope.setGrid($scope.streams.length);
+
+        $scope.$applyAsync(function()  {
+            MesiboLog('call stream', p);
+            p.call(null, "video-"+ p.getId(), $scope.on_stream, $scope.on_status);
+        });
+
+    }    
+```
+
+### Displaying the grid of videos
+
+We need to dynamically render the grid of videos from the list of streams. That is if there is only a single video we need to display the video up to the full width of the screen. But, if there are four streams, we need to split the available screen into four equal parts. If there are more, our grid will be divided into more pieces. (As of now we will have a maximum of 16 streams to be displayed at a single time on the screen). As and when participants leave and join the group, our grid mode may change.
+
+To build this feature we will use Bootstrap [Column Wrapping](https://getbootstrap.com/docs/4.0/layout/grid/#column-wrapping).
+
+Based on the `grid_mode` we will define the number of columns our grid will have. Based on the number of streams, we will define the grid mode.
+
+```javascript
+
+    $scope.setGrid = function(stream_count){
+        MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+        var isGridChange = false;
+        var previous_grid_mode = $scope.grid_mode;
+
+        if(!isValid(stream_count) || stream_count <= 0){
+            $scope.grid_mode = DEFAULT_GRID_MODE;
+            return isGridChange;
+        }
+        
+
+        if(1 == stream_count)
+            $scope.grid_mode = 1;
+        else if(stream_count >=2 && stream_count <=4 )
+            $scope.grid_mode = 2;
+        else if(stream_count >=5 && stream_count <=9 )
+            $scope.grid_mode = 3;
+        else if(stream_count >=10 && stream_count <=16 )
+            $scope.grid_mode = 4;
+        else
+            $scope.grid_mode = 4; /** Maximum 16 thumbnails can be displayed for now **/
+
+        MesiboLog('==> setGrid', 'stream_count', stream_count, 'grid_mode', $scope.grid_mode);
+
+        if(previous_grid_mode != $scope.grid_mode)
+           isGridChange = true;
+
+        $scope.refresh();
+
+        return isGridChange;
+    }
+
+
+```
+And our grid rendering is as follows
+```html
+<div ng-repeat="s in streams track by $index" ng-if="streams[$index] != null"  class ="pl-0 pr-0" ng-class="{'col-md-12': grid_mode==1, 'col-md-6': grid_mode==2, 'col-md-4': grid_mode==3, 'col-md-3': grid_mode==4>
+```
+### 4. Publish my stream to the group.
+On this demo application, you either publish through a camera or share a screen. If you wish, you may similataneosuly publish both your camera and screen at the same time. But, more on that later. Let us first understand how you can publish a single stream to the group.
+
+```javascript
+        $scope.publish = function() {
+            var o = {};
+            o.peer = 0;
+            o.name = $scope.room.name;
+            o.groupid = $scope.room.gid;
+            o.source = $scope.toggle_source;
+
+            $scope.publisher.streamOptions = false;
+            $scope.connectStream(o, $scope.publisher, 'video-publisher', $scope.room.init.audio, $scope.room.init.video);
+            $scope.refresh();
+        }    
+
+```
+You can configure two things while placing a call to the group.
+- `source` It can be camera or screen
+- `audio` Set it to false to disable audio
+- `video` Set it to false to disable video
+
+Before making the call, you can initialize the `audio` and `video` parameters to make it an audio or video only call to the group. Refer to the `connectStream`  function in `controller.js` which eventually calls the `call` method of the stream object to place a all to the group. 
+
+Just like other streams, we call `attach` for the stream with an HTML element in `on_stream`
+
+### 5. Mute participants
+In case of mute there are two possibilities.
+- The remote end can mute  their stream
+- You can mute the participant stream a your end
+
+The mute status is reflected in the `stream.muteStatus` method of that stream and we will display the appropriate icon. 
+```javascript
+        $scope.getAudioStatusClass = function(stream){
+                if(!isValid(stream))
+                        return "";
+
+                if(stream.muteStatus(false) == true)
+                        return "fas fa-microphone-slash";
+
+                return "fas fa-microphone";
+        }
+
+        $scope.getVideoStatusClass = function(stream){
+                if(!isValid(stream))
+                        return "";
+
+                if(stream.muteStatus(true) == true)
+                        return "fas fa-video-slash";
+
+                return "fas fa-video";
+        }
+
+```
+The above is for local mute. When remote end mutes you can pass an additional parameter to the `muteStatus` method.
+`stream.muteStatus(true, true)`  for remote video status and `stream.muteStatus(false, true)`. We display an prropriate icon when remote audio/video is muted.
+
+### 6. Stream Status
+There are three possible states for a stream in a call:
+- `MESIBO_CALLSTATUS_CHANNELUP` : Call is established and you are getting the stream
+- `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
+- `MESIBO_CALLSTATUS_COMPLETE`: Call has ended , terminate the stream.
+
+You will be getting the state of a stream in the callback function `on_status`
+
+For each state we need to display appropriate indicators. For example, if the call is reconnecting then we will show a spinner for that stream and once it is up, we hide the spinner. Also, when the call is complete we remove the stream from the streams area (Refer to `on_hangup`)
+
+```javascript
+            if(MESIBO_CALLSTATUS_COMPLETE  == status){
+                    $scope.on_hangup(p, true);
+            }
+
+            else if(MESIBO_CALLSTATUS_CHANNELUP == status){
+                    $scope.streams[i].isConnected = true;
+            }
+            else if(MESIBO_CALLSTATUS_RECONNECTING == status){
+                    MesiboLog('show-spinner');
+                    $scope.streams[i].isConnected = false;
+            }
+```
+These are some of the major features of the live demo app. This tutorial is intended as a birds-eye view of the app. You can explore the [demo app](https://mesibo.com/livedemo) and take a look at the [source code](https://github.com/mesibo/conferencing/tree/master/live-demo) to dig deeper. 

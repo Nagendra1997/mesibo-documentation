@@ -115,9 +115,9 @@ Once you get a list of participants, you can choose to connect to each of those 
 
 In this section we will build Mesibo Live- a video conferencing app like Zoom. Before you proceed, please make sure that you have read the prerequisites and are familiar with mesibo APIs. First, we will build a simple, basic version of the group calling app using basic HTML/CSS and Javascript. Then we will build the complete app with all the necessary features.
 
-You can download the source code for the basic group calling demo [here](https://github.com/mesibo) to understand the basic functionality of conferencing and streaming APIs
+You can download the source code for the basic group calling demo [here](https://github.com/mesibo/conferencing/) to understand the basic functionality of conferencing and streaming APIs
 
-Checkout [Mesibo Live Demo](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app. You can also download the entire source code from [github](https://github.com/mesibo). 
+Checkout [Mesibo Live Demo](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app. You can also download the entire source code from [github](https://github.com/mesibo/conferencing). 
 
 
 ## mesibo Basic Conferencing  
@@ -125,7 +125,9 @@ This repository contains the source code for the basic conferencing demo.
 
 The basic conferencing demo will help you get familiar with using mesibo conferencing APIs. For this demo, we will build a conference room up to 5 Participants. Each participant will be able to publish their video, get a list of participants in the conference, and view (subscribe to) other participant's videos. Each participant will able to share their camera feed or share their screen, which will be visible to all the participants. Please note that it is recommended that you use the demo app on a desktop for a better experience.
 
-Once you are familiar with the basic conferencing functionality and the API functions, you can go on to build a full-featured conferencing app with unlimited participants, group messaging, personal chat, etc. - [mesibo Live](https://github.com/mesibo/conferencing/livedemo). You can also try it here [https://mesibo.com/livedemo](https://mesibo.com/livedemo)
+Once you are familiar with the basic conferencing functionality and the API functions, you can go on to build a full-featured conferencing app with unlimited participants, group messaging, personal chat, etc. - [mesibo Live](https://
+
+.com/mesibo/conferencing/). You can also try it here [https://mesibo.com/livedemo](https://mesibo.com/livedemo)
 
 ### Prerequisites
 - This demo uses the mesibo Javascript SDK. Ensure that you are familiar with using it.
@@ -552,7 +554,7 @@ Let's get started!
 ### Configuring the backend
 For the purpose of the demo app we will implement various functionality like user authentication, creating the room, etc. To do this we need to setup a backend. If you do not want go about setting up your own backend, you can use mesibo's private APIs. 
 
-If you want to setup your backend for the conferencing app, refer [this](https://github.com/mesibo/conferencing/tree/master/live-demo/backend) and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
+If you want to setup your backend for the conferencing app, refer to the[sample backend source code](https://github.com/mesibo/conferencing/tree/master/live-demo/backend) and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
 
 ### Basic Requirements
 

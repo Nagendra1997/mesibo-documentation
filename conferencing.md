@@ -230,6 +230,11 @@ To enter a room you need to enter a `room-ID` and a `room pin`. In code, you tak
 ```
 MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
+### Entering a room == Entering a group
+To enter a group you need to enter a `groupid` and a `pin`, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+```
+MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+```
 
 ## 2. Getting a list of Participants
 

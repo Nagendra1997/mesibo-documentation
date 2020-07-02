@@ -552,7 +552,7 @@ Let's get started!
 ### Configuring the backend
 For the purpose of the demo app we will implement various functionality like user authentication, creating the room, etc. To do this we need to setup a backend. If you do not want go about setting up your own backend, you can use mesibo's private APIs. 
 
-If you want to setup your backend for the conferencing app, refer (this)[https://github.com/mesibo/conferencing/tree/master/live-demo/backend] and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
+If you want to setup your backend for the conferencing app, refer [this](https://github.com/mesibo/conferencing/tree/master/live-demo/backend) and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
 
 ### Basic Requirements
 

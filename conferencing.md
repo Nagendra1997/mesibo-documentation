@@ -86,40 +86,6 @@ In a webinar you only need one(or a few more) members to be publishing. The othe
 This is for an open webinar. So, what would you do in case of a members-only webinar? You can change the permission as follows
 Who can view live streams: Members, Who can view streams list: Members 
 
-### Class Room
-If you have an online classroom, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish- The teachers.
-
-![class room](classroom-1.png)
-
-The students by default do not have the permission to publish. By default, you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
-
-![student in class room](classroom-2.png)
-
-You can similarly build the set of required permissions for any scenario. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling permissions.
-
-Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platform.
-Detailed documentation of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
-
-### Create a group
-Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.
-
-### Get the list of members
-When any member joins the group, they will be getting a list of other members in the group. The callback function `Mesibo_onParticipant` will be called.
-
-### Place a call to the group
-To place a call to the group, first, you need to initialize the group call. For this, you need to use `initGroupCall()` which will provide you with a group call object and then link it with a group using `setRoom`. 
-
-### Connect to voice and video of members
-Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
-
-### Mesibo Streaming and Conferencing SDK
-We have released the streaming and conferencing Javascript SDK along with [a sample conferencing app](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app built using the same. You can also download the entire source code from [github](https://github.com/mesibo/conferencing).
-
-### Prerequisites
-- Familiarity with mesibo API. Refer [Getting Started Guide](https://mesibo.com/documentation/get-started/) and [First App Tutorial](https://mesibo.com/documentation/tutorials/first-app/#preparation) if you are not familiar.
-- Familiarity with mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
-
-
 ### Core features of conferencing 
 
 The following are the basic features a conferencing app requires.
@@ -232,6 +198,27 @@ To enter a group you need to enter a `groupid` and a `pin`, along with the acces
 ```
 MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
+
+### Client API
+Let's now take a look at the different API functions that you can use to set up your conferencing and streaming platform.
+Detailed documentation of each function/method can be found [here]() and will be explained with examples in the next section to build a zoom like conferencing app. 
+
+### Create a group
+Use Mesibo's Group Management APIs to create a group. Add members and set permissions for the group members.
+
+### Get the list of members
+When any member joins the group, they will be getting a list of other members in the group. The callback function `Mesibo_onParticipant` will be called.
+
+### Place a call to the group
+To place a call to the group, first, you need to initialize the group call. For this, you need to use `initGroupCall()` which will provide you with a group call object and then link it with a group using `setRoom`. 
+
+### Connect to voice and video of members
+Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
+
+### Mesibo Streaming and Conferencing SDK
+We have released the streaming and conferencing Javascript SDK along with [a sample conferencing app](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app built using the same. You can also download the entire source code from [github](https://github.com/mesibo/conferencing).
+
+
 
 ## 2. Getting a list of Participants
 

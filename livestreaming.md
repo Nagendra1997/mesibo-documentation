@@ -549,6 +549,11 @@ You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a
 
 Let's get started!
 
+### Configuring the backend
+For the purpose of the demo app we will implement various functionality like user authentication, creating the room, etc. To do this we need to setup a backend. If you do not want go about setting up your own backend, you can use mesibo's private APIs. 
+
+If you want to setup your backend for the conferencing app, refer (this)[https://github.com/mesibo/conferencing/tree/master/live-demo/backend] and modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly.
+
 ### Basic Requirements
 
 We need the following features.
@@ -569,13 +574,14 @@ So, for the first step, we need to create a login form, where we authenticate th
 
 ![login](login.png)
 
-1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user.
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js (https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+
 ```
-https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
 2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication)). The user will now need to enter the OTP received which we then send to the backend for verification with the following request
 ```
-https://app.mesibo.com/conf/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
 If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
 
@@ -599,7 +605,7 @@ const STREAM_RESOLUTION_UHD = 5;
 
 You can create a group, by making an API request in the following format:
 ```
-https://app.mesibo.com/conf/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
+MESIBO_API_BACKEND?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
 ```
 For a successful request, you response will look like below:
 ```
@@ -633,7 +639,7 @@ Also note that the option to invite ie; to get these special pins is only availa
 ### Entering a room
 To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
 ```
-https://app.mesibo.com/conf/api.php?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
 
 ![Enter Room](enter-room.png)

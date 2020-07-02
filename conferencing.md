@@ -176,8 +176,14 @@ In a conference room, all the participants will be able to publish live streams 
 
 In the members table notice that there are no members/participants and the table is empty. We need to add group members to have users in the conference. 
 
+You can set the type of stream you need, such as audio or video or both. For example, you can have an audio-only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simultaneously, with your camera feed streaming your self and the screen containing your presentation.
+
+Next, decide what kind of quality you need for your calls. If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+
+![Group Calling Quality](stream_quality_settings.png)
+
 ### Creating the group using REST API
-We can also set the video quality settings required.
+
 ```javascript
 const STREAM_RESOLUTION_DEFAULT = 0 ;
 const STREAM_RESOLUTION_QVGA  = 1 ;

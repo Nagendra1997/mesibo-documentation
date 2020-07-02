@@ -125,9 +125,7 @@ This repository contains the source code for the basic conferencing demo.
 
 The basic conferencing demo will help you get familiar with using mesibo conferencing APIs. For this demo, we will build a conference room up to 5 Participants. Each participant will be able to publish their video, get a list of participants in the conference, and view (subscribe to) other participant's videos. Each participant will able to share their camera feed or share their screen, which will be visible to all the participants. Please note that it is recommended that you use the demo app on a desktop for a better experience.
 
-Once you are familiar with the basic conferencing functionality and the API functions, you can go on to build a full-featured conferencing app with unlimited participants, group messaging, personal chat, etc. - [mesibo Live](https://
-
-.com/mesibo/conferencing/). You can also try it here [https://mesibo.com/livedemo](https://mesibo.com/livedemo)
+Once you are familiar with the basic conferencing functionality and the API functions, you can go on to build a full-featured conferencing app with unlimited participants, group messaging, personal chat, etc. - [mesibo Live](https://mesibo.com/livedemo/). 
 
 ### Prerequisites
 - This demo uses the mesibo Javascript SDK. Ensure that you are familiar with using it.

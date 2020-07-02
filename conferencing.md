@@ -1,15 +1,15 @@
 ---
 description: Enable applications with conference calling, live streaming, screen sharing, group chat and more
 keywords: messaging platform, chat api platform, voice, video calling, mesibo communication platform
-title: Mesibo Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and chat API
+title: Mesibo Conferencing and Streaming Platform- Conference Calling, Live Streaming, Screen sharing and Chat API
 ---
 
-Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more. The platform is available both on the cloud and on-premise at no additional cost.
+Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more. The platform is available as native and web based offerings, that can be used both on the cloud and on-premise at no additional cost.
 
 Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application with minimal setup and cost.
 
-## Features
-- Just under 700KB footprint makes mesibo, the lightest conferencing server in the world. You can run mesibo's conferencing platform on any server with minimum resources, even on something like a Raspberry Pi.
+## Why mesibo for conferencing?
+- Just under 700KB footprint makes mesibo, the lightest conferencing server in the world. You can run mesibo's conferencing platform on any server with minimum resources.
 
 - Capacity on Demand - Elastic architecture lets you use Kubernetes or Docker Swarm orchestration to scale-up or scale-down capacity on demand!
 
@@ -19,7 +19,7 @@ Standard, HD, Full-HD, and 4K conference rooms - you can even select different r
 - Per participant authentication, permissions, and controls of the resolution, bandwidth, CPU, and other parameters.
 Run the entire platform on your premise at no additional cost.
 
-- Native and web based offerings available. No additional download required! 
+- Native and web based offerings. No additional download required! 
 
 > **Disclaimer**: The Conferencing and Streaming APIs are currently under development for more platforms and will be continuously updated. Please ensure that you are using the latest version of Mesibo APIs and documentation.
 
@@ -127,9 +127,9 @@ We have released the streaming and conferencing Javascript SDK along with [a sam
 ### Prerequisites
 - Familiarity with mesibo API. Refer [Getting Started Guide](https://mesibo.com/documentation/get-started/) and [First App Tutorial](https://mesibo.com/documentation/tutorials/first-app/#preparation) if you are not familiar.
 - Familiarity with mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
-- A basic understanding of HTML/CSS/JS
 
-### Core features needed for conferencing 
+
+### Core features of conferencing 
 
 The following are the basic features a conferencing app requires.
 
@@ -140,48 +140,82 @@ The following are the basic features a conferencing app requires.
 5. Mute/Unmute and other controls
 6. Authorization so that only rightful people can join the conference
 
-In the following sections, we will learn how to meet the above requirements.
+In the following sections, we will learn how to meet the above requirements and how you can use Mesibo APIs to achieve this
 
-## 1. Creating a Conference Room
+## 1. Create the conference application
 
 First, create a new application in [mesibo console](https://mesibo.com/console/). 
 
 Click on the `+ CREATE NEW APPLICATION` button under My Applications section in the console. Enter the name of the application `conference` and click `Create`.
 
-In mesibo, the conference room is a group that allows communication between multiple users - that could a video or a voice conference and group chat. Each group contains one or more users who will be participants of this conference call. In a real app, you create users on-demand using mesibo API. However, for this demo, we will create a few users using the mesibo console to quickly understand the concepts.
+Once your application is created it will be visible in the `My Applications` table. Click on the Settings icon, to display the `App Settings` page for your app. 
 
-### Create Users
+In mesibo, the conference room is a group that allows communication between multiple users - that could be a video or a voice conference. Each group contains one or more users who will be participants of this conference call. In a real app, you create users on-demand using mesibo REST APIs (Private backend APIs) to perform the operations. We will explain both the ways of performing these operations, creating a group and adding users - using the console and using REST APIs
 
-Once your application is created it will be visible in the `My Applications` table. Click on the Settings icon, to display the `App Settings` page for your app. Click on `Users`. We have five participants needed in our conference, so we need to create five users.
+## 2. Creating the conference participants
+To create users in the console, 
 
-Click on the `+ NEW USER` button. To create a user, Enter a User Address and App ID. 
+Click on `Users` section in your app.
 
-To create our first user, enter the address as `user0` and the app id as `basicroom`. Then click `Create`. The `user0` should now be displayed in the table. Set `MESIBO_APP_ID` as `basic room` in `demo.js`.  
+Click on the `+ NEW USER` button. To create a user, Enter a User Address and App ID. For example, `basic room`  
 
-```javascript
-const MESIBO_APP_ID = 'basicroom';
+Similarly,you can create more users.
+
+
+To create users REST API, follow the steps below:
+
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js (https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+
+```
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+```
+2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication)). The user will now need to enter the OTP received which we then send to the backend for verification with the following request
+```
+MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
 
-Similarly, create four more users with the same App ID `basic room`. 
-
-### Create a Group
+### 3. Creating the conference group
 Go to [mesibo dashboard](https://mesibo.com/console/#/dashboard)and choose the application created earlier(conference) and click on the `Settings` icon. Now click on `Groups` to open the groups page.
 
 To create a new group, click on the `+ NEW GROUP` button. Give a group name - example `ConferenceGroup` and click on `Create`. Your group with the name `ConferenceGroup` should now be created and be displayed in the table. Click on the edit icon, under actions. This will open the Group Settings page.
 
-Now, in the script `demo.js` you need to configure the groupid and group name for the group you just created. Set `DEMO_GROUP_ID` and `DEMO_GROUP_NAME`.
-
-For example, if your groupid is `96191` and group name is `mesibo`
-```javascript
-const DEMO_GROUP_ID = 96191;
-const DEMO_GROUP_NAME = "ConferenceGroup";
-```
-
-For the simplicity of our app, we will keep all the settings at default. In our conference room, all the participants will be able to publish live streams and view live streams.
+In a conference room, all the participants will be able to publish live streams and view live streams.
 
 ![Conference Group Settings](images/conference_group_settings.png)
 
 In the members table notice that there are no members/participants and the table is empty. We need to add group members to have users in the conference. 
+
+### Creating the group using REST API
+We can also set the video quality settings required.
+```javascript
+const STREAM_RESOLUTION_DEFAULT = 0 ;
+const STREAM_RESOLUTION_QVGA  = 1 ;
+const STREAM_RESOLUTION_VGA = 2 ; 
+const STREAM_RESOLUTION_HD = 3 ;
+const STREAM_RESOLUTION_FHD = 4;
+const STREAM_RESOLUTION_UHD = 5;
+```
+
+You can create a group, by making an API request in the following format:
+```
+MESIBO_API_BACKEND?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
+```
+For a successful request, you response will look like below:
+```
+{
+    "op": "setgroup",
+    "ts": 1592913675,
+    "gid": 96734,
+    "name": "newroom",
+    "type": 0,
+    "resolution": "0",
+    "publish": 1,
+    "pin": "93799667",
+    "spin": "35399768",
+    "result": "OK"
+}
+```
+You can store all these room parameters.
 
 ### Add Members
 
@@ -192,6 +226,10 @@ Refer to [Creating a Group](https://mesibo.com/documentation/api/backend-api/#cr
 Add the five users created earlier as members of the group.
 ![Group Members](images/group_members.png)
 
+To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+```
+MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+```
 
 ## 2. Getting a list of Participants
 

@@ -23,40 +23,31 @@ Run the entire platform on your premise at no additional cost.
 
 > **Disclaimer**: The Conferencing and Streaming APIs are currently under development for more platforms and will be continuously updated. Please ensure that you are using the latest version of Mesibo APIs and documentation.
 
-# Mesibo Conferencing and Streaming 
 
-Mesibo has made it simple to use and build with group calling and streaming APIs. In just a few steps, you can set up any type of streaming and conferencing application you need- a webinar, virtual meeting and conferencing, live events, etc. 
-
-For example, say you want to build a conference room to host a virtual meeting. A conference room is a group, where members are streaming their camera feed. So to create a group conference call, you need to create a group. You can [create a group](https://mesibo.com/documentation/api/backend-api/#group-management-apis) from the console or use the backend APIs. Then, you can enable the required features for the calls. 
-
-### Setting up a call
-You can set the type of stream you need, such as audio or video or both. For example, you can have an audio-only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simultaneously, with your camera feed streaming your self and the screen containing your presentation.
-
-Next, decide what kind of quality you need for your calls. If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
-
-![Group Calling Quality](stream_quality_settings.png)
-
-That's it. You are now good to go! You can now use Mesibo's group calling APIs and build a conferencing app.
-
-This sounds good enough for a basic conference call. But, a one size fits all approach will not work for all your needs. For example, you may need a conference room where only the department heads are allowed to be publishing their stream, while all others are by default muted. There can also be admins or moderators who have special permissions to change group settings, remove participants, mute members, etc. How can you build something like this?  
-
-You can achieve this with fine control over who can connect and publish to your room, what kind of streams they can send or receive. In fact with Mesibo's custom group settings and permissions you can create any kind of streaming and conferencing app you require. 
-
-Mesibo offers you these settings at two levels: 
-1. Group Level: You can apply these settings at the group level, which will apply to all the members of the group
-2. Member Level: You can modify settings at the individual member level
-
-In case of group messaging you have the same type of controls. With group calling, you just have an additional set of settings along with these permissions. Mesibo Group Calling APIs simply extend the features offered in group messaging.
-
-### Fundamentals of Group Calling 
+### Prerequisites
 Before we dive into the various concepts and APIs for conferencing & streaming ensure that you are:
 
 - Familiar with mesibo API. If not, please refer to [Getting Started](https://mesibo.com/documentation/get-started/) guide and tutorials to familiarize yourself
 - Familiar with [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
+
+# Mesibo Conferencing and Streaming 
+
+Mesibo has made it simple to use and build with group calling and streaming APIs. In just a few steps, you can set up any type of streaming and conferencing application you need- a webinar, virtual meeting and conferencing, live events and more. 
+
+For example, say you want to build a conference room to host a virtual meeting. A conference room is a group, where members are sharing their their video - from their camera (or screen). 
+
+With mesibo, all you need to do to is:
+1. Create a group. 
+2. Enable the required features for the video stream - such as quality of the video, etc
+3. Add participants. People in the group can now see the videos of others in the group and also share their own video
+4. That's it. Get busy conferencing!
+
+Quite simple, isn't it? Well the idea behind it is more simple. We are just extending mesibo's group messaging features to include group calling.  In case of group messaging you have a certain set of controls & permissions. With group calling, you just have an additional set of settings along with these permissions. Curious how we do that? Let's dive in.
+
 If you are not familiar with using [Mesibo Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis), here's a little recap. Feel free to skip ahead if you are already familiar with group messaging.
 
-## Fundamentals of group messaging
+### Fundamentals of Group Calling
 
 Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. To set up a group with Mesibo APIs you follow the steps below:
 

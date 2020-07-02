@@ -83,12 +83,9 @@ In a conference room, you need the members of the group to publish their stream 
 In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the streams. Other members will not be allowed to publish their streams. This can be achieved with the following permission levels.
 ![webinar scenario](webinar.png)
 
-This is for an open webinar. So, what would you do in case of a members-only webinar? You can change the permission as follows
-Who can view live streams: Members, Who can view streams list: Members 
-
 ### Core features of conferencing 
 
-The following are the basic features a conferencing app requires.
+The following are the basic features a conferencing application requires.
 
 1. A conference room which people can join
 2. Ability to get the list of participants which is updated as and when people join or leave the room in real-time
@@ -117,7 +114,6 @@ Click on `Users` section in your app.
 Click on the `+ NEW USER` button. To create a user, Enter a User Address and App ID. For example, `basic room`  
 
 Similarly,you can create more users.
-
 
 To create users REST API, follow the steps below:
 

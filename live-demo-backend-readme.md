@@ -1,12 +1,12 @@
 ## Backend for Sample Conferencing App 
 
-This repository contains the backend source code for the mesibo Sample Conferencing App. 
+This repository contains the backend source code for the mesibo Sample Conferencing App which you can readily host and use it or modify it as per your needs.
 
-The demo app uses  Private Backend APIs . The frontend of your app users these private APIs for login and other administrative taskstasks such as creating users, groups,etc. In turn, the private API connects to the mesibo backend API to perform the necessary operations your database. 
+The demo app uses  Private Backend APIs . Your app uses these private APIs for login and other administrative tasks such as creating users, groups,etc. In turn, the private API connects to the mesibo backend API to perform the necessary operations your database. 
 
-You can set up your own backend or you can use mesibo's backend APIs hosted on `https://app.mesibo.com/conf/api.php`. 
+You can host mesibo's backend API or use the existing backend hosted at `https://app.mesibo.com/conf/api.php`. You can also customize mesibo backend APIs as per your requirements. 
 
-If you have set up your own backend modify[config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) accordingly to point to your own URL and you are good to go. 
+If you are hosting mesibo backend APIs modify [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js) to point to your own URL and you are good to go. 
 
 ### Hosting Backend APIs
 To set up the mesibo backend API for the conferencing app, follow the steps below.

@@ -63,19 +63,47 @@ Now, for group calling, in addition to the group settings above, each member has
 - can subscribe: If the member can subscribe to group voice or video calls 
 - can list: If the member can get a list of active callers in the group
 
-Any type of conferencing and streaming app that you need can be easily configured with these controls. Let's look at some examples.
+Any type of conferencing and streaming app that you need can be easily configured with these controls. You can configure group level permissions as well as fine participant level permissions. Let's work with some examples and see how permissions can be set under different conditions.
 
 ### Conference
-In a conference room, you need the members of the group to publish their stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. So, you have the following permissions set.
+In a conference room, you need the members of the group to publish their stream and see other's streams. Every member will get a list of participants who are publishing their streams. They can then view the streams of each participant. Here's what your setting will look like in the console. We can selected `Members` only option for who can publish streams, who can view streams, who can view list of participants.
 
 ![conference scenario](conference.png)
 
 ### Webinar
-In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the others. Other members will not be allowed to publish their streams. This can be achieved with the following permission levels.
+In a webinar you only need one(or a few more) members to be publishing. The other participants will only be listening or viewing the others. Other members will not be allowed to publish their streams. This can be achieved with the following group level permission levels. 
 ![webinar scenario](webinar.png)
 
-### Core features of conferencing 
+This is for an open webinar. In case of a members-only webinar, You can simply change the permission as follows
+Who can view live streams: Members 
+Who can view streams list: Members . 
+
+### Class Room
+If you have an online classroom, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish- The teachers.
+
+![class room](classroom-1.png)
+
+The students by default do not have the permission to publish. By default, you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
+
+![student in class room](classroom-2.png)
+
+You can similarly build the set of required permissions for any scenario. In case of a video streaming app, You can upload media to the group, which only selected members can view on-demand, whenever they need it. All of this can be built by setting the different group calling and individual participant level permissions.
+
+### Conference call Settings
+
 Now that we have understood the basic concepts of group calling, let us go further by implementing the features required for conferencing.
+
+For your conference calls, You can set the type of stream you need, such as audio or video or both. For example, you can have an audio-only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simultaneously, with your camera feed streaming your self and the screen containing your presentation.
+
+Next, decide what kind of quality you need for your calls. If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+
+![Group Calling Quality](stream_quality_settings.png)
+
+You can set these features group wise permissions. You can override this participant level permissions using REST API. For example, in your conference you can make a setting such that only selected members can have the permission to publish video or share screen. In case of a webinar panel, you can set HD resolution for key speakers and low resolution for others, recording features for select participants, and so on.  
+
+We will learn more on this in the further sections.
+
+### Basic features of a conference 
 
 The following are the basic features a conferencing application requires.
 
@@ -86,15 +114,6 @@ The following are the basic features a conferencing application requires.
 5. Mute/Unmute and other controls
 6. Authorization so that only rightful people can join the conference
 
-### Settings for the conference calls 
-
-For your conference calls, You can set the type of stream you need, such as audio or video or both. For example, you can have an audio-only group call. If you need to show a presentation or some charts, you need to enable screen sharing. You may choose to share multiple streams(simulcast) at once. Both your camera stream and desktop screen can be streamed simultaneously, with your camera feed streaming your self and the screen containing your presentation.
-
-Next, decide what kind of quality you need for your calls. If you need to save some bandwidth or you are on a poor network, you may want to choose VGA. If you can have nothing but the highest quality live stream, select 4K! Mesibo provides you with a wide range of streaming quality options. Note that although you can enable the resolution required here in the console, your camera/device must support recording that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
-
-![Group Calling Quality](stream_quality_settings.png)
-
-You can set these features group wise or participant wise using REST API. You can set participant level controls which overrides group level control.
 
 In the following sections, we will learn how to meet the above requirements and how you can use Mesibo APIs to achieve this. We will be using two types of mesibo APIs:
 1. Mesibo backend APIs for administrative tasks such as creating users, groups, etc.
@@ -138,8 +157,6 @@ In a conference room, all the participants will be able to publish live streams 
 
 ### Creating the group using REST API
 
-Create a group to enable real-time group communication between your users. Mesibo will create a group ID (GID) which you can use to add and remove members. Your users can use GID in various real-time API to send messages to the group.
-
 To create a group, you need to invoke this API with the following parameters:
 
 op = “groupadd”
@@ -160,18 +177,22 @@ Group Flags can be a logical OR combination of one or more flags value below:
 0x80 - loop back to sender
 Response Fields
 
+```
 response[‘group’][‘gid’] = Group ID (GID)
+```
+
+For example,
+```
+```
 
 ## 4. Add Members
 
 Now, let us add the users we created earlier as members of this group `ConferenceGroup`. Click on the `+ NEW MEMBER` button and enter the user address, of the user whom you wish to add. In the `User Address` enter `user0` and click on `Add`. The Members table will now display the member you just added. Similarly, add the more users. 
 
-Refer to [Creating a Group](https://mesibo.com/documentation/api/backend-api/#create-a-group) for more information on creating a group. 
-
 Add the users created earlier as members of the group.
 ![Group Members](images/group_members.png)
 
-### Adding members dynamically
+### Adding members dynamically using REST API
 Add or Remove Group Members using GID obtained in the group add operation.
 
 op = “groupeditmembers”
@@ -185,6 +206,10 @@ cansub = [group calling] 1 if members being added can subscribe to group voice o
 canlist = [group calling] 1 if members being added can get a list of active callers in the group, 0 for not
 delete = 0 to add members, 1 to remove members
 
+
+For example,
+```
+```
 
 ### Mesibo Streaming and Conferencing SDK
 We have released the streaming and conferencing Javascript SDK along with [a sample conferencing app](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app built using the same. You can also download the entire source code from [github](https://github.com/mesibo/conferencing).

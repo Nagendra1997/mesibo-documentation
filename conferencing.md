@@ -414,7 +414,7 @@ function toggleRemoteAudio(i) {
 
 ### Getting the Mute Status of a stream
 
-You can get the mute status of a stream with `muteStatus` which has the syntax below:
+You can get the mute status of a stream with `muteStatus` which has the syntax as follows:
 ```javascript
 Stream.muteStatus(video,remote)
 ```

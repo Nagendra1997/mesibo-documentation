@@ -85,27 +85,32 @@ const MESIBO_CAPTCHA_TOKEN = '6LceR_sUxxxxxxxxxxxxPSCU-_jcfU';
 
 That's it! You are now good to go about running the conferecing demo app connected to your own backend.
 
+### Using Private backend APIs for conferencing
+
+Before you continue, Remember that, private APIs are not the replacement for mesibo backend APIs. Private APIs invoke mesibo backend APIs. You will still need to invoke mesibo API at https://api.mesibo.com/api.php for adding users, groups, members, etc.
+
+These are private backend APIs that are only meant for use in the sample conferencing app.
+
 ### Creating a User
-Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
 
-So, for the first step, we need to create a login form, where we authenticate them and generate a token for them.
+Anyone who wants to join the group, also need to be a mesibo user with a token. To create a room using the private API (described in the next step)you need a token. 
 
-1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js] (https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+So, for the first step, we authenticate a user and generate a token for them.
+
+1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
 
 ```
 MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
-2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication) The user will now need to enter the OTP received which we then send to the backend for verification with the following request
+2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs for authentication refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication) The user will now need to enter the OTP received which we then send to the backend for verification with the following request
 
 ```
 MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
-If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token and other response parameters locally
+If the entered OTP matches, we generate a token for that user. We then save the token and other required parameters locally
 
-### Creating a Room
+### Creating a conference room
 For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties such as the room name, etc
-
-Since we are creating a conference room, We will be creating a normal group where all members can send and receive streams.
 
 We can also set the video quality settings required.
 ```javascript
@@ -140,15 +145,17 @@ You can store all these room parameters.
 
 As the creator of the room, you have the permissions to publish to the group and view other streams. But, you may need to control the permissions of other particpants in the conference. You may wish to permit only a select few of the participants to both publish, participate and view other streams, while for some you only grant the permission to view other streams.
 
-Any participant who wishes to enter the room need to enter a `pin`, to enter a room with a particular `room-ID`. You can send the roomid
+To do this mesibo generates two random pins for every group that is created. `pin` and `spin`. Any participant who wishes to enter the room need to enter a `pin` or `spin` to enter a room with a particular `room-ID`.
+ 
 When a room is created, the response will contain two pins :
 - `response['pin']` Participant Pin. Send this to those who you want to actively participate in the conference. They will be able to make a video or voice call to the conference.
 - `response['spin']` Subscriber Pin. Send this to those who you want to silently participate in the conference. They will not be able to make a call -but they will be able to view the conference.
 
 
 ### Entering a room
-To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+To enter a room you need to enter a `room-ID` which is the group id and a `pin`. Participants will need to enter the groupid and pin. We read these valuues and send it along with the access token(that was generated in the login step) and request mesibo backend to authenticate it. 
+
 ```
 MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
-
+If the enterd pin matches with the pin that was generated while creating the room, the participant will be allowed to enter the room.

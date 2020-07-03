@@ -181,7 +181,9 @@ For a successful request, you response will look like below:
     "result": "OK"
 }
 ```
-You can store all these room parameters.
+The backend API after creating the group will provide you two pins:
+1. `pin` : The participant pin. Share this pin with people who you want to actively participate in the conference. They will be able to make a video or voice call to the conference.
+2. `spin`: The subscriber pin. Share this pin with  people who you want to silently participate in the conference. They will not be able to make a call -but they will be able to view the conference.
 
 ## 4. Add Members
 

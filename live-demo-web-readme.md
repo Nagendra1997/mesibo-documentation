@@ -27,13 +27,11 @@ If you want to setup your backend for the conferencing app, refer to the [backen
 
 If you choose not to setup the backend, you can use the Mesibo API backend at `https://app.mesibo.com/conf/api.php` and use the default configuration in [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
 
-Please note that mesibo needs a **secure https connection**. If you have not configured an https server, you can test the app on a [local testing server](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server).
+### Setup requirements
+- mesibo needs a **secure connection**. Please ensure you can configured an https server to host the app
+- Camera and Microphone access. Please ensure you have  set up  camera and microphone devices  and granted the required permissions in the browser
 
 # Building a Zoom Like Conferencing app 
-
-Video conferencing apps like Zoom and Google Meet are showing new ways for people to virtually collaborate and connect. Streaming services like Netflix, Youtube, Prime Video, etc have forever changed the way people consume entertainment and media.
-
-Let us now build a Zoom like Conferencing app using Mesibo Conferencing and Streaming APIs.
 
 You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
 
@@ -43,7 +41,7 @@ You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a
 
 - We will be using the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
 - Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
-- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work
+- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work.  It is recommended that you first look at the [basic demo](https://github.com/mesibo/conferencing/tree/master/basic-demo) to familiarize yourself with API before diving into live-demo.
 - A basic understanding of HTML/CSS/JS
 - A minimal understanding of Bootstrap
 - Not an absolute need, but a familiarity with Angular would be good to have

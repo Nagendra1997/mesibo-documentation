@@ -164,14 +164,13 @@ In case of a conference, members can send and recieve videos. So we create a nor
 ```
 https://api.mesibo.com/api.php?op=groupadd&token=xxxxxxxxxxxxx&name=conference&flag=0&active=1
 ```
-
-A successfull response will look like below:
-```{"app":{"aid":"xxxx","uid":"xxx","name":"BingoMessage","secret":"","u_users":"46","u_groups":"13","url":"","server":"","notify":"1","nrate":"1","ninterval":"0","flag":"33024","f_beta":"1","ts":"1592816529","uts":"1592482004","fcm_id":"","fcm_key":"","apn_info":"","pushflags":"0","token":"xxxxxxxxxxxxxxxxxxxxxx"},"uts":"1593769608","disabled":0,"group":{"gid":97284},"op":"groupadd","result":true}
-```
-
 Make note of the group id. We will use this later to add members to the group
 ```
 response[‘group’][‘gid’] = Group ID (GID)
+```
+A successfull response will look like below:
+```
+{"app":{"aid":"xxxx","uid":"xxx","name":"BingoMessage","secret":"","u_users":"46","u_groups":"13","url":"","server":"","notify":"1","nrate":"1","ninterval":"0","flag":"33024","f_beta":"1","ts":"1592816529","uts":"1592482004","fcm_id":"","fcm_key":"","apn_info":"","pushflags":"0","token":"xxxxxxxxxxxxxxxxxxxxxx"},"uts":"1593769608","disabled":0,"group":{"gid":97284},"op":"groupadd","result":true}
 ```
 
 ## 4. Add Members

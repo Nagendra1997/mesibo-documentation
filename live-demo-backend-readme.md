@@ -89,11 +89,15 @@ That's it! You are now good to go about running the conferecing demo app connect
 
 Before you continue, Remember that, private APIs are not the replacement for mesibo backend APIs. Private APIs invoke mesibo backend APIs. You will still need to invoke mesibo API at https://api.mesibo.com/api.php for adding users, groups, members, etc.
 
-These are private backend APIs that are only meant for use in the sample conferencing app.
+These are private backend APIs that are only meant for use in the sample conferencing app. The private APIs used in the conferencing app are :
+- `login` - For generating a token for a user
+- `setgroup` - For letting a user create a room
+- `joingroup` - For letting a user enter a room 
 
-### Creating a User
 
-Anyone who wants to join the group, also need to be a mesibo user with a token. To create a room using the private API (described in the next step)you need a token. 
+### User Login and Authentication
+
+Anyone who wants to join the group, also need to be a mesibo user with a token. To create a room using the private API (described in the next step) you need a token. 
 
 So, for the first step, we authenticate a user and generate a token for them.
 

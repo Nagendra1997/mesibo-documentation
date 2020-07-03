@@ -222,28 +222,31 @@ To place a call to the group, first, you need to initialize the group call. For 
 ### Connect to voice and video of members
 Once you get a list of participants, you can choose to connect to each of those streams. To connect to a participant's stream you need to use the `call` method. 
 
-## 2. Getting a list of Participants
-
-Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.
-
-Before we get the list of participants, first we need to initialize mesibo and connect to a group.
-
 ### Initialize mesibo
-To initialize mesibo, create an instance of mesibo API class `mesibo`. Set the app id and token that you obtained while creating the user.
- 
-You can initialize and run mesibo as follows:
+First initialize mesibo by creating an instance of mesibo API class `Mesibo`. Set the app id and token that you obtained while creating the user.
  
 ```javascript
 
-var api = new mesibo();
+//Create Mesibo API instance
+var api = new Mesibo();
+
+//Set Application ID
 api.setAppName(MESIBO_APP_ID);
+
+//Create Mesibo Listener object and set it 
 api.setListener(new mesiboNotify(api));
+
+//Set the user access token
 api.setCredentials(MESIBO_ACCESS_TOKEN);
+
+//Set the database name to store messages,etc
 api.setDatabase("mesibo");
+
+//Run Mesibo
 api.start();
 
 ```
-### Initialize Group Calling & Streaming
+### Place a call to the group
 
 To set up group calling and streaming call `initGroupCall()` to create the group call object. 
 To link the room with a group, call the `setRoom` method of the group call object, by passing the group-id.
@@ -254,8 +257,9 @@ An example in Javascript is as follows,
 //Create group call object
 var live = api.initGroupCall();
 
-live.setRoom(DEMO_GROUP_ID);    
+live.setRoom(GROUP_ID);    
 ```
+### Get a list of participants
 
 Now you will get a list of group members through the listener `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
@@ -263,9 +267,8 @@ Now you will get a list of group members through the listener `Mesibo_onParticip
 
 mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {    
     for(var i in latest) {
-        console.log("Mesibo_Onparticipants: " + latest[i].getId());
         var p = latest[i];
-        connectStream(p);
+        subscribe(p);
     }
 }
 
@@ -273,21 +276,7 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 The parameter `all` contains an array of all participants who have joined.
 The parameter `latest` contains the array of participants that have just joined the group.
 
-You can now iterate through the list of participants and subscribe to the stream of each participant.
-```javascript
-function connectStream(stream){
-    for (var i = 0; i < streams.length; i++) {
-        if(streams[i] == null){
-            streams[i] = stream;
-            streams[i].element_id = 'video-remote-'+ i;
-            subscribe(streams[i]);
-            return;
-        }
-    }
-}
-```
-
-### 3. View the streams of participants in the group
+### 3. Subscribe to the streams of participants in the group
 You can subscribe to the stream of each participant  that you get in `Mesibo_onParticipants` as follows with the `call()` method
 The `call` method takes the following parameters:
 - The ID of the HTML element where the video will be rendered
@@ -297,8 +286,7 @@ The `call` method takes the following parameters:
 For example, if the ID of the HTML element where the video will be displayed is `video-stream` then, we can connect to the call as follows:
 ```javascript
 function subscribe(p) {
-    console.log('====> subscribe', p.getId(), p.element_id);
-    p.call(null, p.element_id, on_stream, on_status);
+    p.call(null, 'video-stream-'+ p.getId(), on_stream, on_status);
 }
 
 
@@ -313,8 +301,6 @@ function on_status(p, status, video){
 }
 
 function on_stream(p) {
-    console.log('on_stream');
-
     //Local Stream
     if(p.isLocal()) {
         p.attach("video-publisher");
@@ -323,7 +309,7 @@ function on_stream(p) {
 
     //Remote Stream
     console.log('===> on_stream', p.element_id, 'attach');
-    p.attach(p.element_id);
+    p.attach('video-stream-'+ p.getId());
 }
 ```
 
@@ -332,14 +318,13 @@ Call the `getLocalParticipant` method to initialize local publisher(the stream y
 ```javascript
 
 // Create a local participant, Set Publisher name and address
-var publisher = live.getLocalParticipant(USER_NAME, USER_ADDRESS); 
-publish(publisher);
+var publisher = live.getLocalParticipant(STREAM_ID, USER_NAME, USER_ADDRESS); 
 ```    
 You are the publisher. As a member of the conference room group, you can stream your self, which other members can view.
 If the ID of the HTML Element is `video-publisher` then we publish as follows:
 
 Call `streamFromCamera` when you need to send your camera stream.  
-Call `streamFromScreen()` when you need to share your stream
+Call `streamFromScreen` when you need to share your screen
 
 ```javascript
 function streamFromCamera() {
@@ -386,16 +371,13 @@ Parameters:
 
 For example, to mute audio and video of your own stream-- the publisher
 ```javascript
-function toggleSelfVideo() {
-    publisher.toggleMute(true, false);
-}
-
-function toggleSelfAudio() {
-    publisher.toggleMute(false, false);
-}
-
-
+//Mute own audio
+publisher.toggleMute(true, false);
+    
+//Mute own video
+publisher.toggleMute(false, false);
 ```
+
 To mute remote stream, you use the same method, but the second parmeter is `false`
 ```javascript
 function toggleRemoteVideo(i) {
@@ -409,7 +391,6 @@ function toggleRemoteAudio(i) {
     if(s)
         s.toggleMute(false, false);
 }
-
 ```
 
 ### Getting the Mute Status of a stream

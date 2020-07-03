@@ -157,15 +157,18 @@ In a conference room, all the participants will be able to publish live streams 
 
 ### Creating the group using REST API
 
-To create a group, you need to invoke the `groupadd` API:
+To create a group, you need to invoke the [groupadd API](https://mesibo.com/documentation/api/backend-api/#create-a-group):
 
 For example,
 In case of a conference, members can send and recieve videos. So we create a normal group
 ```
-https://api.mesibo.com/api.php?op=groupadd&&token=xxxxxxxxxxxxx&name=conference&&flag=0&active=1
+https://api.mesibo.com/api.php?op=groupadd&token=xxxxxxxxxxxxx&name=conference&flag=0&active=1
 ```
 
-A successfull response will contain
+A successfull response will contain will look like below:
+```{"app":{"aid":"xxxx","uid":"xxx","name":"BingoMessage","secret":"","u_users":"46","u_groups":"13","url":"","server":"","notify":"1","nrate":"1","ninterval":"0","flag":"33024","f_beta":"1","ts":"1592816529","uts":"1592482004","fcm_id":"","fcm_key":"","apn_info":"","pushflags":"0","token":"xxxxxxxxxxxxxxxxxxxxxx"},"uts":"1593769608","disabled":0,"group":{"gid":97284},"op":"groupadd","result":true}
+```
+Make note of the group id. We will use this later to add members to the group
 ```
 response[‘group’][‘gid’] = Group ID (GID)
 ```
@@ -180,22 +183,14 @@ Add the users created earlier as members of the group.
 ### Adding members dynamically using REST API
 Add or Remove Group Members using GID obtained in the group add operation.
 
-To create a group, you need to invoke the `groupeditmembers` API with the following parameters:
-- op = “groupeditmembers”
-- token = Application Token obtained from mesibo console
-- gid = Group ID (GID)
-- m = comma-separated list of user addresses to add or remove in the group
-- cs = 1 if members being added can send messages to the group, 0 for not
-- cr = 1 if members being added can receive group messages, 0 for not
-- canpub = [group calling] 1 if members being added can make (publish) group voice or video calls, 0 for not
-- cansub = [group calling] 1 if members being added can subscribe to group voice or video calls, 0 for not
-- canlist = [group calling] 1 if members being added can get a list of active callers in the group, 0 for not
-- delete = 0 to add members, 1 to remove members
+To create a group, you need to invoke the [groupeditmembers API](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) 
 
 For example,
 In case of a conference, members can send and recieve videos. So we invoke the api as follows.
+
+
 ```
-https://api.mesibo.com/api.php?op=groupeditmembers&&token=xxxxxxxxxxxxx&&gid=12345&&m=91111,92222,93333&&canpub=1&&cansub=1&&canlist=1&&delete=0
+https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=91111,92222,93333&canpub=1&cansub=1&canlist=1&delete=0
 ```
 
 A successfull response will look like below

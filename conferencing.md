@@ -187,14 +187,15 @@ To create a group, you need to invoke the [groupeditmembers API](https://mesibo.
 
 For example,
 In case of a conference, members can send and recieve videos. So we invoke the api as follows.
-
+Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `user4` that need to be members of the conference. Let all members have the permission to publish, subscribe and list. then you need to call the api as follows
 
 ```
-https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=91111,92222,93333&canpub=1&cansub=1&canlist=1&delete=0
+https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=user0,user1,user2,user3,user4&canpub=1&cansub=1&canlist=1&delete=0
 ```
 
 A successfull response will look like below
 ```
+{"app":{"aid":"6320","uid":"1953","name":"BingoMessage","secret":"","u_users":"46","u_groups":"14","url":"","server":"","notify":"1","nrate":"1","ninterval":"0","flag":"33024","f_beta":"1","ts":"1592816529","uts":"1592482004","fcm_id":"","fcm_key":"","apn_info":"","pushflags":"0","token":"xxxxxxxxxxxxxxxxxxxx"},"uts":"1593770163","disabled":0,"op":"groupeditmembers","result":true}
 ```
 
 ### Mesibo Streaming and Conferencing SDK

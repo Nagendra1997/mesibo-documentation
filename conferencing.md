@@ -157,7 +157,7 @@ In a conference room, all the participants will be able to publish live streams 
 
 ### Creating the group using REST API
 
-To create a group, you need to invoke the [groupadd API](https://mesibo.com/documentation/api/backend-api/#create-a-group):
+To create a group, you need to invoke [groupadd](https://mesibo.com/documentation/api/backend-api/#create-a-group):
 
 For example,
 In case of a conference, members can send and recieve videos. So we create a normal group
@@ -183,7 +183,7 @@ Add the users created earlier as members of the group.
 ### Adding members dynamically using REST API
 Add or Remove Group Members using GID obtained in the group add operation.
 
-To create a group, you need to invoke the [groupeditmembers API](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) 
+To create a group, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) 
 
 For example,
 In case of a conference, members can send and recieve videos. So we invoke the api as follows.

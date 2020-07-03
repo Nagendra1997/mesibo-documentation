@@ -157,32 +157,17 @@ In a conference room, all the participants will be able to publish live streams 
 
 ### Creating the group using REST API
 
-To create a group, you need to invoke this API with the following parameters:
-
-op = “groupadd”
-token = Application Token obtained from mesibo console
-name = Group Name [Optional]
-flag = Group Flags (described below)
-expiry = Expiry in seconds, default 1 year
-expiryext = Auto extend expiry on group activity, in seconds. Default disabled.
-active = 1 to enable, 0 to disable
-Group Flags can be a logical OR combination of one or more flags value below:
-
-0 - normal group, only members can send
-1 - only selected members can send (refer add members API below)
-2 - anyone can send
-0x10 - only selected members can receive (refer add members API below)
-0x20 - received by one member in the round-robin fashion
-0x40 - do no store group messages
-0x80 - loop back to sender
-Response Fields
-
-```
-response[‘group’][‘gid’] = Group ID (GID)
-```
+To create a group, you need to invoke the `groupadd` API:
 
 For example,
+In case of a conference, members can send and recieve videos. So we create a normal group
 ```
+https://api.mesibo.com/api.php?op=groupadd&&token=xxxxxxxxxxxxx&name=conference&&flag=0&active=1
+```
+
+A successfull response will contain
+```
+response[‘group’][‘gid’] = Group ID (GID)
 ```
 
 ## 4. Add Members
@@ -195,6 +180,7 @@ Add the users created earlier as members of the group.
 ### Adding members dynamically using REST API
 Add or Remove Group Members using GID obtained in the group add operation.
 
+To create a group, you need to invoke the `groupeditmembers` API with the following parameters:
 op = “groupeditmembers”
 token = Application Token obtained from mesibo console
 gid = Group ID (GID)
@@ -206,8 +192,13 @@ cansub = [group calling] 1 if members being added can subscribe to group voice o
 canlist = [group calling] 1 if members being added can get a list of active callers in the group, 0 for not
 delete = 0 to add members, 1 to remove members
 
-
 For example,
+In case of a conference, members can send and recieve videos. So we create a normal group
+```
+https://api.mesibo.com/api.php?op=groupeditmembers&&token=xxxxxxxxxxxxx&&gid=12345&&m=91111,92222,93333&&canpub=1&&cansub=1&&canlist=1&&delete=0
+```
+
+A successfull response will look like below
 ```
 ```
 

@@ -181,19 +181,19 @@ Add the users created earlier as members of the group.
 Add or Remove Group Members using GID obtained in the group add operation.
 
 To create a group, you need to invoke the `groupeditmembers` API with the following parameters:
-op = “groupeditmembers”
-token = Application Token obtained from mesibo console
-gid = Group ID (GID)
-m = comma-separated list of user addresses to add or remove in the group
-cs = 1 if members being added can send messages to the group, 0 for not
-cr = 1 if members being added can receive group messages, 0 for not
-canpub = [group calling] 1 if members being added can make (publish) group voice or video calls, 0 for not
-cansub = [group calling] 1 if members being added can subscribe to group voice or video calls, 0 for not
-canlist = [group calling] 1 if members being added can get a list of active callers in the group, 0 for not
-delete = 0 to add members, 1 to remove members
+- op = “groupeditmembers”
+- token = Application Token obtained from mesibo console
+- gid = Group ID (GID)
+- m = comma-separated list of user addresses to add or remove in the group
+- cs = 1 if members being added can send messages to the group, 0 for not
+- cr = 1 if members being added can receive group messages, 0 for not
+- canpub = [group calling] 1 if members being added can make (publish) group voice or video calls, 0 for not
+- cansub = [group calling] 1 if members being added can subscribe to group voice or video calls, 0 for not
+- canlist = [group calling] 1 if members being added can get a list of active callers in the group, 0 for not
+- delete = 0 to add members, 1 to remove members
 
 For example,
-In case of a conference, members can send and recieve videos. So we create a normal group
+In case of a conference, members can send and recieve videos. So we invoke the api as follows.
 ```
 https://api.mesibo.com/api.php?op=groupeditmembers&&token=xxxxxxxxxxxxx&&gid=12345&&m=91111,92222,93333&&canpub=1&&cansub=1&&canlist=1&&delete=0
 ```

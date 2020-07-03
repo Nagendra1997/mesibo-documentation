@@ -27,31 +27,22 @@ If you want to setup your backend for the conferencing app, refer to the [backen
 
 If you choose not to setup the backend, you can use the Mesibo API backend at `https://app.mesibo.com/conf/api.php` and use the default configuration in [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
 
-### Setup requirements
-- mesibo needs a **secure connection**. Please ensure you can configured an https server to host the app
-- Camera and Microphone access. Please ensure you have  set up  camera and microphone devices  and granted the required permissions in the browser
-
 # Building a Zoom Like Conferencing app 
-
-You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
 
 ![Mesibo Room](mesibo-room.png)
 
 ### Prerequisites
 
-- We will be using the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
+- The demo app uses the Mesibo Javascript SDK. So, install Mesibo Javscript SDK by following the instructions [here](https://mesibo.com/documentation/install/javascript/)
 - Familiar with Mesibo [User and Group Management APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis)
-- Familiar with the basic concepts of how Mesibo APIs for streaming and conferencing work.  It is recommended that you first look at the [basic demo](https://github.com/mesibo/conferencing/tree/master/basic-demo) to familiarize yourself with API before diving into live-demo.
-- A basic understanding of HTML/CSS/JS
-- A minimal understanding of Bootstrap
-- Not an absolute need, but a familiarity with Angular would be good to have
-- Note that in this tutorial the word `stream` may refer to both audio or video or both. When we say stream we are just talking about some form of media
+- Familiar with the basic concepts Mesibo APIs for streaming and conferencing. It is recommended that you first look at the [basic demo](https://github.com/mesibo/conferencing/tree/master/basic-demo) to familiarize yourself with API before diving into live-demo.
+- A web server with HTTPS and PHP support. We assume that your hostname is example.com and the backend is accessible via URL https://example.com/api.php over a **secure connection**
+- Camera and Microphone access. Please ensure you have  set up  camera and microphone devices and granted the required permissions in the browser
 
-Let's get started!
+You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
 
-### Basic features for conferecing
+### Basic requirements for conferecing
 
-We need the following features.
 1. A conference room which people can join
 2. A list of participants and a way to update the list of participants as and when people join or leave the room
 3. View the videos of participants in the group
@@ -62,48 +53,37 @@ We need the following features.
 
 The conference room is a group. We will use REST APIs to perform the operations to create a group and join a group on Mesibo backend. Only the members of a group will be able to view the streams of other members of the same group.
 
-### Creating a User
-Before creating a group, we need to create a mesibo user for the admin. We will be using the token that we receive in this step - the access token of the admin user while creating the group in the next step. Note that anyone who wants to join the group, also need to be a mesibo user with a token. 
+### User Login
+In the demo app, the user registers with a name and email. 
 
-So, for the first step, we need to create a login form, where we authenticate them and generate a token for them.
+Then the app makes a request to mesibo backend with the following parameters to send an OTP to the email entered.
+```
+https://example.com/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+```
 
-![login](login.png)
-
-1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js] (https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
+The user will now need to enter the OTP received which is sent to the backend for verification with the following request
 
 ```
-MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+https://example.com/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
-2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication) The user will now need to enter the OTP received which we then send to the backend for verification with the following request
-
-```
-MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
-```
-If the entered OTP matches, we generate a token for that user, you will receive a token in the response. Save the token. You can refer to the `getMesiboDemoAppToken()` function in `login.js`.
+If the entered OTP matches, the backend generates a token for that user. The token is stored locally.
 
 
 ### Creating a Room
-For a conference room, we need to create a group that other people can join. The creator of the room will configure all the room properties such as the room name, etc
+For a conference room, The creator of the room will configure all the room properties such as the room name, quality settings, etc.
 
-Since we are creating a conference room, We will be creating a normal group where all members can send and receive streams.
-
-![create a room](create-room.png)
-
-We can also set the video quality settings required.
 ```javascript
-const STREAM_RESOLUTION_DEFAULT = 0 ;
-const STREAM_RESOLUTION_QVGA  = 1 ;
 const STREAM_RESOLUTION_VGA = 2 ; 
 const STREAM_RESOLUTION_HD = 3 ;
 const STREAM_RESOLUTION_FHD = 4;
 const STREAM_RESOLUTION_UHD = 5;
 ```
 
-You can create a group, by making an API request in the following format:
+The room is created by sending a request to the mesibo backend, in the following format:
 ```
-MESIBO_API_BACKEND?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
+https://example.com/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
 ```
-For a successful request, you response will look like below:
+For a successful request, the response looks like below:
 ```
 {
     "op": "setgroup",
@@ -118,34 +98,30 @@ For a successful request, you response will look like below:
     "result": "OK"
 }
 ```
-You can store all these room parameters.
+This result is also stored locally.
 
 As the creator of the room, you have the permissions to publish to the group and view other streams. But, you may need to control the permissions of other particpants in the conference. You may wish to permit only a select few of the participants to both publish, participate and view other streams, while for some you only grant the permission to view other streams.
 
-In the next section we will explore how you can achieve this by sending the appropriate pin.
+This is done by using the appropriate pin.
 
-### Inviting people to join
-Any participant who wishes to enter the room need to enter a `pin`, to enter a room with a particular `room-ID`. You can send the roomid
-When a room is created, the response will contain two pins :
+### Inviting others
+Any participant who wishes to enter the room needs to enter a `pin`, to enter a room with a particular `room-ID`. 
+
+When a room is created, the response contains two pins :
 - `response['pin']` Participant Pin. Send this to those who you want to actively participate in the conference. They will be able to make a video or voice call to the conference.
 - `response['spin']` Subscriber Pin. Send this to those who you want to silently participate in the conference. They will not be able to make a call -but they will be able to view the conference.
 
-Also note that the option to invite ie; to get these special pins is only available to the creator of the room. So, we will not be displaying the invite option for anyone  other than the creator of the room.
+Also note that the option to invite ie; to get these special pins is only available to the creator of the room. So,the invite option is not displayed for anyone  other than the creator of the room.
 
 ### Entering a room
-To enter a room you need to enter a `room-ID` and a `room pin`. In code, you take these parameters, along with the access token(that was generated in the login step) and request mesibo backend to authenticate it by using the following request:
+To enter a room you the user enters a `ROOM_ID` and a `ROOM_PIN`. The app requests mesibo backend to authenticate it by using the following request:
 ```
-MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+https://example.com/api.php?token= USER_TOKEN&op=joingroup&gid= ROOM_ID&pin=ROOM_PIN
 ```
-
-![Enter Room](enter-room.png)
-
 
 ## 2. Getting a list of Participants
 
-Other members, are also mesibo users who are part of the same group(conference room) as you(the publisher). Other group members are also publishing their streams.
-
-Before we get the list of participants, first we need to initialize mesibo and connect to a group.
+Before we get the list of participants, first mesibo is initialized.
 
 ### Initialize Mesibo
 To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating the user.
@@ -172,14 +148,13 @@ You can initialize and run mesibo as follows:
 
         $scope.live = $scope.mesibo.initGroupCall();        
         $scope.live.setRoom($scope.room.gid);
-        $scope.publisher = $scope.live.getLocalParticipant($scope.user.name, $scope.user.address);
+        $scope.publisher = $scope.live.getLocalParticipant(0, $scope.user.name, $scope.user.address);
         if(!isValid($scope.publisher))
             return -1;        
 
 
         MesiboLog('publisher', $scope.publisher);
 
-        $scope.call = new MesiboCall($scope);
         $scope.file = new MesiboFile($scope);
 
         $scope.refresh();
@@ -218,12 +193,6 @@ You can subscribe to the stream of each participant that you get in `Mesibo_onPa
 ```javascript
     $scope.subscribe = function(p) {
         MesiboLog('subscribe', p);
-
-        p.isVisible = true;
-        p.isSelected = false;
-        p.isFullScreen = false;
-        p.isConnected = true;
-
         $scope.updateParticipants(p);
         $scope.updateStreams(p);    
     }

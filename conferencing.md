@@ -255,22 +255,18 @@ Arguments
 - `participantAddress` Set the address of the local participant(This is the address you set when you created this user).
 
 Returns  
-Stream object
+`Participant object`
+
+> **The stream-id, name and address you set here as a publisher, will be available on the remote end to those who subscribe to your stream or view your stream.**
 
 Example,
 ```javascript
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
-
-// You can also publish multiple streams simultaneously with different stream IDs 
-// A local participant for each stream
-var stream_1 = gCall.getLocalParticipant(1, 'user_name', 'user_address');
-var stream_2 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
-
-//and so on..
 ```
+### Overview of Methods in the stream object
+These are the methods available on the stream object. 
 
-### Methods in the stream object
 - `Stream.call()` To establish a connection to the participant to get the video/audio stream
 - `Stream.attach()` To display the stream in an HTML media element (<video> or <audio>)
 - `Stream.getName()` Returns a string, the name of the participant - initialized in `getLocalParticipant` by the publisher
@@ -313,7 +309,6 @@ For example, if the ID of the HTML element where the video will be displayed is 
 
     //Called when the status of a stream changes
     function on_status(p, status){
-    if(MESIBO_CALLSTATUS_CHANNELUP == status){
         //Stream is Connected
     }
 
@@ -354,7 +349,7 @@ As a member of the conference room group, you can send your streams to the group
 
 If you want to display your own video in an HTML video element with the id `video-publisher` like below
 ```html
-<video class="centered" id="video-publisher" autoplay playsinline muted width="100%" height="100%" />
+<video id="video-publisher" autoplay playsinline muted/>
 ```
 
 You can send two types of streams.
@@ -403,10 +398,23 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 }
 
 ```
-Note that you can simultaneously be publishing as many streams or screens as you like. For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+### Publishing multiple screens
+Note that you can simultaneously be publishing as many streams as you like. For example, in a conference you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feed at the same time. 
 
-For example,
+For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+
+On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams seperately.
+
+For example, to share multiple screen initialize a stream object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
+
 ```javascript
+// A local participant object for each stream is required
+var screen_1 = gCall.getLocalParticipant(1, 'user_name', 'user_address');
+var screen_2 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
+var screen_3 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
+ 
+var o = {};
+o.source = STREAM_SCREEN; 
 screen_1.call(o, "video-screen-1", on_stream, on_status);
 screen_2.call(o, "video-screen-2", on_stream, on_status);
 screen_3.call(o, "video-screen-3", on_stream, on_status);
@@ -436,7 +444,7 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 }
 ```
 
-### Subscribe to the participant
+### Subscribe to the participant's stream
 You can view the stream of each participant that you get in `Mesibo_onParticipants`, by connecting to stream as follows with the `call()` method
 
 ```javascript
@@ -448,7 +456,7 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
         
         //Each participant's video will have a separate video element.
         //So we append the UID of each participant to `video-stream-` to create
-        //a unique video indentifier
+        //a unique element ID
         p.call(null, 'video-stream-'+ p.getId(), on_stream, on_status);
 
         //Called when you get the stream 
@@ -471,6 +479,45 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 }
 
 ```
+### Viewing multiple streams from a participant
+Each stream published by a participant will have a different stream-id. You can get the stream-id using the method `getType()` .
+For example, let's say we have participant sharing three screens at once. Now, in this case `Mesibo_OnParticipants` will contain three participant stream objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different screen-id (`getType()` will give you the screen-id that was set by the publisher for that stream).
+
+So, if we want to display these multiple screens from the same participant we need to have different HTML element ID's. Then our call function will look something like below:
+```javascript
+var element_id = 'video-stream-'+ p.getId()+'-type-'+ p.getType();
+p.call(null, element_id , on_stream, on_status);
+
+function on_stream(p) {
+    //Attach the stream to the HTML element
+    var element_id = 'video-stream-'+ p.getId()+'-type-'+ p.getType();
+    p.attach(element_id);
+}
+```
+
+For example, suppose we have a participant with a user-id `1234` and they are sharing three screens in a conferences. Each screen will have a differnt stream-id set by the publisher. Suppose the stream_ids are  `1`, `2`, `3`. If we want to display all of them simultaneously, we need to have three HTML elements.
+
+```html
+<video id="video-stream-1234-type-1" autoplay playsinline muted/>
+<video id="video-stream-1234-type-2" autoplay playsinline muted/>
+<video id="video-stream-1234-type-3" autoplay playsinline muted/>
+```
+
+In `Mesibo_OnParticipants` we will have three stream  `p1`, `p2`, `p3` such that :
+```
+p1.getId() == p2.getId() == p3.getId() == 1234
+
+p1.getType() == 1, p1.getType() == 2, p1.getType() == 3
+```
+
+To subsctibe to each of the streams, we need to perform `call()` on each stream like below:
+```javascript
+p1.call(null, "video-stream-1234-type-1" , on_stream, on_status);
+p2.call(null, "video-stream-1234-type-2" , on_stream, on_status);
+p3.call(null, "video-stream-1234-type-3" , on_stream, on_status);
+```
+and the call attach on these different HTML element IDs do display them.
+
 ### Muting Streams
 
 We can mute video and audio locally, for the streams that we are viewing. You can use the `toggleMute` method to toggle the audio and video status of a stream. 
@@ -482,6 +529,8 @@ Parameters:
 - `video` Boolean , `true` for video, `false` for audio
 - `remote` Boolean, `true` for remote stream, `false` for local stream
 
+`toggleMute` allows you to mute your own video/audio and also other participant's audio/video. But, if you mute your own audio and video others who are viewing your stream will get a mute status. But, if you are viewing the streams of other participants and you mute them it will only affect what you are seeing/hearing. Other parties are unaffected.
+
 For example, to mute audio and video of your stream-- the publisher
 ```javascript
 //Mute own audio
@@ -489,6 +538,12 @@ publisher.toggleMute(true, false);
     
 //Mute own video
 publisher.toggleMute(false, false);
+```
+When you do this, on the remote end , whoever is subscribed to your stream, will be notified through  `Mesibo_OnParticipantUpdated`
+```javascript
+mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {    
+    console.log(p.getName()+ ' is updated');
+}
 ```
 
 To mute a remote stream, you use the same method, but the second parameter is `true`
@@ -518,5 +573,26 @@ For example,
 Say the remote video is muted by the remote participant then,
 `subscriber.muteStatus(true, true)` will return `true`
 
+> Note that, When a remote participant mutes `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `muteStatus()` to get the updated mute status.
+
 If you have muted the video locally then,
 `subscriber.muteStatus(true, false)` will return `true` 
+
+
+### Stopping a stream
+To view a stream from a participant you need to subscribe to it using `call()`.  
+To stop viewing a stream, you can need to use `hangup()`. It is like disconnecting a call.
+
+Example,
+```javascipt
+publisher.hangup()
+```
+When you call `hangup` on a stream that you are publishing, people who are viewing your stream will be notified of it. 
+The remote end will get the status `MESIBO_CALLSTATUS_COMPLETE`.
+```javascript
+on_status(p, status){
+ if(MESIBO_CALLSTATUS_COMPLETE == status)
+  //Stream has been disconnected. Cleanup..
+}
+```
+When you get a hangup status from a participant, you may need to cleanup. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.

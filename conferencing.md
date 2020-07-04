@@ -110,7 +110,7 @@ We will learn more about this in the further sections.
 
 ### How to create a conferencing app using mesibo API 
 
-The following are the basic features of a conferencing app.
+The following are the basic requirements of a conferencing app.
 
 1. A conference room which people can join
 2. Ability to get the list of participants which is updated as and when people join or leave the room in real-time

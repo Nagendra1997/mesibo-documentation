@@ -71,7 +71,8 @@ In a conference/group calling app, you require that all the members of the group
 ![conference scenario](conference.png)
 
 ### Open Webinar / Panel discussion
-In an open webinar or panel discussion apps, you generally require that only one or selected participants are publishing and rest are subscribers only. Other members will not be allowed to publish their streams. This can be achieved with the following group level permission levels. 
+In an open webinar or panel discussion apps, you generally require that only one or selected participants are publishing and rest are subscribers only. Other members will not be allowed to publish their streams. This can be achieved with the following group level permission levels.
+ 
 ![webinar scenario](webinar.png)
 
 In case of a members-only webinar, You can simply change the permission as follows

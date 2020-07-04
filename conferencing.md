@@ -262,7 +262,8 @@ Example,
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 
-// You can also share multiple screens by using different stream IDs 
+// You can also publish multiple streams simultaneously with different stream IDs 
+// A local participant for each stream
 var stream_1 = gCall.getLocalParticipant(1, 'user_name', 'user_address');
 var stream_2 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
 
@@ -293,7 +294,7 @@ Arguments
     * `video` Set to `true` to enable video, `false` otherwise
     * `source` Set to `1` to stream from the camera. Set to `2` to share screen. 
 
-- `elementId` The ID of the video element where the stream is to be displayed 
+- `elementId` The ID of the video element where the stream is to be displayed. 
 - `onStreamCallback` A function which will be called when the stream is created
 - `onStatusCallback` A function which will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
 
@@ -307,7 +308,7 @@ For example, if the ID of the HTML element where the video will be displayed is 
 
     //Called when a stream is formed 
     function on_stream(p) {
-    //Attach the stream to the HTML element    
+        //Attach the stream to the HTML element    
     }
 
     //Called when the status of a stream changes
@@ -403,6 +404,13 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 
 ```
 Note that you can simultaneously be publishing as many streams or screens as you like. For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+
+For example,
+```javascript
+screen_1.call(o, "video-screen-1", on_stream, on_status);
+screen_2.call(o, "video-screen-2", on_stream, on_status);
+screen_3.call(o, "video-screen-3", on_stream, on_status);
+```
 
 ### Get a list of participants
 

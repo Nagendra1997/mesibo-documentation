@@ -264,18 +264,18 @@ Example,
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ```
-### Overview of Methods in the stream object
-These are the methods available on the stream object. 
+### Overview of Methods in the participant object
+These are the methods available on the participant object. 
 
-- `Stream.call()` To establish a connection to the participant to get the video/audio stream
-- `Stream.attach()` To display the stream in an HTML media element (<video> or <audio>)
-- `Stream.getName()` Returns a string, the name of the participant - initialized in `getLocalParticipant` by the publisher
-- `Stream.getAddress()` Returns a string, the address of the participant- initialized in `getLocalParticipant` by the publisher
-- `Stream.getType()` Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
-- `Stream.getId()` Returns an integer, the mesibo user-id of the publisher 
-- `Stream.toggleMute()` To mute the audio or video of a stream
-- `Stream.muteStatus()` To get the mute status of a stream
-- `Stream.hangup()` Hangup the stream 
+- `Participant.call()` To establish a connection to the participant to get the video/audio stream
+- `Participant.attach()` To display the stream in an HTML media element (<video> or <audio>)
+- `Participant.getName()` Returns a string, the name of the participant - initialized in `getLocalParticipant` by the publisher
+- `Participant.getAddress()` Returns a string, the address of the participant- initialized in `getLocalParticipant` by the publisher
+- `Participant.getType()` Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
+- `Participant.getId()` Returns an integer, the mesibo user-id of the publisher 
+- `Participant.toggleMute()` To mute the audio or video of a stream
+- `Participant.muteStatus()` To get the mute status of a stream
+- `Participant.hangup()` Hangup the stream 
 
 ### Making a call 
 To place a call to the group, you can use the `call` method on the stream object. You need to make a call when you need to send your streams to the group. You also need to place a call, to connect to the stream of other participants in the group.

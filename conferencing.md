@@ -1,7 +1,7 @@
 ---
 description: Enable applications with conference calling, live streaming, screen sharing, group chat and more
-keywords: messaging platform, chat api platform, voice, video calling, mesibo communication platform
-title: Mesibo Conferencing and Streaming Platform - Conference Calling, Live Streaming, Screen sharing and Chat API
+keywords: conferencing, group calling, live streaming, facebook live, youtube live, screen sharing
+title: Mesibo Conferencing and Streaming API Documentation
 ---
 
 Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more which can be deployed both on cloud and on-premise at no additional cost.
@@ -34,7 +34,17 @@ Before we dive into the various concepts and APIs for conferencing & streaming e
 
 - Familiar with [Group Management and Messaging APIs](https://mesibo.com/documentation/api/backend-api/#group-management-apis). 
 
-# Mesibo Conferencing and Streaming 
+### Terminology
+
+In this document, we will be using the following terms
+
+- Confernce - Group Call, Webinar, live streaming, etc. For the purpose of this document, we will refer all the use cases as Conference. 
+- Stream - video (camera, screen, etc) and voice data
+- Participant - a user participating in the conference
+- Publishing - publishing/sending self video and voice stream to the conference
+- Subscribing - Receiving video and voice stream of other participants
+
+## Mesibo Conferencing and Streaming 
 
 Mesibo has made it simple to use and build with the group calling and streaming APIs. In just a few steps, you can set up any type of streaming and conferencing application you need- webinar, virtual meeting and conferencing, live events, and more. 
 
@@ -45,8 +55,8 @@ It is assumed that you are already familiar with mesibo group messaging. mesibo 
 Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. You only need to do the following to set up a group with mesibo APIs:
 
 1. Create a group with required permissions and settings
-2. Add Members
-3. Grant Permissions about who can send and received messages. 
+2. Add Members (participants)
+3. Grant Permissions about who can send and receive messages. 
 
 That's it. Now members can start sending and receiving messages in the group.
 
@@ -76,8 +86,9 @@ In an open webinar or panel discussion apps, you generally require that only one
 ![webinar scenario](webinar.png)
 
 In case of a members-only webinar, You can simply change the permission as follows
-Who can view live streams: Members 
-Who can view streams list: Members 
+
+ - Who can view live streams: Members 
+ - Who can view streams list: Members 
 
 ### Class Room
 In a classroom app, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish - usually the teachers.
@@ -108,7 +119,7 @@ You can override these settings per participant using the mesibo REST API. For e
 
 We will learn more about this in the further sections.
 
-### How to create a conferencing app using mesibo API 
+## How to create a conferencing app using mesibo API 
 
 The following are the basic requirements of a conferencing app.
 
@@ -129,7 +140,7 @@ In the following sections, we will learn how to use Mesibo APIs to achieve this.
 
 Let's get started.
 
-## 1. Create the conference application
+### 1. Create the conference application
 
 First, create a new application in [mesibo console](https://mesibo.com/console/). You can skip this step if you already have an existing app.
 
@@ -139,7 +150,7 @@ Once your application is created it will be visible in the `My Applications` tab
 
 In mesibo, the conference room is a group that allows communication between multiple users - that could be a video or a voice conference. Each group contains one or more users who will be participants of this conference call. In a real app, you create groups and participants on-demand using mesibo REST APIs. We will explain both the ways of performing these operations, creating a group and adding users - using the console and using REST APIs
 
-## 2. Creating the conference participants (users)
+### 2. Creating the conference participants (users)
 To create users in the console, 
 
 Click on the `Users` section in your app.
@@ -152,7 +163,7 @@ To enable real-time communication between your users, you need to let mesibo kno
 
 To add a user, you need to invoke [useradd](https://mesibo.com/documentation/api/backend-api/#add-a-user--regenerate-a-user-access-token)
 
-## 3. Creating the conference group
+### 3. Creating the conference group
 Go to [mesibo dashboard](https://mesibo.com/console/#/dashboard) and choose the application created earlier(conference) and click on the `Settings` icon. Now click on `Groups` to open the groups page.
 
 To create a new group, click on the `+ NEW GROUP` button. Give a group name - example `ConferenceGroup` and click on `Create`. Your group with the name `ConferenceGroup` should now be created and be displayed in the table. Click on the edit icon, under actions. This will open the Group Settings page. Replicate settings shown below.
@@ -174,7 +185,7 @@ This will return the group ID in a JSON response. Make note of the group id. We 
 {"group":{"gid":12345},"op":"groupadd","result":true}
 ```
 
-## 4. Add Members
+### 4. Add Members
 
 Now, let us add the users we created earlier as members of this group `ConferenceGroup`. Click on the `+ NEW MEMBER` button and enter the user address, of the user whom you wish to add. In the `User Address` enter `user0` and click on `Add`. The Members table will now display the member you just added. Similarly, add more users. 
 
@@ -194,9 +205,9 @@ Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `use
 https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=user0,user1,user2,user3,user4&canpub=1&cansub=1&canlist=1&delete=0
 ```
 
-### Client API
+## Client API
 
-Once you have created a group and added members, your users can start conferencing using client-side API. Below is a description of each API. You can refer to our open source conferencing app source code in GitHub for better understanding. It is assumed that you are familiar with mesibo real-time APIs.
+Once you have created a group and added your users as members, your users can start conferencing using client-side API. Below is a description of each API. You can refer to our open source conferencing app source code in GitHub for better understanding. It is assumed that you are familiar with mesibo real-time APIs.
 
 Here is a brief overview of the different API methods and callbacks we will be using.
 
@@ -242,34 +253,46 @@ const GROUP_ID = 98765;
 
 live.setRoom(GROUP_ID);    
 ```
-### Initializing a call object 
-Call the `getLocalParticipant` method to initialize a call object. Then others can connect to that call and view your stream.
+### Making Calls to the group
+
+Group users participate in the conference by making calls to the group. There are two kinds of call:
+ 
+  - **publish call** to publish self video or voice stream. In subsequent sections, we will refer to as publishing.
+  - **subscribe call** to receive other participants video or voice stream. In subsequent sections, we will refer to as subscribing.
+
+Participant can publish multiple streams simultaneously by making multiple publish calls. Similarly partipants can view other participants streams by making multiple subscribe calls. There is no limit on these calls.
+
+When a participant makes a publish call (publishing), all the participants will receive a corresponding call object which they can use to make subscribe call.
+
+### Publishing 
+You publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
 
 Syntax
 ```javascript
 GroupCall.getLocalParticipant(streamId, participantName, participantAddress)
 ```
+
 Arguments  
-- `streamId` Arbitrary stream identifier. You can publish multiple streams(share multiple camera streams or screen shares) with a unique identifier for each stream.
-- `participantName` Set the name of the local participant
-- `participantAddress` Set the address of the local participant(This is the address you set when you created this user).
+- **streamId** - Arbitrary stream identifier. You can publish multiple streams(share multiple camera streams or screen shares) with a unique identifier for each stream. The remote end will receive the streamId you set here along with the call object.
+
+- **participantName** - Set the name of the local participant
+
+- **participantAddress** - Set the address of the local participant(This is the address you set when you created this user).
 
 Returns  
 `Call object` for the participant
-
-> **The stream-id, name and address you set here as a publisher, will be available on the remote end to those who subscribe to your stream or view your stream.**
 
 Example,
 ```javascript
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ```
-### Overview of Methods available in the participant object. 
+### Overview of Methods available in the Participant object. 
 
-- `Participant.call()` To establish a connection to the participant to get the video/audio stream
+- **Participant.call()** - To establish a connection to the participant to get the video/audio stream
 - `Participant.attach()` To display the stream in an HTML media element (<video> or <audio>)
-- `Participant.getName()` Returns a string, the name of the participant - initialized in `getLocalParticipant` by the publisher
-- `Participant.getAddress()` Returns a string, the address of the participant- initialized in `getLocalParticipant` by the publisher
+- `Participant.getName()` Returns the name of the participant - initialized in `getLocalParticipant` by the publisher
+- `Participant.getAddress()` Returns the address of the participant
 - `Participant.getType()` Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
 - `Participant.getId()` Returns an integer, the mesibo user-id of the publisher 
 - `Participant.toggleMute()` To mute the audio or video of a stream
@@ -284,7 +307,7 @@ You need to make a call when you need other members of group to view your stream
 
 Syntax
 ```javascript
-Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
+Stream.call(initObject, elementId, onStreamCallback, onStatusCallback)
 ```
 Arguments
 - `initObject` Initialization object where you can initialize various properties of the stream like:
@@ -325,7 +348,7 @@ To display a stream, you need to call the `attach` method on the stream object.
 
 Syntax
 ```javascript
-Participant.attach(elementId, onAttachedCallback, retryTimeout, maxRetries)
+Stream.attach(elementId, onAttachedCallback, retryTimeout, maxRetries)
 ```
 
 Arguments
@@ -400,10 +423,10 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 }
 
 ```
-### Sharing multiple screens
+### Publishing multiple screens
 Note that you can simultaneously be publishing as many streams as you like. For example, in a conference you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feed at the same time. 
 
-For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 
 On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams seperately.
 

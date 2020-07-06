@@ -581,7 +581,7 @@ participant.toggleMute(true, true);
 
 //Mute remote audio
 participant.toggleMute(false, true);
-}
+
 ```
 
 ### Getting the Mute Status of a stream
@@ -607,9 +607,9 @@ If you have muted the video locally then,
 `participant.muteStatus(true, false)` will return `true` 
 
 
-### Stopping a stream
+### Hanging up a stream
 To view a stream from a participant you need to subscribe to it using `call()`.  
-To stop viewing a stream, you can need to use `hangup()`. It is like disconnecting a call.
+To hangup a stream, you can need to use `hangup()`. It is like disconnecting a call.
 
 Example,
 ```javascipt
@@ -619,8 +619,9 @@ When you call `hangup` on a stream that you are publishing, people who are viewi
 The remote end will get the status `MESIBO_CALLSTATUS_COMPLETE`.
 ```javascript
 on_status(p, status){
- if(MESIBO_CALLSTATUS_COMPLETE == status)
+ if(MESIBO_CALLSTATUS_COMPLETE == status){
   //Stream has been disconnected. Cleanup..
+  }
 }
 ```
 When you get a hangup status from a participant, you may need to clean up. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.

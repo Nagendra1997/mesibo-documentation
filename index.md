@@ -167,22 +167,22 @@ Click on the `+ NEW USER` button. To create a user, Enter a User Address and App
 
 Similarly, you can create more users in the console.
 
-To add a user with REST API, you need to invoke [useradd](https://mesibo.com/documentation/api/backend-api/#add-a-user--regenerate-a-user-access-token)
+If you want to add a user with REST API, you need to invoke [useradd](https://mesibo.com/documentation/api/backend-api/#add-a-user--regenerate-a-user-access-token)
 
 Now we need to create a group and make the users that we have created, members of that group.
 
 ### 3. Create a group to hold the conference
 Go to [mesibo dashboard](https://mesibo.com/console/#/dashboard) and choose the application created earlier(conference) and click on the `Settings` icon. Now click on `Groups` to open the groups page.
 
-To create a new group, click on the `+ NEW GROUP` button. Give a group name - example `conferencegroup` and click on `Create`. Your group with the name `conferencegroup` should now be created and be displayed in the table. Click on the edit icon, under actions. This will open the Group Settings page. Replicate settings shown below.
+To create a new group, click on the `+ NEW GROUP` button. Give a group name - example `ConferenceGroup` and click on `Create`. Your group with the name `ConferenceGroup` should now be created and be displayed in the table. Click on the edit icon, under actions. This will open the Group Settings page. Replicate settings shown below.
 
 ![Conference Group Settings](images/conference_group_settings.png)
 
-You can also create a group by invoking [groupadd](https://mesibo.com/documentation/api/backend-api/#create-a-group):
+If you want to create a group using REST, you need to invoke [groupadd](https://mesibo.com/documentation/api/backend-api/#create-a-group):
 
 For example,
 ```
-https://api.mesibo.com/api.php?op=groupadd&token=xxxxxxxxxxxxx&name=conferencegroup&flag=0
+https://api.mesibo.com/api.php?op=groupadd&token=xxxxxxxxxxxxx&name=ConferenceGroup&flag=0
 ```
 
 This will return the group ID in a JSON response. Make note of the group id. We will use this later to add members to the group
@@ -193,15 +193,12 @@ This will return the group ID in a JSON response. Make note of the group id. We 
 
 ### 4. Add Members
 
-Now, let us add the users we created earlier as members of this group `conferencegroup`. Click on the `+ NEW MEMBER` button and enter the user address, of the user whom you wish to add. Click on `Add`. The Members table will now display the member you just added. Similarly, add more users. 
+Now, let us add the users we created earlier as members of this group `ConferenceGroup`. Click on the `+ NEW MEMBER` button and enter the user address, of the user whom you wish to add. Click on `Add`. The Members table will now display the member you just added. Similarly, add more users. 
 
-Add the users created earlier as members of the group.
+Add the users created earlier as members of the group in the console.
 ![Group Members](images/group_members.png)
 
-### Adding members dynamically using REST API
-Add or Remove Group Members using GID obtained in the group add operation.
-
-To create a group, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) 
+If you want to add members to a group using REST API, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) and pass the GID obtained of the group you created in the previous step..
 
 For example,
 In the case of a conference, members can send and receive videos. So we invoke the API as follows.
@@ -244,7 +241,7 @@ api.setDatabase("mesibo");
 api.start();
 
 ```
-### Initializing the group call 
+### Initialize the group call 
 
 To set up a group call, use `initGroupCall()` to create the group calling object. 
 
@@ -262,7 +259,7 @@ const GROUP_ID = 98765;
 
 gCall.setRoom(GROUP_ID);    
 ```
-### Making Calls to the group
+### Making a call in the conference
 
 Group users participate in the conference by making calls to the group. There are two kinds of call:
  
@@ -273,7 +270,7 @@ A participant can publish multiple streams simultaneously by making multiple pub
 
 When a participant makes a publish call (publishing), all the participants will receive a corresponding call object which they can use to make subscribe call.
 
-### Publishing 
+### Publishing streams
 To publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use the call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
 
 (Group Call is the group call object)
@@ -297,7 +294,7 @@ Example,
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ```
-### Overview of Methods available in the Participant object. 
+### Overview of Methods in the Participant object. 
 
 - **call()** - To establish a connection to the participant to get the video/audio stream
 - **attach()** - To display the stream in an HTML media element (<video> or <audio>)
@@ -305,14 +302,36 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 - **getAddress()** - Returns the address of the participant
 - **getType()** - Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
 - **getId()** - Returns an integer, the mesibo user-id of the publisher
+- **isLocal()** Returns true if participant is a local stream, false otherwise
 - **toggleMute()** - To mute the audio or video of a stream
 - **muteStatus()** - To get the mute status of a stream
 - **hangup()** - Hangup the stream
 
-## Making a call 
-To place a call to the group, you can use the `call` method on the participant's call object. 
+### Overview of Callback functions
 
-You need to make a call when you need other members of the group to view your streams. You get a call object from `getLocalParticipant`. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. Other members can then subscribe to your stream, again using `call()`
+Following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
+- **Mesibo_OnParticipants** Called when a participant joins the group
+- **Mesibo_OnParticipantUpdated** Called when status of a participant changes. For example, when they mute/unmute.
+- **Meibo_OnPermission** Called when a permission is requested and completed.
+- **Mesibo_OnError** Called when an error occurs
+- **Mesibo_OnLocalMedia** Called when local media is updated
+- **Mesibo_OnSubscriber** Called  when another participant subscribes to your stream
+
+Following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
+- **on_stream** Called when a stream is received.
+- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, connection is complete, etc
+
+Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
+- **on_attached** Called when attach is complete.
+
+### Making a call 
+To place a call, you need to use the `call` method in the call object. 
+
+As described earlier, there are two types of calls- **publish call** and **subscribe call**. To make any type of call you need to have a call object. 
+
+To make a publish call, get a call object using`getLocalParticipant`. You can be publishing any type of stream - camera or screen. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. 
+
+To make a subscribe call, get the call object in `Mesibo_OnParticipants`. Then call the method `call()` for that object. 
 
 ```javascript
 Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
@@ -321,11 +340,11 @@ Arguments
 - **initObject** - Initialization object where you can initialize various properties of the stream like:
     * **audio** Set to `true` to enable audio, `false` otherwise
     * **video** Set to `true` to enable video, `false` otherwise
-    * **source** Set to `1` to stream from the camera. Set to `2` to share screen. 
+    * **source** Set to `MESIBO_STREAM_CAMERA` to publish camera. Set to `MESIBO_STREAM_SCREEN` to publish screen. 
 
 - **elementId** - The ID of the video element where the stream is to be displayed. 
-- **onStreamCallback** - A function which will be called when the stream is created
-- **onStatusCallback** - A function that will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
+- **on_stream** - A function which will be called when the stream is created
+- **on_status** - A function that will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
 
 For example, if the ID of the HTML element where the video will be displayed is `video-stream` and we want to enable both audio and video , we can make the call as follows:
 ```javascript
@@ -352,15 +371,16 @@ For example, if the ID of the HTML element where the video will be displayed is 
 
 ```
 ### Attaching a stream
-To display a stream, you need to call the `attach` method on the participant's call object. 
+To display a stream, you need to call the `attach` method in the call object. 
 
 ```javascript
-Participant.attach(elementId, onAttachedCallback, retryTimeout, maxRetries)
+Participant.attach(elementId, on_attached, retryTimeout, maxRetries)
 ```
+In case you are using an DOM framework and the HTML element you need to display the stream is not created at the moment you call attach, you can try reattaching after a small delay or a timeout, which can be specified in `retryTimeout`. You can also specify the maximum number of attempts to attach in `maxRetries`. If the element is not available even after `maxRetries` is reached, attach will fail. In this case `on_attached` will be called with `false`. If attach is successfull it will be called with `true`
 
 Arguments
 - **elementId** - The ID of the HTML element where the stream is to be displayed
-- **onAttachedCallback** - Function to be called when attach is finished
+- **on_attached** - Function to be called when attach is finished.
 - **retryTimeout** - Time in milliseconds, after which attach will be called again if the previous attach failed
 - **maxRetries** - Maximum number of retries to attach
 
@@ -376,7 +396,7 @@ p.attach('video-publisher', on_attached, 100, 50);
 
 ```
 
-### Sending your stream to the group 
+### Publishing a stream
 As a member of the conference room group, you can send your streams to the group, which other members of the group can view.
 
 If you want to display your video in an HTML video element with the id `video-publisher` like below
@@ -430,8 +450,8 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 }
 
 ```
-### Publishing multiple screens
-Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple feeds at the same time. 
+### Publishing multiple streams
+Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple feeds at the same time to build a 360 View! 
 
 For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 
@@ -452,9 +472,9 @@ screen_2.call(o, "video-screen-2", on_stream, on_status);
 screen_3.call(o, "video-screen-3", on_stream, on_status);
 ```
 
-### Get a list of participants
+### Mesibo_onParticipants
 
-You will get a list of participants through the listener `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view their stream. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
+You will get a list of participants through the listener `Mesibo_onParticipants` automatically when you join the conference group. You can choose and subscribe to the stream of each member to view their stream. Also, when a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
 ```javascript
 Mesibo_OnParticipants(all, latest)
@@ -475,8 +495,8 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 }
 ```
 
-### View the participant's stream
-You get the call object of each participant in `Mesibo_onParticipants`.You can subscribe to stream as follows with the `call()` method
+### Subscribing to participants
+You get the call object of each participant in `Mesibo_onParticipants`.You can subscribe to stream as follows with the `call()` method. In this example, we will get the call object to each participant and we are immediately subscribing to the stream of all participants.
 
 ```javascript
 
@@ -510,7 +530,8 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 }
 
 ```
-### Viewing multiple streams from a participant
+
+### Subscribing to multiple streams from a participant
 Each stream published by a participant will have a different stream-id(set by the publisher). You can get the stream-id using the method `getType()`.
 
 For example, let's say we have a participant sharing three screens at once. Now, in this case, `Mesibo_OnParticipants` will contain three participant call objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different stream-id (`getType()` will give you the stream-id that was set by the publisher for that stream).
@@ -535,14 +556,14 @@ For example, suppose we have a participant with a user-id `1234` and they are sh
 <video id="video-stream-1234-type-3" autoplay playsinline muted/>
 ```
 
-In `Mesibo_OnParticipants` we will have three stream  `p1`, `p2`, `p3` such that :
+Let's say we got three call objects in `Mesibo_OnParticipants` as `p1`, `p2`, `p3`. Then :
 ```
 p1.getId() == p2.getId() == p3.getId() == 1234
 
 p1.getType() == 1, p1.getType() == 2, p1.getType() == 3
 ```
 
-To subsctibe to each of the streams, we need to perform `call()` on each stream like below:
+To subsctibe to each of the streams, we need to use `call()` on each call object like below:
 ```javascript
 p1.call(null, "video-stream-1234-type-1" , on_stream, on_status);
 p2.call(null, "video-stream-1234-type-2" , on_stream, on_status);

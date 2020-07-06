@@ -65,13 +65,13 @@ The group calling is no different, just that you have additional permissions for
 ![Group Permissions](group_member_settings.png)
 
 In the case of group messaging, each member has the following permissions:
-- can send:  If the member can send messages to the group
-- can receive: If the member can receive messages from the group
+- **can send**:  If the member can send messages to the group
+- **can receive**: If the member can receive messages from the group
 
 Now, for group calling, in addition to the group settings above, each member has the following permissions:
-- can publish:  If the member can make (publish) group voice or video calls
-- can subscribe: If the member can subscribe to group voice or video calls 
-- can list: If the member can get a list of active callers in the group
+- **can publish**:  If the member can make (publish) group voice or video calls
+- **can subscribe**: If the member can subscribe to group voice or video calls 
+- **can list**: If the member can get a list of active callers in the group
 
 This allows you to create a type of conferencing and streaming app. You can configure default group-level permissions as well as per participant level permissions. The following are some examples of how permissions can be set under different conditions.
 

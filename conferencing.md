@@ -242,8 +242,8 @@ const GROUP_ID = 98765;
 
 live.setRoom(GROUP_ID);    
 ```
-### Initializing a stream 
-Call the `getLocalParticipant` method to initialize your stream(the stream you need to send to the group that others can view. Can be camera stream or screen share) 
+### Initializing a call object 
+Call the `getLocalParticipant` method to initialize a call object. Then others can connect to that call and view your stream.
 
 Syntax
 ```javascript
@@ -284,7 +284,7 @@ You need to make a call when you need other members of group to view your stream
 
 Syntax
 ```javascript
-Stream.call(initObject, elementId, onStreamCallback, onStatusCallback)
+Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
 ```
 Arguments
 - `initObject` Initialization object where you can initialize various properties of the stream like:
@@ -325,7 +325,7 @@ To display a stream, you need to call the `attach` method on the stream object.
 
 Syntax
 ```javascript
-Stream.attach(elementId, onAttachedCallback, retryTimeout, maxRetries)
+Participant.attach(elementId, onAttachedCallback, retryTimeout, maxRetries)
 ```
 
 Arguments
@@ -400,10 +400,10 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 }
 
 ```
-### Publishing multiple screens
+### Sharing multiple screens
 Note that you can simultaneously be publishing as many streams as you like. For example, in a conference you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feed at the same time. 
 
-For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 
 On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams seperately.
 

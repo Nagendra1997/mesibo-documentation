@@ -255,7 +255,7 @@ Arguments
 - `participantAddress` Set the address of the local participant(This is the address you set when you created this user).
 
 Returns  
-`Participant object`
+`Call object` for the participant
 
 > **The stream-id, name and address you set here as a publisher, will be available on the remote end to those who subscribe to your stream or view your stream.**
 
@@ -264,8 +264,7 @@ Example,
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ```
-### Overview of Methods in the participant object
-These are the methods available on the participant object. 
+### Overview of Methods available in the participant object. 
 
 - `Participant.call()` To establish a connection to the participant to get the video/audio stream
 - `Participant.attach()` To display the stream in an HTML media element (<video> or <audio>)
@@ -277,8 +276,11 @@ These are the methods available on the participant object.
 - `Participant.muteStatus()` To get the mute status of a stream
 - `Participant.hangup()` Hangup the stream 
 
-### Making a call 
-To place a call to the group, you can use the `call` method on the stream object. You need to make a call when you need to send your streams to the group. You also need to place a call, to connect to the stream of other participants in the group.
+## Making a call 
+To place a call to the group, you can use the `call` method on the stream object. 
+
+### The basic concept of a call
+You need to make a call when you need other members of group to view your streams. You get a call object from `getLocalParticipant`. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. Other members can then subscribe to your stream, again using `call()`
 
 Syntax
 ```javascript

@@ -509,7 +509,7 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 ### Viewing multiple streams from a participant
 Each stream published by a participant will have a different stream-id(set by the publisher). You can get the stream-id using the method `getType()`.
 
-For example, let's say we have a participant sharing three screens at once. Now, in this case, `Mesibo_OnParticipants` will contain three participant call objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different screen-id (`getType()` will give you the stream-id that was set by the publisher for that stream).
+For example, let's say we have a participant sharing three screens at once. Now, in this case, `Mesibo_OnParticipants` will contain three participant call objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different stream-id (`getType()` will give you the stream-id that was set by the publisher for that stream).
 
 So, if we want to display these multiple screens from the same participant at once, we need to have different HTML elements. Then our call function will look something like below:
 ```javascript

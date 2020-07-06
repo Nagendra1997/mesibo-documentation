@@ -104,12 +104,12 @@ So, for the first step, we authenticate a user and generate a token for them.
 1. We will ask for the name and email of the user and send an OTP to their email. To do this send a request with the following parameters to send an OTP to the email of the user. `MESIBO_API_BACKEND` is the API url configured in [config.js](https://github.com/mesibo/conferencing/blob/master/live-demo/web/mesibo/config.js)
 
 ```
-MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
+https://example.com/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL
 ```
 2. Now we will use a private API to verify this email and generate a token(For more details on mesibo private APIs for authentication refer [here](https://mesibo.com/documentation/tutorials/open-source-whatsapp-clone/backend/#user-login-and-authentication) The user will now need to enter the OTP received which we then send to the backend for verification with the following request
 
 ```
-MESIBO_API_BACKEND?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
+https://example.com/api.php?op=login&appid=APP_ID&name=NAME&email=USER_EMAIL&code=OTP_RECEIVED
 ```
 If the entered OTP matches, we generate a token for that user. We then save the token and other required parameters locally
 
@@ -118,8 +118,6 @@ For a conference room, we need to create a group that other people can join. The
 
 We can also set the video quality settings required.
 ```javascript
-const STREAM_RESOLUTION_DEFAULT = 0 ;
-const STREAM_RESOLUTION_QVGA  = 1 ;
 const STREAM_RESOLUTION_VGA = 2 ; 
 const STREAM_RESOLUTION_HD = 3 ;
 const STREAM_RESOLUTION_FHD = 4;
@@ -128,7 +126,7 @@ const STREAM_RESOLUTION_UHD = 5;
 
 You can create a group, by making an API request in the following format:
 ```
-MESIBO_API_BACKEND?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
+https://example.com/api.php?token=USER_ACCESS_TOKEN&op=setgroup&name=ROOM_NAME&resolution=ROOM_RESOLUTION
 ```
 For a successful request, you response will look like below:
 ```
@@ -160,6 +158,6 @@ When a room is created, the response will contain two pins :
 To enter a room you need to enter a `room-ID` which is the group id and a `pin`. Participants will need to enter the groupid and pin. We read these valuues and send it along with the access token(that was generated in the login step) and request mesibo backend to authenticate it. 
 
 ```
-MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
+https://example.com/api.php?token=USER_TOKEN&op=joingroup&gid=ROOM_ID&pin=ROOM_PIN
 ```
 If the entered pin matches with the pin that was generated while creating the room, the participant will be allowed to enter the room.

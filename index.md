@@ -392,7 +392,7 @@ If want to send your camera feed to the group, we set the source as `STREAM_CAME
     var o = {};
     o.source = STREAM_CAMERA; 
     
-    //publisher is the stream object initialized by getLocalParticipant()
+    //publisher is the call object initialized by getLocalParticipant()
     publisher.call(o, "video-publisher", on_stream, on_status);
 
     function on_stream(p) {
@@ -421,7 +421,7 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
     var o = {};
     o.source = STREAM_SCREEN; 
 
-    //publisher is the stream object initialized by getLocalParticipant()
+    //publisher is the call object initialized by getLocalParticipant()
     publisher.call(o, "video-publisher", on_stream, on_status);
 }
 
@@ -429,11 +429,11 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 ### Publishing multiple screens
 Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feeds at the same time. 
 
-For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 
 On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams separately.
 
-For example, to share multiple screens initialize a stream object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
+For example, to share multiple screens initialize a call object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
 
 ```javascript
 // A call object for each stream is required

@@ -38,7 +38,7 @@ Before we dive into the various concepts and APIs for conferencing & streaming e
 
 In this document, we will be using the following terms
 
-- Confernce - Group Call, Webinar, live streaming, etc. For the purpose of this document, we will refer all the use cases as Conference. 
+- Conference - Group Call, Webinar, live streaming, etc. For this document, we will refer to all the use cases as Conference. 
 - Stream - video (camera, screen, etc) and voice data
 - Participant - a user participating in the conference
 - Publishing - publishing/sending self video and voice stream to the conference
@@ -237,7 +237,7 @@ api.start();
 ```
 ### Initializing the group call 
 
-To set up group calling and streaming, call `initGroupCall()` to create the group calling object. 
+To set up group calling , use `initGroupCall()` to create the group calling object. 
 
 To link the room with a group, call the `setRoom` method of the group call object, by setting the group-id.
 
@@ -258,14 +258,14 @@ live.setRoom(GROUP_ID);
 Group users participate in the conference by making calls to the group. There are two kinds of call:
  
   - **publish call** to publish self video or voice stream. In subsequent sections, we will refer to as publishing.
-  - **subscribe call** to receive other participants video or voice stream. In subsequent sections, we will refer to as subscribing.
+  - **subscribe call** to receive other participants' video or voice stream. In subsequent sections, we will refer to as subscribing.
 
-Participant can publish multiple streams simultaneously by making multiple publish calls. Similarly partipants can view other participants streams by making multiple subscribe calls. There is no limit on these calls.
+A participant can publish multiple streams simultaneously by making multiple publish calls. Similarly, a participant can view other participants' streams by making multiple subscribe calls. There is no limit on these calls.
 
 When a participant makes a publish call (publishing), all the participants will receive a corresponding call object which they can use to make subscribe call.
 
 ### Publishing 
-You publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
+You publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use the call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
 
 Syntax
 ```javascript
@@ -273,7 +273,7 @@ GroupCall.getLocalParticipant(streamId, participantName, participantAddress)
 ```
 
 Arguments  
-- **streamId** - Arbitrary stream identifier. You can publish multiple streams(share multiple camera streams or screen shares) with a unique identifier for each stream. The remote end will receive the streamId you set here along with the call object.
+- **streamId** - Arbitrary stream identifier. You can publish multiple streams(share multiple camera streams or screen shares) with a unique identifier for each stream. The remote end will receive the **streamId** you set here along with the call object.
 
 - **participantName** - Set the name of the local participant
 
@@ -372,7 +372,7 @@ p.attach('video-publisher', on_attached, 100, 50);
 ### Sending your stream to the group 
 As a member of the conference room group, you can send your streams to the group, which other members of the group can view.
 
-If you want to display your own video in an HTML video element with the id `video-publisher` like below
+If you want to display your video in an HTML video element with the id `video-publisher` like below
 ```html
 <video id="video-publisher" autoplay playsinline muted/>
 ```
@@ -424,16 +424,16 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 
 ```
 ### Publishing multiple screens
-Note that you can simultaneously be publishing as many streams as you like. For example, in a conference you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feed at the same time. 
+Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feeds at the same time. 
 
 For every stream you want to publish, initialize a stream object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 
-On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams seperately.
+On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams separately.
 
-For example, to share multiple screen initialize a stream object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
+For example, to share multiple screens initialize a stream object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
 
 ```javascript
-// A local participant object for each stream is required
+// A call object for each stream is required
 var screen_1 = gCall.getLocalParticipant(1, 'user_name', 'user_address');
 var screen_2 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
 var screen_3 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
@@ -505,8 +505,8 @@ mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {
 
 ```
 ### Viewing multiple streams from a participant
-Each stream published by a participant will have a different stream-id. You can get the stream-id using the method `getType()` .
-For example, let's say we have participant sharing three screens at once. Now, in this case `Mesibo_OnParticipants` will contain three participant stream objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different screen-id (`getType()` will give you the screen-id that was set by the publisher for that stream).
+Each stream published by a participant will have a different stream-id. You can get the stream-id using the method `getType()`.
+For example, let's say we have a participant sharing three screens at once. Now, in this case, `Mesibo_OnParticipants` will contain three participant stream objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different screen-id (`getType()` will give you the screen-id that was set by the publisher for that stream).
 
 So, if we want to display these multiple screens from the same participant we need to have different HTML element ID's. Then our call function will look something like below:
 ```javascript
@@ -520,7 +520,7 @@ function on_stream(p) {
 }
 ```
 
-For example, suppose we have a participant with a user-id `1234` and they are sharing three screens in a conferences. Each screen will have a differnt stream-id set by the publisher. Suppose the stream_ids are  `1`, `2`, `3`. If we want to display all of them simultaneously, we need to have three HTML elements.
+For example, suppose we have a participant with a user-id `1234` and they are sharing three screens in a conference. Each screen will have a different stream-id set by the publisher. Suppose the stream_ids are  `1`, `2`, `3`. If we want to display all of them simultaneously, we need to have three HTML elements.
 
 ```html
 <video id="video-stream-1234-type-1" autoplay playsinline muted/>
@@ -541,7 +541,7 @@ p1.call(null, "video-stream-1234-type-1" , on_stream, on_status);
 p2.call(null, "video-stream-1234-type-2" , on_stream, on_status);
 p3.call(null, "video-stream-1234-type-3" , on_stream, on_status);
 ```
-and the call attach on these different HTML element IDs do display them.
+and then call attach on these different HTML element IDs do display them.
 
 ### Muting Streams
 
@@ -554,7 +554,7 @@ Parameters:
 - `video` Boolean , `true` for video, `false` for audio
 - `remote` Boolean, `true` for remote stream, `false` for local stream
 
-`toggleMute` allows you to mute your own video/audio and also other participant's audio/video. But, if you mute your own audio and video others who are viewing your stream will get a mute status. But, if you are viewing the streams of other participants and you mute them it will only affect what you are seeing/hearing. Other parties are unaffected.
+`toggleMute` allows you to mute your own video/audio and also other participant's audio/video. If you mute your own audio and video others who are viewing your stream will be notified that you have muted. But, if you are viewing the streams of other participants and you mute them it will only affect what you are seeing/hearing. Other parties are unaffected.
 
 For example, to mute audio and video of your stream-- the publisher
 ```javascript
@@ -598,7 +598,7 @@ For example,
 Say the remote video is muted by the remote participant then,
 `subscriber.muteStatus(true, true)` will return `true`
 
-> Note that, When a remote participant mutes `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `muteStatus()` to get the updated mute status.
+> Note that When a remote participant mutes `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `muteStatus()` to get the updated mute status.
 
 If you have muted the video locally then,
 `subscriber.muteStatus(true, false)` will return `true` 
@@ -620,4 +620,4 @@ on_status(p, status){
   //Stream has been disconnected. Cleanup..
 }
 ```
-When you get a hangup status from a participant, you may need to cleanup. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.
+When you get a hangup status from a participant, you may need to clean up. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.

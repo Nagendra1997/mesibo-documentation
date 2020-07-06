@@ -162,4 +162,4 @@ To enter a room you need to enter a `room-ID` which is the group id and a `pin`.
 ```
 MESIBO_API_BACKEND?token= USER_TOKEN &op=joingroup&gid= ROOM_ID &pin= ROOM_PIN
 ```
-If the enterd pin matches with the pin that was generated while creating the room, the participant will be allowed to enter the room.
+If the entered pin matches with the pin that was generated while creating the room, the participant will be allowed to enter the room.

@@ -306,13 +306,12 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 - **hangup()** - Hangup the stream
 
 ## Making a call 
-To place a call to the group, you can use the `call` method on the stream object. 
+To place a call to the group, you can use the `call` method on the participant's call object. 
 
-### The basic concept of a call
 You need to make a call when you need other members of group to view your streams. You get a call object from `getLocalParticipant`. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. Other members can then subscribe to your stream, again using `call()`
 
 ```javascript
-call(initObject, elementId, onStreamCallback, onStatusCallback)
+Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
 ```
 Arguments
 - **initObject** - Initialization object where you can initialize various properties of the stream like:

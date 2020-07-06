@@ -207,12 +207,12 @@ Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `use
 https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=user0,user1,user2,user3,user4&canpub=1&cansub=1&canlist=1&delete=0
 ```
 
-If you want to deny a certain permission to the user, set the permission to `0`.
+If you want to deny certain permission to the user, set the permission to `0`.
 For example, if you do not want a certain participant to publish, set `canpub=0`.
  
 ## Client API
 
-Once you have created a group and added your users as members, your users can start conferencing using client-side API. Below is a description of each API. You can refer to our open source [conferencing app](https://github.com/conferencing) source code available on GitHub for better understanding. It is assumed that you are familiar with mesibo real-time APIs.
+Once you have created a group and added your users as members, your users can start conferencing using client-side API. Below is a description of each API. You can refer to our open-source [conferencing app](https://github.com/conferencing) source code available on GitHub for better understanding. It is assumed that you are familiar with mesibo real-time APIs.
 
 Here is a brief overview of the different API methods and callbacks we will be using.
 
@@ -242,7 +242,7 @@ api.start();
 ```
 ### Initializing the group call 
 
-To set up group calling , use `initGroupCall()` to create the group calling object. 
+To set up a group call, use `initGroupCall()` to create the group calling object. 
 
 To link the room with a group, call the `setRoom` method of the group call object, by setting the group-id.
 
@@ -308,7 +308,7 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ## Making a call 
 To place a call to the group, you can use the `call` method on the participant's call object. 
 
-You need to make a call when you need other members of group to view your streams. You get a call object from `getLocalParticipant`. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. Other members can then subscribe to your stream, again using `call()`
+You need to make a call when you need other members of the group to view your streams. You get a call object from `getLocalParticipant`. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. Other members can then subscribe to your stream, again using `call()`
 
 ```javascript
 Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
@@ -321,7 +321,7 @@ Arguments
 
 - **elementId** - The ID of the video element where the stream is to be displayed. 
 - **onStreamCallback** - A function which will be called when the stream is created
-- **onStatusCallback** - A function which will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
+- **onStatusCallback** - A function that will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
 
 For example, if the ID of the HTML element where the video will be displayed is `video-stream` and we want to enable both audio and video , we can make the call as follows:
 ```javascript
@@ -427,7 +427,7 @@ If you  want to share your screen with the group, we set the source as `STREAM_S
 
 ```
 ### Publishing multiple screens
-Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple camera feeds at the same time. 
+Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple feeds at the same time. 
 
 For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
 

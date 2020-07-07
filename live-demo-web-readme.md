@@ -16,9 +16,6 @@ It is recommended that you first look at [basic demo](https://github.com/mesibo/
 - One-to-One chat
 - Invite Participants
 
-### Known Issues
-- If both remote end and local end participant has muted video, remote unmuting overrides mute 
-
 We have also hosted the same code at [https://mesibo.com/livedemo](https://mesibo.com/livedemo) so that you can quickly try it out. 
 
 ### Configuring the backend
@@ -40,6 +37,20 @@ If you choose not to setup the backend, you can use the Mesibo API backend at `h
 - Camera and Microphone access. Please ensure you have  set up  camera and microphone devices and granted the required permissions in the browser
 
 You can try the [Mesibo Live Demo(Beta)](https://mesibo.com/livedemo) which is a fully functional, Zoom Like Video Conferencing app and also download the entire source code from [Github](https://github.com/mesibo/conferencing). 
+
+## Terminology
+
+In this document, we will be using the following terms
+
+- Conference - The conferencing app 
+- Stream - video (camera, screen, etc) and voice data
+- Participant - a user participating in the conference
+- Publishing - publishing/sending self video and voice stream to the conference
+- Subscribing - Receiving video and voice stream of other participants
+- Publisher - The participant sending self video and voice stream
+- Subscriber - The participant viewing other's voice and video stream 
+
+
 
 ### Basic requirements for conferecing
 
@@ -121,11 +132,12 @@ https://example.com/api.php?token= USER_TOKEN&op=joingroup&gid= ROOM_ID&pin=ROOM
 
 ## 2. Getting a list of Participants
 
-Before we get the list of participants, first mesibo is initialized.
+First initialize mesibo.
 
 ### Initialize Mesibo
 To initialize Mesibo, create an instance of Mesibo API class `Mesibo`. Set the app id and token that you obtained while creating the user.
-Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send) 
+Call the `getLocalParticipant` method to initialize local publisher(the stream you need to send).
+
 You are the publisher. As a member of the conference room group, you can stream your self, which other members can view.
 
 You can initialize and run mesibo as follows:
@@ -166,7 +178,7 @@ You can initialize and run mesibo as follows:
 ```
 ### List of Participants
 
-Now you will get a list of group members through the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
+Now you will get a list of participants though the callback function `Mesibo_onParticipants`. You can choose and subscribe to the stream of each member to view it. When a new participant joins the room, `Mesibo_onParticipants` will be called. 
 
 ```javascript
     $scope.Mesibo_OnParticipants = function(all, latest) {
@@ -329,16 +341,16 @@ The above is for local mute. When remote end mutes you can pass an additional pa
 `stream.muteStatus(true, true)`  for remote video status and `stream.muteStatus(false, true)`. We display an prropriate icon when remote audio/video is muted.
 
 ### 6. Stream Status
-There are three possible states for a stream in a call:
+
+You will be getting the state of a stream in the callback function `on_status`, for example
 - `MESIBO_CALLSTATUS_CHANNELUP` : Call is established and you are getting the stream
 - `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
 - `MESIBO_CALLSTATUS_COMPLETE`: Call has ended , terminate the stream.
 
-You will be getting the state of a stream in the callback function `on_status`
-
 For each state we need to display appropriate indicators. For example, if the call is reconnecting then we will show a spinner for that stream and once it is up, we hide the spinner. Also, when the call is complete we remove the stream from the streams area (Refer to `on_hangup`)
 
 ```javascript
+function on_status(status){
             if(MESIBO_CALLSTATUS_COMPLETE  == status){
                     $scope.on_hangup(p, true);
             }
@@ -350,5 +362,39 @@ For each state we need to display appropriate indicators. For example, if the ca
                     MesiboLog('show-spinner');
                     $scope.streams[i].isConnected = false;
             }
+}            
 ```
+### 7. Displaying a stream
+Call attach on the stream with the required DOM element
+```javascript
+	$scope.on_stream = function(p) {
+		MesiboLog('on_stream', p, 'isLocal?', p.isLocal(), p.getType());
+		if (p.isLocal()) {
+			if (p.getType() > 0) //Type screen
+				return;
+
+			p.attach('video-publisher', $scope.on_attached, 100, 50);
+
+			MesiboLog($scope.room);
+			return;
+		}
+
+		if ($scope.expanded_video_selected) {
+			if (getStreamId($scope.expanded_video_selected) == getStreamId(p)) {
+				$scope.expanded_video_selected = p;
+				$scope.expanded_video_selected.attach('expanded-screen-video-' + 
+                getStreamId($scope.expanded_video_selected), $scope.on_attached, 100, 2);
+			}
+			$scope.setupStrip();
+		}
+		else {
+			p.attach('video-' + getStreamId(p), $scope.on_attached, 100, 2);											
+		}
+
+		$scope.refresh();
+
+	};
+ ```
+
+
 These are some of the major features of the live demo app. This tutorial is intended as a birds-eye view of the app. You can explore the [demo app](https://mesibo.com/livedemo) and take a look at the [source code](https://github.com/mesibo/conferencing/tree/master/live-demo) to dig deeper. 

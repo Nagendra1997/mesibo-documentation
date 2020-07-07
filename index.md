@@ -157,7 +157,7 @@ In mesibo, the conference room is a group that allows communication between mult
 
 Read [Get Started Guide]({{ '/documentation/get-started/' | relative_url }}) and [Writing your First mesibo Enabled Application]({{ '/documentation/tutorials/first-app/' | relative_url }}) for a better understanding of mesibo users and tokens.
 
-In a real app, you create groups and participants on-demand using mesibo REST APIs. We will explain both the ways of performing these operations, creating a group and adding users - using the console and using REST APIs.
+In a real app, you create groups and participants on-demand using mesibo REST APIs. We will explain both the ways of performing these operations, creating a group, and adding users - using the console and using REST APIs.
 
 To create users in the console, 
 
@@ -198,7 +198,7 @@ Now, let us add the users we created earlier as members of this group `Conferenc
 Add the users created earlier as members of the group in the console.
 ![Group Members](images/group_members.png)
 
-If you want to add members to a group using REST API, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) and pass the GID obtained of the group you created in the previous step..
+If you want to add members to a group using REST API, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) and pass the GID obtained of the group you created in the previous step.
 
 For example,
 In the case of a conference, members can send and receive videos. So we invoke the API as follows.
@@ -208,8 +208,7 @@ Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `use
 https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=user0,user1,user2,user3,user4&canpub=1&cansub=1&canlist=1&delete=0
 ```
 
-If you want to deny certain permission to the user, set the permission to `0`.
-For example, if you do not want a certain participant to publish, set `canpub=0`.
+If you want to deny certain permission to the user, set the permission to `0`. For example, if you do not want a certain participant to publish, set `canpub=0`.
  
 ## Client API
 
@@ -308,17 +307,17 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 
 ### Overview of Callback functions
 
-Following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
+The following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
 - **on_stream** Called when a stream is received.
-- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, connection is complete, etc
+- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, the connection is complete, etc
 
 Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
 - **on_attached** Called when attach is complete.
 
 Following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
 - **Mesibo_OnParticipants** Called when a participant joins the group
-- **Mesibo_OnParticipantUpdated** Called when status of a participant changes. For example, when they mute/unmute.
-- **Meibo_OnPermission** Called when a permission is requested and completed.
+- **Mesibo_OnParticipantUpdated** Called when the status of a participant changes. For example, when they mute/unmute.
+- **Meibo_OnPermission** Called when permission is requested and completed.
 - **Mesibo_OnError** Called when an error occurs
 - **Mesibo_OnLocalMedia** Called when local media is updated
 - **Mesibo_OnSubscriber** Called  when another participant subscribes to your stream
@@ -371,7 +370,7 @@ To display a stream, you need to call the `attach` method in the call object.
 ```javascript
 Participant.attach(elementId, on_attached, retryTimeout, maxRetries)
 ```
-In case you are using an DOM framework and the HTML element you need to display the stream is not created at the moment you call attach, you can try reattaching after a small delay or a timeout, which can be specified in `retryTimeout`. You can also specify the maximum number of attempts to attach in `maxRetries`. If the element is not available even after `maxRetries` is reached, attach will fail. In this case `on_attached` will be called with `false`. If attach is successfull it will be called with `true`
+In case you are using a DOM framework and the HTML element you need to display the stream is not created at the moment you call attach, you can try reattaching after a small delay or a timeout, which can be specified in `retryTimeout`. You can also specify the maximum number of attempts to attach in `maxRetries`. If the element is not available even after `maxRetries` is reached, attach will fail. In this case, `on_attached` will be called with `false`. If attach is successful it will be called with `true`
 
 Arguments
 - **elementId** - The ID of the HTML element where the stream is to be displayed
@@ -566,7 +565,7 @@ p3.call(null, "video-stream-1234-type-3" , on_stream, on_status);
 and then call attach on these different HTML elements to display them.
 
 ### Mesibo_OnParticipantUpdated
-Called when the status of a participant changes. For example when a participant mutes/unmutes, when participant is talking. You recieve an updated participant here.
+Called when the status of a participant changes. For example when a participant mutes/unmutes when the participant is talking. You receive an updated participant here.
 ```javascript
 Mesibo_OnParticipantUpdated(all, p) {
 ```
@@ -577,8 +576,8 @@ Arguments:
 Example,
 ```javascript
 mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {
-	 //Update participant
-	}
+     //Update participant
+    }
 ```
 
 ### Mesibo_OnPermission
@@ -593,12 +592,12 @@ Arguments:
 Example,
 ```javascript
 mesiboNotify.prototype.Mesibo_OnPermission =function(onp) {
-	 //Show/hide prompt for permission
-	}
+     //Show/hide prompt for permission
+    }
 ```
 
 ### Mesibo_OnError
-Called when any error occurs. 
+Called when an error occurs. 
 ```javascript
 Mesibo_OnError(e) {
 ```
@@ -609,8 +608,8 @@ Arguments:
 Example,
 ```javascript
 mesiboNotify.prototype.Mesibo_OnError = function(e) {
-	 //Inspect e
-	}
+     //Inspect e
+    }
 ```
 ### Mesibo_OnSubscriber
 Called when another participant subscribes to your stream. This is useful when you are publishing an open webinar and you need to see who has subscribed to your webinar stream.  Here, the subscriber is not allowed to publish so their call object won't come up in `Mesibo_OnParticipants`. 
@@ -624,8 +623,8 @@ Arguments:
 Example,
 ```javascript
 mesiboNotify.prototype.Mesibo_OnSubscriber = function(s) {
-	 //Get subscriber information from s
-	}
+     //Get subscriber information from s
+    }
 ```
 ### Muting Streams
 

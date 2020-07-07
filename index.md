@@ -760,7 +760,7 @@ To view a stream from a participant you need to subscribe to it using `call()`.
 To hangup a stream, you can need to use `hangup()`. It is like disconnecting a call.
 
 
-```javascipt
+```javascript
 Participant.hangup()
 ```
 When you call `hangup` on a stream that you are publishing, people who are viewing your stream will be notified of it. 

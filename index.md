@@ -314,7 +314,7 @@ The following are the callback functions for passed to `call`.It can be differen
 Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
 - **on_attached** Called when attach is complete.
 
-Following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
+The following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
 - **Mesibo_OnParticipants** Called when a participant joins the group
 - **Mesibo_OnParticipantUpdated** Called when the status of a participant changes. For example, when they mute/unmute.
 - **Meibo_OnPermission** Called when permission is requested and completed.

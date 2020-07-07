@@ -337,9 +337,9 @@ Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
 ```
 Arguments
 - **initObject** - Initialization object where you can initialize various properties of the stream like:
-    * **audio** Set to `true` to enable audio, `false` otherwise
-    * **video** Set to `true` to enable video, `false` otherwise
-    * **source** Set to `STREAM_CAMERA` to publish camera. Set to `STREAM_SCREEN` to publish screen. 
+    * **audio** - Set to `true` to enable audio, `false` otherwise
+    * **video** - Set to `true` to enable video, `false` otherwise
+    * **source** - Set to `STREAM_CAMERA` to publish camera. Set to `STREAM_SCREEN` to publish screen. 
 
 - **elementId** - The ID of the video element where the stream is to be displayed. 
 - **on_stream** - A function which will be called when the stream is created
@@ -371,7 +371,7 @@ Called when a stream is received. You should now call attach on the stream you r
 ```javascript
 on_stream(p)
 ```
-- **p** Participant's stream
+- **p** - Participant's stream
 
 Example,
 ```javascript
@@ -394,8 +394,8 @@ Called when the status of a stream changes. For example, if a stream hangs up, r
 ```javascript
 on_status(p, status)
 ```
-- **p** Participant's stream
-- **status** Stream Status
+- **p** - Participant's stream
+- **status** - Stream Status
 
 You will be getting the status of a stream in the callback function `on_status`, for example
 - `MESIBO_CALLSTATUS_CHANNELUP`: Call is established and you are getting the stream
@@ -625,11 +625,11 @@ and then call attach on these different HTML elements to display them.
 ### Mesibo_OnParticipantUpdated
 Called when the status of a participant changes. For example when a participant mutes/unmutes when the participant is talking. You receive an updated participant here.
 ```javascript
-Mesibo_OnParticipantUpdated(all, p) {
+Mesibo_OnParticipantUpdated(all, p) 
 ```
 Arguments:
-- **all**: List of all participants
-- **p**: Updated participant
+- **all** - List of all participants
+- **p** - Updated participant
 
 Example,
 ```javascript
@@ -642,14 +642,14 @@ mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {
 Called when permission is requested and completed. You can show an appropriate prompt when permission for audio/video/screen share is requested.
 
 ```javascript
-Mesibo_OnPermission(onp) {
+Mesibo_OnPermission(onp) 
 ```
 Arguments:
-- **onp**: `true` when requested, `false` when completed
+- **onp** - `true` when requested, `false` when completed
 
 Example,
 ```javascript
-mesiboNotify.prototype.Mesibo_OnPermission =function(onp) {
+mesiboNotify.prototype.Mesibo_OnPermission = function(onp) {
      //Show/hide prompt for permission
     }
 ```
@@ -657,11 +657,11 @@ mesiboNotify.prototype.Mesibo_OnPermission =function(onp) {
 ### Mesibo_OnError
 Called when an error occurs. 
 ```javascript
-Mesibo_OnError(e) {
+Mesibo_OnError(e) 
 ```
 Arguments:
-- **e**: Error value
-- **p**: Updated participant's call object
+- **e** - Error value
+- **p** - Updated participant's call object
 
 Example,
 ```javascript
@@ -673,10 +673,10 @@ mesiboNotify.prototype.Mesibo_OnError = function(e) {
 Called when another participant subscribes to your stream. This is useful when you are publishing an open webinar and you need to see who has subscribed to your webinar stream.  Here, the subscriber is not allowed to publish so their call object won't come up in `Mesibo_OnParticipants`. 
 
 ```javascript
-Mesibo_OnSubscriber(s) {
+Mesibo_OnSubscriber(s) 
 ```
 Arguments:
-- **s**: Subscriber object. Contains the name, address, etc of the subscriber
+- **s** - Subscriber object. Contains the name, address, etc of the subscriber
 
 Example,
 ```javascript

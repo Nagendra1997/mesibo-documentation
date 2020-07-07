@@ -291,7 +291,7 @@ Example,
 // Create a local participant, Set Publisher name and address
 var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ```
-### Overview of Methods in the Participant object. 
+### Overview of Methods in the Participant 
 
 - **call()** - To establish a connection to the participant to get the video/audio stream
 - **attach()** - To display the stream in an HTML media element (<video> or <audio>)
@@ -364,6 +364,64 @@ For example, if the ID of the HTML element where the video will be displayed is 
     }
 
 ```
+The following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
+
+### on_stream
+Called when a stream is received. You should now call attach on the stream you receive here.
+```javascript
+on_stream(p)
+```
+- **p** Participant's stream
+
+Example,
+```javascript
+function on_stream(p) {
+
+    if (p.isLocal()) {
+     p.attach('video-publisher', on_attached, 100, 50);
+    }
+
+    else {
+     p.attach('video-' + p.getId(), on_attached, 100, 2);                                            
+    }
+  
+  }
+
+````
+
+### on_status 
+Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, the connection is complete, etc.
+```javascript
+on_status(p, status)
+```
+- **p** Participant's stream
+- **status** Stream Status
+
+You will be getting the status of a stream in the callback function `on_status`, for example
+- `MESIBO_CALLSTATUS_CHANNELUP`: Call is established and you are getting the stream
+- `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
+- `MESIBO_CALLSTATUS_COMPLETE`: Call has ended, terminate the stream.
+
+Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
+
+For each state, you can display appropriate indicators. For example, if the call is reconnecting then you can show a spinner for that stream and once it is up, you can hide the spinner. Also, when the call is complete or hangs up you need to stop displaying the stream.
+
+Example,
+```javascript
+function on_status(status){
+            if(MESIBO_CALLSTATUS_COMPLETE  == status){
+                    //Hangup
+            }
+
+            else if(MESIBO_CALLSTATUS_CHANNELUP == status){
+                    //Call connection established
+            }
+            else if(MESIBO_CALLSTATUS_RECONNECTING == status){
+                    //Trying to reconnect
+            }
+}           
+```
+
 ### Attaching a stream
 To display a stream, you need to call the `attach` method in the call object. 
 

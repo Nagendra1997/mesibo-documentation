@@ -259,7 +259,7 @@ const GROUP_ID = 98765;
 
 gCall.setRoom(GROUP_ID);    
 ```
-### Making a call in the conference
+### Making a call
 
 Group users participate in the conference by making calls to the group. There are two kinds of call:
  
@@ -272,8 +272,6 @@ When a participant makes a publish call (publishing), all the participants will 
 
 ### Publishing streams
 To publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use the call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
-
-(Group Call is the group call object)
 
 ```javascript
 GroupCall.getLocalParticipant(streamId, participantName, participantAddress)
@@ -302,12 +300,20 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 - **getAddress()** - Returns the address of the participant
 - **getType()** - Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
 - **getId()** - Returns an integer, the mesibo user-id of the publisher
-- **isLocal()** Returns true if participant is a local stream, false otherwise
+- **isLocal()** - Returns true if participant is a local stream, false otherwise
+- **isTalking()** - Returns true if participant is talking, false otherwise
 - **toggleMute()** - To mute the audio or video of a stream
 - **muteStatus()** - To get the mute status of a stream
 - **hangup()** - Hangup the stream
 
 ### Overview of Callback functions
+
+Following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
+- **on_stream** Called when a stream is received.
+- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, connection is complete, etc
+
+Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
+- **on_attached** Called when attach is complete.
 
 Following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
 - **Mesibo_OnParticipants** Called when a participant joins the group
@@ -317,14 +323,8 @@ Following are the callback functions available as [Mesibo Listeners](https://mes
 - **Mesibo_OnLocalMedia** Called when local media is updated
 - **Mesibo_OnSubscriber** Called  when another participant subscribes to your stream
 
-Following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
-- **on_stream** Called when a stream is received.
-- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, connection is complete, etc
 
-Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
-- **on_attached** Called when attach is complete.
-
-### Making a call 
+### call()
 To place a call, you need to use the `call` method in the call object. 
 
 As described earlier, there are two types of calls- **publish call** and **subscribe call**. To make any type of call you need to have a call object. 
@@ -340,7 +340,7 @@ Arguments
 - **initObject** - Initialization object where you can initialize various properties of the stream like:
     * **audio** Set to `true` to enable audio, `false` otherwise
     * **video** Set to `true` to enable video, `false` otherwise
-    * **source** Set to `MESIBO_STREAM_CAMERA` to publish camera. Set to `MESIBO_STREAM_SCREEN` to publish screen. 
+    * **source** Set to `STREAM_CAMERA` to publish camera. Set to `STREAM_SCREEN` to publish screen. 
 
 - **elementId** - The ID of the video element where the stream is to be displayed. 
 - **on_stream** - A function which will be called when the stream is created
@@ -361,12 +361,7 @@ For example, if the ID of the HTML element where the video will be displayed is 
 
     //Called when the status of a stream changes
     function on_status(p, status){
-        //Stream is Connected
-    }
-
-    if(MESIBO_CALLSTATUS_COMPLETE == status){
-        //Stream is disconnected
-    }
+        //Stream status
     }
 
 ```
@@ -395,7 +390,6 @@ function on_attached(isAttached){
 p.attach('video-publisher', on_attached, 100, 50);
 
 ```
-
 ### Publishing a stream
 As a member of the conference room group, you can send your streams to the group, which other members of the group can view.
 
@@ -571,6 +565,68 @@ p3.call(null, "video-stream-1234-type-3" , on_stream, on_status);
 ```
 and then call attach on these different HTML elements to display them.
 
+### Mesibo_OnParticipantUpdated
+Called when the status of a participant changes. For example when a participant mutes/unmutes, when participant is talking. You recieve an updated participant here.
+```javascript
+Mesibo_OnParticipantUpdated(all, p) {
+```
+Arguments:
+- **all**: List of all participants
+- **p**: Updated participant
+
+Example,
+```javascript
+mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {
+	 //Update participant
+	}
+```
+
+### Mesibo_OnPermission
+Called when permission is requested and completed. You can show an appropriate prompt when permission for audio/video/screen share is requested.
+
+```javascript
+Mesibo_OnPermission(onp) {
+```
+Arguments:
+- **onp**: `true` when requested, `false` when completed
+
+Example,
+```javascript
+mesiboNotify.prototype.Mesibo_OnPermission =function(onp) {
+	 //Show/hide prompt for permission
+	}
+```
+
+### Mesibo_OnError
+Called when any error occurs. 
+```javascript
+Mesibo_OnError(e) {
+```
+Arguments:
+- **e**: Error value
+- **p**: Updated participant's call object
+
+Example,
+```javascript
+mesiboNotify.prototype.Mesibo_OnError = function(e) {
+	 //Inspect e
+	}
+```
+### Mesibo_OnSubscriber
+Called when another participant subscribes to your stream. This is useful when you are publishing an open webinar and you need to see who has subscribed to your webinar stream.  Here, the subscriber is not allowed to publish so their call object won't come up in `Mesibo_OnParticipants`. 
+
+```javascript
+Mesibo_OnSubscriber(s) {
+```
+Arguments:
+- **s**: Subscriber object. Contains the name, address, etc of the subscriber
+
+Example,
+```javascript
+mesiboNotify.prototype.Mesibo_OnSubscriber = function(s) {
+	 //Get subscriber information from s
+	}
+```
 ### Muting Streams
 
 We can mute video and audio locally, for the streams that we are viewing. You can use the `toggleMute` method to toggle the audio and video status of a stream. 
@@ -631,6 +687,16 @@ Say the remote video is muted by the remote participant then,
 If you have muted the video locally then,
 `participant.muteStatus(true, false)` will return `true` 
 
+### Talking Indicator
+
+You can get the talking status of a stream with `isTalking` which has the syntax as follows:
+```javascript
+Participant.isTalking()
+```
+Returns:
+`true` if talking, `false` otherwise
+
+> Note that When a remote participant is talking `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `isTalking()` to get the latest mute status.
 
 ### Hanging up a stream
 To view a stream from a participant you need to subscribe to it using `call()`.  
@@ -647,6 +713,5 @@ on_status(p, status){
  if(MESIBO_CALLSTATUS_COMPLETE == status){
   //Stream has been disconnected. Cleanup..
   }
-}
 ```
 When you get a hangup status from a participant, you may need to clean up. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.

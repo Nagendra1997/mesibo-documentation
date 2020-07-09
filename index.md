@@ -294,7 +294,7 @@ var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
 ### Overview of Methods in the Participant 
 
 - **call()** - To establish a connection to the participant to get the video/audio stream
-- **attach()** - To display the stream in an HTML media element (<video> or <audio>)
+- **attach()** - To display the stream in an HTML media element
 - **getName()** - Returns the name of the participant - initialized in `getLocalParticipant` by the publisher
 - **getAddress()** - Returns the address of the participant
 - **getType()** - Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher

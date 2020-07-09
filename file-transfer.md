@@ -27,7 +27,7 @@ However, Mesibo does not know or mandate how and where you store your files. Hen
 
 ![]({{ '/documentation/api/real-time-api/images/file-handler.png' | relative_url }})
 
-### Sending a file in Android
+## Sending a file with Mesibo
 
 Here are a brief set of steps you need to follow, for sending a file with mesibo on Android. We will go through each step, along with a code snippet that you can refer to as an example. You can refer the Sample App code on GitHub for a complete understanding.
 

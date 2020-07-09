@@ -34,7 +34,7 @@ Here are a brief set of steps you need to follow, for sending a file with mesibo
 - For Android, you can refer to [MesiboFileTransferHelper.java](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java) and [SampleAPI.java](https://github.com/mesibo/messenger-app-android/blob/8f40a1005e131442240963ab168f7ce260b62dfa/app/src/main/java/org/mesibo/messenger/SampleAPI.java#L666) 
 - Fo iOS, you can refer to [SampleAppFileTransferHandler.m](https://github.com/mesibo/messenger-app-ios/blob/e5af8db4061b54e135f82a2cc39549dae39494a1/MesiboApplication/SampleAppFileTransferHandler.m) and [SampleAPI.m](https://github.com/mesibo/messenger-app-ios/blob/f89f477c687a6143b643402c70f4d61623bf2369/MesiboApplication/SampleAPI.m) 
 
-1. To send a file, create a file object using `getFileInstance`. To create the file instance pass the mode as `MODE_UPLOAD` and the complete path to the file. Then you call `sendFile()`, to send the file to the recipient. 
+1. To send a file, create a file object using `getFileInstance`. To create the file instance pass the mode as upload and provide the path to your file. Then call `sendFile()`, to send the file to the recipient. 
 
 Here is an [example in Android](https://github.com/mesibo/ui-modules-android/blob/72d41c5d28f5d23218f1ee77daa17a2fff86e818/Messaging/messaging/src/main/java/com/mesibo/messaging/MessagingFragment.java#L1601)
 

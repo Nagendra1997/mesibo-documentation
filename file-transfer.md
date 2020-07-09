@@ -23,7 +23,7 @@ You can use any data structure (for example, json) to send rich messages which c
 
 To start a file transfer (download or upload), you must initialize a `FileInfo` object and pass it to `sendFile` API. However, instead of creating this object manually, mesibo provides `getFileInstance()` API, which checks if an existing file transfer for this particular URL (download) or the file (upload) is in progress and if so, returns that object instead of creating a new object. This highly optimizes sending a file by avoiding duplicate file transfers.
 
-However, Mesibo does not know or mandate how and where you store your files. Hence in order to use sendFile function, you must assist mesibo in uploading and downloading files to your server. You can achieve that by implementing upload and download handler functions in `FileTransferHandler`, which is called by mesibo real-time API whenever it needs to upload or download file.  For more information, refer to `FileTransferHandler` in the [File Transfer API reference document](https://mesibo.com/documentation/api/real-time-api/file-transfer/)
+However, Mesibo does not know or mandate how and where you store your files. Hence in order to use sendFile function, you must assist mesibo in uploading and downloading files to your server. You can achieve that by implementing upload and download handler functions in `FileTransferHandler`, which is called by mesibo real-time API whenever it needs to upload or download file.  For more information, refer to `FileTransferHandler` in the [File Transfer API reference](https://mesibo.com/documentation/api/real-time-api/file-transfer/)
 
 ![]({{ '/documentation/api/real-time-api/images/file-handler.png' | relative_url }})
 

@@ -21,7 +21,7 @@ mesibo offers you the flexibility to store all files on your own servers includi
 
 You can use any data structure (for example, json) to send rich messages which contain text message, title, picture url etc. Mesibo provides a convenient utility function sendFile, which does most of the work and allows you to send various other information along with the file such as title, message, geolocation, etc. Receiver is notified of incoming file in listener function `mesibo_onFile()`
 
-To start a file transfer (download or upload), you must initialize a FileInfo object and pass it to sendFile or startFileTransfer API. However, instead of creating this object manually, mesibo provides getFileInstance() API, which checks if an existing file transfer for this particular URL (download) or the file (upload) is in progress and if so, returns that object instead of creating a new object. This highly optimizes sending a file by avoiding duplicate file transfers.
+To start a file transfer (download or upload), you must initialize a `FileInfo` object and pass it to `sendFile` API. However, instead of creating this object manually, mesibo provides `getFileInstance()` API, which checks if an existing file transfer for this particular URL (download) or the file (upload) is in progress and if so, returns that object instead of creating a new object. This highly optimizes sending a file by avoiding duplicate file transfers.
 
 However, Mesibo does not know or mandate how and where you store your files. Hence in order to use sendFile function, you must assist mesibo in uploading and downloading files to your server. You can achieve that by implementing upload and download handler functions in `FileTransferHandler`, which is called by mesibo real-time API whenever it needs to upload or download file.  For more information, refer to `FileTransferHandler` in the [File Transfer API reference document](https://mesibo.com/documentation/api/real-time-api/file-transfer/)
 
@@ -72,12 +72,15 @@ For download mode, `Mesibo_onStartDownload()` is called which is your download h
   
 4. In `Mesibo_onStartUpload`, you make an HTTP request to upload your file to the server. Refer to the example code [here](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java#L146) to understand how this is done. Once your upload is complete and you get the fileurl, the [url parameter is set](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java#L116) in the file object and your file is sent.
 
-6. On the recepient end, when a file is received, the listener `Mesibo_onFile` is called.
+5. On the recepient end, when a file is received, the listener `Mesibo_onFile` is called.
 ```java
  public void Mesibo_onFile(Mesibo.MessageParams params, Mesibo.FileInfo fileInfo) {
  }
 ``` 
-Similar to the upload handler, you now need to implement the download handler to read the file data from the url present in the fileobject received. In `Mesibo_onStartDownload`, you need to download the file from the server and read the contents. Refer example code[here](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java#L146)
+6. Similar to the upload handler, you now need to implement the download handler to read the file data from the url present in the `FileInfo` object received. In `Mesibo_onStartDownload`, you need to download the file from the server and read the contents.  
+
+Refer to the example code [here](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java#L146). Here, the file is downloaded from the server located at the file url and then stored at a specified path.
+
 
 - Refer to [SampleAppFileTransferHandler.m](https://github.com/mesibo/messenger-app-ios/blob/e5af8db4061b54e135f82a2cc39549dae39494a1/MesiboApplication/SampleAppFileTransferHandler.m) (iOS) and [SampleAPI.m](https://github.com/mesibo/messenger-app-ios/blob/f89f477c687a6143b643402c70f4d61623bf2369/MesiboApplication/SampleAPI.m) in Sample app code on [GitHub](https://github.com/mesibo/samples/){:target="_blank"} to learn how to create a file handler.
 

@@ -29,7 +29,7 @@ However, Mesibo does not know or mandate how and where you store your files. Hen
 
 ### Sending a file in Android
 
-Here is a brief set of steps you need to understand, for sending a file in Java. We will be explaining snippets of code to go through the steps you need to follow. You can refer to [MesiboFileTransferHelper.java](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java) and [SampleAPI.java](https://github.com/mesibo/messenger-app-android/blob/8f40a1005e131442240963ab168f7ce260b62dfa/app/src/main/java/org/mesibo/messenger/SampleAPI.java#L666)(Android)
+Here is a brief set of steps you need to follow, for sending a file using mesibo on Android. We will go through each step , along with a code snippet that you can refer to as an example. You can refer [MesiboFileTransferHelper.java](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java) and [SampleAPI.java](https://github.com/mesibo/messenger-app-android/blob/8f40a1005e131442240963ab168f7ce260b62dfa/app/src/main/java/org/mesibo/messenger/SampleAPI.java#L666) in Messenger App Source code available on GitHub for a complete understanding.
 
 1. To send a file, create a file object using `getFileInstance`. To create the file instance pass the mode as `MODE_UPLOAD` and the complete path to the file. Then call `sendFile` . For [example](https://github.com/mesibo/ui-modules-android/blob/72d41c5d28f5d23218f1ee77daa17a2fff86e818/Messaging/messaging/src/main/java/com/mesibo/messaging/MessagingFragment.java#L1601), 
 

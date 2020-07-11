@@ -32,7 +32,10 @@ However, Mesibo does not know or mandate how and where you store your files. Hen
 Here are a brief set of steps you need to follow, for sending a file with mesibo on Android. We will go through each step, along with a code snippet that you can refer to as an example. You can refer the Sample App code on GitHub for a complete understanding.
 
 - For Android, you can refer to [MesiboFileTransferHelper.java](https://github.com/mesibo/messenger-app-android/blob/10f7174b13c53705a257342b4d95719ff401ae9e/app/src/main/java/org/mesibo/messenger/MesiboFileTransferHelper.java) and [SampleAPI.java](https://github.com/mesibo/messenger-app-android/blob/8f40a1005e131442240963ab168f7ce260b62dfa/app/src/main/java/org/mesibo/messenger/SampleAPI.java#L666) 
-- Fo iOS, you can refer to [SampleAppFileTransferHandler.m](https://github.com/mesibo/messenger-app-ios/blob/e5af8db4061b54e135f82a2cc39549dae39494a1/MesiboApplication/SampleAppFileTransferHandler.m) and [SampleAPI.m](https://github.com/mesibo/messenger-app-ios/blob/f89f477c687a6143b643402c70f4d61623bf2369/MesiboApplication/SampleAPI.m) 
+
+- For iOS, you can refer to [SampleAppFileTransferHandler.m](https://github.com/mesibo/messenger-app-ios/blob/e5af8db4061b54e135f82a2cc39549dae39494a1/MesiboApplication/SampleAppFileTransferHandler.m) and [SampleAPI.m](https://github.com/mesibo/messenger-app-ios/blob/f89f477c687a6143b643402c70f4d61623bf2369/MesiboApplication/SampleAPI.m) 
+
+- For Javascript, you can refer to the sample code [mesibo-demo.js](https://github.com/mesibo/samples/blob/58b9cc3ef028f6641dc578a09c3aee37e3eaeec3/js/basic-demo/mesibo-demo.js) 
 
 1. To send a file, create a file object using `getFileInstance`. To create the file instance pass the mode as upload and provide the path to your file. Then call `sendFile()`, to send the file to the recipient. 
 

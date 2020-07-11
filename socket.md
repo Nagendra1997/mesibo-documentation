@@ -1,52 +1,73 @@
-## Socket 
-The `Socket` class can be used to connect to a host through a scoket, to send and receive data asynchronously.
+---
+description: Mesibo Chatbot and Scripting - Introduction
+keywords: chatbot, script, scripting
+title: Mesibo Chatbot and Scripting - Introduction
+---
+The Socket class can be used to connect to a host through a scoket, to send and receive data asynchronously.
 
-### Constructor  
-`Socket(url)`  
+## Constructor  
+
+### Socket(url)  
 The constructor initializes the  Socket class. It must be called before you perform any method calls.
 Call the constructor by passing the url(For websockets) or host address(for regular sockets).
 
-## Example
+The URL is to be specified in the format:
+`<type>://<url>`
+
+The following types are available:
+- **sock**: Regular sockets
+- **socks**: Secure Regular Sockets
+- **ws**: Web Sockets
+- **wss**: Secure Web Sockets
+
+### Example
 ```javascript
 //Regular Sockets
-var s = new Socket("sock://example.com:80");
+var s = new Socket("sock://example.com");
+
+//Secure Regular Sockets
+var ss = new Socket("socks://example.com");
 
 //Websockets
-var ws = new Socket("wss://echo.websocket.org");
+var ws = new Socket("ws://echo.websocket.org");
+
+//Secure Websockets
+var wss = new Socket("wss://echo.websocket.org");
 ```
 
-### Properties  
-To connect to a socket set the following properties for an `Socket` class object.
 
-`keepalive`  
+## Properties  
+To connect to a socket set the following properties for a Socket class object.
+
+### keepalive  
 Enable for persistent connection
 
-`verify_host`
+### verify_host
 
-`enableSsl`  
+### enableSsl  
 Configure SSL 
 
-`Socket.onconnect`  
+### Socket.onconnect  
 An event listener to be called when connected to the server(host) 
 
-`Socket.ondata`  <sub>compulsory</sub>  
+### Socket.ondata  <sub>compulsory</sub>  
 An event listener to be called when data is received from the server(host) 
 
-`Socket.onwrite`  
+### Socket.onwrite  
 An event listener to be called when data is written to socket
 
-`Socket.onclose`  
+### Socket.onclose  
 An event listener to be called when the connection is closed.
 
-### Methods
+## Methods
 
-`Socket.open()`  
+### Socket.open()  
 Open a new connection on specified host.
 
-`Socket.send()`  
+### Socket.send()  
 Send data to connected host 
 
-`Socket.close()`  
+### Socket.close()  
 Close connection
 
 ### Example
@@ -67,4 +88,4 @@ s.open();
 ## Usage notes
 
 ### Global instantiation restriction  
-An object of the class `Socket` cannot be instantiated in global context. Ensure that you are creating the instanceinside a scoped area or function.
+An object of the class Socket cannot be instantiated in global context. Ensure that you are creating the instance inside a scoped area or function.

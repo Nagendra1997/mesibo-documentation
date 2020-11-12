@@ -7,7 +7,7 @@ heading: "Get Started: Synchronization"
 {% include_relative nav.html selected="synchronization" %}
 
 In this part, we will learn about synchronizing messages and user data on multiple devices with mesibo. 
-> Note that the synchronization feature is exclusive to our [On-Premise]({{/on-premise}}) offering , where you can route all calls & messages through your own servers. 
+> Note that the synchronization feature is exclusive to our [On-Premise]({{/on-premise}}) offering, where you can route all calls & messages through your servers. 
 
 ## Prerequisites
 You MUST go through the following prerequisites before you read further.
@@ -18,7 +18,7 @@ You MUST go through the following prerequisites before you read further.
 - Run [Mesibo On-Premise](https://mesibo.com/on-premise). See [On-Premise Docs]({{ '/documentation/on-premise' | relative_url }}) for installation instructions and more.
 
 ## Multi-Device Synchronization 
-Mesibo stores your app data (messages & call logs, etc) on a local database on the user's device. To display messages to the user, you need to read messages(Using [Read APIs]({{ '/documentation/tutorials/get-started/reading-messages/#how-to-read-messages' | relative_url }})) from this local database. Now, if the user moves to a new device you will have a brand new database. Your user cannot view the old messages by reading the new database. The messages & other data present in the old database, stored on the old device is not available to the new device. But, if you are using [Mesibo On-Premise]({{ '/documentation/on-premise' | relative_url }}) you can always store messages and call data on your own server. So, whenever a user moves to a new device you can synchronize with your server and get the required messages. To perform this on-demand synchronization, mesibo provides [sync APIs](#using-the-sync-api). 
+Mesibo stores your app data (messages & call logs, etc) on a local database on the user's device. To display messages to the user, you need to read messages(Using [Read APIs]({{ '/documentation/tutorials/get-started/reading-messages/#how-to-read-messages' | relative_url }})) from this local database. Now, if the user moves to a new device you will have a brand new database. Your user cannot view the old messages by reading the new database. The messages & other data present in the old database, stored on the old device is not available to the new device. But, if you are using [Mesibo On-Premise]({{ '/documentation/on-premise' | relative_url }}) you can always store messages and call data on your server. So, whenever a user moves to a new device you can synchronize with your server and get the required messages. To perform this on-demand synchronization, mesibo provides [sync APIs](#using-the-sync-api). 
 ![Device Sync](images/device-sync.png)
 
 ## Reading Messages 
@@ -34,10 +34,10 @@ But when your user logs in on a new device, and you call `read()` for the first 
 ## Using the sync API
 When your call to `read()` returns zero messages(which means there are no messages available in the local database for the user you are calling read), you may request for a `sync`. The `sync` method takes two parameters:
 - **count** The number of messages you want to synchronize
-- **OnSync** A callback function which will be called when sync completes. 
+- **OnSync** A callback function that will be called when sync completes. 
 
 Note that a call to `read()` is synchronous while the call to `sync()` is asynchronous. The result of your `sync`
-request will be avialble through the listener `on_sync`. The call to `sync` checks messages stored on the mesibo server and transfers those messages to your local database. The number of messages that have been synced will be available as a parameter `count` in the `on_sync` listener. You can read `count` number of messages using `read()`.
+the request will be available through the listener `on_sync`. The call to `sync` checks messages stored on the mesibo server and transfers those messages to your local database. The number of messages that have been synced will be available as a parameter `count` in the `on_sync` listener. You can read `count` number of messages using `read()`.
 
 For example, 
 
@@ -90,5 +90,5 @@ So, when a user logs in with a new device, you have a new local database that yo
 
 For example, let's say you are logged in as `User-A` on your app and you need to display the chat history between you - `User-A` and another `User-B`. To do this you will use the `read` API to read messages for the `User-B`. If you are on a new device, and you have never exchanged messages with `User-B` on this device, the `read` API will not return any messages. You have nothing to display! But, if you had chatted with `User-B` earlier on a previous device, your messages will be stored on the server database. You need to access these messages present on the **server database** and restore them onto the **local database**. This is what the `sync` API does. Once the sync is complete, you can then `read` these old messages from the local database. 
 
-Also note, that you may not be loading all the messages between `User-B` and `User-A` in one shot. You only need to load the last few messages(Say 10) that can be viewed first. Then, as the user scrolls the chat above you can load more messages. So, as the user scrolls you can read more messages & if there are no messages to read you cancall sync and check if there are any more messages available. Then call read again, when sync completes. You can call sync on demand and this read-sync cycle will continue. This way, you will provide a good user-experience and also ensure app performance.
+Also note, that you may not be loading all the messages between `User-B` and `User-A` in one shot. You only need to load the last few messages(Say 10) that can be viewed first. As the user scrolls, you can read more messages & if there are no messages to read you can call sync and check if there are any more messages available. Then call read again, when sync completes. You can call sync on demand and this read-sync cycle will continue. This way, you will provide a good user experience and also ensure app performance.
  

@@ -4,16 +4,16 @@ keywords: conferencing, group calling, live streaming, facebook live, youtube li
 title: Mesibo Conferencing and Streaming API Documentation
 ---
 
-Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more which can be deployed both on cloud and on-premise at no additional cost.
+Mesibo Conferencing and Streaming Platform helps you build applications at scale for teleconferencing, virtual events, webinars, on-demand streaming, and more which can be deployed both on cloud and on-premise, at no additional cost.
 
-Mesibo offers a powerful combination of features to build any kind of conferencing and streaming application with minimal setup and cost.
+Mesibo offers a powerful combination of features to build any kind of conferencing and streaming applications with minimal setup and cost.
 
 ## Why mesibo for conferencing?
-- Standard, HD, Full-HD, and 4K conference rooms - you can even select different resolutions per participant, e.g HD for key speakers, and low resolution for others.
+- **Standard, HD, Full-HD, and 4K** conference rooms - you can even select different resolutions per participant, e.g HD for key speakers, and low resolution for others
 
-- Multiple screen sharing - not just the one. Allows your participants to share multiple screens if required.
+- **Multiple screen sharing**, not just the one. Allows your participants to share multiple screens if required
 
-- Simultaneous publishing to multiple groups - this unique mesibo capability enables you to make interesting use cases for live-streaming.
+- **Simultaneous publishing** to multiple groups - this unique mesibo capability enables you to make interesting use cases for live-streaming.
 
 - Per participant authentication, permissions, and controls over resolution, bandwidth, CPU, and other parameters.
 
@@ -23,12 +23,12 @@ Mesibo offers a powerful combination of features to build any kind of conferenci
 
 - Native and web-based offerings. No additional download required! 
 
-> **Disclaimer**: The Conferencing and Streaming APIs are currently under continuous development and hence will be continuously updated. 
+> **Important**: The Conferencing and Streaming APIs are currently under continuous development and hence will be regularly updated. 
 
 ## Prerequisites
-Before we dive into the various concepts and APIs for conferencing & streaming ensure that you have gone through following and you are well familiar with mesibo APIs. 
+Before we dive into the various concepts and APIs for conferencing & streaming, please ensure that you have gone through the following and you are quite familiar with mesibo APIs. 
 
-- [Get Started Guide]({{ '/documentation/get-started/' | relative_url }}).
+- [Get Started Guide]({{ '/documentation/tutorials/get-started/' | relative_url }}).
 
 - Tutorial on [Writing your First mesibo Enabled Application]({{ '/documentation/tutorials/first-app/' | relative_url }}).
 
@@ -43,18 +43,18 @@ In this document, we will be using the following terms
 - Participant - a user participating in the conference
 - Publishing - publishing/sending self video and voice stream to the conference
 - Subscribing - Receiving video and voice stream of other participants
-- Publisher - The participant sending self video and voice stream
-- Subscriber - The participant viewing other's voice and video stream 
+- Publisher - The participant sending video and voice streams
+- Subscriber - The participant viewing other's voice and video streams
 
 ## Mesibo Conferencing and Streaming 
 
-Mesibo has made it simple to use and build with the group calling and streaming APIs. In just a few steps, you can set up any type of streaming and conferencing application you need- webinar, virtual meeting and conferencing, live events, and more. 
+mesibo has made it simple to build conferencing with the group calling and streaming APIs. In just a few steps, you can set up any type of streaming and conferencing application you need- webinar, virtual meeting and conferencing, live events, and more. 
 
-You can set up any type of conferencing application in just a few steps using group calling and streaming APIs. mesibo group calling simply extends the existing features of group messaging with additional permissions and control, for example, room resolution, talk detection, who can publish and who can video, voice+video or voice only, etc. Yur existing groups will now have additional conferencing settings.
+You can set up any type of conferencing application in just a few steps using group calling and streaming APIs. mesibo group calling simply extends the existing features of group messaging with additional permissions and control, for example, room resolution, talk detection, who can publish and who can video, voice+video or voice only, etc. Your existing groups will now have additional conferencing settings.
 
 ### Fundamentals of Group Messaging & Group calling
 
-Mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. You only need to do the following to set up a group with mesibo APIs:
+mesibo allows you to create groups having a set of users as group members. Once you create a group, you can send messages to the group, and all the group members will receive the messages. You only need to do the following to set up a group with mesibo APIs:
 
 1. Create a group with required permissions and settings
 2. Add Members (participants)
@@ -62,9 +62,9 @@ Mesibo allows you to create groups having a set of users as group members. Once 
 
 That's it. Now members can start sending and receiving messages in the group.
 
-Group calling is no different. You just have additional permissions for who can call to group (publishing) and who can view/listen to the group calls (subscribing).
+Group calling is no different. You just have additional permissions for participants who can publish and who can subscribe.
 
-![Group Permissions](group_member_settings.png)
+![Group Permissions](/documentation/conferencing/images/group_member_settings.png)
 
 In the case of group messaging, each member has the following permissions:
 - **can send**:  If the member can send messages to the group
@@ -75,33 +75,33 @@ Now, for group calling, in addition to the group settings above, each member has
 - **can subscribe**: If the member can subscribe to group voice or video calls 
 - **can list**: If the member can get a list of active callers in the group
 
-This allows you to create a type of conferencing and streaming app. You can configure default group-level permissions as well as per participant level permissions. The following are some examples of how permissions can be set to different types of conferences.
+This allows you to create different types of conferencing and streaming app. You can configure default group-level permissions as well as per participant level permissions. The following are some examples of how permissions can be set to different types of conferences.
 
 ### Conference / Group Calling
 In a conference/group calling app, you require that all the members of the group publish their stream and subscribe to other streams. Also, all the members should be able to get a list of participants who are publishing their streams so that they can subscribe to them. Hence the suggested group setting is as shown below. We have selected `Members` only option for who can publish streams, who can view streams, who can view the list of participants.
 
-![conference scenario](conference.png)
+![conference scenario](/documentation/conferencing/images/conference.png)
 
 ### Open Webinar / Panel discussion
-In an open webinar or panel discussion apps, you generally require that only one or selected participants are publishing and rest are subscribers only. Other members will not be allowed to publish their streams. This can be achieved with the following group level permission levels.
+In an open webinar or panel discussion app, you generally require that only one or selected participants are publishing and rest are subscribers only. Other members will not be allowed to publish their streams. This can be achieved with the following group level permission levels
  
-![webinar scenario](webinar.png)
+![webinar scenario](/documentation/conferencing/images/webinar.png)
 
-In case of a members-only webinar, You can simply change the permission as follows
+In case of a members-only webinar, you can simply change the permission as follows
 
  - Who can view live streams: Members 
- - Who can view streams list: Members 
+ - Who can view stream list: Members 
  
 You can also dynamically enable audio or video. For example, in case of a webinar-discussion, someone can 'raise hand' to ask a question and you can automatically enable voice for that participant.
 
 ### Class Room
 In a classroom app, the teacher has the controls to change the permissions of the students. At the group level, you can set that only selected members can publish - usually the teachers.
 
-![class room](classroom-1.png)
+![Classroom](/documentation/conferencing/images/classroom-1.png)
 
 The students by default do not have the permission to publish. By default, you can mute all the students. The teacher can dynamically set which student can talk when any clarification is needed. You can have this dynamic control, by individual member level permissions.
 
-![student in class room](classroom-2.png)
+![student in class room](/documentation/conferencing/images/classroom-2.png)
 
 You can create any kind of scenario just by setting the right permission. 
 
@@ -109,15 +109,15 @@ You can create any kind of scenario just by setting the right permission.
 
 In addition to permissions, you can set various properties like resolution, media, bitrate control, etc. for each group. 
 
-You can decide the default resolution for the conference room. Mesibo supports different conference room resolution, from normal to 4K. Mesibo has an adaptive algorithm to change the bitrate and resolution depending on the network condition, which is ON by default. However, you can disable it if you like.  Note that although you can select the resolution in the console, your camera/device must support that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
+You can decide the default resolution for the conference room. mesibo supports different conference room resolutions, from normal to 4K. Mesibo has an adaptive algorithm to change the bitrate and resolution depending on the network condition, which is ON by default. However, you can disable it if you like.  Note that although you can select the resolution in the console, your camera/device must support that resolution. It is recommended that you enable the resolution that best meets your bandwidth and device capacity.
 
 You can enable default media types (voice or video or both) allowed in your conference room. For example, a normal conference room will have both voice and video. However, you can also create a voice-only room by disabling video. Alternatively, you can only allow subscribers to access for video and voice but only allow asking questions using voice. 
 
 Similarly, you can enable screen-sharing for participants to share one or more screens during the conference. 
 
-Mesibo also allows you to enable simulcast in which each publisher can publish the same stream in different resolutions to cater to subscribers having different bandwidth and devices. Note that, enabling simulcast increases CPU and bandwidth usage significantly. 
+Mesibo also allows you to enable simulcast in which each publisher can publish the same stream in different resolutions to cater to subscribers having different bandwidth and devices. Note that enabling simulcast increases CPU and bandwidth usage significantly. 
 
-![Group Calling Quality](stream_quality_settings.png)
+![Group Calling Quality](/documentation/conferencing/images/stream_quality_settings.png)
 
 You can override these settings per participant using the mesibo REST API. For example, in your conference, you can make a setting such that only selected members (key speakers) can publish in HD resolution and others in low resolution, and so on.  
 
@@ -136,9 +136,9 @@ The following are the basic requirements of a conferencing app.
 7. Authorization so that only rightful people can join the conference
 
 
-In the following sections, we will learn how to use Mesibo APIs to achieve this. We will be using two types of mesibo APIs:
+In the following sections, we will learn how to use mesibo APIs to achieve this. We will be using two types of mesibo APIs:
 
-1. Mesibo backend APIs for administrative tasks such as creating groups, adding participants, etc.
+1. mesibo backend APIs for administrative tasks such as creating groups, adding participants, etc.
 2. mesibo Real-time APIs for real-time conferencing and streaming. These APIs are on the users’ side.
 
 Let's get started.
@@ -153,9 +153,9 @@ Once your application is created it will be visible in the `My Applications` tab
 
 ### 2. Create the conference participants (users)
 
-In mesibo, the conference room is a group that allows communication between multiple users - that could be a video or a voice conference. Each group contains one or more users who will be participants of this conference call. To create participants, you need to create mesibo users. Mesibo will create an access token for each user and give it to you which you can send it to your users. Your user can then use this access token in Mesibo Real-time APIs using `setAccessToken` function to connect to mesibo. 
+In mesibo, the conference room is a group that allows communication between multiple users - that could be a video or a voice conference. Each group contains one or more users who will be participants of this conference call. To create participants, you need to create mesibo users. mesibo will create an access token for each user and give it to you which you can send it to your users. Your user can then use this access token in mesibo Real-time APIs using `setAccessToken` function to connect to mesibo. 
 
-Read [Get Started Guide]({{ '/documentation/get-started/' | relative_url }}) and [Writing your First mesibo Enabled Application]({{ '/documentation/tutorials/first-app/' | relative_url }}) for a better understanding of mesibo users and tokens.
+Read [Get Started Guide]({{ '/documentation/tutorials/get-started/' | relative_url }}) and [Writing your First mesibo Enabled Application]({{ '/documentation/tutorials/first-app/' | relative_url }}) for a better understanding of mesibo users and tokens.
 
 In a real app, you create groups and participants on-demand using mesibo REST APIs. We will explain both the ways of performing these operations, creating a group, and adding users - using the console and using REST APIs.
 
@@ -176,7 +176,7 @@ Go to [mesibo dashboard](https://mesibo.com/console/#/dashboard) and choose the 
 
 To create a new group, click on the `+ NEW GROUP` button. Give a group name - example `ConferenceGroup` and click on `Create`. Your group with the name `ConferenceGroup` should now be created and be displayed in the table. Click on the edit icon, under actions. This will open the Group Settings page. Replicate settings shown below.
 
-![Conference Group Settings](images/conference_group_settings.png)
+![Conference Group Settings](/documentation/conferencing/images/conference_group_settings.png)
 
 If you want to create a group using REST, you need to invoke [groupadd](https://mesibo.com/documentation/api/backend-api/#create-a-group):
 
@@ -193,16 +193,16 @@ This will return the group ID in a JSON response. Make note of the group id. We 
 
 ### 4. Add Members
 
-Now, let us add the users we created earlier as members of this group `ConferenceGroup`. Click on the `+ NEW MEMBER` button and enter the user address, of the user whom you wish to add. Click on `Add`. The Members table will now display the member you just added. Similarly, add more users. 
+Now, let us add the users we created earlier as members of this group `ConferenceGroup`. Click on the `+ NEW MEMBER` button and enter the user address whom you wish to add. Click on `Add`. The Members table will now display the member you just added. Similarly, add more users. 
 
 Add the users created earlier as members of the group in the console.
-![Group Members](images/group_members.png)
+![Group Members](/documentation/conferencing/images/group_members.png)
 
 If you want to add members to a group using REST API, you need to invoke [groupeditmembers](https://mesibo.com/documentation/api/backend-api/#add-or-remove-group-members) and pass the GID obtained of the group you created in the previous step.
 
 For example,
 In the case of a conference, members can send and receive videos. So we invoke the API as follows.
-Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `user4` that need to be members of the conference. Let all members have permission to publish, subscribe, and list. then you need to call the API as follows
+Let's say you have users with addresses `user0`, `user1`, `user2`, `user3`, `user4` that need to be members of the conference, let all members have permission to publish, subscribe, and list. Invoke the API as follows
 
 ```
 https://api.mesibo.com/api.php?op=groupeditmembers&token=xxxxxxxxxxxxx&gid=12345&m=user0,user1,user2,user3,user4&canpub=1&cansub=1&canlist=1&delete=0
@@ -242,21 +242,11 @@ api.start();
 ```
 ### Initialize the group call 
 
-To set up a group call, use `initGroupCall()` to create the group calling object. 
+To set up a group call, use [MesiboCall.groupCall()]() to create the group calling object by passing the group-id and the UI context. 
 
-To link the room with a group, call the `setRoom` method of the group call object, by setting the group-id.
-
-An example in Javascript is as follows,
-```javascript
-
-//Create group call object
-var gCall = api.initGroupCall();
-
-//Set the room's ID
-//Example,
-const GROUP_ID = 98765;
-
-gCall.setRoom(GROUP_ID);    
+For example in Java,
+```java
+mGroupcall = MesiboCall.getInstance().groupCall((MesiboCallActivity) getActivity(), mGid);  
 ```
 ### Making a call
 
@@ -267,322 +257,171 @@ Group users participate in the conference by making calls to the group. There ar
 
 A participant can publish multiple streams simultaneously by making multiple publish calls. Similarly, a participant can view other participants' streams by making multiple subscribe calls. There is no limit on these calls.
 
-When a participant makes a publish call (publishing), all the participants will receive a corresponding call object which they can use to make subscribe call.
+When a participant makes a publish call (publishing), all the participants will receive a corresponding call object which they can use to make a subscribe call.
 
-### Publishing streams
-To publish your stream, you need to create a participant before making a call. Call the `getLocalParticipant` method to create a local participant and then use the call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
+### Publish Call
+To publish your stream, you need to create a participant before making a call. Call the [GroupCall.publish()]() method to create a local publisher and then use the call method to publish your stream. You can create and publish multiple streams simultaneously, for example, one camera, two screens, one whiteboard, etc.
 
-```javascript
-GroupCall.getLocalParticipant(streamId, participantName, participantAddress)
+For example, in Java, to publish stream from the front camera
+```java
+//Publish self stream
+mLocalPublisher = mGroupcall.publish(0);
+mLocalPublisher.setVideoSource(MesiboCall.MESIBOCALL_VIDEOSOURCE_CAMERAFRONT, 0);
+mLocalPublisher.call(mRoom.audio, mRoom.video, this);
 ```
 
-Arguments  
-- **streamId** - Arbitrary stream identifier. You can publish multiple streams(share multiple camera streams or screen shares) with a unique identifier for each stream. The remote end will receive the **streamId** you set here along with the call object.
+### Subscribe Call
+To view a publishers stream (either your own stream or a different publisher in the conference), you need to make a subscribe call using the [call()]() method. You can subscribe to audio only, video only, or both audio and video while making a subcribe call.
 
-- **participantName** - Set the name of the local participant
-
-- **participantAddress** - Set the address of the local participant(This is the address you set when you created this user).
-
-Returns  
-`Call object` for the participant
-
-Example,
-```javascript
-// Create a local participant, Set Publisher name and address
-var publisher = gCall.getLocalParticipant(0, 'user_name', 'user_address');
+For example, in Java, to view both audio and video of a participant, place a call as follows 
+```java
+participant.call(true, true , this);
 ```
+
 ### Overview of Methods in the Participant 
+//Put in a table with links
 
-- **call()** - To establish a connection to the participant to get the video/audio stream
-- **attach()** - To display the stream in an HTML media element
-- **getName()** - Returns the name of the participant - initialized in `getLocalParticipant` by the publisher
-- **getAddress()** - Returns the address of the participant
-- **getType()** - Returns an integer, the streamId - initialized in `getLocalParticipant` by the publisher
-- **getId()** - Returns an integer, the mesibo user-id of the publisher
-- **isLocal()** - Returns true if participant is a local stream, false otherwise
-- **isTalking()** - Returns true if participant is talking, false otherwise
-- **toggleMute()** - To mute the audio or video of a stream
-- **muteStatus()** - To get the mute status of a stream
-- **hangup()** - Hangup the stream
+- **call()** To establish a connection to the participant to get the video/audio stream
+- **setVideoView()** To display the stream in a UI element
+- **getName()** Returns the name of the participant - set using [setName()]() by the publisher
+- **getAddress()** Returns the address of the participant
+- **getType()** Returns an integer, the streamId - passed to [publish]() by the publisher
+- **getId()** Returns a unique integer identifying the stream
+- **isMe()** Returns true if participant is a local stream, false otherwise
+- **isTalking()** Returns true if participant is talking, false otherwise
+- **toggleAudioMute()** To mute the audio of a stream
+- **toggleVideoMute()** To mute the audio of a stream
+- **getMuteStatus()** To get the mute status of a stream
+- **hangup()** Hangup the stream
 
-### Overview of Callback functions
+### Overview of Listeners
 
-The following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
-- **on_stream** Called when a stream is received.
-- **on_status** Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, the connection is complete, etc
+Therea are two types of group call listeners.
+- [GroupCallListener]() The global group call listener. Implement this to be notified about whenever there is a new [publisher]() or [subscriber]() who has joined the conference call 
+- [GroupCallInProgressListener]() listener for the call that you make for viewing a participant. Implement this listener to be notified about mute events,
 
-Following is the callback function passed to `attach()`.It can be different for each time you use `attach()`.
-- **on_attached** Called when attach is complete.
+The following functions are part of the global call listener
+- **MesiboGroupcall_OnPublisher** Called when a publisher has joined the conference
+- **MesiboGroupcall_OnSubscriber** Called when a participant has subscribed to your stream
+- **MesiboGroupcall_OnAudioDeviceChanged** Called when the participant has changed their audio source
 
-The following are the callback functions available as [Mesibo Listeners](https://mesibo.com/documentation/apinew/listeners/#message-listener)
-- **Mesibo_OnParticipants** Called when a participant joins the group
-- **Mesibo_OnParticipantUpdated** Called when the status of a participant changes. For example, when they mute/unmute.
-- **Meibo_OnPermission** Called when permission is requested and completed.
-- **Mesibo_OnError** Called when an error occurs
-- **Mesibo_OnLocalMedia** Called when local media is updated
-- **Mesibo_OnSubscriber** Called  when another participant subscribes to your stream
+The following functions are part of the [GroupCallInProgressListener]() listener class which you need to provide while making a `call`. You can implement a different [GroupCallInProgressListener]() for each call. These listener functions will be called by mesibo to notify you of various actions by the participant that you are viewing that affects the stream. For example, muting audio/video, changes the video/audio source, hangs up, etc.
 
+- **MesiboGroupcall_OnConnected** Called when a participant is connected
+- **MesiboGroupcall_OnVideo** Called when you receive the video stream from a participant that you have subscribed to
+- **MesiboGroupcall_OnVideoSourceChanged** Called when the publisher has changed the video source
+- **MesiboGroupcall_OnAudio** Called when you receive audio stream from a participant
+- **MesiboGroupcall_OnMute** Called when a particpipant has muted/unmuted their audio or video
+- **MesiboGroupcall_OnTalking** Called when a participant that you have subscribed to is talking
+- **MesiboGroupcall_OnHangup** Called when a partipant hangs up
 
-### call()
-To place a call, you need to use the `call` method in the call object. 
+### Viewing a stream
+To display a stream, you need to call the [setVideoView()]() method on the participant object. 
 
-As described earlier, there are two types of calls- **publish call** and **subscribe call**. To make any type of call you need to have a call object. 
-
-To make a publish call, get a call object using`getLocalParticipant`. You can be publishing any type of stream - camera or screen. Then, if you make a `call()`, other members of the group will be notified and will receive your call object. 
-
-To make a subscribe call, get the call object in `Mesibo_OnParticipants`. Then call the method `call()` for that object. 
-
-```javascript
-Participant.call(initObject, elementId, onStreamCallback, onStatusCallback)
+For example, in Android, you can have a `MesiboVideoView` in your XML Layout file like below,
+```xml
+<com.mesibo.calls.api.MesiboVideoView
+    android:id="@+id/participant_stream_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
 ```
-Arguments
-- **initObject** - Initialization object where you can initialize various properties of the stream like:
-    * **audio** - Set to `true` to enable audio, `false` otherwise
-    * **video** - Set to `true` to enable video, `false` otherwise
-    * **source** - Set to `STREAM_CAMERA` to publish camera. Set to `STREAM_SCREEN` to publish screen. 
+You can display the stream in this view, as follows:
+```java
+MesiboVideoView video = findViewById(R.id.participant_stream_view); 
+participant.setVideoView(videoView);
+```
 
-- **elementId** - The ID of the video element where the stream is to be displayed. 
-- **on_stream** - A function which will be called when the stream is created
-- **on_status** - A function that will be called when the status of a stream changes. For example, if the mute status changes, or there is a change in the quality of the stream, if the participant has hung up, etc. Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
+For example in Javascript, If you have an HTML element where you would like to display the stream, like below:
+```HTML
+<video class="centered" id="video-publisher" autoplay playsinline muted width="100%" height="100%" />
+```
 
-For example, if the ID of the HTML element where the video will be displayed is `video-stream` and we want to enable both audio and video , we can make the call as follows:
+You need to call `setVideoView()` as follows
 ```javascript
-    var o = {};
-    o.audio = true; //Set to false to disable audio
-    o.video = true; //Set to false to disable video
-    
-    p.call(o, 'video-stream', on_stream, on_status);
-
-    //Called when a stream is formed 
-    function on_stream(p) {
-        //Attach the stream to the HTML element    
-    }
-
-    //Called when the status of a stream changes
-    function on_status(p, status){
-        //Stream status
-    }
+p.setVideoView('video-publisher', on_setvideo, 100, 50);
 
 ```
-The following are the callback functions for passed to `call`.It can be different for each time you use `call()`.
 
-### on_stream
-Called when a stream is received. You should now call attach on the stream you receive here.
-```javascript
-on_stream(p)
-```
-- **p** - Participant's stream
+In case you are using a DOM framework and the HTML element you need to display the stream is not created at the moment you call `setVideoView()`, you can try reattaching after a small delay or a timeout, which can be specified in `retryTimeout`. You can also specify the maximum number of attempts to attach in `maxRetries`. If the element is not available even after `maxRetries` is reached, `setVideoView()` will fail. In this case, `on_setvideo` will be called with `false`. If `setVideoView()` is successful, it will be called with `true`
 
 Example,
 ```javascript
-function on_stream(p) {
-
-    if (p.isLocal()) {
-     p.attach('video-publisher', on_attached, 100, 50);
-    }
-
-    else {
-     p.attach('video-' + p.getId(), on_attached, 100, 2);                                            
-    }
-  
-  }
-
-````
-
-### on_status 
-Called when the status of a stream changes. For example, if a stream hangs up, reconnecting, the connection is complete, etc.
-```javascript
-on_status(p, status)
-```
-- **p** - Participant's stream
-- **status** - Stream Status
-
-You will be getting the status of a stream in the callback function `on_status`, for example
-- `MESIBO_CALLSTATUS_CHANNELUP`: Call is established and you are getting the stream
-- `MESIBO_CALLSTATUS_RECONNECTING`: Call is reconnecting, you will not be getting the stream
-- `MESIBO_CALLSTATUS_COMPLETE`: Call has ended, terminate the stream.
-
-Refer to https://api.mesibo.com/mesibo.js for the various status indicator constants.
-
-For each state, you can display appropriate indicators. For example, if the call is reconnecting then you can show a spinner for that stream and once it is up, you can hide the spinner. Also, when the call is complete or hangs up you need to stop displaying the stream.
-
-Example,
-```javascript
-function on_status(status){
-            if(MESIBO_CALLSTATUS_COMPLETE  == status){
-                    //Hangup
-            }
-
-            else if(MESIBO_CALLSTATUS_CHANNELUP == status){
-                    //Call connection established
-            }
-            else if(MESIBO_CALLSTATUS_RECONNECTING == status){
-                    //Trying to reconnect
-            }
-}           
-```
-
-### Attaching a stream
-To display a stream, you need to call the `attach` method in the call object. 
-
-```javascript
-Participant.attach(elementId, on_attached, retryTimeout, maxRetries)
-```
-In case you are using a DOM framework and the HTML element you need to display the stream is not created at the moment you call attach, you can try reattaching after a small delay or a timeout, which can be specified in `retryTimeout`. You can also specify the maximum number of attempts to attach in `maxRetries`. If the element is not available even after `maxRetries` is reached, attach will fail. In this case, `on_attached` will be called with `false`. If attach is successful it will be called with `true`
-
-Arguments
-- **elementId** - The ID of the HTML element where the stream is to be displayed
-- **on_attached** - Function to be called when attach is finished.
-- **retryTimeout** - Time in milliseconds, after which attach will be called again if the previous attach failed
-- **maxRetries** - Maximum number of retries to attach
-
-Example,
-```javascript
-function on_attached(isAttached){
-    //isAttached is `true` if attach on the element is successful
-    //isAttached is `false` if attach on the element fails 
+function on_setvideo(isSet){
+    //isSet is `true` if the video element is displaying the video, false otherwise 
 }
 
-//Calls attach every 100ms, for a maximum number of 50 times, until successful 
-p.attach('video-publisher', on_attached, 100, 50);
-
+//Calls setVideoView every 100ms, for a maximum number of 50 times, until successful 
+p.setVideoView('video-publisher', on_setvideo, 100, 50);
 ```
+
 ### Publishing a stream
-As a member of the conference room group, you can send your streams to the group, which other members of the group can view.
+As a member of the conference room group, you can send your streams to the group, which other members of the group can view. You can publish streams with two types of sources - **camera** and **screen**. To publish your stream, use [MesiboGroupCall.publish()]() 
 
-If you want to display your video in an HTML video element with the id `video-publisher` like below
-```html
-<video id="video-publisher" autoplay playsinline muted/>
+For example, in Java, to publish stream from the front camera
+```java
+//Publish self stream
+mLocalPublisher = mGroupcall.publish(0);
+mLocalPublisher.setVideoSource(MesiboCall.MESIBOCALL_VIDEOSOURCE_CAMERAFRONT, 0);
+mLocalPublisher.call(mRoom.audio, mRoom.video, this);
 ```
 
-You can send two types of streams.
-```
-const STREAM_CAMERA = 1;
-const STREAM_SCREEN = 2;
-```
-
-If want to send your camera feed to the group, we set the source as `STREAM_CAMERA` &  make a call as follows
-
+For example, in Javascript, If you want to send your camera feed to the group, we set the source as `STREAM_CAMERA` &  make a call as follows:
 ```javascript
-    var o = {};
-    o.source = STREAM_CAMERA; 
-    
-    //publisher is the call object initialized by getLocalParticipant()
-    publisher.call(o, "video-publisher", on_stream, on_status);
-
-    function on_stream(p) {
-    p.attach('video-publisher', on_attached, 100, 10);
-    }
-
-    function on_status(p, status){
-    if(MESIBO_CALLSTATUS_CHANNELUP == status){
-        console.log(p.getName()+ ' is connected');
-    }
-
-    if(MESIBO_CALLSTATUS_COMPLETE == status){
-        console.log(p.getName()+ ' has disconnected');
-    }
-    }
-
-   function on_attached(isAttached){
-    console.log('Element is attached '+ isAttached);
-   }
-
-}
+publisher.setVideoSource(STREAM_CAMERA);
+publisher.call(true, true, callInProgressListener);
+publisher.setName("My camera stream");
 ```
 
 If you  want to share your screen with the group, we set the source as `STREAM_SCREEN` &  make a call as follows
 ```javascript
-    var o = {};
-    o.source = STREAM_SCREEN; 
-
-    //publisher is the call object initialized by getLocalParticipant()
-    publisher.call(o, "video-publisher", on_stream, on_status);
-}
-
+publisher.setVideoSource(STREAM_SCREEN);
+publisher.call( true, true, callInProgressListener);
+publisher.setName("My screen stream");
 ```
 ### Publishing multiple streams
 Note that you can simultaneously be publishing as many streams as you like. For example, in a conference, you can share multiple screens at the same time. Or if you have multiple camera devices, you can share multiple feeds at the same time to build a 360 View! 
 
-For every stream you want to publish, initialize a call object using `getLocalParticipant` with a unique stream-id and then place a `call()` 
+For every stream you want to publish, initialize a call object using `publish()` with a unique screen-id and then place a `call()` 
 
-On the other end, the members of the group will be able to see multiple streams with different `stream-id` from you. They will be able to subscribe to each of your streams separately.
+On the other end, the members of the group will be able to see multiple streams with different screen-id from you. They will be able to subscribe to each of your streams separately, when [MesiboGroupcall_OnPublisher]() will be called for each of your published streams.
 
-For example, to share multiple screens initialize a call object using `getLocalParticipant` with a **unique stream-id** for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `stream.getType()` 
+For example, in Javascript, to share multiple screens at once, initialize a call object using `publish()` with an id for each screen you want to share. On the remote end where they receive your stream, they can read this stream-id using `MesiboParticipant.getType()` 
 
 ```javascript
 // A call object for each stream is required
-var screen_1 = gCall.getLocalParticipant(1, 'user_name', 'user_address');
-var screen_2 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
-var screen_3 = gCall.getLocalParticipant(2, 'user_name', 'user_address');
+var screen_1 = gCall.publish(1);
+screen_1.setVideoSource(STREAM_SCREEN);
+
+var screen_2 = gCall.publish(2);
+screen_2.setVideoSource(STREAM_SCREEN);
+
+var screen_3 = gCall.publish(3);
+screen_3.setVideoSource(STREAM_SCREEN);
  
-var o = {};
-o.source = STREAM_SCREEN; 
-screen_1.call(o, "video-screen-1", on_stream, on_status);
-screen_2.call(o, "video-screen-2", on_stream, on_status);
-screen_3.call(o, "video-screen-3", on_stream, on_status);
-```
-
-### Mesibo_onParticipants
-
-You will get a list of participants through the listener `Mesibo_onParticipants` automatically when you join the conference group. You can choose and subscribe to the stream of each member to view their stream. Also, when a new participant joins the room, `Mesibo_onParticipants` will be called. 
-
-```javascript
-Mesibo_OnParticipants(all, latest)
-```
-
-Arguments
-- **all** - contains an array of all participants who have joined.
-- **latest** - contains the array of participants that have just joined the group.
-
-Example,
-```javascript
-
-mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {    
-    for(var i in latest) {
-        var p = latest[i];
-        //Now you can subscribe to each of these participants;
-    }
-}
+screen_1.call(false, true, callInProgressListener);
+screen_2.call(false, true, callInProgressListener);
+screen_3.call(false, true, callInProgressListener);
 ```
 
 ### Subscribing to participants
-You get the call object of each participant in `Mesibo_onParticipants`.You can subscribe to stream as follows with the `call()` method. In this example, we will get the call object to each participant and we are immediately subscribing to the stream of all participants.
+You will get the call object for each participant in [MesiboGroupcall_OnPublisher](), if they are publishing their stream. You can subscribe to a publisher's stream as follows using the `call()` method. 
 
-```javascript
+For example, in Java, if you would like to have both audio and video while viewing a publisher, make a call as follows
+```java
+public void MesiboGroupcall_OnPublisher(MesiboCall.MesiboParticipant participant, boolean joined) {
 
-mesiboNotify.prototype.Mesibo_OnParticipants = function(all, latest) {    
-    for(var i in latest) {
-        var p = latest[i];
-        //Subscribe to the stream of  each of these participants;
-        
-        //Each participant's video will have a separate video element.
-        //So we append the UID of each participant to `video-stream-` to create
-        //a unique element ID
-        p.call(null, 'video-stream-'+ p.getId(), on_stream, on_status);
-
-        //Called when you get the stream 
-        function on_stream(p) {
-            //Attach the stream to the HTML element
-            p.attach('video-stream-'+ p.getId());
-        }
-
-        //Called when the status of a stream changes
-        function on_status(p, status){
-            if(MESIBO_CALLSTATUS_CHANNELUP == status){
-                console.log(p.getName()+ 'is connected');
-            }
-
-            if(MESIBO_CALLSTATUS_COMPLETE == status){
-                console.log(p.getName()+ 'has disconnected');
-            }
-        }
+    if (joined) {
+        participant.call(true, true , this);
     }
 }
-
 ```
 
-### Subscribing to multiple streams from a participant
+To make an audio only call,
+```java
+participant.call(mRoom.audio, mRoom.video , this);
+```
+
+### Subscribing to multiple streams from a participant 
 Each stream published by a participant will have a different stream-id(set by the publisher). You can get the stream-id using the method `getType()`.
 
 For example, let's say we have a participant sharing three screens at once. Now, in this case, `Mesibo_OnParticipants` will contain three participant call objects, all with the same uid (`getId()` will give you the same user-id, since they are from the same user) but different stream-id (`getType()` will give you the stream-id that was set by the publisher for that stream).
@@ -590,13 +429,7 @@ For example, let's say we have a participant sharing three screens at once. Now,
 So, if we want to display these multiple screens from the same participant at once, we need to have different HTML elements. Then our call function will look something like below:
 ```javascript
 var element_id = 'video-stream-'+ p.getId()+'-type-'+ p.getType();
-p.call(null, element_id , on_stream, on_status);
-
-function on_stream(p) {
-    //Attach the stream to the HTML element
-    var element_id = 'video-stream-'+ p.getId()+'-type-'+ p.getType();
-    p.attach(element_id);
-}
+p.call(true, true, callInProgressListener);
 ```
 
 For example, suppose we have a participant with a user-id `1234` and they are sharing three screens in a conference. Each screen will have a different stream-id set by the publisher. Suppose the stream_ids are  `1`, `2`, `3`. If we want to display all of them simultaneously, we need to have three HTML elements.
@@ -616,159 +449,38 @@ p1.getType() == 1, p1.getType() == 2, p1.getType() == 3
 
 To subsctibe to each of the streams, we need to use `call()` on each call object like below:
 ```javascript
-p1.call(null, "video-stream-1234-type-1" , on_stream, on_status);
-p2.call(null, "video-stream-1234-type-2" , on_stream, on_status);
-p3.call(null, "video-stream-1234-type-3" , on_stream, on_status);
+p1.call(true, true, callInProgressListener);
+p2.call(true, true, callInProgressListener);
+p3.call(true, true, callInProgressListener);
 ```
-and then call attach on these different HTML elements to display them.
+and then call `setVideoView()` on these different HTML elements to display them.
 
-### Mesibo_OnParticipantUpdated
-Called when the status of a participant changes. For example when a participant mutes/unmutes when the participant is talking. You receive an updated participant here.
-```javascript
-Mesibo_OnParticipantUpdated(all, p) 
-```
-Arguments:
-- **all** - List of all participants
-- **p** - Updated participant
-
-Example,
-```javascript
-mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {
-     //Update participant
-    }
-```
-
-### Mesibo_OnPermission
-Called when permission is requested and completed. You can show an appropriate prompt when permission for audio/video/screen share is requested.
-
-```javascript
-Mesibo_OnPermission(onp) 
-```
-Arguments:
-- **onp** - `true` when requested, `false` when completed
-
-Example,
-```javascript
-mesiboNotify.prototype.Mesibo_OnPermission = function(onp) {
-     //Show/hide prompt for permission
-    }
-```
-
-### Mesibo_OnError
-Called when an error occurs. 
-```javascript
-Mesibo_OnError(e) 
-```
-Arguments:
-- **e** - Error value
-- **p** - Updated participant's call object
-
-Example,
-```javascript
-mesiboNotify.prototype.Mesibo_OnError = function(e) {
-     //Inspect e
-    }
-```
-### Mesibo_OnSubscriber
-Called when another participant subscribes to your stream. This is useful when you are publishing an open webinar and you need to see who has subscribed to your webinar stream.  Here, the subscriber is not allowed to publish so their call object won't come up in `Mesibo_OnParticipants`. 
-
-```javascript
-Mesibo_OnSubscriber(s) 
-```
-Arguments:
-- **s** - Subscriber object. Contains the name, address, etc of the subscriber
-
-Example,
-```javascript
-mesiboNotify.prototype.Mesibo_OnSubscriber = function(s) {
-     //Get subscriber information from s
-    }
-```
 ### Muting Streams
 
-We can mute video and audio locally, for the streams that we are viewing. You can use the `toggleMute` method to toggle the audio and video status of a stream. 
+We can mute video and audio locally, for the streams that we are viewing. You can use the [toggleAudioMute]()  method to toggle the audio and [toggleVideoMute]() method to toggle the video of a stream. 
 
-```javascript
-Participant.toggleMute(video, remote)
-```
-Parameters:
-- **video** - `true` for video, `false` for audio
-- **remote** - `true` for remote stream, `false` for local stream
 
-`toggleMute` allows you to mute your own video/audio and also other participant's audio/video. If you mute your own audio and video others who are viewing your stream will be notified that you have muted. But, if you are viewing the streams of other participants and you mute them it will only affect what you are seeing/hearing. Other parties are unaffected.
+When you mute your stream, other participants viewing your stream, will be notified of it through `MesiboGroupcall_OnMute`
+```java
+public void MesiboGroupcall_OnMute(MesiboCall.MesiboParticipant participant, boolean audioMuted, boolean videoMuted, boolean remote) {
+    // Remote participant has muted 
+    // Check mute status
+    if(participant.getMuteStatus(true)){
+    	// Video Muted
+    }
 
-For example, to mute audio and video of your stream-- the publisher
-```javascript
-//Mute own audio
-publisher.toggleMute(true, false);
-    
-//Mute own video
-publisher.toggleMute(false, false);
-```
-When you do this, on the remote end , whoever is subscribed to your stream, will be notified through  `Mesibo_OnParticipantUpdated`
-```javascript
-mesiboNotify.prototype.Mesibo_OnParticipantUpdated = function(all, p) {    
-    console.log(p.getName()+ ' is updated');
+    if(participant.getMuteStatus(false)){
+    	// Audio Muted
+    }
 }
 ```
 
-To mute a remote stream, you use the same method, but the second parameter is `true`
-```javascript
-//Mute remote video 
-participant.toggleMute(true, true);
-
-//Mute remote audio
-participant.toggleMute(false, true);
-
-```
-
-### Getting the Mute Status of a stream
-
-You can get the mute status of a stream with `muteStatus` which has the syntax as follows:
-```javascript
-Participant.muteStatus(video, remote)
-```
-Parameters:
-- **video** - `true` for video, `false` for audio
-- **remote** - `true` for remote source, `false` for local source
-
-Returns:
-`true` if muted, `false` otherwise
-
-For example,
-Say the remote video is muted by the remote participant then,
-`participant.muteStatus(true, true)` will return `true`
-
-> Note that When a remote participant mutes `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `muteStatus()` to get the latest mute status.
-
-If you have muted the video locally then,
-`participant.muteStatus(true, false)` will return `true` 
+### Handling Mute 
+You can get the mute status of a stream with [getMuteStatus()](). When a participant mutes/unmutes audio or video, people viewing the participant will be notified of it through [MesiboGroupcall_OnMute]() 
 
 ### Talking Indicator
-
-You can get the talking status of a stream with `isTalking` which has the syntax as follows:
-```javascript
-Participant.isTalking()
-```
-Returns:
-`true` if talking, `false` otherwise
-
-> Note that When a remote participant is talking `Mesibo_OnParticipantUpdated` will be called. Then you need to update the participant object that you are viewing and then call `isTalking()` to get the latest mute status.
+You can get the talking status of a stream with [isTalking](). When a participant starts/stops talking, people who are viewing the publisher will be notified of it through [MesiboGroupcall_OnTalking]()  
 
 ### Hanging up a stream
-To view a stream from a participant you need to subscribe to it using `call()`.  
-To hangup a stream, you can need to use `hangup()`. It is like disconnecting a call.
+To hangup a stream, you need to use [hangup()](). It will hangup. When a participant hangsup, people who are viewing that publisher will be notified of it through [MesiboGroupcall_OnHangup]()
 
-
-```javascript
-Participant.hangup()
-```
-When you call `hangup` on a stream that you are publishing, people who are viewing your stream will be notified of it. 
-The remote end will get the status `MESIBO_CALLSTATUS_COMPLETE`.
-```javascript
-on_status(p, status){
- if(MESIBO_CALLSTATUS_COMPLETE == status){
-  //Stream has been disconnected. Cleanup..
-  }
-```
-When you get a hangup status from a participant, you may need to clean up. For example, If you are displaying that stream from a participant, you need to stop displaying it and remove that participant.

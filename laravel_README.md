@@ -9,7 +9,7 @@ This folder contains the source code for the mesibo Laravel Demo.
 - Basic knowledge of building apps on Laravel 
 
 ## Running the Laravel Demo App
-1. Create two mesibo users. Refer to the tutorial [Create Users]('https://mesibo.com/documentation/tutorials/get-started/create-users/')
+1. Create two mesibo users. Refer to the tutorial [Create Users](https://mesibo.com/documentation/tutorials/get-started/create-users/)
 2. Open the folder `resources/views`. You will find two files - `app-user-1.blade.php` and `app-user-2.blade.php`. Here, fill in the token and appid for the two users that you created earlier. 
 3. For example, say you created two users with addresses `123` and `456`.
 Configure the token and appid for the first user `123` in `app-user-1.blade.php` as follows:

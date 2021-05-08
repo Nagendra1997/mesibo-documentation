@@ -4,8 +4,8 @@ This folder contains the source code for the mesibo Laravel Demo.
 ### Prerequisites
 - Installed Laravel by following the instructions [here](https://laravel.com/docs/)
 - Downloaded the source code for the Laravel Basic demo app from [samples](https://github.com/mesibo/samples/tree/master/laravel) available on mesibo Github repo 
-- Read the [Get Started Guide]({{ 'https:/mesibo.com/documentation/tutorials/get-started/') to learn the basics of using mesibo, creating apps, creating users, etc.
-- The Laravel demo uses mesibo Javascript API. Refer to [Get Started - Javascript]('http://mesibo.com/documentation/tutorials/get-started/javascript/') to learn how to create apps using mesibo in Javascript 
+- Read the [Get Started Guide](https:/mesibo.com/documentation/tutorials/get-started/) to learn the basics of using mesibo, creating apps, creating users, etc.
+- The Laravel demo uses mesibo Javascript API. Refer to [Get Started - Javascript](http://mesibo.com/documentation/tutorials/get-started/javascript/) to learn how to creating your first app using mesibo in Javascript 
 - Basic knowledge of building apps on Laravel 
 
 ## Running the Laravel Demo App
